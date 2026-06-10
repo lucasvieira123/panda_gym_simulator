@@ -32,7 +32,7 @@ task:
 #     - hold → robô parado
 #   - gain → intensidade do movimento. 5.0 significa que o vetor de direção é multiplicado por 5 antes de virar ação. Quanto maior, mais agressivo/rápido o movimento.
 policy:
-  name: "greedy_pick_and_place"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place
+  name: "hold"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place
   gain: 5.0
 
 
@@ -57,7 +57,7 @@ commands:
     enabled: false
     operation: "run_script"
     at_episode: 0
-    at_step: 0
+    at_step: 10
     policy_after: "hold"
     script:
       - action: [0.0,  0.0,  0.0,  1.0]   # abre garra
@@ -80,31 +80,14 @@ commands:
   - id: "script_simples_sobe_desce"
     enabled: false
     operation: "run_script"
-    at_episode: 0
-    at_step: 20
+    # at_episode: 0
+    # at_step: 20
     policy_after: "greedy_push"            # volta para push depois
     script:
       - action: [0.0, 0.0,  1.0, 0.0]     # sobe
         steps: 10
       - action: [0.0, 0.0, -1.0, 0.0]     # desce
         steps: 10
-
-  # ── change_goal: muda o alvo do cubo sem reiniciar ──────────────────────────
-  - id: "change_goal_1"
-    enabled: false
-    operation: "change_goal"
-    target_object: "cube_1"
-    position: [0.10, -0.20, 0.02]
-    tolerance: 0.05
-    visual_marker: true
-
-  - id: "goal_ep0_s30"
-    enabled: false
-    operation: "change_goal"
-    at_episode: 0
-    at_step: 30
-    target_object: "cube_1"
-    position: [0.10, 0.10, 0.02]
 
   # ── change_task_mode: muda objetivo e política SEM resetar a física ─────────
   #
@@ -115,9 +98,9 @@ commands:
   #
   - id: "switch_to_pick_mode"
     enabled: false
-    operation: "change_task_mode"
+    operation: "change_task_mode" # NUNCA MUDAR
     at_episode: 0
-    at_step: 30               # muda no step 30: robô para de empurrar e começa a pegar
+    at_step: 0               # muda no step 30: robô para de empurrar e começa a pegar
     target_object: "cube_1"
     position: [0.10, 0.10, 0.15]   # goal no ar: cubo tem de ser levantado
     tolerance: 0.05

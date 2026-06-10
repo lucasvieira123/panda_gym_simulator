@@ -30,19 +30,19 @@ pip install -r requirements.txt
 ## 2. Executar exemplo
 
 ```bash
-python run_experiment.py --config configs/custom_push_environment.yaml
+python run_experiment.py --config configs/environment.yaml
 ```
 
 Ou:
 
 ```bash
-python -m panda_configurable_lab.cli --config configs/custom_push_environment.yaml
+python -m panda_configurable_lab.cli --config configs/environment.yaml
 ```
 
 Os resultados serão salvos em:
 
 ```text
-results/custom_push_environment/
+results/panda_lab/
 ```
 
 Arquivos gerados:
@@ -286,7 +286,7 @@ panda_configurable_lab/
   runner.py
 
 configs/
-  custom_push_environment.yaml
+  environment.yaml
   multi_object_push_environment.yaml
   push_with_obstacle.yaml
 

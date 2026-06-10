@@ -41,6 +41,7 @@ class ExperimentRunner:
         self.logging_config     = config.get("logging", {})
         self.simulation_config  = config.get("simulation", {})
         self.step_delay         = float(self.simulation_config.get("step_delay", 1.0))
+        self.verbose            = bool(self.simulation_config.get("verbose", False))
         self.runtime_config     = config.get("runtime", {})
 
         # guarda quais comandos já foram aplicados
@@ -49,19 +50,19 @@ class ExperimentRunner:
         # sinaliza que o env foi trocado por change_task e precisa de reset
         self._env_reset_needed = False
 
+        config_dir = Path(config.get("_config_dir", "."))
+
         # Resolve o caminho do arquivo de comandos
         command_file = self.runtime_config.get("command_file")
-        if command_file:
-            config_dir = Path(config.get("_config_dir", "."))
-            self.command_file = config_dir / command_file
-        else:
-            self.command_file = None
+        self.command_file = config_dir / command_file if command_file else None
+
+        # Resolve o caminho do arquivo de goals
+        goal_file = self.runtime_config.get("goal_file")
+        self.goal_file = config_dir / goal_file if goal_file else None
 
         self.poll_every_steps = int(self.runtime_config.get("poll_every_steps", 1))
 
-        # Carrega o arquivo de comandos antecipadamente para extrair policy e task
-        # iniciais. Isso permite que essas configurações vivam no commands file em
-        # vez de no ambiente — separação de responsabilidades.
+        # Carrega commands file antecipadamente para extrair policy e task iniciais.
         commands_data = self._load_commands_data()
 
         # policy: commands file tem prioridade; env file é fallback para compat.
@@ -74,8 +75,14 @@ class ExperimentRunner:
         task_from_env      = config.get("task", {})
         effective_task     = {**task_from_env, **task_from_commands}
 
+        # goals: goals file tem prioridade; env file é fallback para compat.
+        goals_data          = self._load_goals_data()
+        goals_from_file     = goals_data.get("initial", {})
+        goals_from_env      = config.get("goals", {})
+        effective_goals     = goals_from_file if goals_from_file else goals_from_env
+
         # Monta config final fundindo as fontes
-        self.config = {**config, "task": effective_task, "policy": effective_policy}
+        self.config = {**config, "task": effective_task, "policy": effective_policy, "goals": effective_goals}
 
         self.env = make_configurable_env(self.config)
 
@@ -166,6 +173,21 @@ class ExperimentRunner:
 
             self.logger.log_step(record)
 
+            if self.verbose:
+                print(
+                    f"[ep={episode} step={step:3d}]"
+                    f"  reward={reward:.4f}"
+                    f"  terminated={terminated}"
+                    f"  truncated={truncated}"
+                    f"  success={record['is_success']}"
+                    f"  dist={distance_to_goal:.4f}"
+                    f"\n    action       = {np.round(action, 3).tolist()}"
+                    f"\n    achieved_goal= {np.round(achieved, 3).tolist() if achieved is not None else None}"
+                    f"\n    desired_goal = {np.round(desired, 3).tolist() if desired is not None else None}"
+                    f"\n    observation  = {np.round(record['observation'], 3).tolist() if record['observation'] is not None else None}"
+                    f"\n    info         = {info}"
+                )
+
             final_reward = float(reward)
             final_success = bool(info.get("is_success", False)) if isinstance(info, dict) else False
             final_distance = distance_to_goal
@@ -240,6 +262,16 @@ class ExperimentRunner:
         except Exception:
             return {}
 
+    def _load_goals_data(self) -> Dict[str, Any]:
+        """Lê o goals file e retorna o conteúdo bruto."""
+        if self.goal_file is None or not self.goal_file.exists():
+            return {}
+        try:
+            with self.goal_file.open("r", encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except Exception:
+            return {}
+
     def _apply_runtime_commands(self, episode: int, step: int) -> None:
         """
         Lê comandos de runtime a partir de um YAML externo.
@@ -270,7 +302,17 @@ class ExperimentRunner:
             )
             return
 
-        commands = data.get("commands", []) or []
+        commands = list(data.get("commands", []) or [])
+
+        # Injeta as mudanças de goal do goals file como change_goal commands
+        if self.goal_file and self.goal_file.exists():
+            try:
+                with self.goal_file.open("r", encoding="utf-8") as gf:
+                    goals_data = yaml.safe_load(gf) or {}
+                for change in goals_data.get("changes", []) or []:
+                    commands.append({**change, "operation": "change_goal"})
+            except Exception:
+                pass
 
         for command in commands:
             if not command.get("enabled", False):

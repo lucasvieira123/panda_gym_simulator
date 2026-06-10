@@ -1,8 +1,8 @@
 experiment:
-  name: "custom_push_environment"
+  name: "panda_lab"
   seed: 42
   episodes: 3
-  max_steps: 120
+  max_steps: 300
 
 robot:
   control_type: "ee"
@@ -12,6 +12,7 @@ robot:
 simulation:
   render_mode: "human"
   step_delay: 1.00
+  verbose: true
 
 scene:
   table:
@@ -32,19 +33,12 @@ objects:
     lateral_friction: 0.8
     spinning_friction: 0.001
 
-goals:
-  mode: "fixed" # fixed: alvo fixo; random: alvo aleatório a cada episódio
-  targets:
-    - object: "cube_1"
-      position: [0.0, 0.10, 0.02]
-      tolerance: 0.05
-      visual_marker: true
-
 obstacles: []
 
 runtime:
   command_file: "runtime_commands.yaml"
+  goal_file: "goals.yaml"
   poll_every_steps: 1 # checa o command file a cada N steps para verificar se existem novos comandos habilitados para serem executados
 
 logging:
-  output_dir: "results/custom_push_environment"
+  output_dir: "results/panda_lab"

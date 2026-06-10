@@ -33,7 +33,8 @@ def load_yaml_config(path: str | Path) -> Dict[str, Any]:
 def validate_minimal_config(config: Dict[str, Any]) -> None:
     # "task" e "policy" são opcionais no arquivo de ambiente — podem vir do
     # commands file (runtime_commands.yaml) para separar responsabilidades.
-    required_sections = ["experiment", "robot", "simulation", "objects", "goals"]
+    # "goals" é opcional — pode vir do goals file (goals.yaml)
+    required_sections = ["experiment", "robot", "simulation", "objects"]
 
     for section in required_sections:
         if section not in config:
@@ -46,20 +47,22 @@ def validate_minimal_config(config: Dict[str, Any]) -> None:
     if not isinstance(config.get("objects"), list) or len(config["objects"]) == 0:
         raise ValueError("A seção 'objects' precisa conter pelo menos um objeto.")
 
-    targets = config["goals"].get("targets", [])
+    # Valida goals apenas se presentes no arquivo de ambiente
+    if "goals" in config:
+        targets = config["goals"].get("targets", [])
 
-    if not isinstance(targets, list) or len(targets) == 0:
-        raise ValueError("A seção 'goals.targets' precisa conter pelo menos um objetivo.")
+        if not isinstance(targets, list) or len(targets) == 0:
+            raise ValueError("A seção 'goals.targets' precisa conter pelo menos um objetivo.")
 
-    object_names = {obj["name"] for obj in config["objects"]}
+        object_names = {obj["name"] for obj in config["objects"]}
 
-    for target in targets:
-        obj_name = target.get("object")
+        for target in targets:
+            obj_name = target.get("object")
 
-        if obj_name not in object_names:
-            raise ValueError(
-                f"O objetivo referencia o objeto '{obj_name}', mas ele não existe em objects."
-            )
+            if obj_name not in object_names:
+                raise ValueError(
+                    f"O objetivo referencia o objeto '{obj_name}', mas ele não existe em objects."
+                )
 
-        if "position" not in target:
-            raise ValueError(f"O objetivo do objeto '{obj_name}' precisa ter 'position'.")
+            if "position" not in target:
+                raise ValueError(f"O objetivo do objeto '{obj_name}' precisa ter 'position'.")
