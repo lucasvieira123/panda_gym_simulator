@@ -149,7 +149,7 @@ class ExperimentRunner:
 
             next_observation, reward, terminated, truncated, info = self.env.step(action)
             
-            if self.step_delay > 0:
+            if self.step_delay > 0 and self.policy.name != "manual":
                 time.sleep(self.step_delay)
 
             achieved = next_observation.get("achieved_goal")

@@ -1,8 +1,26 @@
 from __future__ import annotations
 
+import sys
 from typing import Any, Dict
 
 import numpy as np
+
+# Mapeamento tecla → (índice no action vector, valor)
+_MANUAL_KEY_MAP = {
+    "w": (1,  1.0),   # frente
+    "s": (1, -1.0),   # trás
+    "d": (0,  1.0),   # direita
+    "a": (0, -1.0),   # esquerda
+    "r": (2,  1.0),   # sobe
+    "f": (2, -1.0),   # desce
+}
+
+_MANUAL_CONTROLS_MSG = (
+    "\n[Manual] Controles do braço:"
+    "\n  W/S → frente/trás   A/D → esquerda/direita   R/F → sobe/desce"
+    "\n  E → abre garra      C → fecha garra           Space → parado"
+    "\n  Pressione uma tecla para avançar um step...\n"
+)
 
 
 class SimplePolicy:
@@ -99,6 +117,9 @@ class SimplePolicy:
         if self.name == "scripted":
             return self._scripted(env, observation)
 
+        if self.name == "manual":
+            return self._manual(env, observation)
+
         raise ValueError(f"Política desconhecida: {self.name}")
 
     def _scripted(self, env, observation: Dict[str, Any]) -> np.ndarray:
@@ -133,6 +154,58 @@ class SimplePolicy:
         if self._script_step_counter >= n_steps:
             self._script_step_idx    += 1
             self._script_step_counter = 0
+
+        return action
+
+    def _manual(self, env, observation: Dict[str, Any]) -> np.ndarray:
+        """
+        Controle manual via teclado no terminal.
+
+        Cada tecla pressionada avança um step. O loop de simulação bloqueia
+        aqui até o usuário pressionar algo — o timing é controlado pelo usuário.
+        """
+        print(_MANUAL_CONTROLS_MSG, end="", flush=True)
+
+        if sys.platform == "win32":
+            import msvcrt
+            raw = msvcrt.getch()
+            try:
+                key = raw.decode("utf-8").lower()
+            except UnicodeDecodeError:
+                key = ""
+        else:
+            import tty, termios
+            fd = sys.stdin.fileno()
+            old = termios.tcgetattr(fd)
+            try:
+                tty.setraw(fd)
+                key = sys.stdin.read(1).lower()
+            finally:
+                termios.tcsetattr(fd, termios.TCSADRAIN, old)
+
+        print(f"[Manual] tecla: {repr(key)}")
+
+        action = np.zeros(env.action_space.shape, dtype=np.float32)
+        flat   = action.reshape(-1)
+
+        if key in _MANUAL_KEY_MAP:
+            idx, val = _MANUAL_KEY_MAP[key]
+            if flat.size > idx:
+                flat[idx] = val
+        elif key == "e" and flat.size >= 4:
+            flat[3] = 1.0    # abre garra
+        elif key == "c" and flat.size >= 4:
+            flat[3] = -1.0   # fecha garra
+        # space → zeros → hold (não move)
+
+        try:
+            flat[:] = np.clip(
+                flat,
+                env.action_space.low.reshape(-1),
+                env.action_space.high.reshape(-1),
+            )
+        except Exception:
+            flat[:] = np.clip(flat, -1.0, 1.0)
 
         return action
 

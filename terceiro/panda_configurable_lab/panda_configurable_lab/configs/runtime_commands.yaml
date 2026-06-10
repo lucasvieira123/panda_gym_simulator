@@ -32,7 +32,7 @@ task:
 #     - hold → robô parado
 #   - gain → intensidade do movimento. 5.0 significa que o vetor de direção é multiplicado por 5 antes de virar ação. Quanto maior, mais agressivo/rápido o movimento.
 policy:
-  name: "hold"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place
+  name: "manual"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place | manual
   gain: 5.0
 
 
