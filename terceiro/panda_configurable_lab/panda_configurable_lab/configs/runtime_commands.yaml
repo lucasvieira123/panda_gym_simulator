@@ -1,6 +1,7 @@
 commands:
+  # ── change_goal: muda o alvo do cubo sem reiniciar ──────────────────────────
   - id: "change_goal_1"
-    enabled: true
+    enabled: false
     operation: "change_goal"
     target_object: "cube_1"
     position: [0.10, -0.20, 0.02]
@@ -11,6 +12,51 @@ commands:
     enabled: false
     operation: "change_goal"
     at_episode: 0
-    at_step: 30               # muda no step 30 do episódio 0
+    at_step: 30
     target_object: "cube_1"
     position: [0.10, 0.10, 0.02]
+
+  # ── change_task: troca a task em tempo de execução (janela não fecha) ───────
+  #
+  # task (obrigatório): uma das 6 tasks do panda-gym
+  #   reach | push | slide | pick_and_place | stack | flip
+  #
+  # reward_type (opcional): sparse (padrão) | dense
+  #
+  # policy (opcional): muda a política junto com a task
+  #   greedy_goal  → funciona bem para reach (move ee direto ao goal)
+  #   greedy_push  → funciona bem para push/slide
+  #   random       → exploração aleatória
+  #   hold         → parado (útil para observar)
+  #
+  - id: "switch_to_reach"
+    enabled: false
+    operation: "change_task"
+    task: "reach"
+    reward_type: "dense"
+    policy: "greedy_goal"     # reach: mover ee ao alvo → greedy_goal funciona
+
+  - id: "switch_to_slide"
+    enabled: true
+    operation: "change_task"
+    task: "slide"
+    at_episode: 0
+    at_step: 10
+    reward_type: "dense"
+    policy: "greedy_push"
+
+  - id: "switch_to_pick_place"
+    enabled: false
+    operation: "change_task"
+    task: "pick_and_place"
+    reward_type: "dense"
+    policy: "random"          # sem política dedicada por enquanto
+
+  - id: "switch_to_push_step50"
+    enabled: false
+    operation: "change_task"
+    at_episode: 0
+    at_step: 50               # troca para push no step 50 do episódio 0
+    task: "push"
+    reward_type: "dense"
+    policy: "greedy_push"

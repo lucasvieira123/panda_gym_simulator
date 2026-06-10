@@ -3,6 +3,15 @@ from __future__ import annotations
 from typing import Any, Dict
 
 import numpy as np
+import pybullet_data
+
+from panda_gym.envs.robots.panda import Panda
+from panda_gym.envs.tasks.reach        import Reach
+from panda_gym.envs.tasks.push         import Push
+from panda_gym.envs.tasks.slide        import Slide
+from panda_gym.envs.tasks.pick_and_place import PickAndPlace
+from panda_gym.envs.tasks.stack        import Stack
+from panda_gym.envs.tasks.flip         import Flip
 
 import time
 from pathlib import Path
@@ -11,6 +20,19 @@ import yaml
 from .env_factory import make_configurable_env
 from .logger import ExperimentLogger
 from .policies import SimplePolicy
+
+
+# Mapeamento nome amigável → classe da task padrão do panda-gym.
+# A task customizável (ConfigurablePushTask) é criada por make_configurable_env
+# e não aparece aqui — ela é o ponto de partida, não um destino de troca.
+TASK_CLASS_MAP: Dict[str, type] = {
+    "reach":           Reach,
+    "push":            Push,
+    "slide":           Slide,
+    "pick_and_place":  PickAndPlace,
+    "stack":           Stack,
+    "flip":            Flip,
+}
 
 
 class ExperimentRunner:
@@ -27,8 +49,11 @@ class ExperimentRunner:
         # NOVO: configuração de runtime
         self.runtime_config = config.get("runtime", {})
 
-        # NOVO: guarda quais comandos já foram aplicados
+        # guarda quais comandos já foram aplicados
         self.applied_runtime_commands = set()
+
+        # sinaliza que o env foi trocado por change_task e precisa de reset
+        self._env_reset_needed = False
 
         # NOVO: arquivo que o usuário poderá editar enquanto a simulação roda
         command_file = self.runtime_config.get("command_file")
@@ -91,6 +116,12 @@ class ExperimentRunner:
 
         for step in range(max_steps):
             self._apply_runtime_commands(episode, step)
+
+            # change_task fechou o env antigo e criou um novo: faz reset antes de agir
+            if self._env_reset_needed:
+                self._env_reset_needed = False
+                observation, _ = self.env.reset()
+                continue
 
             # Garante que a política vê o desired_goal atualizado no mesmo step
             # em que o comando foi aplicado (sem esperar o próximo env.step)
@@ -251,6 +282,10 @@ class ExperimentRunner:
                     self._change_goal(command)
                     event["status"] = "applied"
 
+                elif operation == "change_task":
+                    self._change_task(command)
+                    event["status"] = "applied"
+
                 else:
                     raise ValueError(f"Operação não suportada: {operation}")
 
@@ -268,6 +303,79 @@ class ExperimentRunner:
                 f"status={event['status']}"
             )
 
+
+    def _change_task(self, command: Dict[str, Any]) -> None:
+        """
+        Troca a task em tempo de execução SEM fechar a janela do PyBullet.
+
+        Estratégia:
+          1. Chama resetSimulation() para limpar todos os corpos da física,
+             mantendo a conexão GUI aberta (a janela NÃO fecha).
+          2. Restaura as configurações de física (gravidade, timestep).
+          3. Recria o robô Panda e a nova task usando o MESMO objeto sim.
+          4. Faz hot-swap de env.robot e env.task no lugar.
+          5. Sinaliza o loop para fazer env.reset() antes da próxima ação.
+
+        Comando YAML:
+            operation: change_task
+            task: reach | push | slide | pick_and_place | stack | flip
+            policy: greedy_goal | greedy_push | random | hold  (opcional)
+            reward_type: dense | sparse                         (opcional, padrão: sparse)
+        """
+        task_name = str(command.get("task", "")).lower().replace("-", "_").replace(" ", "_")
+        task_class = TASK_CLASS_MAP.get(task_name)
+
+        if task_class is None:
+            raise ValueError(
+                f"Task '{task_name}' não reconhecida. "
+                f"Opções: {sorted(TASK_CLASS_MAP)}"
+            )
+
+        reward_type = str(command.get("reward_type", "sparse"))
+
+        # ── 1. Acessa o PyBullet compartilhado ───────────────────────────────
+        sim = self.env.sim
+
+        # ── 2. Limpa todos os corpos; a janela GUI permanece aberta ──────────
+        sim.physics_client.resetSimulation()
+        sim._bodies_idx.clear()
+
+        # ── 3. Restaura configurações de física apagadas pelo reset ──────────
+        sim.physics_client.setTimeStep(sim.timestep)
+        sim.physics_client.setAdditionalSearchPath(pybullet_data.getDataPath())
+        sim.physics_client.setGravity(0, 0, -9.81)
+
+        # ── 4. Recria o robô no mesmo sim (recarrega o URDF) ─────────────────
+        robot_config = self.config.get("robot", {})
+        new_robot = Panda(
+            sim=sim,
+            block_gripper=bool(robot_config.get("block_gripper", True)),
+            base_position=np.array(robot_config.get("base_position", [-0.6, 0.0, 0.0]), dtype=float),
+            control_type=str(robot_config.get("control_type", "ee")),
+        )
+
+        # ── 5. Cria a nova task no mesmo sim ─────────────────────────────────
+        # Reach é a única task que precisa de get_ee_position (para gerar o goal)
+        if task_class is Reach:
+            new_task = Reach(
+                sim=sim,
+                get_ee_position=new_robot.get_ee_position,
+                reward_type=reward_type,
+            )
+        else:
+            new_task = task_class(sim=sim, reward_type=reward_type)
+
+        # ── 6. Hot-swap: substitui robô e task sem recriar o env ─────────────
+        self.env.robot = new_robot
+        self.env.task  = new_task
+
+        # ── 7. Troca a política se solicitado ─────────────────────────────────
+        new_policy = command.get("policy")
+        if new_policy:
+            self.policy.name = str(new_policy)
+
+        # Sinaliza o loop: buscar nova observation antes de agir
+        self._env_reset_needed = True
 
     def _change_goal(self, command: Dict[str, Any]) -> None:
         """
