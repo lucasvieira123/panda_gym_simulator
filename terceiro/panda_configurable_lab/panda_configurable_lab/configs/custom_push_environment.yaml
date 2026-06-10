@@ -1,0 +1,61 @@
+experiment:
+  name: "custom_push_environment"
+  seed: 42
+  episodes: 3
+  max_steps: 120
+
+robot:
+  control_type: "ee"
+  block_gripper: true
+  base_position: [-0.6, 0.0, 0.0]
+
+simulation:
+  render_mode: "human"
+  step_delay: 1.00
+
+scene:
+  table:
+    length: 1.1
+    width: 0.7
+    height: 0.4
+    x_offset: -0.3
+    lateral_friction: 1.0
+    spinning_friction: 0.001
+
+task:
+  type: "push"
+  reward_type: "dense"
+  success_threshold: 0.05
+
+objects:
+  - name: "cube_1"
+    type: "box"
+    size: [0.04, 0.04, 0.04]
+    mass: 1.0
+    initial_position: [0.0, 0.0, 0.02]
+    color: [0.1, 0.2, 0.9, 1.0]
+    lateral_friction: 0.8
+    spinning_friction: 0.001
+
+goals:
+  mode: "fixed"
+  targets:
+    - object: "cube_1"
+      position: [0.0, 0.10, 0.02]
+      tolerance: 0.05
+      visual_marker: true
+
+obstacles: []
+
+policy:
+  # name: "random"
+  # name: "greedy_goal"   # move ee direto ao goal — não funciona bem para push
+  name: "greedy_push"     # 2 fases: posiciona atrás do cubo → empurra
+  gain: 5.0
+
+runtime:
+  command_file: "runtime_commands.yaml"
+  poll_every_steps: 1
+
+logging:
+  output_dir: "results/custom_push_environment"
