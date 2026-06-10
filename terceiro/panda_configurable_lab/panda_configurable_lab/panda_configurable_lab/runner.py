@@ -108,6 +108,7 @@ class ExperimentRunner:
 
     def _run_episode(self, episode: int, seed: int, max_steps: int) -> None:
         observation, info = self.env.reset(seed=seed)
+        self.policy.reset_phase()   # reinicia estado da pick_and_place state machine
 
         final_reward = None
         final_success = False
@@ -286,6 +287,10 @@ class ExperimentRunner:
                     self._change_task(command)
                     event["status"] = "applied"
 
+                elif operation == "change_task_mode":
+                    self._change_task_mode(command)
+                    event["status"] = "applied"
+
                 else:
                     raise ValueError(f"Operação não suportada: {operation}")
 
@@ -376,6 +381,35 @@ class ExperimentRunner:
 
         # Sinaliza o loop: buscar nova observation antes de agir
         self._env_reset_needed = True
+
+    def _change_task_mode(self, command: Dict[str, Any]) -> None:
+        """
+        Muda o comportamento da task NO MESMO fluxo físico, sem reset da cena.
+
+        Ao contrário de change_task (que reinicia o PyBullet), este comando
+        apenas altera o goal e/ou a política, mantendo cubo, robô e físicas
+        exatamente onde estão.
+
+        Ideal para transições do tipo:
+          push → pick_and_place  (cubo continua no lugar, robô continua onde está)
+
+        Comando YAML:
+            operation: change_task_mode
+            target_object: "cube_1"         (opcional: muda o goal)
+            position: [x, y, z]             (opcional: nova posição do goal, pode ser no ar)
+            tolerance: 0.05                  (opcional)
+            visual_marker: true              (opcional)
+            policy: "greedy_pick_and_place"  (opcional: muda a política)
+        """
+        # Muda o goal se uma nova posição foi especificada
+        if "position" in command and "target_object" in command:
+            self._change_goal(command)
+
+        # Muda a política e reinicia o estado de fase se necessário
+        new_policy = command.get("policy")
+        if new_policy:
+            self.policy.name = str(new_policy)
+            self.policy.reset_phase()
 
     def _change_goal(self, command: Dict[str, Any]) -> None:
         """

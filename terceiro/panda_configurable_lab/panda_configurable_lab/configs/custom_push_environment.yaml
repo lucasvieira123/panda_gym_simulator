@@ -6,7 +6,7 @@ experiment:
 
 robot:
   control_type: "ee"
-  block_gripper: true
+  block_gripper: false   # false = garra pode abrir/fechar (necessário para pick_and_place)
   base_position: [-0.6, 0.0, 0.0]
 
 simulation:

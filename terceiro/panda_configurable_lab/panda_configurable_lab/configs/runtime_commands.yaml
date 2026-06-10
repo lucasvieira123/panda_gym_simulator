@@ -16,6 +16,35 @@ commands:
     target_object: "cube_1"
     position: [0.10, 0.10, 0.02]
 
+  # ── change_task_mode: muda objetivo e política SEM resetar a física ─────────
+  #
+  # O cubo e o robô ficam exatamente onde estão.
+  # Ideal para: push → pick_and_place no meio do episódio.
+  #
+  # position pode ter z > 0 para goals no ar (ex: [0.2, 0.0, 0.15])
+  #
+  - id: "switch_to_pick_mode"
+    enabled: false
+    operation: "change_task_mode"
+    at_episode: 0
+    at_step: 30               # muda no step 30: robô para de empurrar e começa a pegar
+    target_object: "cube_1"
+    position: [0.10, 0.10, 0.15]   # goal no ar: cubo tem de ser levantado
+    tolerance: 0.05
+    visual_marker: true
+    policy: "greedy_pick_and_place"
+
+  - id: "switch_back_to_push"
+    enabled: false
+    operation: "change_task_mode"
+    at_episode: 0
+    at_step: 80
+    target_object: "cube_1"
+    position: [0.0, 0.20, 0.02]
+    tolerance: 0.05
+    visual_marker: true
+    policy: "greedy_push"
+
   # ── change_task: troca a task em tempo de execução (janela não fecha) ───────
   #
   # task (obrigatório): uma das 6 tasks do panda-gym
@@ -37,7 +66,7 @@ commands:
     policy: "greedy_goal"     # reach: mover ee ao alvo → greedy_goal funciona
 
   - id: "switch_to_slide"
-    enabled: true
+    enabled: false
     operation: "change_task"
     task: "slide"
     at_episode: 0
@@ -51,6 +80,15 @@ commands:
     task: "pick_and_place"
     reward_type: "dense"
     policy: "random"          # sem política dedicada por enquanto
+
+  - id: "switch_to_pick_mode"
+    enabled: false
+    operation: "change_task_mode"      # ← este, não change_task
+    target_object: "cube_1"
+    # position: [0.10, 0.10, 0.15]      # goal no ar
+    # tolerance: 0.05
+    visual_marker: true
+    policy: "greedy_pick_and_place"   
 
   - id: "switch_to_push_step50"
     enabled: false
