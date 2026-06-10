@@ -18,6 +18,7 @@
 task:
   type: "configurable"  # tipo de task customizada (ConfigurableTask)
   reward_type: "dense"  # sparse | dense
+  # success_threshold: 0.05
 # ---------------------------
 
 # O que a política faz ?
@@ -33,7 +34,7 @@ task:
 #     - self_adaptive → mape-k
 #   - gain → intensidade do movimento. 5.0 significa que o vetor de direção é multiplicado por 5 antes de virar ação. Quanto maior, mais agressivo/rápido o movimento.
 policy:
-  name: "greedy_goal"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place | manual
+  name: "greedy_push"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place | manual
   gain: 5.0
 
 

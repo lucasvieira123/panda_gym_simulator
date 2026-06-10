@@ -315,9 +315,12 @@ class SimplePolicy:
 
         if dist_to_approach > self.APPROACH_THRESHOLD:
             # Fase 1: posicionar atrás do cubo.
-            # Se perto do cubo, sobe primeiro para passar por cima ao reposicionar.
-            dist_ee_to_cube = np.linalg.norm(cube_pos - ee_pos)
-            if dist_ee_to_cube < self.APPROACH_OFFSET * 2.0:
+            # Lift só quando o ee está no lado do goal (lado errado) — detectado
+            # pelo sinal do produto escalar de (ee - cube) com push_dir.
+            ee_side = float(np.dot((ee_pos - cube_pos)[:2], push_dir[:2]))
+            on_wrong_side = ee_side > 0.0
+
+            if on_wrong_side:
                 lift_z = cube_pos[2] + self.LIFT_HEIGHT_ABOVE_CUBE
                 if ee_pos[2] < lift_z - 0.02:
                     lifted    = approach_pos.copy()
@@ -329,8 +332,10 @@ class SimplePolicy:
                 move = self.gain * (approach_pos - ee_pos)
         else:
             # Fase 2: empurrar com força mínima garantida para vencer fricção.
+            # Correção de Z mantém o ee na altura do cubo durante todo o push.
             effective_dist = max(dist_cube_to_goal, self.MIN_PUSH_DIST)
-            move = self.gain * push_dir * effective_dist
+            move    = self.gain * push_dir * effective_dist
+            move[2] = self.gain * (cube_pos[2] - ee_pos[2])
 
         flat_action[:n] = move[:n]
 
