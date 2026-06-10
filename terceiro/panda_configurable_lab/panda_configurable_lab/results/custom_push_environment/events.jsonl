@@ -1,1 +1,0 @@
-{"episode": 0, "step": 0, "command_id": "switch_to_pick_mode", "operation": "change_task_mode", "status": "applied", "command": {"id": "switch_to_pick_mode", "enabled": true, "operation": "change_task_mode", "at_episode": 0, "at_step": 0, "target_object": "cube_1", "position": [0.1, 0.1, 0.15], "tolerance": 0.05, "visual_marker": true, "policy": "greedy_pick_and_place"}}
