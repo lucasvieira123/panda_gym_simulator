@@ -291,6 +291,10 @@ class ExperimentRunner:
                     self._change_task_mode(command)
                     event["status"] = "applied"
 
+                elif operation == "run_script":
+                    self._run_script(command)
+                    event["status"] = "applied"
+
                 else:
                     raise ValueError(f"Operação não suportada: {operation}")
 
@@ -381,6 +385,32 @@ class ExperimentRunner:
 
         # Sinaliza o loop: buscar nova observation antes de agir
         self._env_reset_needed = True
+
+    def _run_script(self, command: Dict[str, Any]) -> None:
+        """
+        Carrega e executa uma sequência de ações primitivas.
+
+        O script é definido diretamente no comando YAML como uma lista de passos,
+        cada um com um vetor de ação e a quantidade de steps que deve ser mantido.
+
+        Quando o script termina, a política volta para policy_after (padrão: "hold").
+
+        Comando YAML:
+            operation: run_script
+            policy_after: "greedy_push"   (opcional, padrão: hold)
+            script:
+              - action: [dx, dy, dz, gripper]
+                steps: N
+              - action: [...]
+                steps: N
+        """
+        script       = command.get("script", [])
+        policy_after = str(command.get("policy_after", "hold"))
+
+        if not script:
+            raise ValueError("run_script: campo 'script' ausente ou vazio.")
+
+        self.policy.load_script(script, policy_after=policy_after)
 
     def _change_task_mode(self, command: Dict[str, Any]) -> None:
         """

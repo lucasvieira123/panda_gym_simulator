@@ -39,11 +39,46 @@ class SimplePolicy:
         self._pap_step_in_phase  = 0
         self._pap_lift_z         = 0.0
 
+        # Estado da scripted policy
+        self._script_steps        = []    # lista de (action_array, steps_restantes)
+        self._script_step_idx     = 0     # índice do passo atual
+        self._script_step_counter = 0     # contador dentro do passo atual
+        self._policy_after        = "hold"  # política a usar quando o script acabar
+
     def reset_phase(self) -> None:
-        """Reinicia o estado da fase pick_and_place (chamar no início de cada episódio)."""
-        self._pap_phase         = self.PHASE_OPEN
-        self._pap_step_in_phase = 0
-        self._pap_lift_z        = 0.0
+        """Reinicia estado de fase no início de cada episódio."""
+        # Se o episódio acabou com script em andamento, volta para policy_after
+        if self.name == "scripted":
+            self.name = self._policy_after
+
+        self._pap_phase          = self.PHASE_OPEN
+        self._pap_step_in_phase  = 0
+        self._pap_lift_z         = 0.0
+
+        self._script_steps        = []
+        self._script_step_idx     = 0
+        self._script_step_counter = 0
+
+    def load_script(self, script: list, policy_after: str = "hold") -> None:
+        """
+        Carrega uma sequência de ações primitivas.
+
+        Cada entrada do script deve ter:
+          action: [dx, dy, dz, gripper]  — valores em [-1, +1]
+          steps:  N                       — quantos steps executar esta ação
+
+        Após o último passo, a política troca automaticamente para policy_after.
+        """
+        self._script_steps = []
+        for entry in script:
+            action  = np.array(entry["action"], dtype=np.float32)
+            n_steps = int(entry.get("steps", 1))
+            self._script_steps.append((action, n_steps))
+
+        self._script_step_idx     = 0
+        self._script_step_counter = 0
+        self._policy_after        = policy_after
+        self.name                 = "scripted"
 
     def act(self, env, observation: Dict[str, Any]) -> np.ndarray:
         if self.name == "random":
@@ -61,7 +96,45 @@ class SimplePolicy:
         if self.name == "greedy_pick_and_place":
             return self._greedy_pick_and_place(env, observation)
 
+        if self.name == "scripted":
+            return self._scripted(env, observation)
+
         raise ValueError(f"Política desconhecida: {self.name}")
+
+    def _scripted(self, env, observation: Dict[str, Any]) -> np.ndarray:
+        """
+        Executa uma sequência de ações primitivas carregada por load_script().
+
+        Cada passo do script define um vetor [dx, dy, dz, gripper] e quantos
+        steps manter esse vetor. Quando o script termina, a política troca
+        automaticamente para self._policy_after.
+        """
+        # Script vazio ou acabou: troca para policy_after
+        if not self._script_steps or self._script_step_idx >= len(self._script_steps):
+            self.name = self._policy_after
+            self.reset_phase()
+            return self.act(env, observation)
+
+        action_template, n_steps = self._script_steps[self._script_step_idx]
+
+        # Constrói action compatível com o action space atual
+        action = np.zeros(env.action_space.shape, dtype=np.float32)
+        flat   = action.reshape(-1)
+        n      = min(len(action_template), flat.size)
+        flat[:n] = action_template[:n]
+
+        try:
+            flat[:] = np.clip(flat, env.action_space.low.reshape(-1), env.action_space.high.reshape(-1))
+        except Exception:
+            flat[:] = np.clip(flat, -1.0, 1.0)
+
+        # Avança o contador e passa para o próximo passo quando esgotado
+        self._script_step_counter += 1
+        if self._script_step_counter >= n_steps:
+            self._script_step_idx    += 1
+            self._script_step_counter = 0
+
+        return action
 
     def _greedy_goal(self, env, observation: Dict[str, Any]) -> np.ndarray:
         """Move o ee diretamente em direção ao goal (sem considerar a posição do cubo)."""

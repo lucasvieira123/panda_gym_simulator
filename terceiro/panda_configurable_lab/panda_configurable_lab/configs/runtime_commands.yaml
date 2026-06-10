@@ -1,4 +1,55 @@
 commands:
+  # ── run_script: executa sequência de ações primitivas ───────────────────────
+  #
+  # Cada passo define um vetor de ação e quantos steps mantê-lo:
+  #   action: [dx, dy, dz, gripper]   — valores em [-1.0, +1.0]
+  #   steps: N                         — quantos steps executar
+  #
+  # Após o último passo, a política volta para policy_after (padrão: hold).
+  #
+  # Referência rápida de ações:
+  #   dx  > 0 → direita   |  dx  < 0 → esquerda
+  #   dy  > 0 → frente    |  dy  < 0 → trás
+  #   dz  > 0 → sobe      |  dz  < 0 → desce
+  #   gripper +1.0 → abre |  gripper -1.0 → fecha
+  #   (deslocamento máximo por step: 5 cm por eixo)
+  #
+  - id: "script_pegar_cubo"
+    enabled: false
+    operation: "run_script"
+    at_episode: 0
+    at_step: 0
+    policy_after: "hold"
+    script:
+      - action: [0.0,  0.0,  0.0,  1.0]   # abre garra
+        steps: 3
+      - action: [0.0,  0.0,  1.0,  1.0]   # sobe com garra aberta
+        steps: 8
+      - action: [0.5,  0.0,  0.0,  1.0]   # move para direita
+        steps: 6
+      - action: [0.0,  0.0, -1.0,  1.0]   # desce até o cubo
+        steps: 8
+      - action: [0.0,  0.0,  0.0, -1.0]   # fecha garra (agarra)
+        steps: 5
+      - action: [0.0,  0.0,  1.0, -1.0]   # levanta com garra fechada
+        steps: 10
+      - action: [-0.5, 0.0,  0.0, -1.0]   # move para esquerda (leva para outro lugar)
+        steps: 6
+      - action: [0.0,  0.0,  0.0,  1.0]   # abre garra (solta)
+        steps: 3
+
+  - id: "script_simples_sobe_desce"
+    enabled: true
+    operation: "run_script"
+    at_episode: 0
+    at_step: 20
+    policy_after: "greedy_push"            # volta para push depois
+    script:
+      - action: [0.0, 0.0,  1.0, 0.0]     # sobe
+        steps: 10
+      - action: [0.0, 0.0, -1.0, 0.0]     # desce
+        steps: 10
+
   # ── change_goal: muda o alvo do cubo sem reiniciar ──────────────────────────
   - id: "change_goal_1"
     enabled: false
