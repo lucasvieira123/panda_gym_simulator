@@ -22,11 +22,6 @@ scene:
     lateral_friction: 1.0
     spinning_friction: 0.001
 
-task:
-  type: "push"
-  reward_type: "dense"
-  success_threshold: 0.05
-
 objects:
   - name: "cube_1"
     type: "box"
@@ -38,7 +33,7 @@ objects:
     spinning_friction: 0.001
 
 goals:
-  mode: "fixed"
+  mode: "fixed" # fixed: alvo fixo; random: alvo aleatório a cada episódio
   targets:
     - object: "cube_1"
       position: [0.0, 0.10, 0.02]
@@ -47,15 +42,9 @@ goals:
 
 obstacles: []
 
-policy:
-  # name: "random"
-  # name: "greedy_goal"   # move ee direto ao goal — não funciona bem para push
-  name: "greedy_push"     # 2 fases: posiciona atrás do cubo → empurra
-  gain: 5.0
-
 runtime:
   command_file: "runtime_commands.yaml"
-  poll_every_steps: 1
+  poll_every_steps: 1 # checa o command file a cada N steps para verificar se existem novos comandos habilitados para serem executados
 
 logging:
   output_dir: "results/custom_push_environment"

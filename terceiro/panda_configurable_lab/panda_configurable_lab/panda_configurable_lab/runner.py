@@ -23,7 +23,7 @@ from .policies import SimplePolicy
 
 
 # Mapeamento nome amigável → classe da task padrão do panda-gym.
-# A task customizável (ConfigurablePushTask) é criada por make_configurable_env
+# A task customizável (ConfigurableTask) é criada por make_configurable_env
 # e não aparece aqui — ela é o ponto de partida, não um destino de troca.
 TASK_CLASS_MAP: Dict[str, type] = {
     "reach":           Reach,
@@ -37,17 +37,11 @@ TASK_CLASS_MAP: Dict[str, type] = {
 
 class ExperimentRunner:
     def __init__(self, config: Dict[str, Any]):
-        self.config = config
-
-        self.experiment_config = config.get("experiment", {})
-        self.policy_config = config.get("policy", {})
-        self.logging_config = config.get("logging", {})
-
-        self.simulation_config = config.get("simulation", {})
-        self.step_delay = float(self.simulation_config.get("step_delay", 1.0))
-
-        # NOVO: configuração de runtime
-        self.runtime_config = config.get("runtime", {})
+        self.experiment_config  = config.get("experiment", {})
+        self.logging_config     = config.get("logging", {})
+        self.simulation_config  = config.get("simulation", {})
+        self.step_delay         = float(self.simulation_config.get("step_delay", 1.0))
+        self.runtime_config     = config.get("runtime", {})
 
         # guarda quais comandos já foram aplicados
         self.applied_runtime_commands = set()
@@ -55,23 +49,39 @@ class ExperimentRunner:
         # sinaliza que o env foi trocado por change_task e precisa de reset
         self._env_reset_needed = False
 
-        # NOVO: arquivo que o usuário poderá editar enquanto a simulação roda
+        # Resolve o caminho do arquivo de comandos
         command_file = self.runtime_config.get("command_file")
-
         if command_file:
             config_dir = Path(config.get("_config_dir", "."))
             self.command_file = config_dir / command_file
         else:
             self.command_file = None
 
-        # NOVO: frequência com que o runner vai olhar o arquivo de comandos
         self.poll_every_steps = int(self.runtime_config.get("poll_every_steps", 1))
 
-        self.env = make_configurable_env(config)
+        # Carrega o arquivo de comandos antecipadamente para extrair policy e task
+        # iniciais. Isso permite que essas configurações vivam no commands file em
+        # vez de no ambiente — separação de responsabilidades.
+        commands_data = self._load_commands_data()
+
+        # policy: commands file tem prioridade; env file é fallback para compat.
+        policy_from_commands = commands_data.get("policy", {})
+        policy_from_env      = config.get("policy", {})
+        effective_policy     = {**policy_from_env, **policy_from_commands}
+
+        # task: commands file tem prioridade; env file é fallback para compat.
+        task_from_commands = commands_data.get("task", {})
+        task_from_env      = config.get("task", {})
+        effective_task     = {**task_from_env, **task_from_commands}
+
+        # Monta config final fundindo as fontes
+        self.config = {**config, "task": effective_task, "policy": effective_policy}
+
+        self.env = make_configurable_env(self.config)
 
         self.policy = SimplePolicy(
-            name=self.policy_config.get("name", "random"),
-            gain=float(self.policy_config.get("gain", 5.0)),
+            name=effective_policy.get("name", "random"),
+            gain=float(effective_policy.get("gain", 5.0)),
         )
 
         self.logger = ExperimentLogger(
@@ -220,6 +230,16 @@ class ExperimentRunner:
 
         return float(np.linalg.norm(achieved_arr - desired_arr))
     
+    def _load_commands_data(self) -> Dict[str, Any]:
+        """Lê o commands file e retorna o conteúdo bruto (sem filtrar por enabled/id)."""
+        if self.command_file is None or not self.command_file.exists():
+            return {}
+        try:
+            with self.command_file.open("r", encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except Exception:
+            return {}
+
     def _apply_runtime_commands(self, episode: int, step: int) -> None:
         """
         Lê comandos de runtime a partir de um YAML externo.

@@ -10,7 +10,7 @@ from panda_gym.envs.core import Task
 QUAT_IDENTITY = np.array([0.0, 0.0, 0.0, 1.0])
 
 
-class ConfigurablePushTask(Task):
+class ConfigurableTask(Task):
     """
     Configurable push-like task.
 

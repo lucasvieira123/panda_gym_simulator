@@ -31,14 +31,17 @@ def load_yaml_config(path: str | Path) -> Dict[str, Any]:
 
 
 def validate_minimal_config(config: Dict[str, Any]) -> None:
-    required_sections = ["experiment", "robot", "simulation", "task", "objects", "goals"]
+    # "task" e "policy" são opcionais no arquivo de ambiente — podem vir do
+    # commands file (runtime_commands.yaml) para separar responsabilidades.
+    required_sections = ["experiment", "robot", "simulation", "objects", "goals"]
 
     for section in required_sections:
         if section not in config:
             raise ValueError(f"Seção obrigatória ausente no YAML: '{section}'")
 
-    if config["task"].get("type") != "push":
-        raise ValueError("Esta versão inicial suporta apenas task.type: 'push'.")
+    # Se task estiver no arquivo de ambiente, valida o tipo
+    if "task" in config and config["task"].get("type", "configurable") != "configurable":
+        raise ValueError("Esta versão inicial suporta apenas task.type: 'configurable'.")
 
     if not isinstance(config.get("objects"), list) or len(config["objects"]) == 0:
         raise ValueError("A seção 'objects' precisa conter pelo menos um objeto.")

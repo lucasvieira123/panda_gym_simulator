@@ -14,7 +14,7 @@ Esta versão foca em uma tarefa customizada de **Push configurável**, permitind
 - política simples de teste;
 - logs do experimento.
 
-> Observação: esta versão não usa diretamente `gym.make("PandaPush-v3")`. Ela cria um ambiente customizado juntando `PyBullet + Panda + ConfigurablePushTask + RobotTaskEnv`.
+> Observação: esta versão não usa diretamente `gym.make("PandaPush-v3")`. Ela cria um ambiente customizado juntando `PyBullet + Panda + ConfigurableTask + RobotTaskEnv`.
 
 ## 1. Instalação
 

@@ -8,7 +8,7 @@ from panda_gym.envs.core import RobotTaskEnv
 from panda_gym.envs.robots.panda import Panda
 from panda_gym.pybullet import PyBullet
 
-from .configurable_push_task import ConfigurablePushTask
+from .configurable_task import ConfigurableTask
 
 
 def make_configurable_env(config: Dict[str, Any]) -> RobotTaskEnv:
@@ -27,10 +27,10 @@ def make_configurable_env(config: Dict[str, Any]) -> RobotTaskEnv:
         control_type=robot_config.get("control_type", "ee"),
     )
 
-    task_type = task_config.get("type", "push")
+    task_type = task_config.get("type", "configurable")
 
-    if task_type == "push":
-        task = ConfigurablePushTask(sim=sim, config=config)
+    if task_type == "configurable":
+        task = ConfigurableTask(sim=sim, config=config)
     else:
         raise ValueError(f"Task ainda não suportada nesta versão: {task_type}")
 

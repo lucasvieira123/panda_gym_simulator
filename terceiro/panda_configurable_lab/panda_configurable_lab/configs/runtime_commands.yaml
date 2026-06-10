@@ -1,3 +1,42 @@
+# ── Política e task padrão ───────────────────────────────────────────────────
+
+# O que o task faz ? NORMALMENTE NAO PRECISA SER ALTERADO NADA
+# ● Cria a cena a partir do YAML:
+
+#   1. Mesa — dimensões, fricção
+#   2. Objetos — cria os corpos físicos no PyBullet (cubo, esfera, cilindro) com massa, cor, fricção
+#   3. Obstáculos — mesmos tipos, mas estáticos (mass: 0)
+#   4. Marcadores visuais — esferas verdes semitransparentes nas posições dos goals
+
+#   E a cada step responde ao ambiente com:
+#   - Posição atual dos objetos → achieved_goal
+#   - Posição + velocidade dos objetos → observation
+#   - -distância(cubo, goal) ou 0/-1 → reward
+#   - distância < tolerance → success
+
+#   Em resumo: monta a física da cena e define as regras de sucesso/recompensa. Não decide como o robô age — isso é responsabilidade da policy.
+task:
+  type: "configurable"  # tipo de task customizada (ConfigurableTask)
+  reward_type: "dense"  # sparse | dense
+  success_threshold: 0.05
+# ---------------------------
+
+# O que a política faz ?
+# ● Define como o robô decide qual ação tomar a cada step.                                                                                                                                                        
+
+#   - name — qual estratégia usar:
+#     - greedy_push → posiciona atrás do cubo e empurra em direção ao goal
+#     - greedy_pick_and_place → abre garra, desce, pega, levanta, carrega, solta
+#     - greedy_goal → move o end-effector direto ao goal (bom para Reach)
+#     - random → ações aleatórias
+#     - hold → robô parado
+#   - gain → intensidade do movimento. 5.0 significa que o vetor de direção é multiplicado por 5 antes de virar ação. Quanto maior, mais agressivo/rápido o movimento.
+policy:
+  name: "greedy_pick_and_place"   # random | hold | greedy_goal | greedy_push | greedy_pick_and_place
+  gain: 5.0
+
+
+
 commands:
   # ── run_script: executa sequência de ações primitivas ───────────────────────
   #
@@ -39,7 +78,7 @@ commands:
         steps: 3
 
   - id: "script_simples_sobe_desce"
-    enabled: true
+    enabled: false
     operation: "run_script"
     at_episode: 0
     at_step: 20
