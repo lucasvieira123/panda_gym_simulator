@@ -60,12 +60,14 @@ class SimplePolicy:
         # Estado da scripted policy
         self._script_steps        = []    # lista de (action_array, steps_restantes)
         self._script_step_idx     = 0     # índice do passo atual
+
+        # Controlador MAPE-K (lazy init quando policy for self_adaptive)
+        self._mape_k = None
         self._script_step_counter = 0     # contador dentro do passo atual
         self._policy_after        = "hold"  # política a usar quando o script acabar
 
     def reset_phase(self) -> None:
         """Reinicia estado de fase no início de cada episódio."""
-        # Se o episódio acabou com script em andamento, volta para policy_after
         if self.name == "scripted":
             self.name = self._policy_after
 
@@ -76,6 +78,9 @@ class SimplePolicy:
         self._script_steps        = []
         self._script_step_idx     = 0
         self._script_step_counter = 0
+
+        if self._mape_k is not None:
+            self._mape_k.reset()
 
     def load_script(self, script: list, policy_after: str = "hold") -> None:
         """
@@ -99,6 +104,11 @@ class SimplePolicy:
         self.name                 = "scripted"
 
     def act(self, env, observation: Dict[str, Any]) -> np.ndarray:
+        # Ajusta automaticamente o tracking do task baseado na policy ativa:
+        # greedy_goal rastreia o ee; todas as outras rastreiam o objeto configurado.
+        if hasattr(env, "task") and hasattr(env.task, "set_ee_tracking"):
+            env.task.set_ee_tracking(self.name == "greedy_goal")
+
         if self.name == "random":
             return env.action_space.sample()
 
@@ -119,6 +129,9 @@ class SimplePolicy:
 
         if self.name == "manual":
             return self._manual(env, observation)
+
+        if self.name == "self_adaptive":
+            return self._self_adaptive(env, observation)
 
         raise ValueError(f"Política desconhecida: {self.name}")
 
@@ -156,6 +169,13 @@ class SimplePolicy:
             self._script_step_counter = 0
 
         return action
+
+    def _self_adaptive(self, env, observation: Dict[str, Any]) -> np.ndarray:
+        """Delega ao controlador MAPE-K que monitora, analisa, planeja e executa adaptações."""
+        if self._mape_k is None:
+            from .mape_k import MAPEKController
+            self._mape_k = MAPEKController(initial_policy="greedy_push", gain=self.gain)
+        return self._mape_k.act(env, observation)
 
     def _manual(self, env, observation: Dict[str, Any]) -> np.ndarray:
         """
@@ -216,16 +236,16 @@ class SimplePolicy:
         if not isinstance(observation, dict):
             return action
 
-        achieved_goal = observation.get("achieved_goal")
-        desired_goal  = observation.get("desired_goal")
+        desired_goal = observation.get("desired_goal")
+        obs_raw      = observation.get("observation")
 
-        if achieved_goal is None or desired_goal is None:
+        if desired_goal is None or obs_raw is None:
             return action
 
-        achieved = np.asarray(achieved_goal, dtype=float).reshape(-1, 3)[0]
-        desired  = np.asarray(desired_goal,  dtype=float).reshape(-1, 3)[0]
+        desired = np.asarray(desired_goal, dtype=float).reshape(-1, 3)[0]
+        ee_pos  = np.asarray(obs_raw,      dtype=float)[:3]
 
-        delta = desired - achieved
+        delta = desired - ee_pos   # vetor ee → goal
 
         flat_action = action.reshape(-1)
         n = min(3, flat_action.size)

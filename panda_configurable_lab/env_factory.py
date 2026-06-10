@@ -30,7 +30,7 @@ def make_configurable_env(config: Dict[str, Any]) -> RobotTaskEnv:
     task_type = task_config.get("type", "configurable")
 
     if task_type == "configurable":
-        task = ConfigurableTask(sim=sim, config=config)
+        task = ConfigurableTask(sim=sim, config=config, get_ee_position=robot.get_ee_position)
     else:
         raise ValueError(f"Task ainda não suportada nesta versão: {task_type}")
 

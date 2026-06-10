@@ -28,7 +28,7 @@ class ConfigurableTask(Task):
     the target objects.
     """
 
-    def __init__(self, sim, config: Dict[str, Any]):
+    def __init__(self, sim, config: Dict[str, Any], get_ee_position=None):
         super().__init__(sim)
 
         self.config = config
@@ -37,6 +37,14 @@ class ConfigurableTask(Task):
         self.objects_config = config.get("objects", [])
         self.goals_config = config.get("goals", {})
         self.obstacles_config = config.get("obstacles", [])
+
+        # Callable para obter posição do ee (injetado pelo env_factory)
+        self._get_ee_position = get_ee_position
+
+        # Quando True, get_achieved_goal() retorna posição do ee em vez do objeto
+        # configurado. Gerenciado automaticamente por SimplePolicy.act() com base
+        # na policy ativa — não precisa ser configurado manualmente.
+        self._track_ee = False
 
         self.reward_type = self.task_config.get("reward_type", "dense")
         self.success_threshold = float(self.task_config.get("success_threshold", 0.05))
@@ -181,11 +189,20 @@ class ConfigurableTask(Task):
 
         return np.concatenate(obs_parts).astype(np.float32)
 
+    def set_ee_tracking(self, enabled: bool) -> None:
+        self._track_ee = enabled
+
     def get_achieved_goal(self) -> np.ndarray:
         achieved_parts = []
 
         for object_name in self.target_object_names:
-            achieved_parts.append(self.sim.get_base_position(object_name))
+            if self._track_ee and self._get_ee_position is not None:
+                pos = self._get_ee_position()
+            elif object_name == "ee" and self._get_ee_position is not None:
+                pos = self._get_ee_position()
+            else:
+                pos = self.sim.get_base_position(object_name)
+            achieved_parts.append(pos)
 
         return np.concatenate(achieved_parts).astype(np.float32)
 
