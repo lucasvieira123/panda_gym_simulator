@@ -174,18 +174,49 @@ class ExperimentRunner:
             self.logger.log_step(record)
 
             if self.verbose:
+                robot = self.env.robot
+                sim   = self.env.sim
+
+                ee_pos   = np.round(robot.get_ee_position(),   4).tolist()
+                ee_vel   = np.round(robot.get_ee_velocity(),   4).tolist()
+                ee_ori   = np.round(sim.get_link_orientation("panda", robot.ee_link), 4).tolist()
+                fingers  = round(robot.get_fingers_width(), 4)
+                joints   = [round(robot.get_joint_angle(i), 4) for i in range(7)]
+                j_vels   = [round(robot.get_joint_velocity(i), 4) for i in range(7)]
+
+                cube_pos  = np.round(sim.get_base_position("cube_1"),        4).tolist() if "cube_1" in sim._bodies_idx else None
+                cube_ori  = np.round(sim.get_base_rotation("cube_1"),        4).tolist() if "cube_1" in sim._bodies_idx else None
+                cube_vel  = np.round(sim.get_base_velocity("cube_1"),        4).tolist() if "cube_1" in sim._bodies_idx else None
+                cube_avel = np.round(sim.get_base_angular_velocity("cube_1"),4).tolist() if "cube_1" in sim._bodies_idx else None
+
+                sep = "─" * 72
                 print(
-                    f"[ep={episode} step={step:3d}]"
+                    f"\n{sep}"
+                    f"\n[ep={episode}  step={step:3d}]"
                     f"  reward={reward:.4f}"
+                    f"  dist={distance_to_goal:.4f}"
+                    f"  success={record['is_success']}"
                     f"  terminated={terminated}"
                     f"  truncated={truncated}"
-                    f"  success={record['is_success']}"
-                    f"  dist={distance_to_goal:.4f}"
-                    f"\n    action       = {np.round(action, 3).tolist()}"
-                    f"\n    achieved_goal= {np.round(achieved, 3).tolist() if achieved is not None else None}"
-                    f"\n    desired_goal = {np.round(desired, 3).tolist() if desired is not None else None}"
-                    f"\n    observation  = {np.round(record['observation'], 3).tolist() if record['observation'] is not None else None}"
-                    f"\n    info         = {info}"
+                    f"\n── Ação ────────────────────────────────────────────────────────────────"
+                    f"\n  action              = {np.round(action, 4).tolist()}"
+                    f"\n── End-Effector ────────────────────────────────────────────────────────"
+                    f"\n  ee_position         = {ee_pos}"
+                    f"\n  ee_velocity         = {ee_vel}"
+                    f"\n  ee_orientation(xyzw)= {ee_ori}"
+                    f"\n  fingers_width       = {fingers}"
+                    f"\n── Juntas (braço 0-6) ──────────────────────────────────────────────────"
+                    f"\n  joint_angles        = {joints}"
+                    f"\n  joint_velocities    = {j_vels}"
+                    f"\n── Cubo ────────────────────────────────────────────────────────────────"
+                    f"\n  cube_position       = {cube_pos}"
+                    f"\n  cube_orientation    = {cube_ori}  (euler roll/pitch/yaw)"
+                    f"\n  cube_velocity       = {cube_vel}"
+                    f"\n  cube_angular_vel    = {cube_avel}"
+                    f"\n── Goals ───────────────────────────────────────────────────────────────"
+                    f"\n  achieved_goal       = {np.round(achieved, 4).tolist() if achieved is not None else None}"
+                    f"\n  desired_goal        = {np.round(desired,  4).tolist() if desired  is not None else None}"
+                    f"\n  info                = {info}"
                 )
 
             final_reward = float(reward)

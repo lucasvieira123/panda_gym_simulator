@@ -273,7 +273,65 @@ Troca para uma das 6 tasks padrão do panda-gym. A janela permanece aberta, mas 
 
 Se `at_episode` e `at_step` forem omitidos, o comando dispara no primeiro step em que for lido com `enabled: true`.
 
-## 6. Estrutura do projeto
+## 6. Verbose — dicionário de parâmetros
+
+Ativado com `verbose: true` em `environment.yaml`. A cada step imprime o estado completo da simulação.
+
+```yaml
+simulation:
+  verbose: true
+```
+
+### Ação
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `action` | `[dx, dy, dz, gripper]` | Vetor de ação enviado ao robô neste step. Valores em `[-1, +1]`. Deslocamento máximo: 5 cm por eixo. Gripper: `+1` abre, `-1` fecha. |
+
+### Resultado do step
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `reward` | `float` | Recompensa calculada. Dense: `-distância(cubo, goal)`. Sparse: `0` se sucesso, `-1` caso contrário. |
+| `dist` | `float` | Distância euclidiana entre a posição atual do cubo e o goal, em metros. |
+| `success` | `bool` | `True` se `dist < tolerance`. Episódio termina. |
+| `terminated` | `bool` | `True` quando o ambiente sinaliza fim natural do episódio (sucesso). |
+| `truncated` | `bool` | `True` quando o episódio atingiu `max_steps` sem sucesso. |
+
+### End-Effector (ponta do braço)
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `ee_position` | `[x, y, z]` | Posição do end-effector no mundo, em metros. |
+| `ee_velocity` | `[vx, vy, vz]` | Velocidade linear do end-effector, em m/s. |
+| `ee_orientation` | `[x, y, z, w]` | Orientação do end-effector em quaternion. |
+| `fingers_width` | `float` | Distância entre os dois dedos da garra, em metros. `0` = fechada, `~0.08` = aberta. |
+
+### Juntas do braço (0–6)
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `joint_angles` | `[j0, j1, j2, j3, j4, j5, j6]` | Ângulo atual de cada junta do braço, em radianos. |
+| `joint_velocities` | `[v0, v1, v2, v3, v4, v5, v6]` | Velocidade angular de cada junta, em rad/s. |
+
+### Cubo
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `cube_position` | `[x, y, z]` | Posição do centro do cubo no mundo, em metros. |
+| `cube_orientation` | `[roll, pitch, yaw]` | Orientação do cubo em ângulos de Euler, em radianos. |
+| `cube_velocity` | `[vx, vy, vz]` | Velocidade linear do cubo, em m/s. |
+| `cube_angular_vel` | `[wx, wy, wz]` | Velocidade angular do cubo, em rad/s. |
+
+### Goals
+
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `achieved_goal` | `[x, y, z]` | Posição atual do cubo — o que foi "alcançado". |
+| `desired_goal` | `[x, y, z]` | Posição alvo do cubo — o que se quer alcançar. |
+| `info` | `dict` | Dicionário com `is_success: bool`. |
+
+## 7. Estrutura do projeto
 
 ```text
 panda_configurable_lab/
@@ -294,7 +352,7 @@ run_experiment.py
 requirements.txt
 ```
 
-## 7. Próximas extensões
+## 8. Próximas extensões
 
 1. `ConfigurablePickAndPlaceTask`.
 2. `ConfigurableStackTask`.
