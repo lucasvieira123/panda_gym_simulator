@@ -17,4 +17,5 @@ class Knowledge:
         self.prev_desired_goal        : Optional[list] = None   # goal do step anterior (para goal_changed)
         self.cautious_steps_remaining : int            = 0      # steps restantes no modo cauteloso
         self.cautious_factor          : float          = 0.4    # gain factor atual do modo cauteloso
+        self.temp_behavior_remaining  : int            = 0      # steps restantes no behavior temporário
         self.events_log               : List[dict]     = []     # log de situações detectadas

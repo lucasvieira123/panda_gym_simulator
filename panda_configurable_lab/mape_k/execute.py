@@ -53,9 +53,11 @@ class Executor:
 
     def tick(self, knowledge, inner_policy, default_gain: float) -> None:
         """
-        Chamado uma vez por step para aplicar/decair o gain cauteloso.
-        Mantém o efeito do cautious_mode nos steps seguintes à detecção.
+        Chamado uma vez por step para manter efeitos ativos:
+          - decai gain cauteloso
+          - reverte behavior temporário quando steps esgotam
         """
+        # gain cauteloso
         if knowledge.cautious_steps_remaining > 0:
             inner_policy.gain = default_gain * knowledge.cautious_factor
             knowledge.cautious_steps_remaining -= 1
@@ -68,12 +70,35 @@ class Executor:
         else:
             inner_policy.gain = default_gain
 
+        # behavior temporário — sempre reverte para hold ao fim dos steps
+        if knowledge.temp_behavior_remaining > 0:
+            knowledge.temp_behavior_remaining -= 1
+            if knowledge.temp_behavior_remaining == 0:
+                inner_policy.switch_to("hold")
+                print(
+                    f"[MAPE-K/Execute] step={knowledge.step_count}"
+                    f"  behavior temporário encerrado — revertendo para 'hold'"
+                )
+
     # ── Aplicadores de ação ───────────────────────────────────────────────────
 
     def _apply(self, action_def: dict, knowledge, inner_policy) -> None:
         action = action_def.get("action", "")
 
-        if action == "reset_phase":
+        if action == "switch_behavior":
+            name  = action_def.get("name", "")
+            steps = action_def.get("steps")
+
+            if steps is not None:
+                knowledge.temp_behavior_remaining = int(steps)
+
+            inner_policy.switch_to(name)
+            print(
+                f"[MAPE-K/Execute]   → switch_behavior '{name}'"
+                + (f"  por {steps} steps (depois: hold)" if steps else "")
+            )
+
+        elif action == "reset_phase":
             inner_policy.reset_phase()
             print(f"[MAPE-K/Execute]   → reset_phase  (política: '{knowledge.current_policy}')")
 

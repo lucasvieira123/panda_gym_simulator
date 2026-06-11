@@ -28,11 +28,11 @@ initial:
 #
 changes:
   - id: "goal_direita"
-    enabled: false
+    enabled: true
     at_episode: 0
-    at_step: 30
+    at_step: 10
     target_object: "cube_1"
-    position: [0.10, -0.20, 0.02]
+    position: [0.10, 0.20, 0.02]
     tolerance: 0.05
     visual_marker: true
 

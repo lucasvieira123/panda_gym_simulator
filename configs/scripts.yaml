@@ -77,7 +77,7 @@ scripts:
     position: [0.10, 0.10, 0.15]
     tolerance: 0.05
     visual_marker: true
-    policy: "greedy_pick_and_place"
+    behavior: "greedy_pick_and_place"
 
   - id: "switch_back_to_push"
     enabled: false
@@ -88,7 +88,7 @@ scripts:
     position: [0.0, 0.20, 0.02]
     tolerance: 0.05
     visual_marker: true
-    policy: "greedy_push"
+    behavior: "greedy_push"
 
   # ── change_task ───────────────────────────────────────────────────────────────
   #
@@ -100,7 +100,7 @@ scripts:
     operation: "change_task"
     task: "reach"
     reward_type: "dense"
-    policy: "greedy_goal"
+    behavior: "greedy_goal"
 
   - id: "switch_to_slide"
     enabled: false
@@ -109,14 +109,14 @@ scripts:
     at_episode: 0
     at_step: 10
     reward_type: "dense"
-    policy: "greedy_push"
+    behavior: "greedy_push"
 
   - id: "switch_to_pick_place"
     enabled: false
     operation: "change_task"
     task: "pick_and_place"
     reward_type: "dense"
-    policy: "random"
+    behavior: "random"
 
   - id: "switch_to_push_step50"
     enabled: false
@@ -125,4 +125,4 @@ scripts:
     at_step: 50
     task: "push"
     reward_type: "dense"
-    policy: "greedy_push"
+    behavior: "greedy_push"

@@ -26,10 +26,9 @@ plans:
     enabled: true
     given: "S1_target_relocation"
     then:
-      - action: "reset_phase"
-      - action: "cautious_mode"
-        steps: 20
-        gain_factor: 0.4
+      - action: "switch_behavior"
+        name: "random"
+        steps: 30        # após 30 steps, reverte para o behavior anterior
 
   # Exemplo de plano para S2 (quando handler for implementado)
   # - id: "plan_s2_cube_stuck"

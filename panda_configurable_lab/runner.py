@@ -464,10 +464,10 @@ class ExperimentRunner:
         self.env.robot = new_robot
         self.env.task  = new_task
 
-        # ── 7. Troca a política se solicitado ─────────────────────────────────
-        new_policy = command.get("policy")
-        if new_policy:
-            self.policy.name = str(new_policy)
+        # ── 7. Troca o behavior interno se solicitado ─────────────────────────
+        new_behavior = command.get("behavior")
+        if new_behavior:
+            self.policy.switch_inner_behavior(str(new_behavior))
 
         # Sinaliza o loop: buscar nova observation antes de agir
         self._env_reset_needed = True
@@ -521,11 +521,10 @@ class ExperimentRunner:
         if "position" in command and "target_object" in command:
             self._change_goal(command)
 
-        # Muda a política e reinicia o estado de fase se necessário
-        new_policy = command.get("policy")
-        if new_policy:
-            self.policy.name = str(new_policy)
-            self.policy.reset_phase()
+        # Troca o behavior interno sem substituir a policy ativa
+        new_behavior = command.get("behavior")
+        if new_behavior:
+            self.policy.switch_inner_behavior(str(new_behavior))
 
     def _change_goal(self, command: Dict[str, Any]) -> None:
         """
