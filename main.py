@@ -5,7 +5,7 @@ from panda_gym.envs.core import RobotTaskEnv
 
 from config_loader import load_config
 from start_simulation import start_simulation
-from tasks import PickAndPlaceTask, PushTask, ReachTask
+from tasks import ManualTask, PickAndPlaceTask, PushTask, ReachTask
 
 
 def main():
@@ -29,12 +29,20 @@ def main():
     #     goal_position=goal_position,
     # )
 
-    task = PickAndPlaceTask(
+    # Controles: setas=X/Y | Q/E=Z | ESPAÇO=abrir/fechar garra
+    task = ManualTask(
         sim=sim,
         get_ee_position=robot.get_ee_position,
         get_object_position=lambda: sim.get_base_position("cube_1"),
         goal_position=goal_position,
     )
+
+    # task = PickAndPlaceTask(
+    #     sim=sim,
+    #     get_ee_position=robot.get_ee_position,
+    #     get_object_position=lambda: sim.get_base_position("cube_1"),
+    #     goal_position=goal_position,
+    # )
 
     env = RobotTaskEnv(robot, task)
 
