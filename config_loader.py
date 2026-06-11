@@ -20,4 +20,11 @@ def load_config(simulation_file: str = "simulation.yaml"):
     with open(target_goal_path) as f:
         target_goal_cfg = yaml.safe_load(f)
 
-    return sim_cfg, env_cfg, target_goal_cfg
+    scripts_cfg = None
+    scripts_filename = sim_cfg["configs"].get("scripts_file")
+    if scripts_filename:
+        scripts_path = CONFIGS_DIR / scripts_filename
+        with open(scripts_path) as f:
+            scripts_cfg = yaml.safe_load(f)
+
+    return sim_cfg, env_cfg, target_goal_cfg, scripts_cfg

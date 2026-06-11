@@ -3,7 +3,7 @@ import numpy as np
 _LINE = "─" * 44
 
 
-def print_step(episode: int, step: int, obs: dict, reward: float, info: dict, robot=None, sim=None) -> None:
+def print_step(episode: int, step: int, obs: dict, reward: float, info: dict, task=None, robot=None, sim=None) -> None:
     o = obs["observation"]
     # obs layout: [ee_x, ee_y, ee_z, ee_vx, ee_vy, ee_vz, fingers_width, cube_x, cube_y, cube_z]
     ee_pos        = o[0:3]
@@ -15,8 +15,9 @@ def print_step(episode: int, step: int, obs: dict, reward: float, info: dict, ro
     dist_cube_tgt = float(np.linalg.norm(cube_pos - target_pos))
     gripper_state = "ABERTA" if fingers > 0.02 else "FECHADA"
 
+    task_name = type(task).__name__ if task is not None else "?"
     print(_LINE)
-    print(f" Ep {episode:>2} | Step {step:>3}")
+    print(f" {task_name} | Ep {episode:>2} | Step {step:>3}")
     print(_LINE)
     print(f"  EE posição      : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]")
     print(f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]")

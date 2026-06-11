@@ -9,3 +9,5 @@ simulation:
 configs:
   environment_config: "environment_with_obstacle.yaml"
   target_goal_config: "target_goal.yaml"
+  scripts_file: "scripts.yaml"
+  script_id: "reach_only"

@@ -5,12 +5,12 @@ from panda_gym.envs.core import RobotTaskEnv
 
 from config_loader import load_config
 from start_simulation import start_simulation
-from tasks import HoldTask, ManualTask, PickAndPlaceTask, PushTask, ReachTask
+from tasks import HoldTask, ManualTask, PickAndPlaceTask, PushTask, ReachTask, ScriptedTask
 from utils import print_step
 
 
 def main():
-    sim_cfg, env_cfg, target_goal_cfg = load_config()
+    sim_cfg, env_cfg, target_goal_cfg, scripts_cfg = load_config()
 
     sim_params = sim_cfg["simulation"]
     goal_position = np.array(target_goal_cfg["position"], dtype=np.float32)
@@ -38,12 +38,27 @@ def main():
     #     goal_position=goal_position,
     # )
 
-    task = PickAndPlaceTask(
+    # task = HoldTask(
+    #     sim=sim,
+    #     get_ee_position=robot.get_ee_position,
+    #     get_object_position=lambda: sim.get_base_position("cube_1"),
+    #     goal_position=goal_position,
+    # )
+
+    task = ScriptedTask(
         sim=sim,
         get_ee_position=robot.get_ee_position,
         get_object_position=lambda: sim.get_base_position("cube_1"),
         goal_position=goal_position,
+        steps=scripts_cfg[sim_cfg["configs"]["script_id"]]["steps"],
     )
+
+    # task = PickAndPlaceTask(
+    #     sim=sim,
+    #     get_ee_position=robot.get_ee_position,
+    #     get_object_position=lambda: sim.get_base_position("cube_1"),
+    #     goal_position=goal_position,
+    # )
 
     env = RobotTaskEnv(robot, task)
 
@@ -55,7 +70,7 @@ def main():
             obs, reward, terminated, truncated, info = env.step(action)
 
             if sim_params["verbose"]:
-                print_step(episode + 1, step + 1, obs, reward, info, robot=robot, sim=sim)
+                print_step(episode + 1, step + 1, obs, reward, info, task=task, robot=robot, sim=sim)
 
             time.sleep(sim_params["step_delay"])
 
