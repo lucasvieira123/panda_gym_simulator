@@ -1,0 +1,30 @@
+# ── Task ─────────────────────────────────────────────────────────────────────
+#
+# Define o tipo de task e a função de recompensa.
+# Normalmente não precisa ser alterado.
+#
+#   type        — tipo de task customizada (não alterar)
+#   reward_type — sparse (0/-1) | dense (-distância)
+#
+task:
+  type: "configurable"
+  reward_type: "dense"
+
+# ── Policy ───────────────────────────────────────────────────────────────────
+#
+# Define como o robô decide qual ação tomar a cada step.
+#
+#   name — estratégia ativa:
+#     hold                 → robô parado
+#     random               → ações aleatórias
+#     greedy_goal          → move ee direto ao goal  (bom para Reach)
+#     greedy_push          → posiciona atrás do cubo e empurra
+#     greedy_pick_and_place→ pega, levanta, carrega, solta
+#     manual               → controle via teclado (WASD / RF / EC)
+#     self_adaptive        → MAPE-K com regras de adaptation_options.yaml
+#
+#   gain — intensidade do movimento (quanto maior, mais rápido/agressivo)
+#
+policy:
+  name: "self_adaptive"   # hold | random | greedy_goal | greedy_push | greedy_pick_and_place | manual | self_adaptive
+  gain: 5.0

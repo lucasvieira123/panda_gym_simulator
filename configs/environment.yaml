@@ -36,9 +36,10 @@ objects:
 obstacles: []
 
 runtime:
-  command_file: "runtime_commands.yaml"
-  goal_file: "goals.yaml"
-  poll_every_steps: 1 # checa o command file a cada N steps para verificar se existem novos comandos habilitados para serem executados
+  command_file: "agent.yaml"              # task + policy
+  goal_file:    "goals.yaml"              # goals iniciais + mudanças em tempo real
+  scripts_file: "scripts.yaml"            # comandos: run_script, change_goal, change_task_mode, change_task
+  poll_every_steps: 1 # checa os arquivos a cada N steps para verificar novos comandos habilitados
 
 logging:
   output_dir: "results/panda_lab"

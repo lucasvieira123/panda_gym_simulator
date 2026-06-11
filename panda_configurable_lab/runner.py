@@ -52,13 +52,15 @@ class ExperimentRunner:
 
         config_dir = Path(config.get("_config_dir", "."))
 
-        # Resolve o caminho do arquivo de comandos
+        # Resolve os caminhos dos arquivos de runtime
         command_file = self.runtime_config.get("command_file")
         self.command_file = config_dir / command_file if command_file else None
 
-        # Resolve o caminho do arquivo de goals
         goal_file = self.runtime_config.get("goal_file")
         self.goal_file = config_dir / goal_file if goal_file else None
+
+        scripts_file = self.runtime_config.get("scripts_file")
+        self.scripts_file = config_dir / scripts_file if scripts_file else None
 
         self.poll_every_steps = int(self.runtime_config.get("poll_every_steps", 1))
 
@@ -305,35 +307,26 @@ class ExperimentRunner:
 
     def _apply_runtime_commands(self, episode: int, step: int) -> None:
         """
-        Lê comandos de runtime a partir de um YAML externo.
+        Lê scripts e goals de runtime a partir de arquivos YAML externos.
 
-        O usuário pode editar esse arquivo enquanto a simulação está rodando.
+        O usuário pode editar esses arquivos enquanto a simulação está rodando.
         """
-        if self.command_file is None:
-            return
-
         if step % self.poll_every_steps != 0:
             return
 
-        if not self.command_file.exists():
-            return
-
-        try:
-            with self.command_file.open("r", encoding="utf-8") as file:
-                data = yaml.safe_load(file) or {}
-        except Exception as exc:
-            self.logger.log_event(
-                {
-                    "episode": episode,
-                    "step": step,
-                    "operation": "read_runtime_commands",
-                    "status": "failed",
-                    "message": str(exc),
-                }
-            )
-            return
-
-        commands = list(data.get("commands", []) or [])
+        # Lê scripts.yaml
+        commands = []
+        if self.scripts_file and self.scripts_file.exists():
+            try:
+                with self.scripts_file.open("r", encoding="utf-8") as f:
+                    scripts_data = yaml.safe_load(f) or {}
+                commands = list(scripts_data.get("scripts", []) or [])
+            except Exception as exc:
+                self.logger.log_event({
+                    "episode": episode, "step": step,
+                    "operation": "read_scripts", "status": "failed", "message": str(exc),
+                })
+                return
 
         # Injeta as mudanças de goal do goals file como change_goal commands
         if self.goal_file and self.goal_file.exists():

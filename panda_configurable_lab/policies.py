@@ -1,460 +1,68 @@
 from __future__ import annotations
 
-import sys
-from typing import Any, Dict
-
-import numpy as np
-
-# Mapeamento tecla → (índice no action vector, valor)
-_MANUAL_KEY_MAP = {
-    "w": (1,  1.0),   # frente
-    "s": (1, -1.0),   # trás
-    "d": (0,  1.0),   # direita
-    "a": (0, -1.0),   # esquerda
-    "r": (2,  1.0),   # sobe
-    "f": (2, -1.0),   # desce
-}
-
-_MANUAL_CONTROLS_MSG = (
-    "\n[Manual] Controles do braço:"
-    "\n  W/S → frente/trás   A/D → esquerda/direita   R/F → sobe/desce"
-    "\n  E → abre garra      C → fecha garra           Space → parado"
-    "\n  Pressione uma tecla para avançar um step...\n"
-)
+from .behaviors import Behavior, GreedyGoalBehavior, ScriptedBehavior, make_behavior
 
 
 class SimplePolicy:
-    """Simple policies for testing the simulation loop."""
+    """
+    Wrapper fino sobre Behavior.
 
-    # ── greedy_push ──────────────────────────────────────────────────────────
-    APPROACH_OFFSET        = 0.08   # metros atrás do cubo para approach
-    APPROACH_THRESHOLD     = 0.03   # tolerância para entrar na fase de push
-    MIN_PUSH_DIST          = 0.06   # distância mínima no cálculo da força
-    LIFT_HEIGHT_ABOVE_CUBE = 0.12   # subida para contornar o cubo ao reposicionar
-
-    # ── greedy_pick_and_place ────────────────────────────────────────────────
-    GRASP_ABOVE_HEIGHT = 0.08   # hover acima do cubo antes de descer
-    PLACE_ABOVE_HEIGHT = 0.10   # altura de trânsito acima do goal no carry
-    PAP_POS_THRESHOLD  = 0.03   # tolerância de posição para transição de fase
-    GRASP_HOLD_STEPS   = 10     # steps mantendo garra fechada antes de levantar
-
-    # Fases da state machine de pick_and_place
-    PHASE_OPEN    = 0   # abrir garra
-    PHASE_HOVER   = 1   # mover para acima do cubo
-    PHASE_LOWER   = 2   # descer até o cubo
-    PHASE_GRASP   = 3   # fechar garra e segurar
-    PHASE_LIFT    = 4   # levantar até altura de trânsito
-    PHASE_CARRY   = 5   # mover horizontalmente para acima do goal
-    PHASE_PLACE   = 6   # descer até o goal
-    PHASE_RELEASE = 7   # abrir garra (soltar)
+    Responsabilidade:
+      - Instanciar o Behavior correto via make_behavior(name)
+      - Propagar gain para o behavior ativo
+      - Gerenciar a troca automática de behavior quando ScriptedBehavior termina
+      - Ajustar ee_tracking da task com base no tipo de behavior ativo
+    """
 
     def __init__(self, name: str = "random", gain: float = 5.0):
-        self.name = name
-        self.gain = gain
+        self.name     = name
+        self._gain    = gain
+        self._behavior: Behavior = make_behavior(name, gain)
 
-        # Estado da pick_and_place state machine
-        self._pap_phase          = self.PHASE_OPEN
-        self._pap_step_in_phase  = 0
-        self._pap_lift_z         = 0.0
+    # ── gain propagado para o behavior ativo ─────────────────────────────────
 
-        # Estado da scripted policy
-        self._script_steps        = []    # lista de (action_array, steps_restantes)
-        self._script_step_idx     = 0     # índice do passo atual
+    @property
+    def gain(self) -> float:
+        return self._gain
 
-        # Controlador MAPE-K (lazy init quando policy for self_adaptive)
-        self._mape_k = None
-        self._script_step_counter = 0     # contador dentro do passo atual
-        self._policy_after        = "hold"  # política a usar quando o script acabar
+    @gain.setter
+    def gain(self, value: float) -> None:
+        self._gain = value
+        self._behavior.gain = value
+
+    # ── interface pública ─────────────────────────────────────────────────────
+
+    def act(self, env, observation):
+        # GreedyGoal rastreia o ee; todos os outros rastreiam o objeto configurado
+        if hasattr(env, "task") and hasattr(env.task, "set_ee_tracking"):
+            env.task.set_ee_tracking(isinstance(self._behavior, GreedyGoalBehavior))
+
+        action = self._behavior.act(env, observation)
+
+        # Quando ScriptedBehavior termina, troca automaticamente para policy_after
+        if isinstance(self._behavior, ScriptedBehavior):
+            next_name = self._behavior.next_policy
+            if next_name is not None:
+                self.switch_to(next_name)
+
+        return action
 
     def reset_phase(self) -> None:
-        """Reinicia estado de fase no início de cada episódio."""
-        if self.name == "scripted":
-            self.name = self._policy_after
+        """Reinicia o estado interno do behavior ativo."""
+        if isinstance(self._behavior, ScriptedBehavior):
+            policy_after = self._behavior._policy_after
+            self.switch_to(policy_after)
+        else:
+            self._behavior.reset()
 
-        self._pap_phase          = self.PHASE_OPEN
-        self._pap_step_in_phase  = 0
-        self._pap_lift_z         = 0.0
-
-        self._script_steps        = []
-        self._script_step_idx     = 0
-        self._script_step_counter = 0
-
-        if self._mape_k is not None:
-            self._mape_k.reset()
+    def switch_to(self, name: str, gain: float | None = None) -> None:
+        """Troca o behavior ativo, resetando estado interno."""
+        self.name      = name
+        self._gain     = gain if gain is not None else self._gain
+        self._behavior = make_behavior(name, self._gain)
 
     def load_script(self, script: list, policy_after: str = "hold") -> None:
-        """
-        Carrega uma sequência de ações primitivas.
-
-        Cada entrada do script deve ter:
-          action: [dx, dy, dz, gripper]  — valores em [-1, +1]
-          steps:  N                       — quantos steps executar esta ação
-
-        Após o último passo, a política troca automaticamente para policy_after.
-        """
-        self._script_steps = []
-        for entry in script:
-            action  = np.array(entry["action"], dtype=np.float32)
-            n_steps = int(entry.get("steps", 1))
-            self._script_steps.append((action, n_steps))
-
-        self._script_step_idx     = 0
-        self._script_step_counter = 0
-        self._policy_after        = policy_after
-        self.name                 = "scripted"
-
-    def act(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        # Ajusta automaticamente o tracking do task baseado na policy ativa:
-        # greedy_goal rastreia o ee; todas as outras rastreiam o objeto configurado.
-        if hasattr(env, "task") and hasattr(env.task, "set_ee_tracking"):
-            env.task.set_ee_tracking(self.name == "greedy_goal")
-
-        if self.name == "random":
-            return env.action_space.sample()
-
-        if self.name == "hold":
-            return np.zeros(env.action_space.shape, dtype=np.float32)
-
-        if self.name == "greedy_goal":
-            return self._greedy_goal(env, observation)
-
-        if self.name == "greedy_push":
-            return self._greedy_push(env, observation)
-
-        if self.name == "greedy_pick_and_place":
-            return self._greedy_pick_and_place(env, observation)
-
-        if self.name == "scripted":
-            return self._scripted(env, observation)
-
-        if self.name == "manual":
-            return self._manual(env, observation)
-
-        if self.name == "self_adaptive":
-            return self._self_adaptive(env, observation)
-
-        raise ValueError(f"Política desconhecida: {self.name}")
-
-    def _scripted(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """
-        Executa uma sequência de ações primitivas carregada por load_script().
-
-        Cada passo do script define um vetor [dx, dy, dz, gripper] e quantos
-        steps manter esse vetor. Quando o script termina, a política troca
-        automaticamente para self._policy_after.
-        """
-        # Script vazio ou acabou: troca para policy_after
-        if not self._script_steps or self._script_step_idx >= len(self._script_steps):
-            self.name = self._policy_after
-            self.reset_phase()
-            return self.act(env, observation)
-
-        action_template, n_steps = self._script_steps[self._script_step_idx]
-
-        # Constrói action compatível com o action space atual
-        action = np.zeros(env.action_space.shape, dtype=np.float32)
-        flat   = action.reshape(-1)
-        n      = min(len(action_template), flat.size)
-        flat[:n] = action_template[:n]
-
-        try:
-            flat[:] = np.clip(flat, env.action_space.low.reshape(-1), env.action_space.high.reshape(-1))
-        except Exception:
-            flat[:] = np.clip(flat, -1.0, 1.0)
-
-        # Avança o contador e passa para o próximo passo quando esgotado
-        self._script_step_counter += 1
-        if self._script_step_counter >= n_steps:
-            self._script_step_idx    += 1
-            self._script_step_counter = 0
-
-        return action
-
-    def _self_adaptive(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """Delega ao controlador MAPE-K que monitora, analisa, planeja e executa adaptações."""
-        if self._mape_k is None:
-            from .mape_k import MAPEKController
-            self._mape_k = MAPEKController(initial_policy="greedy_push", gain=self.gain)
-        return self._mape_k.act(env, observation)
-
-    def _manual(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """
-        Controle manual via teclado no terminal.
-
-        Cada tecla pressionada avança um step. O loop de simulação bloqueia
-        aqui até o usuário pressionar algo — o timing é controlado pelo usuário.
-        """
-        print(_MANUAL_CONTROLS_MSG, end="", flush=True)
-
-        if sys.platform == "win32":
-            import msvcrt
-            raw = msvcrt.getch()
-            try:
-                key = raw.decode("utf-8").lower()
-            except UnicodeDecodeError:
-                key = ""
-        else:
-            import tty, termios
-            fd = sys.stdin.fileno()
-            old = termios.tcgetattr(fd)
-            try:
-                tty.setraw(fd)
-                key = sys.stdin.read(1).lower()
-            finally:
-                termios.tcsetattr(fd, termios.TCSADRAIN, old)
-
-        print(f"[Manual] tecla: {repr(key)}")
-
-        action = np.zeros(env.action_space.shape, dtype=np.float32)
-        flat   = action.reshape(-1)
-
-        if key in _MANUAL_KEY_MAP:
-            idx, val = _MANUAL_KEY_MAP[key]
-            if flat.size > idx:
-                flat[idx] = val
-        elif key == "e" and flat.size >= 4:
-            flat[3] = 1.0    # abre garra
-        elif key == "c" and flat.size >= 4:
-            flat[3] = -1.0   # fecha garra
-        # space → zeros → hold (não move)
-
-        try:
-            flat[:] = np.clip(
-                flat,
-                env.action_space.low.reshape(-1),
-                env.action_space.high.reshape(-1),
-            )
-        except Exception:
-            flat[:] = np.clip(flat, -1.0, 1.0)
-
-        return action
-
-    def _greedy_goal(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """Move o ee diretamente em direção ao goal (sem considerar a posição do cubo)."""
-        action = np.zeros(env.action_space.shape, dtype=np.float32)
-
-        if not isinstance(observation, dict):
-            return action
-
-        desired_goal = observation.get("desired_goal")
-        obs_raw      = observation.get("observation")
-
-        if desired_goal is None or obs_raw is None:
-            return action
-
-        desired = np.asarray(desired_goal, dtype=float).reshape(-1, 3)[0]
-        ee_pos  = np.asarray(obs_raw,      dtype=float)[:3]
-
-        delta = desired - ee_pos   # vetor ee → goal
-
-        flat_action = action.reshape(-1)
-        n = min(3, flat_action.size)
-        flat_action[:n] = self.gain * delta[:n]
-
-        # Manter garra fechada quando action space é 4D
-        if flat_action.size >= 4:
-            flat_action[3] = -1.0
-
-        try:
-            flat_action[:] = np.clip(
-                flat_action,
-                env.action_space.low.reshape(-1),
-                env.action_space.high.reshape(-1),
-            )
-        except Exception:
-            flat_action[:] = np.clip(flat_action, -1.0, 1.0)
-
-        return action
-
-    def _greedy_push(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """
-        Política de push em 2 fases:
-
-        Fase 1 — approach: posiciona ee atrás do cubo (lado oposto ao goal).
-        Fase 2 — push: empurra o cubo em direção ao goal.
-
-        Quando o goal muda e a nova approach_pos fica do lado oposto, o ee
-        sobe primeiro em Z para passar por cima do cubo sem empurrá-lo na
-        direção errada.
-        """
-        action = np.zeros(env.action_space.shape, dtype=np.float32)
-
-        if not isinstance(observation, dict):
-            return action
-
-        achieved_goal = observation.get("achieved_goal")
-        desired_goal  = observation.get("desired_goal")
-        obs_raw       = observation.get("observation")
-
-        if achieved_goal is None or desired_goal is None or obs_raw is None:
-            return action
-
-        cube_pos = np.asarray(achieved_goal, dtype=float).reshape(-1, 3)[0]
-        goal_pos = np.asarray(desired_goal,  dtype=float).reshape(-1, 3)[0]
-        ee_pos   = np.asarray(obs_raw,       dtype=float)[:3]
-
-        delta             = goal_pos - cube_pos
-        dist_cube_to_goal = np.linalg.norm(delta)
-
-        if dist_cube_to_goal < 1e-6:
-            return action
-
-        push_dir = delta / dist_cube_to_goal
-
-        approach_pos    = cube_pos - push_dir * self.APPROACH_OFFSET
-        approach_pos[2] = cube_pos[2]
-
-        dist_to_approach = np.linalg.norm(approach_pos - ee_pos)
-
-        flat_action = action.reshape(-1)
-        n = min(3, flat_action.size)
-
-        # Manter garra fechada durante push
-        if flat_action.size >= 4:
-            flat_action[3] = -1.0
-
-        if dist_to_approach > self.APPROACH_THRESHOLD:
-            # Fase 1: posicionar atrás do cubo.
-            # Lift só quando o ee está no lado do goal (lado errado) — detectado
-            # pelo sinal do produto escalar de (ee - cube) com push_dir.
-            ee_side = float(np.dot((ee_pos - cube_pos)[:2], push_dir[:2]))
-            on_wrong_side = ee_side > 0.0
-
-            if on_wrong_side:
-                lift_z = cube_pos[2] + self.LIFT_HEIGHT_ABOVE_CUBE
-                if ee_pos[2] < lift_z - 0.02:
-                    lifted    = approach_pos.copy()
-                    lifted[2] = lift_z
-                    move = self.gain * (lifted - ee_pos)
-                else:
-                    move = self.gain * (approach_pos - ee_pos)
-            else:
-                move = self.gain * (approach_pos - ee_pos)
-        else:
-            # Fase 2: empurrar com força mínima garantida para vencer fricção.
-            # Correção de Z mantém o ee na altura do cubo durante todo o push.
-            effective_dist = max(dist_cube_to_goal, self.MIN_PUSH_DIST)
-            move    = self.gain * push_dir * effective_dist
-            move[2] = self.gain * (cube_pos[2] - ee_pos[2])
-
-        flat_action[:n] = move[:n]
-
-        try:
-            flat_action[:] = np.clip(
-                flat_action,
-                env.action_space.low.reshape(-1),
-                env.action_space.high.reshape(-1),
-            )
-        except Exception:
-            flat_action[:] = np.clip(flat_action, -1.0, 1.0)
-
-        return action
-
-    def _greedy_pick_and_place(self, env, observation: Dict[str, Any]) -> np.ndarray:
-        """
-        Política de pick_and_place em 8 fases (state machine):
-
-          OPEN    → abrir garra
-          HOVER   → mover ee para acima do cubo
-          LOWER   → descer até o cubo com garra aberta
-          GRASP   → fechar garra e segurar por GRASP_HOLD_STEPS
-          LIFT    → subir até altura de trânsito
-          CARRY   → mover horizontalmente para acima do goal
-          PLACE   → descer até o goal com garra fechada
-          RELEASE → abrir garra e soltar o cubo
-
-        Requer block_gripper=false e action space 4D (dx, dy, dz, gripper).
-        Resets de fase via reset_phase() no início de cada episódio.
-        """
-        action = np.zeros(env.action_space.shape, dtype=np.float32)
-
-        if not isinstance(observation, dict):
-            return action
-
-        achieved_goal = observation.get("achieved_goal")
-        desired_goal  = observation.get("desired_goal")
-        obs_raw       = observation.get("observation")
-
-        if achieved_goal is None or desired_goal is None or obs_raw is None:
-            return action
-
-        cube_pos = np.asarray(achieved_goal, dtype=float).reshape(-1, 3)[0]
-        goal_pos = np.asarray(desired_goal,  dtype=float).reshape(-1, 3)[0]
-        ee_pos   = np.asarray(obs_raw,       dtype=float)[:3]
-
-        flat = action.reshape(-1)
-
-        def move_to(target: np.ndarray, gripper: float) -> None:
-            move = self.gain * (target - ee_pos)
-            n = min(3, flat.size)
-            flat[:n] = move[:n]
-            if flat.size >= 4:
-                flat[3] = gripper
-
-        phase = self._pap_phase
-
-        if phase == self.PHASE_OPEN:
-            if flat.size >= 4:
-                flat[3] = 1.0
-            self._pap_step_in_phase += 1
-            if self._pap_step_in_phase >= 5:
-                self._pap_phase         = self.PHASE_HOVER
-                self._pap_step_in_phase = 0
-
-        elif phase == self.PHASE_HOVER:
-            target    = cube_pos.copy()
-            target[2] = cube_pos[2] + self.GRASP_ABOVE_HEIGHT
-            move_to(target, 1.0)
-            if np.linalg.norm(target - ee_pos) < self.PAP_POS_THRESHOLD:
-                self._pap_phase = self.PHASE_LOWER
-
-        elif phase == self.PHASE_LOWER:
-            target    = cube_pos.copy()
-            target[2] = cube_pos[2]
-            move_to(target, 1.0)
-            if np.linalg.norm(target - ee_pos) < self.PAP_POS_THRESHOLD:
-                self._pap_phase         = self.PHASE_GRASP
-                self._pap_step_in_phase = 0
-
-        elif phase == self.PHASE_GRASP:
-            if flat.size >= 4:
-                flat[3] = -1.0
-            self._pap_step_in_phase += 1
-            if self._pap_step_in_phase >= self.GRASP_HOLD_STEPS:
-                # Altura de trânsito: acima do goal ou do cubo, o que for maior
-                self._pap_lift_z        = max(goal_pos[2], cube_pos[2]) + self.PLACE_ABOVE_HEIGHT
-                self._pap_phase         = self.PHASE_LIFT
-
-        elif phase == self.PHASE_LIFT:
-            target    = ee_pos.copy()
-            target[2] = self._pap_lift_z
-            move_to(target, -1.0)
-            if ee_pos[2] >= self._pap_lift_z - 0.02:
-                self._pap_phase = self.PHASE_CARRY
-
-        elif phase == self.PHASE_CARRY:
-            target    = goal_pos.copy()
-            target[2] = self._pap_lift_z   # mantém altitude de trânsito
-            move_to(target, -1.0)
-            if np.linalg.norm((goal_pos - ee_pos)[:2]) < self.PAP_POS_THRESHOLD:
-                self._pap_phase = self.PHASE_PLACE
-
-        elif phase == self.PHASE_PLACE:
-            move_to(goal_pos, -1.0)
-            if np.linalg.norm(goal_pos - ee_pos) < self.PAP_POS_THRESHOLD:
-                self._pap_phase = self.PHASE_RELEASE
-
-        elif phase == self.PHASE_RELEASE:
-            if flat.size >= 4:
-                flat[3] = 1.0   # abrir garra
-
-        try:
-            flat[:] = np.clip(
-                flat,
-                env.action_space.low.reshape(-1),
-                env.action_space.high.reshape(-1),
-            )
-        except Exception:
-            flat[:] = np.clip(flat, -1.0, 1.0)
-
-        return action
+        """Carrega uma sequência de ações primitivas e ativa o ScriptedBehavior."""
+        self._behavior = ScriptedBehavior(gain=self._gain)
+        self._behavior.load(script, policy_after)
+        self.name = "scripted"
