@@ -5,7 +5,7 @@ from panda_gym.envs.core import RobotTaskEnv
 
 from config_loader import load_config
 from start_simulation import start_simulation
-from tasks import ManualTask, PickAndPlaceTask, PushTask, ReachTask
+from tasks import HoldTask, ManualTask, PickAndPlaceTask, PushTask, ReachTask
 from utils import print_step
 
 
