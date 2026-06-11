@@ -1,0 +1,19 @@
+simulation:
+  name: "panda_lab"
+  seed: 42
+  episodes: 3
+  max_steps: 300
+  render_mode: "human"
+  step_delay: 1.00
+  verbose: true
+
+configs:
+  environment_config: "environment.yaml"
+  target_goal_config: "target_goal.yaml"
+  # command_file: "agent.yaml"
+  
+  # scripts_file: "scripts.yaml"
+  poll_every_steps: 1
+
+logging:
+  output_dir: "results/panda_lab"

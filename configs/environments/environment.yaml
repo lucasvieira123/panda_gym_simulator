@@ -1,0 +1,25 @@
+robot:
+  control_type: "ee"
+  block_gripper: false   # false = garra pode abrir/fechar (necessário para pick_and_place)
+  base_position: [-0.6, 0.0, 0.0]
+
+scene:
+  table:
+    length: 1.1
+    width: 0.7
+    height: 0.4
+    x_offset: -0.3
+    lateral_friction: 1.0
+    spinning_friction: 0.001
+
+objects:
+  - name: "cube_1"
+    type: "box"
+    size: [0.04, 0.04, 0.04]
+    mass: 1.0
+    initial_position: [0.03, 0.0, 0.02]
+    color: [0.1, 0.2, 0.9, 1.0]
+    lateral_friction: 0.8
+    spinning_friction: 0.001
+
+obstacles: []

@@ -1,0 +1,36 @@
+robot:
+  control_type: "ee"
+  block_gripper: false
+  base_position: [-0.4, 0.0, 0.0]
+
+scene:
+  table:
+    length: 1.1
+    width: 0.7
+    height: 0.4
+    x_offset: -0.3
+    lateral_friction: 1.0
+    spinning_friction: 0.001
+
+objects:
+  - name: "cube_1"
+    type: "box"
+    size: [0.04, 0.04, 0.04]
+    mass: 1.0
+    initial_position: [0.03, 0.0, 0.02]
+    color: [0.1, 0.2, 0.9, 1.0]
+    lateral_friction: 0.8
+    spinning_friction: 0.001
+
+# Obstáculo fixo posicionado no ponto médio entre cube_1 e o goal.
+# cube_1 inicial : [0.05,  0.0,  0.02]
+# goal           : [0.0,  -0.28, 0.02]
+# ponto médio    : [0.025, -0.14, 0.04]
+# A parede é larga no eixo X (perpendicular ao push) para bloquear o caminho.
+obstacles:
+  - name: "parede_1"
+    type: "box"
+    size: [0.20, 0.02, 0.08]     # larga em X, fina em Y, alta o suficiente
+    position: [0.025, -0.14, 0.04]
+    color: [0.8, 0.2, 0.2, 0.9]  # vermelho
+    mass: 1.0
