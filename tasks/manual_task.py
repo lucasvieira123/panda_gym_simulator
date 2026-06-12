@@ -3,11 +3,12 @@ from typing import Any, Callable, Dict
 import numpy as np
 import pybullet
 
-from panda_gym.envs.core import Task
 from panda_gym.utils import distance
 
+from ._task import _Task
 
-class ManualTask(Task):
+
+class ManualTask(_Task):
     def __init__(
         self,
         sim,

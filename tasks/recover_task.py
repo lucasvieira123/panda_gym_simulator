@@ -1,8 +1,9 @@
 from typing import Any, Callable, Dict
 
 import numpy as np
-from panda_gym.envs.core import Task
 from panda_gym.utils import distance
+
+from ._task import _Task
 
 # Fases do comportamento de recuperação
 _PHASE_ESCAPE      = 0  # sobe EE verticalmente para sair da situação atual
@@ -13,7 +14,7 @@ _PHASE_ABOVE_GOAL  = 4  # move horizontalmente acima do target
 _PHASE_PLACE       = 5  # desce até o target
 
 
-class RecoverTask(Task):
+class RecoverTask(_Task):
     """
     Comportamento de recuperação para situações não previstas.
 

@@ -3,7 +3,6 @@ from typing import Optional
 import numpy as np
 
 from tasks import PickAndPlaceTask, PushTask
-from tasks.recover_task import RecoverTask
 from .knowledge import Knowledge, Strategy, SystemState
 
 
@@ -40,8 +39,6 @@ class Executor:
             self._active_task = PushTask(**common)
         elif strategy == Strategy.PICK_AND_PLACE_OVER:
             self._active_task = PickAndPlaceTask(**common)
-        elif strategy == Strategy.RECOVER:
-            self._active_task = RecoverTask(**common)
         else:
             raise ValueError(f"Estratégia desconhecida: {strategy}")
 

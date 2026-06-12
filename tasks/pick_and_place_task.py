@@ -2,8 +2,9 @@ from typing import Any, Callable, Dict
 
 import numpy as np
 
-from panda_gym.envs.core import Task
 from panda_gym.utils import distance
+
+from ._task import _Task
 
 # Fases do controlador
 _PHASE_ABOVE_BOX   = 0  # move EE acima do cubo (garra aberta)
@@ -13,7 +14,7 @@ _PHASE_ABOVE_GOAL  = 3  # move horizontalmente até acima do goal
 _PHASE_PLACE       = 4  # desce até o goal
 
 
-class PickAndPlaceTask(Task):
+class PickAndPlaceTask(_Task):
     def __init__(
         self,
         sim,

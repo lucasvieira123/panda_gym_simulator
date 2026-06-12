@@ -2,11 +2,12 @@ from typing import Any, Callable, Dict, List
 
 import numpy as np
 
-from panda_gym.envs.core import Task
 from panda_gym.utils import distance
 
+from ._task import _Task
 
-class ScriptedTask(Task):
+
+class ScriptedTask(_Task):
     def __init__(
         self,
         sim,

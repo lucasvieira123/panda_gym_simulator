@@ -1,9 +1,9 @@
 simulation:
   seed: 42
   episodes: 3
-  max_steps: 10
+  max_steps: 50
   render_mode: "human"
-  step_delay: 1.00
+  step_delay: 3.00
   verbose: true
 
 configs:

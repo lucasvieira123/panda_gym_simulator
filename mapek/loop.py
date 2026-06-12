@@ -42,7 +42,6 @@ class MapeKLoop:
 
     def reset(self) -> None:
         self._state = SystemState()
-        self.knowledge.dist_history.clear()
 
     @property
     def state(self) -> SystemState:

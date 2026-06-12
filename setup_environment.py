@@ -5,7 +5,7 @@ from panda_gym.envs.robots.panda import Panda
 from panda_gym.pybullet import PyBullet
 
 
-def start_simulation(sim_cfg: dict, environment_cfg: dict, target_goal_cfg: dict) -> Tuple[PyBullet, Panda]:
+def setup_environment(sim_cfg: dict, environment_cfg: dict, target_goal_cfg: dict) -> Tuple[PyBullet, Panda]:
     sim = PyBullet(render_mode=sim_cfg["simulation"]["render_mode"])
 
     robot_cfg = environment_cfg["robot"]
