@@ -14,7 +14,7 @@ class ScriptedTask(_Task):
         get_ee_position: Callable[[], np.ndarray],
         get_object_position: Callable[[], np.ndarray],
         goal_position: np.ndarray,
-        steps: List[List[float]],
+        waypoints: List[List[float]],
         distance_threshold: float = 0.05,
         step_threshold: float = 0.02,
     ) -> None:
@@ -24,13 +24,13 @@ class ScriptedTask(_Task):
         self.fixed_goal = np.array(goal_position, dtype=np.float32)
         self.distance_threshold = distance_threshold
         self.step_threshold = step_threshold
-        self._steps = [np.array(s, dtype=np.float32) for s in steps]
-        self._current_step = 0
+        self._waypoints = [np.array(w, dtype=np.float32) for w in waypoints]
+        self._current_waypoint = 0
 
     def reset(self) -> None:
         self.goal = self.fixed_goal.copy()
         self.sim.set_base_pose("target", self.goal, np.array([0.0, 0.0, 0.0, 1.0]))
-        self._current_step = 0
+        self._current_waypoint = 0
 
     def get_obs(self) -> np.ndarray:
         return np.array(self.get_object_position(), dtype=np.float32)
@@ -45,10 +45,10 @@ class ScriptedTask(_Task):
         return -distance(achieved_goal, desired_goal).astype(np.float32)
 
     def compute_action(self) -> np.ndarray:
-        if self._current_step >= len(self._steps):
-            return np.zeros(4, dtype=np.float32)  # todos os passos concluídos: hold
+        if self._current_waypoint >= len(self._waypoints):
+            return np.zeros(4, dtype=np.float32)  # todos os waypoints concluídos: hold
 
-        target = self._steps[self._current_step]
+        target = self._waypoints[self._current_waypoint]
         target_pos = target[:3]
         gripper = target[3]
 
@@ -57,11 +57,11 @@ class ScriptedTask(_Task):
         dist = np.linalg.norm(direction)
 
         if dist < self.step_threshold:
-            print(f"[Script] Passo {self._current_step + 1}/{len(self._steps)} concluído")
-            self._current_step += 1
-            if self._current_step >= len(self._steps):
+            print(f"[Script] Waypoint {self._current_waypoint + 1}/{len(self._waypoints)} concluído")
+            self._current_waypoint += 1
+            if self._current_waypoint >= len(self._waypoints):
                 return np.zeros(4, dtype=np.float32)
-            target = self._steps[self._current_step]
+            target = self._waypoints[self._current_waypoint]
             target_pos = target[:3]
             gripper = target[3]
             direction = target_pos - ee_pos

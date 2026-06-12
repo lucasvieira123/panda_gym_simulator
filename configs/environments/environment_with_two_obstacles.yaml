@@ -1,0 +1,38 @@
+robot:
+  control_type: "ee"
+  block_gripper: false
+  base_position: [-0.4, 0.0, 0.0]
+
+scene:
+  table:
+    length: 1.1
+    width: 0.7
+    height: 0.4
+    x_offset: -0.3
+    lateral_friction: 1.0
+    spinning_friction: 0.001
+
+objects:
+  - name: "cube_1"
+    type: "box"
+    size: [0.04, 0.04, 0.04]
+    mass: 1.0
+    initial_position: [0.03, 0.0, 0.02]
+    color: [0.1, 0.2, 0.9, 1.0]
+    lateral_friction: 0.8
+    spinning_friction: 0.001
+
+obstacles:
+  - name: "parede_1"
+    type: "box"
+    size: [0.02, 0.30, 0.08]     # fina em X, larga em Y, alta para bloquear
+    position: [0.07, 0.0, 0.04]  # primeira barreira, mais perto do cubo
+    color: [0.8, 0.2, 0.2, 0.9]
+    mass: 0.0
+
+  - name: "parede_2"
+    type: "box"
+    size: [0.02, 0.30, 0.08]     # mesmas dimensões da parede_1
+    position: [0.12, 0.0, 0.04]  # segunda barreira, mais perto do target [0.15]
+    color: [0.9, 0.5, 0.1, 0.9]
+    mass: 0.0

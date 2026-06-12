@@ -136,7 +136,7 @@ class TkOverlay:
             self._root.after(50, self._poll)
 
     def render(self, episode: int, step: int, obs: dict, reward: float,
-               info: dict, task=None, robot=None, sim=None, mapek_state=None) -> None:
+               info: dict, task=None, robot=None, sim=None, mapek_state=None, action=None) -> None:
         if mapek_state is None:
             return
 
@@ -176,6 +176,8 @@ class TkOverlay:
         cv = m.cube_linear_velocity
         s.append((f"  Cubo rotação    : [{cr[0]:+.3f}, {cr[1]:+.3f}, {cr[2]:+.3f}]  (roll/pitch/yaw)\n", "white"))
         s.append((f"  Cubo vel.linear : [{cv[0]:+.3f}, {cv[1]:+.3f}, {cv[2]:+.3f}]\n",                   "white"))
+        if action is not None:
+            s.append((f"  Action          : [{action[0]:+.3f}, {action[1]:+.3f}, {action[2]:+.3f}, {action[3]:+.3f}]  (dx, dy, dz, gripper)\n", "cyan"))
 
         try:
             self._queue.put_nowait(s)
@@ -229,7 +231,8 @@ def print_step(episode: int, step: int, obs: dict, reward: float, info: dict, ta
 
 
 def print_mapek_step(episode: int, step: int, obs: dict, reward: float, info: dict,
-                     mapek_state=None, robot=None, sim=None, obstacle_meta: dict | None = None) -> None:
+                     mapek_state=None, robot=None, sim=None, obstacle_meta: dict | None = None,
+                     action=None) -> None:
     if mapek_state is None:
         return
 
@@ -266,3 +269,5 @@ def print_mapek_step(episode: int, step: int, obs: dict, reward: float, info: di
     cv = m.cube_linear_velocity
     print(f"  Cubo rotação    : [{cr[0]:+.3f}, {cr[1]:+.3f}, {cr[2]:+.3f}]  (roll/pitch/yaw)")
     print(f"  Cubo vel.linear : [{cv[0]:+.3f}, {cv[1]:+.3f}, {cv[2]:+.3f}]")
+    if action is not None:
+        print(f"  Action          : [{action[0]:+.3f}, {action[1]:+.3f}, {action[2]:+.3f}, {action[3]:+.3f}]  (dx, dy, dz, gripper)")

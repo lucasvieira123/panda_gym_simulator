@@ -16,16 +16,20 @@ class Analyzer:
         self.knowledge = knowledge
 
     def analyze(self, state: SystemState) -> SystemState:
-        state.obstacle_in_path = self._obstacle_in_path(state)
+        count = self._count_obstacles_in_path(state)
+        state.obstacle_in_path = count > 0
 
-        if state.obstacle_in_path:
+        if count >= 2:
+            state.current_situation = Situation.TWO_OBSTACLES
+        elif count == 1:
             state.current_situation = Situation.PLANNED_OBSTACLE
         else:
             state.current_situation = Situation.NORMAL
 
         return state
 
-    def _obstacle_in_path(self, state: SystemState) -> bool:
+    def _count_obstacles_in_path(self, state: SystemState) -> int:
+        count = 0
         for _, obs_pos in state.obstacle_positions.items():
             d = _point_to_segment_distance(
                 np.array(obs_pos, dtype=np.float32),
@@ -33,8 +37,8 @@ class Analyzer:
                 state.target_position,
             )
             if d < self.knowledge.obstacle_path_radius:
-                return True
-        return False
+                count += 1
+        return count
 
 
 def _point_to_segment_distance(point: np.ndarray, seg_a: np.ndarray, seg_b: np.ndarray) -> float:

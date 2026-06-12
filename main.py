@@ -8,11 +8,12 @@ from mapek import Knowledge, MapeKLoop
 from setup_environment import setup_environment
 from tasks import PushTask
 from tasks.pick_and_place_task import PickAndPlaceTask
+from tasks.scripted_task import ScriptedTask
 from utils import TkOverlay, print_mapek_step
 
 
 def main():
-    sim_cfg, env_cfg, target_goal_cfg, _ = load_config()
+    sim_cfg, env_cfg, target_goal_cfg, scripts_cfg = load_config()
 
     sim_params = sim_cfg["simulation"]
     goal_position = np.array(target_goal_cfg["position"], dtype=np.float32)
@@ -30,7 +31,10 @@ def main():
     env = RobotTaskEnv(robot, base_task)
 
     obstacle_names = [o["name"] for o in env_cfg.get("obstacles", [])]
-    knowledge = Knowledge(obstacle_names=obstacle_names)
+    knowledge = Knowledge(
+        obstacle_names=obstacle_names,
+        scripts=scripts_cfg or {},
+    )
     mape_k = MapeKLoop(sim, robot, goal_position, knowledge)
 
     obstacle_meta = {o["name"]: o for o in env_cfg.get("obstacles", [])}
@@ -52,11 +56,12 @@ def start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay: TkOverla
             observation, reward, terminated, truncated, info = env.step(action)
 
             overlay.render(episode + 1, step + 1, observation, reward, info,
-                           robot=robot, sim=sim, mapek_state=mape_k.state)
+                           robot=robot, sim=sim, mapek_state=mape_k.state, action=action)
 
             if sim_params["verbose"]:
                 print_mapek_step(episode + 1, step + 1, observation, reward, info,
-                                 mapek_state=mape_k.state, obstacle_meta=obstacle_meta)
+                                 mapek_state=mape_k.state, obstacle_meta=obstacle_meta,
+                                 action=action)
 
             time.sleep(sim_params["step_delay"])
 

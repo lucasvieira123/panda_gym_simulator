@@ -8,11 +8,16 @@ import numpy as np
 class Strategy(Enum):
     PUSH = "PUSH"
     PICK_AND_PLACE_OVER = "PICK_AND_PLACE_OVER"
+    SCRIPTED_script_1 = "SCRIPTED_script_1"
+    SCRIPTED_reach_only = "SCRIPTED_reach_only"
+    SCRIPTED_left_right = "SCRIPTED_left_right"
+
 
 
 class Situation(Enum):
     NORMAL = "normal"
     PLANNED_OBSTACLE = "planned_obstacle"
+    TWO_OBSTACLES = "two_obstacles"
 
 
 @dataclass
@@ -39,6 +44,10 @@ class SystemState:
 class Knowledge:
     """Parâmetros e histórico compartilhados entre os componentes MAPE-K."""
     obstacle_names: List[str] = field(default_factory=list)
-
-    # raio do tubo ao longo do segmento cubo→target para detecção de bloqueio
     obstacle_path_radius: float = 0.10
+    scripts: dict = field(default_factory=dict)
+    situation_strategy_map: Dict[Situation, Strategy] = field(default_factory=lambda: {
+        Situation.NORMAL:           Strategy.PUSH,
+        Situation.PLANNED_OBSTACLE: Strategy.PICK_AND_PLACE_OVER,
+        Situation.TWO_OBSTACLES:    Strategy.SCRIPTED_left_right,
+    })

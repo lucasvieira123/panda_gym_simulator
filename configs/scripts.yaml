@@ -1,8 +1,9 @@
 # gripper: 1.0 = aberta | -1.0 = fechada
 # x, y, z: posição absoluta do end-effector no mundo
+# vale observar que para cada
 
-pick_and_place:
-  steps:
+script_1:
+  waypoints:
     - [0.03,  0.0,  0.12,  1.0]   # 1. acima do cubo, garra aberta
     - [0.03,  0.0,  0.02,  1.0]   # 2. desce até o cubo
     - [0.03,  0.0,  0.02, -1.0]   # 3. fecha a garra
@@ -12,6 +13,13 @@ pick_and_place:
     - [0.15,  0.0,  0.02,  1.0]   # 7. solta o cubo
 
 reach_only:
-  steps:
+  waypoints:
     - [0.15,  0.0,  0.12,  1.0]   # 1. acima do target
     - [0.15,  0.0,  0.02,  1.0]   # 2. desce ao target
+
+left_right:
+  waypoints:
+    - [0.05,  0.00, 0.25,  1.0]   # 1. levanta o braço ao centro
+    - [0.05, -0.20, 0.25,  1.0]   # 2. varre para a esquerda
+    - [0.05,  0.20, 0.25,  1.0]   # 3. varre para a direita
+    - [0.05,  0.00, 0.25,  1.0]   # 4. volta ao centro

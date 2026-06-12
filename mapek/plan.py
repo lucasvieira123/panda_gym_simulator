@@ -26,6 +26,4 @@ class Planner:
         return new_strategy
 
     def _select_strategy(self, state: SystemState) -> Strategy:
-        if state.current_situation == Situation.PLANNED_OBSTACLE:
-            return Strategy.PICK_AND_PLACE_OVER
-        return Strategy.PUSH
+        return self.knowledge.situation_strategy_map.get(state.current_situation, Strategy.PUSH)

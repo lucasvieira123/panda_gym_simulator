@@ -22,10 +22,10 @@ objects:
     lateral_friction: 0.8
     spinning_friction: 0.001
 
-obstacles:
-  - name: "parede_1"
-    type: "box"
-    size: [0.02, 0.30, 0.08]   # fina em X, larga em Y, alta o suficiente para bloquear
-    position: [0.09, 0.0, 0.04] # ponto médio entre cube_1 e target
-    color: [0.8, 0.2, 0.2, 0.9]
-    mass: 0.0
+# obstacles:
+#   - name: "parede_1"
+#     type: "box"
+#     size: [0.02, 0.30, 0.08]   # fina em X, larga em Y, alta o suficiente para bloquear
+#     position: [0.09, 0.0, 0.04] # ponto médio entre cube_1 e target
+#     color: [0.8, 0.2, 0.2, 0.9]
+#     mass: 0.0

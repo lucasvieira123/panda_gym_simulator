@@ -3,6 +3,7 @@ from typing import Optional
 import numpy as np
 
 from tasks import PickAndPlaceTask, PushTask
+from tasks.scripted_task import ScriptedTask
 from .knowledge import Knowledge, Strategy, SystemState
 
 
@@ -39,6 +40,10 @@ class Executor:
             self._active_task = PushTask(**common)
         elif strategy == Strategy.PICK_AND_PLACE_OVER:
             self._active_task = PickAndPlaceTask(**common)
+        elif strategy.value.startswith("SCRIPTED_"):
+            script_id = strategy.value.replace("SCRIPTED_", "")
+            waypoints = self.knowledge.scripts.get(script_id, {}).get("waypoints", [])
+            self._active_task = ScriptedTask(**common, waypoints=waypoints)
         else:
             raise ValueError(f"Estratégia desconhecida: {strategy}")
 
