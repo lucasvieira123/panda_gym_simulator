@@ -8,7 +8,7 @@ from mapek import Knowledge, MapeKLoop
 from setup_environment import setup_environment
 from tasks import PushTask
 from tasks.pick_and_place_task import PickAndPlaceTask
-from utils import DebugOverlay, print_mapek_step
+from utils import TkOverlay, print_mapek_step
 
 
 def main():
@@ -33,13 +33,16 @@ def main():
     knowledge = Knowledge(obstacle_names=obstacle_names)
     mape_k = MapeKLoop(sim, robot, goal_position, knowledge)
 
-    overlay = DebugOverlay(sim.physics_client)
-    start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay)
+    obstacle_meta = {o["name"]: o for o in env_cfg.get("obstacles", [])}
+    overlay = TkOverlay(obstacle_meta=obstacle_meta)
+    try:
+        start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay, obstacle_meta)
+    finally:
+        overlay.close()
+        env.close()
 
-    env.close()
 
-
-def start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay: DebugOverlay) -> None:
+def start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay: TkOverlay, obstacle_meta: dict) -> None:
     for episode in range(sim_params["episodes"]):
         observation, info = env.reset(seed=sim_params["seed"])
         mape_k.reset()
@@ -48,11 +51,12 @@ def start_simulation_loop(env, mape_k, sim_params, robot, sim, overlay: DebugOve
             action = mape_k.step(observation)
             observation, reward, terminated, truncated, info = env.step(action)
 
-            overlay.render(episode + 1, step + 1, observation, reward, info, robot=robot, sim=sim)
+            overlay.render(episode + 1, step + 1, observation, reward, info,
+                           robot=robot, sim=sim, mapek_state=mape_k.state)
 
             if sim_params["verbose"]:
                 print_mapek_step(episode + 1, step + 1, observation, reward, info,
-                                 mapek_state=mape_k.state, robot=robot, sim=sim)
+                                 mapek_state=mape_k.state, obstacle_meta=obstacle_meta)
 
             time.sleep(sim_params["step_delay"])
 
