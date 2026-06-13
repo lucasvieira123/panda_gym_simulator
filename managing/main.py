@@ -12,7 +12,7 @@ from config_loader import load_config
 from sensors import SensorPipeline
 from setup_environment import setup_environment
 from tasks import create_pick_and_place
-from tasks.factory import create_hold, create_manual, create_push, create_reach, create_scripted
+from tasks.factory import create_hold, create_manual, create_push, create_reach, create_scripted, create_terminal
 from tasks.scripted_task import ScriptedTask
 from utils import log_step, TraceWriter
 
@@ -24,13 +24,14 @@ def main():
 
     pipeline = SensorPipeline(configs)
 
-    base_task = create_pick_and_place(simulation, robot, configs)
+    # base_task = create_pick_and_place(simulation, robot, configs)
     # base_task = create_push(simulation, robot, configs)  
     # base_task = create_manual(simulation, robot, configs)
     # base_task = create_hold(simulation, robot, configs)
     # base_task = create_reach(simulation, robot, configs)
     # base_task = create_scripted(simulation, robot, configs, script_name="left_right") # tem que passar o script_name definido em scripts.yaml
-
+    
+    base_task = create_terminal(simulation, robot, configs)
     environment = RobotTaskEnv(robot, base_task)
 
     with TraceWriter() as writer:

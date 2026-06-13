@@ -7,6 +7,7 @@ from .pick_and_place_task import PickAndPlaceTask
 from .push_task import PushTask
 from .reach_task import ReachTask
 from .scripted_task import ScriptedTask
+from .terminal_task import TerminalTask
 
 
 def _get_object_cfg(configs: dict, name: str) -> dict:
@@ -84,6 +85,18 @@ def create_manual(sim: PyBullet, robot: Panda, configs: dict, object_name: str =
 def create_push(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> PushTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return PushTask(
+        sim=sim,
+        get_ee_position=robot.get_ee_position,
+        get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
+        target_goal_cfg=configs["target_goal"],
+        object_cfg=obj_cfg,
+        task_cfg=configs["simulation"],
+    )
+
+
+def create_terminal(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> TerminalTask:
+    obj_cfg = _get_object_cfg(configs, object_name)
+    return TerminalTask(
         sim=sim,
         get_ee_position=robot.get_ee_position,
         get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
