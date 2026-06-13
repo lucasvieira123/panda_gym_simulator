@@ -1,4 +1,4 @@
-from .knowledge import Knowledge, Situation, Strategy, SystemState
+from .knowledge import Knowledge, Strategy, SystemState
 
 
 class Planner:

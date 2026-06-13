@@ -8,9 +8,9 @@ import numpy as np
 class Strategy(Enum):
     PUSH = "PUSH"
     PICK_AND_PLACE_OVER = "PICK_AND_PLACE_OVER"
-    SCRIPTED_script_1 = "SCRIPTED_script_1"
-    SCRIPTED_reach_only = "SCRIPTED_reach_only"
-    SCRIPTED_left_right = "SCRIPTED_left_right"
+    SCRIPTED_script_1 = "SCRIPTED.script_1"
+    SCRIPTED_reach_only = "SCRIPTED.reach_only"
+    SCRIPTED_left_right = "SCRIPTED.left_right"
 
 
 
@@ -34,9 +34,10 @@ class SystemState:
     joint_angles: List[float] = field(default_factory=list)
     joint_velocities: List[float] = field(default_factory=list)
     obstacle_positions: Dict[str, np.ndarray] = field(default_factory=dict)
+    obstacle_count_in_path: int = 0
     obstacle_in_path: bool = False
     current_strategy: Strategy = Strategy.PUSH
-    current_situation: Situation = Situation.NORMAL
+    current_situation: str = "normal"
     step: int = 0
 
 
@@ -46,8 +47,13 @@ class Knowledge:
     obstacle_names: List[str] = field(default_factory=list)
     obstacle_path_radius: float = 0.10
     scripts: dict = field(default_factory=dict)
-    situation_strategy_map: Dict[Situation, Strategy] = field(default_factory=lambda: {
-        Situation.NORMAL:           Strategy.PUSH,
-        Situation.PLANNED_OBSTACLE: Strategy.PICK_AND_PLACE_OVER,
-        Situation.TWO_OBSTACLES:    Strategy.SCRIPTED_left_right,
-    })
+    situations: dict = field(default_factory=dict)
+    situation_strategy_map: Dict[str, Strategy] = field(default=None)
+
+    def __post_init__(self):
+        if self.situation_strategy_map is None:
+            self.situation_strategy_map = {
+                "normal":           Strategy.PUSH,
+                "planned_obstacle": Strategy.PICK_AND_PLACE_OVER,
+                "two_obstacles":    Strategy.SCRIPTED_left_right,
+            }

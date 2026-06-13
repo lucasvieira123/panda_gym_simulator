@@ -5,26 +5,42 @@ CONFIGS_DIR = Path(__file__).parent / "configs"
 ENVIRONMENTS_DIR = CONFIGS_DIR / "environments"
 
 
-def load_config(simulation_file: str = "simulation.yaml"):
-    sim_path = CONFIGS_DIR / simulation_file
-    with open(sim_path) as f:
-        sim_cfg = yaml.safe_load(f)
+def load_config(simulation_file: str = "simulation.yaml") -> dict:
+    simulation_path = CONFIGS_DIR / simulation_file
+    with open(simulation_path) as f:
+        simulation_cfg = yaml.safe_load(f)
 
-    env_filename = sim_cfg["configs"]["environment_config"]
-    env_path = ENVIRONMENTS_DIR / env_filename
+    env_path = ENVIRONMENTS_DIR / simulation_cfg["environment_config"]
     with open(env_path) as f:
-        env_cfg = yaml.safe_load(f)
+        environment_cfg = yaml.safe_load(f)
 
-    target_goal_filename = sim_cfg["configs"]["target_goal_config"]
-    target_goal_path = CONFIGS_DIR / target_goal_filename
+    target_goal_path = CONFIGS_DIR / simulation_cfg["target_goal_config"]
     with open(target_goal_path) as f:
         target_goal_cfg = yaml.safe_load(f)
 
-    scripts_cfg = None
-    scripts_filename = sim_cfg["configs"].get("scripts_file")
+    scripts_cfg = {}
+    scripts_filename = simulation_cfg.get("scripts_file")
     if scripts_filename:
-        scripts_path = CONFIGS_DIR / scripts_filename
-        with open(scripts_path) as f:
-            scripts_cfg = yaml.safe_load(f)
+        with open(CONFIGS_DIR / scripts_filename) as f:
+            scripts_cfg = yaml.safe_load(f) or {}
 
-    return sim_cfg, env_cfg, target_goal_cfg, scripts_cfg
+    adaptation_cfg = {}
+    adaptation_filename = simulation_cfg.get("adaptation_options_file")
+    if adaptation_filename:
+        with open(CONFIGS_DIR / adaptation_filename) as f:
+            adaptation_cfg = yaml.safe_load(f) or {}
+
+    situations_cfg = {}
+    situations_filename = simulation_cfg.get("situations_file")
+    if situations_filename:
+        with open(CONFIGS_DIR / situations_filename) as f:
+            situations_cfg = yaml.safe_load(f) or {}
+
+    return {
+        "simulation":        simulation_cfg,
+        "environment":       environment_cfg,
+        "target_goal":       target_goal_cfg,
+        "scripts":           scripts_cfg,
+        "adaptation_options": adaptation_cfg,
+        "situations":        situations_cfg,
+    }

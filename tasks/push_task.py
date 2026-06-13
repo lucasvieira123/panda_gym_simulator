@@ -1,76 +1,84 @@
-from typing import Any, Callable, Dict
+from typing import Callable
 
 import numpy as np
 
-from panda_gym.utils import distance
+from ._object_task import _ObjectTask
 
-from ._task import _Task
+_PHASE_LIFT           = 0  # sobe acima da box
+_PHASE_ABOVE_APPROACH = 1  # move horizontal para cima do approach (altura segura)
+_PHASE_APPROACH       = 2  # desce reto até a posição de empurrão
+_PHASE_PUSH           = 3  # empurra em direção ao goal
 
 
-class PushTask(_Task):
+class PushTask(_ObjectTask):
     def __init__(
         self,
         sim,
         get_ee_position: Callable[[], np.ndarray],
         get_object_position: Callable[[], np.ndarray],
-        goal_position: np.ndarray,
-        reward_type: str = "dense",
-        distance_threshold: float = 0.05,
-        approach_offset: float = 0.05,
+        target_goal_cfg: dict,
+        object_cfg: dict,
+        task_cfg: dict = None,
     ) -> None:
-        super().__init__(sim)
-        self.get_ee_position = get_ee_position
-        self.get_object_position = get_object_position
-        self.fixed_goal = np.array(goal_position, dtype=np.float32)
-        self.reward_type = reward_type
-        self.distance_threshold = distance_threshold
-        self.approach_offset = approach_offset  # distância atrás do cubo para se posicionar antes de empurrar
+        super().__init__(sim, get_ee_position, get_object_position, target_goal_cfg, object_cfg, task_cfg)
+        _task = task_cfg or {}
+        self.approach_offset = _task.get("approach_offset", 0.05)
+        self.approach_height = _task.get("approach_height", 0.1)
+        self.phase_threshold = _task.get("phase_threshold", 0.02)
+        self.push_speed      = _task.get("push_speed", 0.3)
+        self._phase       = _PHASE_ABOVE_APPROACH  # primeiro goal não precisa de lift
+        self._lift_target = None
 
     def reset(self) -> None:
-        self.goal = self.fixed_goal.copy()
-        self.sim.set_base_pose("target", self.goal, np.array([0.0, 0.0, 0.0, 1.0]))
+        self._phase       = _PHASE_ABOVE_APPROACH
+        self._lift_target = None
+        super().reset()
 
-    def get_obs(self) -> np.ndarray:
-        return np.array(self.get_object_position(), dtype=np.float32)
+    def _on_goal_advanced(self) -> None:
+        self._phase       = _PHASE_LIFT
+        self._lift_target = None
 
-    def get_achieved_goal(self) -> np.ndarray:
-        return np.array(self.get_object_position(), dtype=np.float32)
-
-    def is_success(self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info: Dict[str, Any] = {}) -> np.ndarray:
-        return np.array(distance(achieved_goal, desired_goal) < self.distance_threshold, dtype=bool)
-
-    def compute_reward(self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info: Dict[str, Any] = {}) -> np.ndarray:
-        d = distance(achieved_goal, desired_goal)
-        if self.reward_type == "sparse":
-            return -np.array(d > self.distance_threshold, dtype=np.float32)
-        else:
-            return -d.astype(np.float32)
+    # ── action ───────────────────────────────────────────────────────────────
 
     def compute_action(self) -> np.ndarray:
         ee_pos  = np.array(self.get_ee_position())
         box_pos = np.array(self.get_object_position())
-        goal_pos = self.get_goal()
 
-        push_dir = goal_pos - box_pos
-        push_dist = np.linalg.norm(push_dir)
+        # captura speed antes de qualquer transição de fase
+        speed = self.push_speed if self._phase in (_PHASE_APPROACH, _PHASE_PUSH) else 1.0
 
-        if push_dist > 0:
-            push_dir_normalized = push_dir / push_dist
-        else:
-            push_dir_normalized = np.zeros(3)
+        push_dir_normalized = _normalized(self.goal - box_pos)
+        approach_pos        = box_pos - push_dir_normalized * self.approach_offset
+        above_approach      = np.array([approach_pos[0], approach_pos[1], box_pos[2] + self.approach_height])
 
-        # posição atrás do cubo, no lado oposto ao goal
-        approach_pos = box_pos - push_dir_normalized * self.approach_offset
+        if self._phase == _PHASE_LIFT:
+            if self._lift_target is None:
+                self._lift_target = np.array([ee_pos[0], ee_pos[1], box_pos[2] + self.approach_height])
+            target = self._lift_target
+            if np.linalg.norm(ee_pos - target) < self.phase_threshold:
+                self._phase       = _PHASE_ABOVE_APPROACH
+                self._lift_target = None
 
-        ee_to_approach = approach_pos - ee_pos
-        dist_to_approach = np.linalg.norm(ee_to_approach)
+        elif self._phase == _PHASE_ABOVE_APPROACH:
+            target = above_approach
+            if np.linalg.norm(ee_pos - target) < self.phase_threshold:
+                self._phase = _PHASE_APPROACH
 
-        if dist_to_approach > 0.02:
-            # fase 1: mover EE para atrás do cubo
-            direction = ee_to_approach / dist_to_approach
-        else:
-            # fase 2: empurrar cubo em direção ao goal
-            direction = push_dir_normalized
+        elif self._phase == _PHASE_APPROACH:
+            target = approach_pos
+            if np.linalg.norm(ee_pos - target) < self.phase_threshold:
+                self._phase = _PHASE_PUSH
 
-        gripper = np.array([0.0], dtype=np.float32)
+        else:  # _PHASE_PUSH
+            target = self.goal
+            if self._goal_mode != "options" and self._goal_reached() and not self._all_done():
+                self._advance_goal()  # → _on_goal_advanced → _PHASE_LIFT
+
+        direction = _normalized(target - ee_pos) * speed
+        gripper   = np.array([0.0], dtype=np.float32)
         return np.concatenate([direction, gripper]).astype(np.float32)
+
+
+def _normalized(v: np.ndarray) -> np.ndarray:
+    n = np.linalg.norm(v)
+    return v / n if n > 0 else np.zeros_like(v)

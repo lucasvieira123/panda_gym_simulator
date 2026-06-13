@@ -1,13 +1,20 @@
-simulation:
-  seed: 42
-  episodes: 3
-  max_steps: 50
-  render_mode: "human"
-  step_delay: 3.00
-  verbose: true
+seed: 42
+episodes: 3
+max_steps: 1000
+render_mode: "human"
+step_delay: 0.1
+verbose: true
 
-configs:
-  environment_config: "environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"
-  target_goal_config: "target_goal.yaml"
-  scripts_file: "scripts.yaml"
-  #script_id: "left_right"
+environment_config: "environment.yaml" #"environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"
+target_goal_config: "target_goal.yaml"
+scripts_file: "scripts.yaml"
+adaptation_options_file: "adaptation_options.yaml"
+situations_file: "situations.yaml"
+
+distance_threshold: 0.05 #Distância mínima para considerar que a box chegou no goal (5cm)
+grasp_height_offset: 0.01 #Quanto a garra desce abaixo do centro da box para pegar (1cm)
+approach_height: 0.1 #Altura que o braço sobe antes de se mover horizontalmente (10cm) — evita colidir com obstáculos
+phase_threshold: 0.02 #Distância mínima para considerar que o braço chegou num waypoint e pode avançar para a próxima fase (2cm)
+approach_offset: 0.05 #Só para PushTask — distância atrás da box onde a garra se posiciona antes de empurrar (5cm)
+push_speed: 0.3 #Só para PushTask — intensidade do empurrão (0.0 a 1.0)
+move_speed: 0.5 #Só para ManualTask — sensibilidade do teclado (0.0 a 1.0)

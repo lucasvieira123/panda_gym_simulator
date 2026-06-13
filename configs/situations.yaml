@@ -1,0 +1,40 @@
+# Expressões Python puras — mesma sintaxe de um if
+# Avaliadas em ordem: primeira que for True vence
+#
+# ── Parâmetros disponíveis ────────────────────────────────────────────────────
+#
+# Escalares (float / int / bool):
+#   fingers_width           float  largura da garra em metros
+#   dist_ee_to_cube         float  distância EE → cubo (metros)
+#   dist_cube_to_target     float  distância cubo → target (metros)
+#   obstacle_count_in_path  int    nº de obstáculos no caminho cubo→target
+#   obstacle_in_path        bool   True se algum obstáculo bloqueia o caminho
+#   step                    int    step atual dentro do episódio
+#
+# Vetores 3D — acessar com [0]=x  [1]=y  [2]=z:
+#   ee_position             ndarray  posição do end-effector
+#   ee_velocity             ndarray  velocidade do end-effector
+#   cube_position           ndarray  posição do cubo
+#   cube_rotation           ndarray  rotação do cubo (roll/pitch/yaw)
+#   cube_linear_velocity    ndarray  velocidade linear do cubo
+#   target_position         ndarray  posição do target
+#
+# Listas (7 juntas — índice 0..6):
+#   joint_angles            list[float]  ângulos das juntas
+#   joint_velocities        list[float]  velocidades das juntas
+#
+# Dict (chave = nome do obstáculo):
+#   obstacle_positions      dict[str, ndarray]  posição de cada obstáculo
+#
+# Exemplos de expressões:
+#   "obstacle_count_in_path >= 2"
+#   "dist_cube_to_target < 0.05"
+#   "fingers_width < 0.02 and dist_ee_to_cube < 0.10"
+#   "cube_linear_velocity[2] > 0.3"
+#   "obstacle_count_in_path == 1 and step > 10"
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+two_obstacles:    "obstacle_count_in_path >= 2"
+planned_obstacle: "obstacle_count_in_path == 1"
+normal:           "obstacle_count_in_path == 0"

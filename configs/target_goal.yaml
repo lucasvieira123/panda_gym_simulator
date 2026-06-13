@@ -1,1 +1,21 @@
-position: [0.15, 0.0, 0.02]
+# Vale observar que só se deve ter um objeto aqui, ou goal_options ou goal_sequence ou goal_set
+
+# goal_options: # para um alvo
+#   - [0.15, 0.0, 0.02]
+
+# goal_options: # Basta alcansar uma para ser considerado sucesso
+#   - [0.15, 0.0, 0.02]
+#   - [0.15, 0.10, 0.02]
+#   - [-0.10, 0.0, 0.02]
+
+goal_sequence: # Precisa alcansar todas, mas deve seguir esta ordem
+  - [0.15, 0.0, 0.02]
+  - [0.15, 0.10, 0.02]
+  - [-0.10, 0.0, 0.02]
+  - [-0.10, 0.1, 0.02]
+
+# goal_set: # Precisa alcancar todas, mas independe da ordem
+#   - [0.15, 0.0, 0.02]
+#   - [0.15, 0.10, 0.02]
+#   - [-0.10, 0.0, 0.02]
+#   - [0.1, 0.0, 0.02]

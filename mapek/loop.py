@@ -25,13 +25,13 @@ class MapeKLoop:
         obs, reward, terminated, truncated, info = env.step(action)
     """
 
-    def __init__(self, sim, robot, goal_position: np.ndarray, knowledge: Knowledge) -> None:
+    def __init__(self, sim, robot, target_goal_cfg: dict, knowledge: Knowledge) -> None:
         self.knowledge = knowledge
         self._state = SystemState()
         self._monitor = Monitor(sim, robot, knowledge)
         self._analyzer = Analyzer(knowledge)
         self._planner = Planner(knowledge)
-        self._executor = Executor(sim, robot, goal_position, knowledge)
+        self._executor = Executor(sim, robot, target_goal_cfg, knowledge)
 
     def step(self, obs: dict) -> np.ndarray:
         self._state = self._monitor.collect(obs, self._state)

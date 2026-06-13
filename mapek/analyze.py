@@ -1,6 +1,6 @@
 import numpy as np
 
-from .knowledge import Knowledge, Situation, SystemState
+from .knowledge import Knowledge, SystemState
 
 
 class Analyzer:
@@ -16,17 +16,20 @@ class Analyzer:
         self.knowledge = knowledge
 
     def analyze(self, state: SystemState) -> SystemState:
-        count = self._count_obstacles_in_path(state)
-        state.obstacle_in_path = count > 0
-
-        if count >= 2:
-            state.current_situation = Situation.TWO_OBSTACLES
-        elif count == 1:
-            state.current_situation = Situation.PLANNED_OBSTACLE
-        else:
-            state.current_situation = Situation.NORMAL
-
+        state.obstacle_count_in_path = self._count_obstacles_in_path(state)
+        state.obstacle_in_path = state.obstacle_count_in_path > 0
+        state.current_situation = self._classify_situation(state)
         return state
+
+    def _classify_situation(self, state: SystemState) -> str:
+        context = {k: v for k, v in vars(state).items()}
+        for situation, expression in self.knowledge.situations.items():
+            try:
+                if eval(expression, {"__builtins__": {}}, context):
+                    return situation
+            except Exception:
+                pass
+        return "normal"
 
     def _count_obstacles_in_path(self, state: SystemState) -> int:
         count = 0

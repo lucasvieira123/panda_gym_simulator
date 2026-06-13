@@ -1,53 +1,42 @@
-from typing import Any, Callable, Dict
+from typing import Callable
 
 import numpy as np
 
-from panda_gym.utils import distance
-
-from ._task import _Task
+from ._goal_task import _GoalTask
 
 
-class ReachTask(_Task):
+class ReachTask(_GoalTask):
+    """Move o end-effector até um ou mais goals, sem manipular objeto."""
+
     def __init__(
         self,
         sim,
         get_ee_position: Callable[[], np.ndarray],
-        goal_position: np.ndarray,
-        reward_type: str = "dense",
-        distance_threshold: float = 0.01,
+        target_goal_cfg: dict,
+        task_cfg: dict = None,
+        object_cfg: dict = None,
     ) -> None:
-        super().__init__(sim)
-        self.get_ee_position = get_ee_position
-        self.fixed_goal = np.array(goal_position, dtype=np.float32)
-        self.reward_type = reward_type
-        self.distance_threshold = distance_threshold
+        super().__init__(sim, get_ee_position, target_goal_cfg, task_cfg, object_cfg)
 
-    def reset(self) -> None:
-        self.goal = self.fixed_goal.copy()
-        self.sim.set_base_pose("target", self.goal, np.array([0.0, 0.0, 0.0, 1.0]))
+    # ── panda_gym interface ──────────────────────────────────────────────────
 
     def get_obs(self) -> np.ndarray:
-        return np.array([])
+        return np.array([], dtype=np.float32)
 
     def get_achieved_goal(self) -> np.ndarray:
-        return np.array(self.get_ee_position())
+        return np.array(self.get_ee_position(), dtype=np.float32)
 
-    def is_success(self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info: Dict[str, Any] = {}) -> np.ndarray:
-        return np.array(distance(achieved_goal, desired_goal) < self.distance_threshold, dtype=bool)
-
-    def compute_reward(self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info: Dict[str, Any] = {}) -> np.ndarray:
-        d = distance(achieved_goal, desired_goal)
-        if self.reward_type == "sparse":
-            return -np.array(d > self.distance_threshold, dtype=np.float32)
-        else:
-            return -d.astype(np.float32)
+    # ── action ───────────────────────────────────────────────────────────────
 
     def compute_action(self) -> np.ndarray:
-        ee_position = np.array(self.get_ee_position())
-        goal_position = self.get_goal()
-        direction = goal_position - ee_position
-        dist = np.linalg.norm(direction)
+        ee_pos    = np.array(self.get_ee_position())
+        direction = self.goal - ee_pos
+        dist      = np.linalg.norm(direction)
         if dist > 0:
             direction = direction / dist
+
+        if self._goal_mode != "options" and self._goal_reached() and not self._all_done():
+            self._advance_goal()
+
         gripper = np.array([0.0], dtype=np.float32)
         return np.concatenate([direction, gripper]).astype(np.float32)

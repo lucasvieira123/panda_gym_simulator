@@ -1,35 +1,35 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import numpy as np
 from panda_gym.envs.robots.panda import Panda
 from panda_gym.pybullet import PyBullet
 
 
-def setup_environment(sim_cfg: dict, environment_cfg: dict, target_goal_cfg: dict) -> Tuple[PyBullet, Panda]:
-    sim = PyBullet(render_mode=sim_cfg["simulation"]["render_mode"])
+def setup_environment(configs: dict) -> Tuple[PyBullet, Panda]:
+    simulation = PyBullet(render_mode=configs["simulation"]["render_mode"])
 
-    robot_cfg = environment_cfg["robot"]
-    goal_position = np.array(target_goal_cfg["position"], dtype=np.float32)
+    environment_cfg = configs["environment"]
+    robot_cfg       = environment_cfg["robot"]
 
-    with sim.no_rendering():
-        _create_scene(sim, environment_cfg["scene"]["table"])
-        _create_objects(sim, environment_cfg.get("objects", []))
-        _create_obstacles(sim, environment_cfg.get("obstacles", []))
-        _create_target(sim, goal_position)
+    with simulation.no_rendering():
+        _create_scene(simulation, environment_cfg["scene"]["table"])
+        _create_objects(simulation, environment_cfg.get("objects", []))
+        _create_obstacles(simulation, environment_cfg.get("obstacles", []))
+        _create_targets(simulation, configs["target_goal"])
 
     robot = Panda(
-        sim,
+        simulation,
         block_gripper=robot_cfg["block_gripper"],
         base_position=np.array(robot_cfg["base_position"]),
         control_type=robot_cfg["control_type"],
     )
 
-    return sim, robot
+    return simulation, robot
 
 
-def _create_scene(sim: PyBullet, table: dict) -> None:
-    sim.create_plane(z_offset=-0.4)
-    sim.create_table(
+def _create_scene(simulation: PyBullet, table: dict) -> None:
+    simulation.create_plane(z_offset=-0.4)
+    simulation.create_table(
         length=table["length"],
         width=table["width"],
         height=table["height"],
@@ -37,11 +37,11 @@ def _create_scene(sim: PyBullet, table: dict) -> None:
     )
 
 
-def _create_objects(sim: PyBullet, objects: list) -> None:
+def _create_objects(simulation: PyBullet, objects: list) -> None:
     for obj in objects:
         if obj["type"] == "box":
             size = np.array(obj["size"])
-            sim.create_box(
+            simulation.create_box(
                 body_name=obj["name"],
                 half_extents=size / 2,
                 mass=obj["mass"],
@@ -52,11 +52,11 @@ def _create_objects(sim: PyBullet, objects: list) -> None:
             )
 
 
-def _create_obstacles(sim: PyBullet, obstacles: list) -> None:
+def _create_obstacles(simulation: PyBullet, obstacles: list) -> None:
     for obs in obstacles:
         if obs["type"] == "box":
             size = np.array(obs["size"])
-            sim.create_box(
+            simulation.create_box(
                 body_name=obs["name"],
                 half_extents=size / 2,
                 mass=obs["mass"],
@@ -65,12 +65,32 @@ def _create_obstacles(sim: PyBullet, obstacles: list) -> None:
             )
 
 
-def _create_target(sim: PyBullet, position: np.ndarray) -> None:
-    sim.create_sphere(
-        body_name="target",
-        radius=0.02,
-        mass=0.0,
-        ghost=True,
-        position=position,
-        rgba_color=np.array([0.1, 0.9, 0.1, 0.3]),
-    )
+def _create_targets(simulation: PyBullet, target_goal_cfg: dict) -> None:
+    mode, positions, colors = _parse_target_goals(target_goal_cfg)
+
+    for i, (position, color) in enumerate(zip(positions, colors)):
+        name = "target" if i == 0 else f"target_{i}"
+        simulation.create_sphere(
+            body_name=name,
+            radius=0.02,
+            mass=0.0,
+            ghost=True,
+            position=np.array(position, dtype=np.float32),
+            rgba_color=np.array(color),
+        )
+
+
+_COLOR_ACTIVE  = [0.1, 0.9, 0.1, 0.8]   # verde — alvo atual
+_COLOR_PENDING = [0.9, 0.5, 0.1, 0.5]  # laranja — demais alvos
+
+
+def _parse_target_goals(target_goal_cfg: dict):
+    for key in ("goal_options", "goal_sequence", "goal_set"):
+        if key in target_goal_cfg:
+            positions = target_goal_cfg[key]
+            mode = key.replace("goal_", "")
+            n = len(positions)
+            colors = [_COLOR_ACTIVE] + [_COLOR_PENDING] * (n - 1)
+            return mode, positions, colors
+
+    raise ValueError("target_goal_cfg deve conter goal_options, goal_sequence ou goal_set")

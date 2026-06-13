@@ -1,0 +1,7 @@
+# Mapeia Situation → Strategy
+# Chaves   : valores de Situation (normal, planned_obstacle, two_obstacles)
+# Valores  : valores de Strategy  (PUSH, PICK_AND_PLACE_OVER, SCRIPTED_<script_id>)
+
+normal:           PUSH
+planned_obstacle: PICK_AND_PLACE_OVER
+two_obstacles:    SCRIPTED.left_right
