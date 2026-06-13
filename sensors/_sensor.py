@@ -1,11 +1,9 @@
 from abc import ABC, abstractmethod
 
-from config_loader import load_config
-
 
 class _Sensor(ABC):
-    def __init__(self) -> None:
-        self.configs = load_config()
+    def __init__(self, configs: dict) -> None:
+        self.configs = configs
 
     @abstractmethod
     def sense(self, simulation, robot, environment, obs: dict) -> dict:

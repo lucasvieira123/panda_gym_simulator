@@ -8,11 +8,12 @@ from panda_gym.envs.core import RobotTaskEnv
 from config_loader import load_config
 from mapek import Knowledge, MapeKLoop
 from mapek.knowledge import Situation, Strategy
+from sensors import SensorPipeline
 from setup_environment import setup_environment
 from tasks import create_pick_and_place
 from tasks.factory import create_hold, create_manual, create_push, create_reach, create_scripted
 from tasks.scripted_task import ScriptedTask
-from utils import TkOverlay, print_mapek_step
+from utils import log_step, TraceWriter
 
 
 def main():
@@ -20,29 +21,33 @@ def main():
 
     simulation, robot = setup_environment(configs)
 
-    base_task = create_pick_and_place(simulation, robot, configs)  # NAO MUDAR
+    pipeline = SensorPipeline(configs)
+
+    base_task = create_pick_and_place(simulation, robot, configs)
     # base_task = create_push(simulation, robot, configs)  
     # base_task = create_manual(simulation, robot, configs)
     # base_task = create_hold(simulation, robot, configs)
     # base_task = create_reach(simulation, robot, configs)
-    base_task = create_scripted(simulation, robot, configs, script_name="left_right") # tem que passar o script_name definido em scripts.yaml
+    # base_task = create_scripted(simulation, robot, configs, script_name="left_right") # tem que passar o script_name definido em scripts.yaml
 
     environment = RobotTaskEnv(robot, base_task)
 
-    sim_cfg = configs["simulation"]
-    for episode in range(sim_cfg["episodes"]):
-        observation, info = environment.reset(seed=sim_cfg["seed"])
+    with TraceWriter() as writer:
+        for episode in range(configs["simulation"]["episodes"]):
+            observation, info = environment.reset(seed=configs["simulation"]["seed"])
 
-        for step in range(sim_cfg["max_steps"]):
-            action = base_task.compute_action()
-            observation, reward, terminated, truncated, info = environment.step(action)
+            for step in range(configs["simulation"]["max_steps"]):
+                action = base_task.compute_action()
+                observation, reward, terminated, truncated, info = environment.step(action)
 
-            print(f"Ep {episode+1} | Step {step+1} | reward: {reward:+.4f} | success: {info['is_success']}")
+                perception = pipeline.sense(simulation, robot, environment, observation)
 
-            time.sleep(sim_cfg["step_delay"])
+                log_step(episode + 1, step + 1, observation, reward, info, perception, writer=writer)
 
-            if terminated or truncated:
-                break
+                time.sleep(configs["simulation"]["step_delay"])
+
+                if terminated or truncated:
+                    break
 
     environment.close()
 
