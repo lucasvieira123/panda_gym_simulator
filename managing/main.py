@@ -1,13 +1,14 @@
+import sys
 import time
 
-import time
+sys.stdout.reconfigure(encoding="utf-8")
 
 import numpy as np
 from panda_gym.envs.core import RobotTaskEnv
 
 from config_loader import load_config
-from mapek import Knowledge, MapeKLoop
-from mapek.knowledge import Situation, Strategy
+# from mapek import Knowledge, MapeKLoop
+# from mapek.knowledge import Situation, Strategy
 from sensors import SensorPipeline
 from setup_environment import setup_environment
 from tasks import create_pick_and_place
