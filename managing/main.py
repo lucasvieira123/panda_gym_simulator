@@ -2,12 +2,13 @@ import time
 
 from panda_gym.envs.core import RobotTaskEnv
 
+import api
 from config_loader import load_config
-from manager_bridge import ManagerBridge
+# from manager_bridge import ManagerBridge  # TCP bridge (desativado)
 from sensors import SensorPipeline
 from setup_environment import setup_environment
 from tasks.factory import create_hold, create_manual, create_pick_and_place, create_push, create_reach, create_scripted, create_terminal
-from utils import build_perception_msg, StepLogger
+from utils import build_perception_msg, SimHUD, StepLogger
 
 
 def _make_task(strategy: str, sim, robot, configs):
@@ -27,17 +28,18 @@ def main():
 
     simulation, robot = setup_environment(configs)
 
+    api.start()
     pipeline    = SensorPipeline(configs)
-    bridge      = ManagerBridge()
-    logger      = StepLogger()
-    # environment = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
+    # bridge    = ManagerBridge()  # TCP bridge (desativado)
+    hud         = SimHUD(simulation.physics_client)
+    logger      = StepLogger(hud=hud)
     environment = RobotTaskEnv(robot, create_push(simulation, robot, configs))
 
     for episode in range(configs["simulation"]["episodes"]):
         observation, info = environment.reset(seed=configs["simulation"]["seed"])
 
         for step in range(configs["simulation"]["max_steps"]):
-            cmd = bridge.get_command()
+            cmd = api.get_command()
             if cmd:
                 new_task = _make_task(cmd["strategy"], simulation, robot, configs)
                 if new_task:
@@ -56,7 +58,8 @@ def main():
                 task=environment.task, action=action,
             )
 
-            bridge.send_perception(perception_msg)
+            api.update_perception(perception_msg)
+            # bridge.send_perception(perception_msg)  # TCP bridge (desativado)
             logger.log(perception_msg)
 
             time.sleep(configs["simulation"]["step_delay"])

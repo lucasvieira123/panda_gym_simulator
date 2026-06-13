@@ -1,9 +1,8 @@
 import re
 import numpy as np
 
+from .formatter import format_step
 from .trace import TraceWriter
-
-_LINE = "─" * 44
 
 
 def _task_label(task) -> str:
@@ -15,21 +14,24 @@ def _task_label(task) -> str:
 
 
 class StepLogger:
-    """Imprime e grava cada step no trace.
+    """Imprime no terminal, grava no trace e atualiza o HUD (se fornecido).
 
-        logger = StepLogger()
+        logger = StepLogger(hud=hud)
         logger.log(perception_msg)
 
     O arquivo de trace é fechado automaticamente ao fim do processo.
     """
 
-    def __init__(self, traces_dir: str = None) -> None:
+    def __init__(self, traces_dir: str = None, hud=None) -> None:
         import atexit
         self._writer = TraceWriter(traces_dir) if traces_dir else TraceWriter()
+        self._hud    = hud
         atexit.register(self._writer.close)
 
     def log(self, msg: dict) -> None:
         log_step(msg, writer=self._writer)
+        if self._hud is not None:
+            self._hud.render(msg)
 
 
 def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
@@ -86,76 +88,7 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
 
 
 def log_step(msg: dict, writer=None) -> None:
-    text = _format_step(msg)
+    text = format_step(msg)
     print(text)
     if writer is not None:
         writer.write(text)
-
-
-def _format_step(msg: dict) -> str:
-    ee_pos      = msg["ee_position"]
-    ee_vel      = msg["ee_velocity"]
-    fingers     = msg["fingers_width"]
-    cube_pos    = msg["cube_position"]
-    target_pos  = msg["target_position"]
-    gripper_state = "ABERTA" if fingers > 0.02 else "FECHADA"
-
-    lines = [
-        _LINE,
-        f" Ep {msg['episode']:>2} | Step {msg['step']:>3}",
-        _LINE,
-    ]
-
-    if "current_task" in msg:
-        lines.append(f"  Task            : {msg['current_task']}")
-
-    if "action" in msg:
-        a = msg["action"]
-        gripper_cmd = "ABRIR" if a[3] > 0 else "FECHAR"
-        lines.append(f"  Action          : dx={a[0]:+.3f}  dy={a[1]:+.3f}  dz={a[2]:+.3f}  gripper={gripper_cmd}")
-
-    lines += [
-        f"  EE posição      : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",
-        f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]",
-        f"  Garra           : {fingers:.3f} m  ({gripper_state})",
-        f"  Cubo posição    : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",
-        f"  Target          : [{target_pos[0]:+.3f}, {target_pos[1]:+.3f}, {target_pos[2]:+.3f}]",
-        f"  Dist EE→Cubo    : {msg['dist_ee_to_cube']:.4f} m",
-        f"  Dist Cubo→Target: {msg['dist_cube_to_target']:.4f} m",
-        f"  Reward          : {msg['reward']:+.4f}",
-        f"  Sucesso         : {msg['is_success']}",
-    ]
-
-    lines.append(f"  Obstáculo caminho: {'SIM' if msg['obstacle_in_path'] else 'nao'}  (count: {msg['obstacle_count_in_path']})")
-
-    for name, data in msg.get("obstacles", {}).items():
-        lines.append(f"  Obstáculo [{name}]: tipo={data.get('type')}  massa={data.get('mass')} kg  tamanho={data.get('size')}")
-
-    for name, data in msg.get("objects", {}).items():
-        lines.append(f"  Objeto [{name}]: tipo={data.get('type')}  massa={data.get('mass')} kg  tamanho={data.get('size')}")
-
-    if msg.get("target_goal"):
-        lines.append(f"  Target goal     : {msg['target_goal']}")
-
-    table = msg.get("scene", {}).get("table", {})
-    if table:
-        lines.append(f"  Mesa            : {table.get('length')}x{table.get('width')}x{table.get('height')} m  offset_x={table.get('x_offset')}")
-
-    if msg.get("robot_config"):
-        rc = msg["robot_config"]
-        lines.append(f"  Robô config     : control={rc.get('control_type')}  block_gripper={rc.get('block_gripper')}  base={rc.get('base_position')}")
-
-    if msg.get("scripts"):
-        lines.append(f"  Scripts         : {list(msg['scripts'].keys())}")
-
-    if "joint_angles" in msg:
-        lines.append(f"  Juntas ângulos  : [{', '.join(f'{a:+.2f}' for a in msg['joint_angles'])}]")
-        lines.append(f"  Juntas veloc.   : [{', '.join(f'{v:+.2f}' for v in msg['joint_velocities'])}]")
-
-    if "cube_rotation" in msg:
-        cr  = msg["cube_rotation"]
-        clv = msg["cube_linear_velocity"]
-        lines.append(f"  Cubo rotação    : [{cr[0]:+.3f}, {cr[1]:+.3f}, {cr[2]:+.3f}]  (roll/pitch/yaw)")
-        lines.append(f"  Cubo vel.linear : [{clv[0]:+.3f}, {clv[1]:+.3f}, {clv[2]:+.3f}]")
-
-    return "\n".join(lines)
