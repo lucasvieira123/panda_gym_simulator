@@ -7,7 +7,7 @@ from config_loader import load_config
 # from manager_bridge import ManagerBridge  # TCP bridge (desativado)
 from sensors import SensorPipeline
 from setup_environment import setup_environment
-from tasks.factory import create_hold, create_manual, create_pick_and_place, create_push, create_reach, create_scripted, create_terminal
+from tasks.factory import create_api_task, create_hold, create_manual, create_pick_and_place, create_push, create_reach, create_scripted, create_terminal
 from utils import build_perception_msg, SimHUD, StepLogger
 
 
@@ -17,6 +17,7 @@ def _make_task(strategy: str, sim, robot, configs):
     if strategy == "REACH":          return create_reach(sim, robot, configs)
     if strategy == "HOLD":           return create_hold(sim, robot, configs)
     if strategy == "MANUAL":         return create_manual(sim, robot, configs)
+    if strategy == "API_TASK":       return create_api_task(sim, robot, configs)
     if strategy.startswith("SCRIPTED_TASK."):
         script_name = strategy.split(".", 1)[1]
         return create_scripted(sim, robot, configs, script_name=script_name)
@@ -33,7 +34,9 @@ def main():
     # bridge    = ManagerBridge()  # TCP bridge (desativado)
     hud         = SimHUD(simulation.physics_client)
     logger      = StepLogger(hud=hud)
-    environment = RobotTaskEnv(robot, create_push(simulation, robot, configs))
+    # environment = RobotTaskEnv(robot, create_push(simulation, robot, configs))
+    environment = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
+    # environment = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
 
     for episode in range(configs["simulation"]["episodes"]):
         observation, info = environment.reset(seed=configs["simulation"]["seed"])

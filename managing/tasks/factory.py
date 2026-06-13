@@ -1,6 +1,7 @@
 from panda_gym.envs.robots.panda import Panda
 from panda_gym.pybullet import PyBullet
 
+from .api_task import APITask
 from .hold_task import HoldTask
 from .manual_task import ManualTask
 from .pick_and_place_task import PickAndPlaceTask
@@ -86,6 +87,18 @@ def create_manual(sim: PyBullet, robot: Panda, configs: dict, object_name: str =
 def create_push(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> PushTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return PushTask(
+        sim=sim,
+        get_ee_position=robot.get_ee_position,
+        get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
+        target_goal_cfg=configs["target_goal"],
+        object_cfg=obj_cfg,
+        task_cfg=configs["simulation"],
+    )
+
+
+def create_api_task(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> APITask:
+    obj_cfg = _get_object_cfg(configs, object_name)
+    return APITask(
         sim=sim,
         get_ee_position=robot.get_ee_position,
         get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),

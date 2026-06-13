@@ -6,6 +6,7 @@ from fastapi import FastAPI
 
 _perception_slot: dict = {}
 _command_queue: queue.Queue = queue.Queue(maxsize=1)
+_waypoints_queue: queue.Queue = queue.Queue(maxsize=1)
 
 app = FastAPI()
 
@@ -25,6 +26,16 @@ def put_task(body: dict):
     return {"ok": True}
 
 
+@app.put("/waypoints")
+def put_waypoints(body: dict):
+    try:
+        _waypoints_queue.put_nowait(body)
+    except queue.Full:
+        _waypoints_queue.get_nowait()
+        _waypoints_queue.put_nowait(body)
+    return {"ok": True}
+
+
 def update_perception(msg: dict) -> None:
     _perception_slot.clear()
     _perception_slot.update(msg)
@@ -33,6 +44,13 @@ def update_perception(msg: dict) -> None:
 def get_command() -> dict | None:
     try:
         return _command_queue.get_nowait()
+    except queue.Empty:
+        return None
+
+
+def get_waypoints() -> dict | None:
+    try:
+        return _waypoints_queue.get_nowait()
     except queue.Empty:
         return None
 
