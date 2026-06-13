@@ -23,9 +23,10 @@ build/
 *.rar
 *.7z
 
-# Logs
+# Logs e traces de execução
 *.log
 logs/
+traces/
 
 # Environment variables
 .env
@@ -55,3 +56,6 @@ desktop.ini
 .pytest_cache/
 .coverage
 htmlcov/
+
+# PyBullet
+*.bullet
