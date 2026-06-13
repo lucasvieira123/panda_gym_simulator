@@ -19,10 +19,12 @@ class ScriptedTask(_ObjectTask):
         target_goal_cfg: dict,
         object_cfg: dict,
         waypoints: List[List[float]],
+        script_name: str = "",
         task_cfg: dict = None,
     ) -> None:
         super().__init__(sim, get_ee_position, get_object_position, target_goal_cfg, object_cfg, task_cfg)
         _task = task_cfg or {}
+        self.script_name       = script_name
         self.step_threshold    = _task.get("phase_threshold", 0.02)
         self._waypoints        = [np.array(w, dtype=np.float32) for w in waypoints]
         self._current_waypoint = 0

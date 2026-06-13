@@ -54,6 +54,7 @@ def create_scripted(sim: PyBullet, robot: Panda, configs: dict, script_name: str
         target_goal_cfg=configs["target_goal"],
         object_cfg=obj_cfg,
         waypoints=waypoints,
+        script_name=script_name,
         task_cfg=configs["simulation"],
     )
 

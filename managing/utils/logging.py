@@ -1,8 +1,17 @@
+import re
 import numpy as np
 
 from .trace import TraceWriter
 
 _LINE = "─" * 44
+
+
+def _task_label(task) -> str:
+    script = getattr(task, "script_name", "")
+    if script:
+        return f"SCRIPTED_TASK.{script}"
+    name = type(task).__name__.replace("Task", "")
+    return re.sub(r'(?<=[a-z])(?=[A-Z])', '_', name).upper()
 
 
 class StepLogger:
@@ -24,7 +33,8 @@ class StepLogger:
 
 
 def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
-                         info: dict, perception: dict, robot=None, sim=None) -> dict:
+                         info: dict, perception: dict, robot=None, sim=None,
+                         task=None, action=None) -> dict:
     o          = obs["observation"]
     ee_pos     = o[0:3]
     ee_vel     = o[3:6]
@@ -48,13 +58,17 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
         "obstacle_count_in_path": int(perception.get("obstacle_count_in_path", 0)),
         "obstacles":              perception.get("obstacles", {}),
         "objects":                perception.get("objects", {}),
-        "situations":             perception.get("situations", {}),
-        "adaptation_options":     perception.get("adaptation_options", {}),
         "scripts":                {k: True for k in perception.get("scripts", {})},
         "target_goal":            perception.get("target_goal", {}),
         "scene":                  perception.get("scene", {}),
         "robot_config":           perception.get("robot", {}),
     }
+
+    if task is not None:
+        msg["current_task"] = _task_label(task)
+
+    if action is not None:
+        msg["action"] = [float(x) for x in action]
 
     if robot is not None:
         msg["joint_angles"]     = [float(robot.get_joint_angle(i))    for i in range(7)]
@@ -90,6 +104,17 @@ def _format_step(msg: dict) -> str:
         _LINE,
         f" Ep {msg['episode']:>2} | Step {msg['step']:>3}",
         _LINE,
+    ]
+
+    if "current_task" in msg:
+        lines.append(f"  Task            : {msg['current_task']}")
+
+    if "action" in msg:
+        a = msg["action"]
+        gripper_cmd = "ABRIR" if a[3] > 0 else "FECHAR"
+        lines.append(f"  Action          : dx={a[0]:+.3f}  dy={a[1]:+.3f}  dz={a[2]:+.3f}  gripper={gripper_cmd}")
+
+    lines += [
         f"  EE posição      : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",
         f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]",
         f"  Garra           : {fingers:.3f} m  ({gripper_state})",
@@ -119,12 +144,6 @@ def _format_step(msg: dict) -> str:
     if msg.get("robot_config"):
         rc = msg["robot_config"]
         lines.append(f"  Robô config     : control={rc.get('control_type')}  block_gripper={rc.get('block_gripper')}  base={rc.get('base_position')}")
-
-    if msg.get("situations"):
-        lines.append(f"  Situações       : {list(msg['situations'].keys())}")
-
-    if msg.get("adaptation_options"):
-        lines.append(f"  Adapt. options  : {msg['adaptation_options']}")
 
     if msg.get("scripts"):
         lines.append(f"  Scripts         : {list(msg['scripts'].keys())}")
