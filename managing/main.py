@@ -7,14 +7,23 @@ import numpy as np
 from panda_gym.envs.core import RobotTaskEnv
 
 from config_loader import load_config
-# from mapek import Knowledge, MapeKLoop
-# from mapek.knowledge import Situation, Strategy
+from manager_bridge import ManagerBridge
 from sensors import SensorPipeline
 from setup_environment import setup_environment
-from tasks import create_pick_and_place
-from tasks.factory import create_hold, create_manual, create_push, create_reach, create_scripted, create_terminal
-from tasks.scripted_task import ScriptedTask
-from utils import log_step, TraceWriter
+from tasks.factory import create_hold, create_manual, create_pick_and_place, create_push, create_reach, create_scripted, create_terminal
+from utils import build_perception_msg, StepLogger
+
+
+def _make_task(strategy: str, sim, robot, configs):
+    """Instancia a task correspondente à estratégia recebida do manager."""
+    if strategy == "PUSH":
+        return create_push(sim, robot, configs)
+    if strategy == "PICK_AND_PLACE_OVER":
+        return create_pick_and_place(sim, robot, configs)
+    if strategy.startswith("SCRIPTED."):
+        script_name = strategy.split(".", 1)[1]
+        return create_scripted(sim, robot, configs, script_name=script_name)
+    return None
 
 
 def main():
@@ -23,28 +32,44 @@ def main():
     simulation, robot = setup_environment(configs)
 
     pipeline = SensorPipeline(configs)
+    bridge   = ManagerBridge()
+    logger = StepLogger()
 
-    # base_task = create_pick_and_place(simulation, robot, configs)
-    # base_task = create_push(simulation, robot, configs)  
+    base_task = create_pick_and_place(simulation, robot, configs)
+    # base_task = create_push(simulation, robot, configs)
     # base_task = create_manual(simulation, robot, configs)
     # base_task = create_hold(simulation, robot, configs)
     # base_task = create_reach(simulation, robot, configs)
-    # base_task = create_scripted(simulation, robot, configs, script_name="left_right") # tem que passar o script_name definido em scripts.yaml
-    
-    base_task = create_terminal(simulation, robot, configs)
+    # base_task = create_scripted(simulation, robot, configs, script_name="left_right")
+    # base_task = create_terminal(simulation, robot, configs)
+
     environment = RobotTaskEnv(robot, base_task)
+    
 
-    with TraceWriter() as writer:
-        for episode in range(configs["simulation"]["episodes"]):
-            observation, info = environment.reset(seed=configs["simulation"]["seed"])
+    for episode in range(configs["simulation"]["episodes"]):
+        observation, info = environment.reset(seed=configs["simulation"]["seed"])
 
-            for step in range(configs["simulation"]["max_steps"]):
+        for step in range(configs["simulation"]["max_steps"]):
+                # cmd = bridge.get_command()
+                # if cmd:
+                #     new_task = _make_task(cmd["strategy"], simulation, robot, configs)
+                #     if new_task:
+                #         current_task = new_task
+                #         print(f"[Managing] Task trocada: {cmd['strategy']}")
+
                 action = base_task.compute_action()
                 observation, reward, terminated, truncated, info = environment.step(action)
 
                 perception = pipeline.sense(simulation, robot, environment, observation)
 
-                log_step(episode + 1, step + 1, observation, reward, info, perception, writer=writer)
+                perception_msg = build_perception_msg(
+                    episode + 1, step + 1, observation, reward, info, perception,
+                    robot=robot, sim=simulation,
+                )
+                
+                #bridge.send_perception(perception_msg)
+
+                logger.log(perception_msg)
 
                 time.sleep(configs["simulation"]["step_delay"])
 
@@ -52,53 +77,6 @@ def main():
                     break
 
     environment.close()
-
     
-
-    # obstacle_names = [o["name"] for o in configs["environment"].get("obstacles", [])]
-    # situation_strategy_map = {
-    #     Situation(k): Strategy(v)
-    #     for k, v in configs["adaptation_options"].items()
-    # }
-    # knowledge = Knowledge(
-    #     obstacle_names=obstacle_names,
-    #     scripts=configs["scripts"],
-    #     situations=configs["situations"],
-    #     situation_strategy_map=situation_strategy_map or None,
-    # )
-    # mape_k = MapeKLoop(simulation, robot, configs["target_goal"], knowledge)
-
-    # obstacle_meta = {o["name"]: o for o in configs["environment"].get("obstacles", [])}
-    # overlay = TkOverlay(obstacle_meta=obstacle_meta)
-#     try:
-#         start_simulation_loop(environment, mape_k, configs, robot, simulation, overlay, obstacle_meta)
-#     finally:
-#         overlay.close()
-#         environment.close()
-
-
-# def start_simulation_loop(env, mape_k, configs, robot, simulation, overlay: TkOverlay, obstacle_meta: dict) -> None:
-#     sim_cfg = configs["simulation"]
-#     for episode in range(sim_cfg["episodes"]):
-#         observation, info = env.reset(seed=sim_cfg["seed"])
-#         mape_k.reset()
-
-#         for step in range(sim_cfg["max_steps"]):
-#             action = mape_k.step(observation)
-#             observation, reward, terminated, truncated, info = env.step(action)
-
-#             overlay.render(episode + 1, step + 1, observation, reward, info,
-#                            robot=robot, sim=simulation, mapek_state=mape_k.state, action=action)
-
-#             if sim_cfg["verbose"]:
-#                 print_mapek_step(episode + 1, step + 1, observation, reward, info,
-#                                  mapek_state=mape_k.state, obstacle_meta=obstacle_meta,
-#                                  action=action)
-
-#             time.sleep(sim_cfg["step_delay"])
-
-#             if terminated or truncated:
-#                 break
-
 if __name__ == "__main__":
     main()
