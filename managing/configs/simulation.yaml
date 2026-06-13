@@ -8,8 +8,6 @@ verbose: true
 environment_config: "environment.yaml" #"environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"
 target_goal_config: "target_goal.yaml"
 scripts_file: "scripts.yaml"
-adaptation_options_file: "adaptation_options.yaml"
-situations_file: "situations.yaml"
 
 distance_threshold: 0.05 #Distância mínima para considerar que a box chegou no goal (5cm)
 grasp_height_offset: 0.01 #Quanto a garra desce abaixo do centro da box para pegar (1cm)

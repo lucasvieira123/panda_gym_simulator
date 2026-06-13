@@ -1,10 +1,8 @@
 from .obstacles_in_path_sensor import ObstaclesInPathSensor
-from .predefined_adaptation_options_sensor import PredefinedAdaptationOptionsSensor
 from .predefined_objects_obstacles_sensor import InitialObjectsObstaclesSensor
 from .predefined_robot_sensor import InitialRobotSensor
 from .predefined_scene_sensor import InitialSceneSensor
 from .predefined_scripts_sensor import PredefinedScriptsSensor
-from .predefined_situations_sensor import PredefinedSituationsSensor
 from .predefined_target_goal_sensor import PredefinedTargetGoalSensor
 
 
@@ -29,8 +27,6 @@ class SensorPipeline:
             InitialObjectsObstaclesSensor(configs),
             InitialSceneSensor(configs),
             InitialRobotSensor(configs),
-            PredefinedSituationsSensor(configs),
-            PredefinedAdaptationOptionsSensor(configs),
             PredefinedTargetGoalSensor(configs),
             PredefinedScriptsSensor(configs),
         ]:
