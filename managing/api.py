@@ -5,8 +5,12 @@ import uvicorn
 from fastapi import FastAPI
 
 _perception_slot: dict = {}
-_command_queue: queue.Queue = queue.Queue(maxsize=1)
-_waypoints_queue: queue.Queue = queue.Queue(maxsize=1)
+_obstacles_slot:  dict = {}
+_objects_slot:    dict = {}
+_command_queue:     queue.Queue = queue.Queue(maxsize=1)
+_waypoints_queue:   queue.Queue = queue.Queue(maxsize=1)
+_environment_queue: queue.Queue = queue.Queue(maxsize=1)
+_goal_queue:        queue.Queue = queue.Queue(maxsize=1)
 
 app = FastAPI()
 
@@ -14,6 +18,16 @@ app = FastAPI()
 @app.get("/perception")
 def get_perception():
     return _perception_slot
+
+
+@app.get("/environment/obstacles")
+def get_obstacles():
+    return _obstacles_slot
+
+
+@app.get("/environment/objects")
+def get_objects():
+    return _objects_slot
 
 
 @app.put("/task")
@@ -36,9 +50,39 @@ def put_waypoints(body: dict):
     return {"ok": True}
 
 
+@app.put("/environment")
+def put_environment(body: dict):
+    try:
+        _environment_queue.put_nowait(body)
+    except queue.Full:
+        _environment_queue.get_nowait()
+        _environment_queue.put_nowait(body)
+    return {"ok": True}
+
+
+@app.put("/goal")
+def put_goal(body: dict):
+    try:
+        _goal_queue.put_nowait(body)
+    except queue.Full:
+        _goal_queue.get_nowait()
+        _goal_queue.put_nowait(body)
+    return {"ok": True}
+
+
 def update_perception(msg: dict) -> None:
     _perception_slot.clear()
     _perception_slot.update(msg)
+
+
+def update_obstacles(data: dict) -> None:
+    _obstacles_slot.clear()
+    _obstacles_slot.update(data)
+
+
+def update_objects(data: dict) -> None:
+    _objects_slot.clear()
+    _objects_slot.update(data)
 
 
 def get_command() -> dict | None:
@@ -51,6 +95,20 @@ def get_command() -> dict | None:
 def get_waypoints() -> dict | None:
     try:
         return _waypoints_queue.get_nowait()
+    except queue.Empty:
+        return None
+
+
+def get_environment_changes() -> dict | None:
+    try:
+        return _environment_queue.get_nowait()
+    except queue.Empty:
+        return None
+
+
+def get_goal_changes() -> dict | None:
+    try:
+        return _goal_queue.get_nowait()
     except queue.Empty:
         return None
 

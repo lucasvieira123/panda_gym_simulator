@@ -13,7 +13,7 @@ scene:
     spinning_friction: 0.001
 
 objects:
-  - name: "cube_1"
+  - name: "object_1"
     type: "box"
     size: [0.04, 0.04, 0.04]
     mass: 1.0
@@ -26,6 +26,6 @@ objects:
 #   - name: "parede_1"
 #     type: "box"
 #     size: [0.02, 0.30, 0.08]   # fina em X, larga em Y, alta o suficiente para bloquear
-#     position: [0.09, 0.0, 0.04] # ponto médio entre cube_1 e target
+#     position: [0.09, 0.0, 0.04] # ponto médio entre object_1 e target
 #     color: [0.8, 0.2, 0.2, 0.9]
 #     mass: 0.0

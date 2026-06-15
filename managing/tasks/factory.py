@@ -19,7 +19,7 @@ def _get_object_cfg(configs: dict, name: str) -> dict:
         raise ValueError(f"Objeto '{name}' não encontrado no environment config")
 
 
-def create_pick_and_place(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> PickAndPlaceTask:
+def create_pick_and_place(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> PickAndPlaceTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return PickAndPlaceTask(
         sim=sim,
@@ -31,7 +31,7 @@ def create_pick_and_place(sim: PyBullet, robot: Panda, configs: dict, object_nam
     )
 
 
-def create_reach(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> ReachTask:
+def create_reach(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> ReachTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return ReachTask(
         sim=sim,
@@ -42,7 +42,7 @@ def create_reach(sim: PyBullet, robot: Panda, configs: dict, object_name: str = 
     )
 
 
-def create_scripted(sim: PyBullet, robot: Panda, configs: dict, script_name: str, object_name: str = "cube_1") -> ScriptedTask:
+def create_scripted(sim: PyBullet, robot: Panda, configs: dict, script_name: str, object_name: str = "object_1") -> ScriptedTask:
     obj_cfg  = _get_object_cfg(configs, object_name)
     scripts  = configs.get("scripts", {})
     if script_name not in scripts:
@@ -60,7 +60,7 @@ def create_scripted(sim: PyBullet, robot: Panda, configs: dict, script_name: str
     )
 
 
-def create_hold(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> HoldTask:
+def create_hold(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> HoldTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return HoldTask(
         sim=sim,
@@ -72,7 +72,7 @@ def create_hold(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "
     )
 
 
-def create_manual(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> ManualTask:
+def create_manual(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> ManualTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return ManualTask(
         sim=sim,
@@ -84,7 +84,7 @@ def create_manual(sim: PyBullet, robot: Panda, configs: dict, object_name: str =
     )
 
 
-def create_push(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> PushTask:
+def create_push(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> PushTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return PushTask(
         sim=sim,
@@ -96,7 +96,7 @@ def create_push(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "
     )
 
 
-def create_api_task(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> APITask:
+def create_api_task(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> APITask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return APITask(
         sim=sim,
@@ -108,7 +108,7 @@ def create_api_task(sim: PyBullet, robot: Panda, configs: dict, object_name: str
     )
 
 
-def create_terminal(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "cube_1") -> TerminalTask:
+def create_terminal(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> TerminalTask:
     obj_cfg = _get_object_cfg(configs, object_name)
     return TerminalTask(
         sim=sim,

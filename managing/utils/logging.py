@@ -68,6 +68,10 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
 
     if task is not None:
         msg["current_task"] = _task_label(task)
+        if hasattr(task, "active_goal_name"):
+            msg["active_target_name"] = task.active_goal_name()
+        if hasattr(task, "_goal_mode") and "target_goal" in msg:
+            msg["target_goal"] = {**msg["target_goal"], "mode": "goal_" + task._goal_mode}
 
     if action is not None:
         msg["action"] = [float(x) for x in action]
@@ -77,11 +81,12 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
         msg["joint_velocities"] = [float(robot.get_joint_velocity(i)) for i in range(7)]
 
     if sim is not None:
-        msg["cube_rotation"]        = [float(x) for x in sim.get_base_rotation("cube_1", type="euler")]
-        msg["cube_linear_velocity"] = [float(x) for x in sim.get_base_velocity("cube_1")]
+        msg["cube_rotation"]        = [float(x) for x in sim.get_base_rotation("object_1", type="euler")]
+        msg["cube_linear_velocity"] = [float(x) for x in sim.get_base_velocity("object_1")]
         msg["obstacle_positions"]   = {
             name: [float(x) for x in sim.get_base_position(name)]
             for name in perception.get("obstacles", {})
+            if name in sim._bodies_idx
         }
 
     return msg

@@ -1,9 +1,9 @@
 from .obstacles_in_path_sensor import ObstaclesInPathSensor
-from .predefined_objects_obstacles_sensor import InitialObjectsObstaclesSensor
+from .predefined_objects_obstacles_sensor import LiveObjectsObstaclesSensor
 from .predefined_robot_sensor import InitialRobotSensor
 from .predefined_scene_sensor import InitialSceneSensor
 from .predefined_scripts_sensor import PredefinedScriptsSensor
-from .predefined_target_goal_sensor import PredefinedTargetGoalSensor
+from .predefined_target_goal_sensor import LiveTargetGoalSensor
 
 
 class SensorPipeline:
@@ -14,26 +14,26 @@ class SensorPipeline:
     - Runtime:   precisam de obs/simulação, rodam a cada chamada de sense().
 
     Uso:
-        pipeline = SensorPipeline(configs)
+        pipeline = SensorPipeline(configs, env)
 
         # dentro do loop de steps
         perception = pipeline.sense(simulation, robot, environment, obs)
         # perception contém dados estáticos + runtime mesclados
     """
 
-    def __init__(self, configs: dict) -> None:
+    def __init__(self, configs: dict, env) -> None:
         self._static_data: dict = {}
         for sensor in [
-            InitialObjectsObstaclesSensor(configs),
             InitialSceneSensor(configs),
             InitialRobotSensor(configs),
-            PredefinedTargetGoalSensor(configs),
             PredefinedScriptsSensor(configs),
         ]:
             self._static_data.update(sensor.sense(None, None, None, {}))
 
         self._runtime_sensors = [
             ObstaclesInPathSensor(configs),
+            LiveObjectsObstaclesSensor(configs, env),
+            LiveTargetGoalSensor(configs, env),
         ]
 
     @property

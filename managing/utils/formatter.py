@@ -27,9 +27,9 @@ def format_step(msg: dict) -> str:
         f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]",
         f"  Garra           : {fingers:.3f} m  ({gripper_state})",
         f"  Cubo posição    : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",
-        f"  Target          : [{target_pos[0]:+.3f}, {target_pos[1]:+.3f}, {target_pos[2]:+.3f}]",
+        f"  Target ({msg.get('active_target_name', 'target')}): [{target_pos[0]:+.3f}, {target_pos[1]:+.3f}, {target_pos[2]:+.3f}]",
         f"  Dist EE→Cubo    : {msg['dist_ee_to_cube']:.4f} m",
-        f"  Dist Cubo→Target: {msg['dist_cube_to_target']:.4f} m",
+        f"  Dist Cubo→{msg.get('active_target_name', 'target')}: {msg['dist_cube_to_target']:.4f} m",
         f"  Reward          : {msg['reward']:+.4f}",
         f"  Sucesso         : {msg['is_success']}",
     ]

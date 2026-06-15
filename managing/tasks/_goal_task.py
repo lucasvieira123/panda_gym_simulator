@@ -39,7 +39,7 @@ class _GoalTask(_Task):
         self.reward_type        = _task.get("reward_type", "dense")
         self.distance_threshold = _task.get("distance_threshold", 0.05)
 
-        self._goal_mode, self._goals = _parse_goals(target_goal_cfg)
+        self._goal_mode, self._goal_names, self._goals = _parse_goals(target_goal_cfg)
         self._current_idx = 0
         self._completed: set = set()
 
@@ -50,7 +50,23 @@ class _GoalTask(_Task):
             if "initial_position" in _obj else None
         )
 
-    # ── reset ────────────────────────────────────────────────────────────────
+    # ── reset / refresh ──────────────────────────────────────────────────────
+
+    def refresh_goal(self) -> None:
+        """Recalcula o goal ativo a partir das posições atuais do sim.
+        Chamar após mover um target via API."""
+        self.goal = self._active_goal()
+        self._refresh_sphere_colors()
+
+    def set_goal_mode(self, mode: str) -> None:
+        """Troca o modo de seleção de goal em tempo de execução.
+        mode: 'options' | 'sequence' | 'set'  (sem prefixo 'goal_')
+        """
+        self._goal_mode   = mode.replace("goal_", "")
+        self._current_idx = 0
+        self._completed   = set()
+        self.goal         = self._active_goal()
+        self._refresh_sphere_colors()
 
     def reset(self) -> None:
         self._current_idx = 0
@@ -75,17 +91,21 @@ class _GoalTask(_Task):
 
     # ── goal management ──────────────────────────────────────────────────────
 
+    def _live_positions(self) -> list:
+        return [np.array(self.sim.get_base_position(n), dtype=np.float32) for n in self._goal_names]
+
     def _active_goal(self) -> np.ndarray:
+        live = self._live_positions()
         if self._goal_mode == "options":
             pos = np.array(self.get_achieved_goal())
-            return min(self._goals, key=lambda g: np.linalg.norm(g - pos))
+            return min(live, key=lambda g: np.linalg.norm(g - pos))
         if self._goal_mode == "sequence":
-            idx = min(self._current_idx, len(self._goals) - 1)
-            return self._goals[idx]
+            idx = min(self._current_idx, len(live) - 1)
+            return live[idx]
         # set
-        unvisited = [g for i, g in enumerate(self._goals) if i not in self._completed]
+        unvisited = [g for i, g in enumerate(live) if i not in self._completed]
         if not unvisited:
-            return self._goals[-1]
+            return live[-1]
         pos = np.array(self.get_achieved_goal())
         return min(unvisited, key=lambda g: np.linalg.norm(g - pos))
 
@@ -96,8 +116,9 @@ class _GoalTask(_Task):
         if self._goal_mode == "sequence":
             self._current_idx += 1
         elif self._goal_mode == "set":
-            pos = np.array(self.get_achieved_goal())
-            for i, g in enumerate(self._goals):
+            pos  = np.array(self.get_achieved_goal())
+            live = self._live_positions()
+            for i, g in enumerate(live):
                 if i not in self._completed and np.linalg.norm(pos - g) < self.distance_threshold:
                     self._completed.add(i)
                     break
@@ -119,10 +140,18 @@ class _GoalTask(_Task):
     # ── sphere colors ────────────────────────────────────────────────────────
 
     def _active_goal_idx(self) -> int:
-        for i, g in enumerate(self._goals):
-            if np.array_equal(g, self.goal):
-                return i
-        return 0
+        if self._goal_mode == "sequence":
+            return min(self._current_idx, len(self._goal_names) - 1)
+        live = self._live_positions()
+        best_i, best_d = 0, float("inf")
+        for i, g in enumerate(live):
+            d = float(np.linalg.norm(g - self.goal))
+            if d < best_d:
+                best_d, best_i = d, i
+        return best_i
+
+    def active_goal_name(self) -> str:
+        return self._goal_names[self._active_goal_idx()]
 
     def _is_completed(self, i: int) -> bool:
         if self._goal_mode == "sequence":
@@ -155,7 +184,7 @@ class _GoalTask(_Task):
     def is_success(self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info: Dict[str, Any] = {}) -> np.ndarray:
         if self._goal_mode == "options":
             return np.array(
-                any(float(distance(achieved_goal, g)) < self.distance_threshold for g in self._goals),
+                any(float(distance(achieved_goal, g)) < self.distance_threshold for g in self._live_positions()),
                 dtype=bool,
             )
         return np.array(self._all_done(), dtype=bool)
@@ -170,9 +199,9 @@ class _GoalTask(_Task):
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 def _parse_goals(target_goal_cfg: dict):
-    for mode in ("goal_options", "goal_sequence", "goal_set"):
-        if mode in target_goal_cfg:
-            key = mode.replace("goal_", "")
-            goals = [np.array(p, dtype=np.float32) for p in target_goal_cfg[mode]]
-            return key, goals
-    raise ValueError("target_goal_cfg deve conter goal_options, goal_sequence ou goal_set")
+    raw_type = target_goal_cfg.get("mode", "goal_options")
+    mode     = raw_type.replace("goal_", "")
+    targets  = target_goal_cfg["targets"]
+    names    = [t["name"]                              for t in targets]
+    goals    = [np.array(t["position"], dtype=np.float32) for t in targets]
+    return mode, names, goals

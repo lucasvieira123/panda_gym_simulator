@@ -1,28 +1,19 @@
 from ._sensor import _Sensor
 
 
-class InitialObjectsObstaclesSensor(_Sensor):
+class LiveObjectsObstaclesSensor(_Sensor):
     """
-    Retorna as informações estáticas de objetos e obstáculos definidas no environment config.
-    Não consulta a simulação em tempo de execução.
+    Retorna objetos e obstáculos presentes na cena com suas posições atuais.
+    Consulta o EnvironmentManager em tempo de execução — reflete adições,
+    remoções e movimentos feitos via API.
     """
+
+    def __init__(self, configs: dict, env) -> None:
+        super().__init__(configs)
+        self._env = env
 
     def sense(self, simulation, robot, environment, obs: dict) -> dict:
-        environment_cfg = self.configs["environment"]
         return {
-            "objects":   self._read_bodies(environment_cfg.get("objects",   [])),
-            "obstacles": self._read_bodies(environment_cfg.get("obstacles", [])),
+            "objects":   self._env.get_objects(),
+            "obstacles": self._env.get_obstacles(),
         }
-
-    def _read_bodies(self, bodies: list) -> dict:
-        result = {}
-        for body in bodies:
-            result[body["name"]] = {
-                "type":              body.get("type"),
-                "size":              body.get("size"),
-                "mass":              body.get("mass"),
-                "color":             body.get("color"),
-                "lateral_friction":  body.get("lateral_friction"),
-                "spinning_friction": body.get("spinning_friction"),
-            }
-        return result
