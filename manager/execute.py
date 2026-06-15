@@ -1,9 +1,6 @@
-from managing_bridge import ManagingBridge
-
-
 class Executor:
-    def __init__(self, bridge: ManagingBridge) -> None:
-        self._bridge = bridge
+    def __init__(self, client) -> None:
+        self._client = client
 
     def execute(self, strategy: str) -> None:
-        self._bridge.send_command(strategy)
+        self._client.send_command(strategy)

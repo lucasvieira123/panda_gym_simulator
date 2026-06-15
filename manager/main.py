@@ -4,7 +4,8 @@ from execute import Executor
 from knowledge import Knowledge, SystemState
 from monitor import Monitor
 from plan import Planner
-from managing_bridge import ManagingBridge
+# from managing_bridge import ManagingBridge  # TCP bridge (desativado)
+from managing_client import ManagingClient
 
 
 def main() -> None:
@@ -15,18 +16,19 @@ def main() -> None:
         situation_strategy_map=dict(manager_cfg["plan_options"]) or None,
     )
 
-    bridge          = ManagingBridge()
+    # bridge  = ManagingBridge()       # TCP bridge (desativado)
+    client          = ManagingClient()
     monitor         = Monitor()
     analyzer        = Analyzer(knowledge)
     planner         = Planner(knowledge)
-    executor        = Executor(bridge)
+    executor        = Executor(client)
     state           = SystemState()
     active_strategy: str | None = None
 
     print("[Manager] Aguardando percepcoes do managing...\n")
 
     while True:
-        msg = bridge.get_perception(timeout=10.0)
+        msg = client.get_perception(timeout=10.0)
         if msg is None:
             print("[Manager] Nenhuma percepcao recebida. Aguardando...")
             continue
