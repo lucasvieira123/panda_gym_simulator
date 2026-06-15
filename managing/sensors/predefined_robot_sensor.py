@@ -1,10 +1,11 @@
 from ._sensor import _Sensor
 
 
-class InitialRobotSensor(_Sensor):
+class LiveRobotSensor(_Sensor):
     """
-    Retorna as informações estáticas do robô definidas no environment config.
-    Não consulta a simulação em tempo de execução.
+    Retorna as informações do robô consultando a simulação em tempo de execução.
+    base_position é lida do PyBullet — reflete movimentos feitos via API.
+    control_type e block_gripper não mudam em runtime e vêm do config.
     """
 
     def sense(self, simulation, robot, environment, obs: dict) -> dict:
@@ -13,6 +14,6 @@ class InitialRobotSensor(_Sensor):
             "robot": {
                 "control_type":  robot_cfg.get("control_type"),
                 "block_gripper": robot_cfg.get("block_gripper"),
-                "base_position": robot_cfg.get("base_position"),
+                "base_position": simulation.get_base_position("panda").tolist(),
             }
         }

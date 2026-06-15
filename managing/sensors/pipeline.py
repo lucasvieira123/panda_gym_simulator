@@ -1,6 +1,6 @@
 from .obstacles_in_path_sensor import ObstaclesInPathSensor
 from .predefined_objects_obstacles_sensor import LiveObjectsObstaclesSensor
-from .predefined_robot_sensor import InitialRobotSensor
+from .predefined_robot_sensor import LiveRobotSensor
 from .predefined_scene_sensor import InitialSceneSensor
 from .predefined_scripts_sensor import PredefinedScriptsSensor
 from .predefined_target_goal_sensor import LiveTargetGoalSensor
@@ -25,7 +25,6 @@ class SensorPipeline:
         self._static_data: dict = {}
         for sensor in [
             InitialSceneSensor(configs),
-            InitialRobotSensor(configs),
             PredefinedScriptsSensor(configs),
         ]:
             self._static_data.update(sensor.sense(None, None, None, {}))
@@ -34,6 +33,7 @@ class SensorPipeline:
             ObstaclesInPathSensor(configs),
             LiveObjectsObstaclesSensor(configs, env),
             LiveTargetGoalSensor(configs, env),
+            LiveRobotSensor(configs),
         ]
 
     @property
