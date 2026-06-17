@@ -30,7 +30,7 @@ class SensorPipeline:
             self._static_data.update(sensor.sense(None, None, None, {}))
 
         self._runtime_sensors = [
-            ObstaclesInPathSensor(configs),
+            ObstaclesInPathSensor(configs, env),
             LiveObjectsObstaclesSensor(configs, env),
             LiveTargetGoalSensor(configs, env),
             LiveRobotSensor(configs),

@@ -7,7 +7,13 @@ def format_step(msg: dict) -> str:
     fingers    = msg["fingers_width"]
     cube_pos   = msg["cube_position"]
     target_pos = msg["target_position"]
-    gripper_state = "ABERTA" if fingers > 0.02 else "FECHADA"
+    obj_size = next(iter(msg["objects"].values()))["size"][0] if msg.get("objects") else 0.04
+    if fingers < 0.01:
+        gripper_state = "FECHADA"
+    elif fingers < obj_size * 1.2:
+        gripper_state = "AGARRADA"
+    else:
+        gripper_state = "ABERTA"
 
     lines = [
         _LINE,

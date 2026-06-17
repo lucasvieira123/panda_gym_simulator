@@ -1,5 +1,5 @@
 seed: 42
-episodes: 3
+episodes: 1
 max_steps: 1000
 render_mode: "human"
 step_delay: 0.1

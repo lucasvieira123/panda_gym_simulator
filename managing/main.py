@@ -41,8 +41,8 @@ def main():
     hud         = SimHUD(simulation.physics_client)
     logger      = StepLogger(hud=hud)
     # gym_env = RobotTaskEnv(robot, create_push(simulation, robot, configs))
-    gym_env = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
-    # gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
+    # gym_env = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
+    gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
 
     current_goal_mode: str | None = None
 

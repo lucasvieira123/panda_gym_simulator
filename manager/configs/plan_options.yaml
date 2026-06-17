@@ -15,4 +15,4 @@
 #   SCRIPTED_TASK.left_right
 
 one_obstacle_situation: "PICK_AND_PLACE"
-two_obstacles_situation:    SCRIPTED_TASK.left_right
+two_obstacles_situation: "SCRIPTED_TASK.left_right"
