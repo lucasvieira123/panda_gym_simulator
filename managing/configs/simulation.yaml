@@ -10,7 +10,7 @@ target_goal_config: "target_goal.yaml"
 scripts_file: "scripts.yaml"
 
 distance_threshold: 0.05 #Distância mínima para considerar que a box chegou no goal (5cm)
-grasp_height_offset: 0.01 #Offset vertical somado ao centro da box: EE fica 1cm acima do centro (dentro da metade superior da box)
+grasp_height_offset: 0.0 #Offset vertical somado ao centro da box: EE fica 1cm acima do centro (dentro da metade superior da box)
 approach_height: 0.1 #Altura que o braço sobe antes de se mover horizontalmente (10cm) — evita colidir com obstáculos
 phase_threshold: 0.02 #Distância mínima para considerar que o braço chegou num waypoint e pode avançar para a próxima fase (2cm)
 approach_offset: 0.05 #Só para PushTask — distância atrás da box onde a garra se posiciona antes de empurrar (5cm)

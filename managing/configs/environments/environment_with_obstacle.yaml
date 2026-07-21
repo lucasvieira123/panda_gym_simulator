@@ -9,7 +9,7 @@ scene:
     width: 0.7
     height: 0.4
     x_offset: -0.3
-    lateral_friction: 1.0
+    lateral_friction: 3.0
     spinning_friction: 0.001
 
 objects:
@@ -19,13 +19,13 @@ objects:
     mass: 1.0
     initial_position: [0.03, 0.0, 0.02]
     color: [0.1, 0.2, 0.9, 1.0]
-    lateral_friction: 0.8
+    lateral_friction: 0.124   # 0.126 cai, 0.125 n cai, escorrega um pouco 0.124 
     spinning_friction: 0.001
 
 obstacles:
   - name: "obstacle_1"
     type: "box"
-    size: [0.02, 0.30, 0.5] #    # fina em X, larga em Y, alta para bloquear
+    size: [0.02, 0.30, 0.02] #    # fina em X, larga em Y, alta para bloquear
     position: [0.09, 0.0, 0.04]  # ponto médio entre cube_1 [0.03] e target [0.15]
     color: [0.8, 0.2, 0.2, 0.9]
     mass: 0.0
