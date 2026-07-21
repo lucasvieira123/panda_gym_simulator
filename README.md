@@ -126,6 +126,82 @@ two_obstacles_situation: "SCRIPTED_TASK.left_right"
 
 ---
 
+## Execution Modes
+
+The simulator supports two execution modes. **The entry point determines the mode** — no flags or extra setup required.
+
+### Normal mode
+
+Reads configuration from `managing/configs/`. Used for interactive development and manual testing.
+
+AQUI EXECUTA COMO A GENTE JA CONHECE PEGANGO AS CONFIGURACOES PADROES JA ESTABELECIDAS NA PASTA CONFIG
+```bash
+cd managing
+python main.py
+```
+
+### Experiment mode
+
+Reads configuration from a folder inside `experiments/results/`. Used for running automated batches with different parameters. Each experiment gets its own isolated process — PyBullet is fully restarted between runs, guaranteeing no state contamination.
+
+AQUI EXECUTA AS CONFIG DENTRO DA experiments/ AQUI É IMPORTANTE PQ NOS PERMITE EXECUTAR VARIAS VEZES A SIMULACAO COM DIVERSAS CONFIGURACOES SEM SEGUIDA (BATCH)
+
+```bash
+cd experiments
+python runner.py
+```
+
+The runner iterates over the experiments defined in `experiments/batch.yaml`, launches `managing/main.py` as a subprocess for each one, and saves the trace alongside the exact config used.
+
+```
+experiments/
+├── runner.py
+├── batch.yaml
+└── results/
+    ├── slip-lateral-0.124/
+    │   ├── simulation.yaml      ← exact config used
+    │   ├── environment.yaml
+    │   └── trace.log
+    └── slip-vertical-0.10/
+        ├── simulation.yaml
+        ├── environment.yaml
+        └── trace.log
+```
+
+**How it works:** the runner sets the environment variable `MANAGING_CONFIG_DIR` pointing to the experiment's folder before launching the subprocess. `config_loader.py` reads this variable — if present, loads from that path; if absent, loads from the default `managing/configs/`.
+
+```
+MANAGING_CONFIG_DIR not set  →  normal mode   →  reads from managing/configs/
+MANAGING_CONFIG_DIR set      →  experiment mode →  reads from the given path
+```
+
+### batch.yaml — defining experiments
+
+Only specify what differs from the defaults. The runner deep-merges with the original configs.
+
+```yaml
+experiments:
+  - name: "slip-lateral-0.124"
+    simulation:
+      render_mode: "direct"   # headless — no GUI
+      step_delay: 0
+    environment:
+      objects:
+        - name: "object_1"
+          lateral_friction: 0.124
+
+  - name: "slip-vertical-0.10"
+    simulation:
+      render_mode: "direct"
+      step_delay: 0
+    environment:
+      objects:
+        - name: "object_1"
+          lateral_friction: 0.10
+```
+
+---
+
 ## Task Strategies
 
 | Strategy | Description |
@@ -230,6 +306,11 @@ self-adaptive-arm-simulator/
 │   └── configs/
 │       ├── adaptation_options.yaml
 │       └── plan_options.yaml
+│
+├── experiments/               # batch experiment runner
+│   ├── runner.py              # orchestrator
+│   ├── batch.yaml             # list of experiments to run
+│   └── results/               # one folder per experiment (config + trace)
 │
 ├── api_test/                  # Jupyter notebooks for API testing
 ├── requirements.txt

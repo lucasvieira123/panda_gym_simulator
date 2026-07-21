@@ -1,0 +1,17 @@
+seed: 42
+episodes: 1
+max_steps: 1000
+render_mode: human
+step_delay: 0
+verbose: true
+environment_config: environment.yaml
+target_goal_config: target_goal.yaml
+scripts_file: scripts.yaml
+traces_dir: C:\Users\lucas_alves\Workspace\self-adaptive-arm-simulator\experiments\simulations\lateral_friction_0.100
+distance_threshold: 0.05
+grasp_height_offset: 0.0
+approach_height: 0.1
+phase_threshold: 0.02
+approach_offset: 0.05
+push_speed: 0.3
+move_speed: 0.5

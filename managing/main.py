@@ -1,3 +1,4 @@
+import argparse
 import time
 
 from panda_gym.envs.core import RobotTaskEnv
@@ -26,7 +27,11 @@ def _make_task(strategy: str, sim, robot, configs):
 
 
 def main():
-    configs = load_config()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config-dir", default=None)
+    args = parser.parse_args()
+
+    configs = load_config(config_dir=args.config_dir)
 
     env        = EnvironmentManager(configs)
     simulation = env.sim
@@ -39,7 +44,8 @@ def main():
     pipeline    = SensorPipeline(configs, env)
     # bridge    = ManagerBridge()  # TCP bridge (desativado)
     hud         = SimHUD(simulation.physics_client)
-    logger      = StepLogger(hud=hud)
+    traces_dir  = configs["simulation"].get("traces_dir")
+    logger      = StepLogger(traces_dir=traces_dir, hud=hud)
     # gym_env = RobotTaskEnv(robot, create_push(simulation, robot, configs))
     # gym_env = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
     gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))

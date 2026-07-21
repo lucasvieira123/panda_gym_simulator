@@ -1,0 +1,51 @@
+robot:
+  control_type: ee
+  block_gripper: false
+  base_position:
+  - -0.6
+  - 0.0
+  - 0.0
+scene:
+  table:
+    length: 1.1
+    width: 0.7
+    height: 0.4
+    x_offset: -0.3
+    lateral_friction: 3.0
+    spinning_friction: 0.001
+objects:
+- name: object_1
+  type: box
+  size:
+  - 0.04
+  - 0.04
+  - 0.04
+  mass: 1.0
+  initial_position:
+  - 0.03
+  - 0.0
+  - 0.02
+  color:
+  - 0.1
+  - 0.2
+  - 0.9
+  - 1.0
+  lateral_friction: 0.124
+  spinning_friction: 0.001
+obstacles:
+- name: obstacle_1
+  type: box
+  size:
+  - 0.02
+  - 0.3
+  - 0.02
+  position:
+  - 0.09
+  - 0.0
+  - 0.04
+  color:
+  - 0.8
+  - 0.2
+  - 0.2
+  - 0.9
+  mass: 0.0
