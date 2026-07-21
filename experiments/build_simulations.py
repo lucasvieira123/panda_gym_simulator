@@ -24,7 +24,7 @@ BASE_SIMULATION = {
     "seed": 42,
     "episodes": 1,
     "max_steps": 1000,
-    "render_mode": "human",  #"direct",   # headless — sem GUI
+    "render_mode": "human",  # "rgb_array": headless — sem GUI
     "step_delay": 0,
     "verbose": True,
     "environment_config": "environment.yaml",
