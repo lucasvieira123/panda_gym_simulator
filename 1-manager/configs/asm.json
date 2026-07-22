@@ -2,7 +2,7 @@
   "metadata": {
     "name": "arm_SAS"
   },
-  "parameters": {
+  "monitored_parameters": {
     "object_available": {
       "type": "int",
       "min": 0,
@@ -52,6 +52,11 @@
       "type": "int",
       "min": 0,
       "max": 1
+    },
+    "teste": {
+      "type": "int",
+      "min": 0,
+      "max": 100
     }
   },
   "scenarios": {

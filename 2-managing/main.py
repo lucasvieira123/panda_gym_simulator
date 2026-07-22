@@ -33,11 +33,12 @@ def main():
 
     configs = load_config(config_dir=args.config_dir)
 
+    api.start()  # uvicorn pronto antes do PyBullet carregar — manager conecta durante o loading
+
     env        = EnvironmentManager(configs)
     simulation = env.sim
     robot      = env.robot
 
-    api.start()
     api.update_obstacles(env.get_obstacles())
     api.update_objects(env.get_objects())
 
@@ -51,6 +52,8 @@ def main():
     gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
 
     current_goal_mode: str | None = None
+
+    api.wait_for_client()
 
     for episode in range(configs["simulation"]["episodes"]):
         observation, info = gym_env.reset(seed=configs["simulation"]["seed"])

@@ -2,7 +2,7 @@ seed: 42
 episodes: 1
 max_steps: 1000
 render_mode: "human" # "human" "rgb_array"
-step_delay: 0.0
+step_delay: 10
 verbose: true
 
 environment_config: "environment.yaml" #"environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"

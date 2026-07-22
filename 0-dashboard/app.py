@@ -1,10 +1,41 @@
 import json
+import queue
+import threading
 from pathlib import Path
 import streamlit as st
 import yaml
+from websockets.sync.client import connect as ws_connect
 from streamlit_agraph import agraph, Node, Edge, Config
 
-_CONFIGS_DIR = Path(__file__).parent / "configs"
+_CONFIGS_DIR    = Path(__file__).parent.parent / "1-manager" / "configs"
+_MANAGER_WS_URL = "ws://localhost:8001/ws/state"
+
+
+# ── WebSocket receiver (background thread) ────────────────────────────────────
+
+def _ws_receiver(q: queue.Queue) -> None:
+    while True:
+        try:
+            with ws_connect(_MANAGER_WS_URL) as ws:
+                for raw in ws:
+                    msg = json.loads(raw)
+                    try:
+                        q.put_nowait(msg)
+                    except queue.Full:
+                        q.get_nowait()
+                        q.put_nowait(msg)
+        except Exception:
+            import time
+            time.sleep(1.0)
+
+
+if "manager_state_queue" not in st.session_state:
+    st.session_state.manager_state_queue = queue.Queue(maxsize=1)
+    threading.Thread(
+        target=_ws_receiver,
+        args=(st.session_state.manager_state_queue,),
+        daemon=True,
+    ).start()
 
 st.set_page_config(layout="wide", page_title="ASM Editor")
 
@@ -27,12 +58,14 @@ if "scenarios" not in st.session_state:
     st.session_state.scenarios = {}   # { id: {id, name, given, when, do, then} }
 if "transitions" not in st.session_state:
     st.session_state.transitions = [] # [ {from: id, to: id} ]
-if "parameters" not in st.session_state:
-    st.session_state.parameters = {}  # { name: {type, min, max} }
+if "monitored_parameters" not in st.session_state:
+    st.session_state.monitored_parameters = {}  # { name: {type, min, max} }
 if "model_name" not in st.session_state:
     st.session_state.model_name = "My ASM"
 if "last_loaded_file" not in st.session_state:
     st.session_state.last_loaded_file = None
+if "perception_history" not in st.session_state:
+    st.session_state.perception_history = []
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -60,7 +93,7 @@ def build_asm() -> dict:
         "metadata": {
             "name": st.session_state.model_name,
         },
-        "parameters": st.session_state.parameters,
+        "monitored_parameters": st.session_state.monitored_parameters,
         "scenarios": {
             sid: {
                 "name":  s["name"],
@@ -78,7 +111,10 @@ def build_asm() -> dict:
 def load_asm(model: dict):
     meta   = model.get("metadata", {})
     st.session_state.model_name  = meta.get("name", "My ASM")
-    st.session_state.parameters  = model.get("parameters", {})
+    # aceita tanto "monitored_parameters" (formato atual) quanto "parameters" (legado)
+    st.session_state.monitored_parameters = (
+        model.get("monitored_parameters") or model.get("parameters", {})
+    )
     raw_scenarios = model.get("scenarios", {})
     st.session_state.scenarios   = {
         sid: {"id": sid, **s} for sid, s in raw_scenarios.items()
@@ -107,7 +143,7 @@ with st.sidebar:
     st.divider()
 
     # ── Parameters ────────────────────────────────────────────────────────────
-    st.subheader("Parameters")
+    st.subheader("Monitored Parameters")
     with st.form("form_add_param", clear_on_submit=True):
         p_name = st.text_input("Name *", placeholder="e.g. h")
         p_type = st.selectbox("Type", ["int", "float", "bool", "str"])
@@ -119,18 +155,18 @@ with st.sidebar:
     if add_param_btn:
         if not p_name.strip():
             st.sidebar.error("Name is required.")
-        elif p_name.strip() in st.session_state.parameters:
+        elif p_name.strip() in st.session_state.monitored_parameters:
             st.sidebar.warning(f"Parameter '{p_name}' already exists.")
         else:
             entry = {"type": p_type}
             if p_type in ("int", "float"):
                 if p_min: entry["min"] = float(p_min) if p_type == "float" else int(p_min)
                 if p_max: entry["max"] = float(p_max) if p_type == "float" else int(p_max)
-            st.session_state.parameters[p_name.strip()] = entry
+            st.session_state.monitored_parameters[p_name.strip()] = entry
             st.sidebar.success(f"Parameter '{p_name}' added!")
 
-    if st.session_state.parameters:
-        for pname, pdef in list(st.session_state.parameters.items()):
+    if st.session_state.monitored_parameters:
+        for pname, pdef in list(st.session_state.monitored_parameters.items()):
             col_p, col_pd = st.columns([3, 1])
             type_str = pdef.get("type", "")
             range_str = ""
@@ -138,7 +174,7 @@ with st.sidebar:
                 range_str = f" [{pdef.get('min','?')}–{pdef.get('max','?')}]"
             col_p.caption(f"`{pname}` : {type_str}{range_str}")
             if col_pd.button("🗑", key=f"del_p_{pname}"):
-                del st.session_state.parameters[pname]
+                del st.session_state.monitored_parameters[pname]
                 st.rerun()
 
     st.divider()
@@ -224,7 +260,7 @@ with st.sidebar:
         (_CONFIGS_DIR / "asm.json").write_text(
             json.dumps(build_asm(), indent=2), encoding="utf-8"
         )
-        st.success("Saved → configs/asm.json")
+        st.success("Saved → 2-manager/configs/asm.json")
 
     # ── Export YAML ───────────────────────────────────────────────────────────
     st.subheader("Export")
@@ -252,8 +288,140 @@ with st.sidebar:
     )
 
 
-# ── Main canvas ───────────────────────────────────────────────────────────────
+# ── Live state panel ─────────────────────────────────────────────────────────
 st.title(f"ASM — {st.session_state.model_name}")
+
+def _flatten_perception(p: dict) -> dict:
+    def r3(v): return [round(x, 4) for x in v] if v else []
+    row = {
+        "episode":              p.get("episode"),
+        "step":                 p.get("step"),
+        "task":                 p.get("current_task", ""),
+        "reward":               round(p.get("reward", 0), 4),
+        "success":              p.get("is_success", False),
+        "fingers":              round(p.get("fingers_width", 0), 4),
+        "ee_x":                 round(p["ee_position"][0], 4) if p.get("ee_position") else None,
+        "ee_y":                 round(p["ee_position"][1], 4) if p.get("ee_position") else None,
+        "ee_z":                 round(p["ee_position"][2], 4) if p.get("ee_position") else None,
+        "cube_x":               round(p["cube_position"][0], 4) if p.get("cube_position") else None,
+        "cube_y":               round(p["cube_position"][1], 4) if p.get("cube_position") else None,
+        "cube_z":               round(p["cube_position"][2], 4) if p.get("cube_position") else None,
+        "cube_roll":            round(p["cube_rotation"][0], 4) if p.get("cube_rotation") else None,
+        "cube_pitch":           round(p["cube_rotation"][1], 4) if p.get("cube_rotation") else None,
+        "cube_yaw":             round(p["cube_rotation"][2], 4) if p.get("cube_rotation") else None,
+        "target_x":             round(p["target_position"][0], 4) if p.get("target_position") else None,
+        "target_y":             round(p["target_position"][1], 4) if p.get("target_position") else None,
+        "target_z":             round(p["target_position"][2], 4) if p.get("target_position") else None,
+        "dist_ee_cube":         round(p.get("dist_ee_to_cube", 0), 4),
+        "dist_cube_target":     round(p.get("dist_cube_to_target", 0), 4),
+        "obstacle_in_path":     p.get("obstacle_in_path", False),
+        "obstacle_count":       p.get("obstacle_count_in_path", 0),
+    }
+    joints = p.get("joint_angles", [])
+    for i, v in enumerate(joints):
+        row[f"j{i}_angle"] = round(v, 4)
+    return row
+
+
+@st.fragment(run_every=0.5)
+def live_panel():
+    live_state = None
+    if not st.session_state.manager_state_queue.empty():
+        live_state = st.session_state.manager_state_queue.get()
+        st.session_state.last_manager_state = live_state
+        p = live_state.get("perception", {})
+        if p:
+            st.session_state.perception_history.append(_flatten_perception(p))
+    elif "last_manager_state" in st.session_state:
+        live_state = st.session_state.last_manager_state
+
+    with st.container(border=True):
+        st.subheader("Live — Manager State")
+        if live_state is None:
+            st.info("Manager não conectado. Aguardando ws://localhost:8001...")
+        else:
+            col_a, col_b, col_c = st.columns(3)
+            col_a.metric("Episode", live_state.get("episode", "—"))
+            col_b.metric("Step",    live_state.get("step",    "—"))
+            col_c.metric("Situation", live_state.get("situation", "—"))
+
+            col_d, col_e = st.columns(2)
+            col_d.metric("Strategy", live_state.get("strategy", "—"))
+
+            perception = live_state.get("perception", {})
+            if perception:
+                with st.expander("Perception", expanded=True):
+                    def fmt3(v): return f"[{v[0]:+.3f}, {v[1]:+.3f}, {v[2]:+.3f}]" if v else "—"
+                    def fmt7(v): return "  ".join(f"{x:+.3f}" for x in v) if v else "—"
+
+                    # ── Tarefa / Resultado ────────────────────────────────
+                    c1, c2, c3, c4 = st.columns(4)
+                    c1.metric("Task",      perception.get("current_task", "—"))
+                    c2.metric("Reward",    f"{perception.get('reward', 0):+.4f}")
+                    c3.metric("Success",   str(perception.get("is_success", "—")))
+                    c4.metric("Fingers",   f"{perception.get('fingers_width', 0):.3f} m")
+
+                    st.divider()
+
+                    # ── End-Effector ──────────────────────────────────────
+                    c1, c2 = st.columns(2)
+                    c1.markdown(f"**EE Position** `{fmt3(perception.get('ee_position', []))}`")
+                    c2.markdown(f"**EE Velocity** `{fmt3(perception.get('ee_velocity', []))}`")
+
+                    # ── Cubo ──────────────────────────────────────────────
+                    c1, c2, c3 = st.columns(3)
+                    c1.markdown(f"**Cube Position** `{fmt3(perception.get('cube_position', []))}`")
+                    c2.markdown(f"**Cube Rotation** `{fmt3(perception.get('cube_rotation', []))}`")
+                    c3.markdown(f"**Cube Lin. Vel.** `{fmt3(perception.get('cube_linear_velocity', []))}`")
+
+                    # ── Target ────────────────────────────────────────────
+                    c1, c2, c3 = st.columns(3)
+                    c1.markdown(f"**Target Position** `{fmt3(perception.get('target_position', []))}`")
+                    c2.metric("Dist EE→Cube",    f"{perception.get('dist_ee_to_cube', 0):.4f} m")
+                    c3.metric("Dist Cube→Target", f"{perception.get('dist_cube_to_target', 0):.4f} m")
+
+                    st.divider()
+
+                    # ── Ação ──────────────────────────────────────────────
+                    action = perception.get("action", [])
+                    if action:
+                        st.markdown(f"**Action** `{[round(x, 3) for x in action]}`")
+
+                    # ── Juntas ────────────────────────────────────────────
+                    angles = perception.get("joint_angles", [])
+                    vels   = perception.get("joint_velocities", [])
+                    if angles:
+                        st.markdown(f"**Joint Angles** `{fmt7(angles)}`")
+                    if vels:
+                        st.markdown(f"**Joint Velocities** `{fmt7(vels)}`")
+
+                    st.divider()
+
+                    # ── Obstáculos ────────────────────────────────────────
+                    c1, c2 = st.columns(2)
+                    c1.metric("Obstacle in Path", str(perception.get("obstacle_in_path", False)))
+                    c2.metric("Obstacle Count",   perception.get("obstacle_count_in_path", 0))
+
+                    # ── Objetos / Cena / Config ───────────────────────────
+                    if perception.get("objects"):
+                        with st.expander("Objects"):
+                            st.json(perception["objects"])
+                    if perception.get("obstacles"):
+                        with st.expander("Obstacles"):
+                            st.json(perception["obstacles"])
+                    if perception.get("target_goal"):
+                        with st.expander("Target Goal"):
+                            st.json(perception["target_goal"])
+                    if perception.get("scene"):
+                        with st.expander("Scene"):
+                            st.json(perception["scene"])
+                    if perception.get("robot_config"):
+                        with st.expander("Robot Config"):
+                            st.json(perception["robot_config"])
+                    if perception.get("scripts"):
+                        st.markdown(f"**Scripts** `{list(perception['scripts'].keys())}`")
+
+# ── Main canvas ───────────────────────────────────────────────────────────────
 
 if not st.session_state.scenarios:
     st.info("Use the sidebar to add your first scenario.")
@@ -292,3 +460,23 @@ else:
             width="100%", height=600, directed=True,
             physics=False, hierarchical=False, nodeHighlightBehavior=True,
         ))
+
+live_panel()
+
+# ── Trace histórico ───────────────────────────────────────────────────────────
+@st.fragment(run_every=1.0)
+def trace_panel():
+    import pandas as pd
+    with st.container(border=True):
+        col_title, col_btn = st.columns([5, 1])
+        col_title.subheader("Trace — Histórico de Steps")
+        if col_btn.button("🗑 Limpar", use_container_width=True):
+            st.session_state.perception_history = []
+
+        if not st.session_state.perception_history:
+            st.info("Nenhum step recebido ainda.")
+        else:
+            df = pd.DataFrame(st.session_state.perception_history)
+            st.dataframe(df, use_container_width=True, height=300)
+
+trace_panel()
