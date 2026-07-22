@@ -2,12 +2,12 @@ mode: goal_sequence   # goal_options | goal_sequence | goal_set
 targets:
   - name: target
     position: [0.15,  0.0,  0.02]
-  - name: target_1
-    position: [0.15,  0.10, 0.02]
-  - name: target_2
-    position: [-0.10, 0.0,  0.02]
-  - name: target_3
-    position: [-0.10, 0.1,  0.02]
+#  - name: target_1
+#    position: [0.15,  0.10, 0.02]
+#  - name: target_2
+#    position: [-0.10, 0.0,  0.02]
+#  - name: target_3
+#    position: [-0.10, 0.1,  0.02]
 
 # goal_options  → basta alcançar qualquer um dos targets para ser sucesso
 # goal_sequence → precisa alcançar todos, nesta ordem

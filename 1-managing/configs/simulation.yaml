@@ -1,11 +1,11 @@
 seed: 42
 episodes: 1
 max_steps: 1000
-render_mode: "rgb_array" # "human" "rgb_array"
+render_mode: "human" # "human" "rgb_array"
 step_delay: 0.0
 verbose: true
 
-environment_config: "environment_with_obstacle.yaml" #"environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"
+environment_config: "environment.yaml" #"environment_with_two_obstacles.yaml" # "environment.yaml" "environment_with_obstacle.yaml"
 target_goal_config: "target_goal.yaml"
 scripts_file: "scripts.yaml"
 traces_dir: "traces" # pasta relativa ao managing/ onde os traces são salvos
