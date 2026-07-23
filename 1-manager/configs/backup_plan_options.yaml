@@ -1,0 +1,18 @@
+# Mapeia Situation -> Task
+#
+# Chaves : nomes de situacao definidos em situations.yaml
+# Valores: nome da task em caixa alta (igual ao nome do arquivo sem _task.py)
+#          ou SCRIPTED_TASK.<id> onde <id> e o nome do script em scripts.yaml
+#
+# Tasks disponíveis:
+#   PUSH
+#   PICK_AND_PLACE
+#   REACH
+#   HOLD
+#   MANUAL
+#   SCRIPTED_TASK.script_1
+#   SCRIPTED_TASK.reach_only
+#   SCRIPTED_TASK.left_right
+
+one_obstacle_situation: "PICK_AND_PLACE"
+two_obstacles_situation: "SCRIPTED_TASK.left_right"

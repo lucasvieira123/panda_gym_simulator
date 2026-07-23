@@ -74,7 +74,6 @@ if "last_loaded_file" not in st.session_state:
 if "perception_history" not in st.session_state:
     st.session_state.perception_history = []
 
-
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def scenario_id(name: str) -> str:
     return name.strip().lower().replace(" ", "_")
@@ -130,6 +129,18 @@ def load_asm(model: dict):
         for sid, s in raw_scenarios.items()
     }
     st.session_state.transitions = model.get("transitions", [])
+
+
+# Auto-carrega asm.json do manager na primeira vez que a sessão arranca
+_ASM_PATH = _CONFIGS_DIR / "asm.json"
+if "asm_auto_loaded" not in st.session_state:
+    st.session_state.asm_auto_loaded = False
+if not st.session_state.asm_auto_loaded and _ASM_PATH.exists():
+    try:
+        load_asm(json.loads(_ASM_PATH.read_text(encoding="utf-8")))
+        st.session_state.asm_auto_loaded = True
+    except Exception:
+        pass
 
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────

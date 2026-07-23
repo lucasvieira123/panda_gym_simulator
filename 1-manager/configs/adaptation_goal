@@ -1,0 +1,3 @@
+{
+  "quality_goal_1" : "grasp_completed == 1 AND finger_contacts >= 2"
+}
