@@ -169,10 +169,10 @@ class _GoalTask(_Task):
         active_idx = self._active_goal_idx()
         for i in range(len(self._goals)):
             name = "target" if i == 0 else f"target_{i}"
-            if i == active_idx:
-                self._set_sphere_rgba(name, _COLOR_ACTIVE)
-            elif self._is_completed(i):
+            if self._is_completed(i):
                 self._set_sphere_rgba(name, _COLOR_DONE)
+            elif i == active_idx:
+                self._set_sphere_rgba(name, _COLOR_ACTIVE)
             else:
                 self._set_sphere_rgba(name, _COLOR_PENDING)
 

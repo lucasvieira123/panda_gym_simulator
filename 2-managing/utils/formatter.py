@@ -1,6 +1,14 @@
 _LINE = "─" * 44
 
 
+def gripper_state(fingers: float, obj_size: float = 0.04) -> str:
+    if fingers < 0.01:
+        return "FECHADA"
+    if fingers < obj_size * 1.2:
+        return "AGARRADA"
+    return "ABERTA"
+
+
 def format_step(msg: dict) -> str:
     ee_pos     = msg["ee_position"]
     ee_vel     = msg["ee_velocity"]
@@ -8,12 +16,7 @@ def format_step(msg: dict) -> str:
     cube_pos   = msg["cube_position"]
     target_pos = msg["target_position"]
     obj_size = next(iter(msg["objects"].values()))["size"][0] if msg.get("objects") else 0.04
-    if fingers < 0.01:
-        gripper_state = "FECHADA"
-    elif fingers < obj_size * 1.2:
-        gripper_state = "AGARRADA"
-    else:
-        gripper_state = "ABERTA"
+    gripper_state_ = gripper_state(fingers, obj_size)
 
     lines = [
         _LINE,
@@ -31,7 +34,7 @@ def format_step(msg: dict) -> str:
     lines += [
         f"  EE posição      : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",
         f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]",
-        f"  Garra           : {fingers:.3f} m  ({gripper_state})",
+        f"  Garra           : {fingers:.3f} m  ({gripper_state_})",
         f"  Cubo posição    : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",
         f"  Target ({msg.get('active_target_name', 'target')}): [{target_pos[0]:+.3f}, {target_pos[1]:+.3f}, {target_pos[2]:+.3f}]",
         f"  Dist EE→Cubo    : {msg['dist_ee_to_cube']:.4f} m",

@@ -13,29 +13,36 @@ _MANAGER_WS_URL = "ws://localhost:8001/ws/state"
 
 # ── WebSocket receiver (background thread) ────────────────────────────────────
 
-def _ws_receiver(q: queue.Queue) -> None:
+def _ws_receiver(q: queue.Queue, browser_ready: threading.Event, conn_count: list) -> None:
+    import time
+    browser_ready.wait(timeout=60.0)
     while True:
         try:
             with ws_connect(_MANAGER_WS_URL) as ws:
+                conn_count[0] += 1  # nova ligação ao manager = nova execução
                 for raw in ws:
                     msg = json.loads(raw)
                     try:
                         q.put_nowait(msg)
                     except queue.Full:
-                        q.get_nowait()
+                        try:
+                            q.get_nowait()
+                        except queue.Empty:
+                            pass
                         q.put_nowait(msg)
         except Exception:
-            import time
-            time.sleep(1.0)
+            time.sleep(0.1)
 
 
-if "manager_state_queue" not in st.session_state:
-    st.session_state.manager_state_queue = queue.Queue(maxsize=1)
-    threading.Thread(
-        target=_ws_receiver,
-        args=(st.session_state.manager_state_queue,),
-        daemon=True,
-    ).start()
+@st.cache_resource
+def _get_shared_state():
+    """Singleton por processo: fila, evento browser_ready, contador de runs e de conexões."""
+    q = queue.Queue(maxsize=1)
+    browser_ready = threading.Event()
+    call_count = [0]
+    conn_count  = [0]  # incrementa cada vez que _ws_receiver conecta ao manager
+    threading.Thread(target=_ws_receiver, args=(q, browser_ready, conn_count), daemon=True).start()
+    return q, browser_ready, call_count, conn_count
 
 st.set_page_config(layout="wide", page_title="ASM Editor")
 
@@ -323,11 +330,23 @@ def _flatten_perception(p: dict) -> dict:
     return row
 
 
-@st.fragment(run_every=0.5)
+@st.fragment(run_every=0.1)
 def live_panel():
+    q, browser_ready, call_count, conn_count = _get_shared_state()
+    call_count[0] += 1
+    if call_count[0] == 2:  # 1ª chamada é server-side; 2ª é o 1º tick real do browser
+        browser_ready.set()
+
+    # Detecta nova execução do manager/managing: conn_count mudou desde a última vez
+    last_conn = st.session_state.get("_last_conn", 0)
+    if conn_count[0] != last_conn:
+        st.session_state._last_conn = conn_count[0]
+        st.session_state.perception_history = []
+        st.session_state.pop("last_manager_state", None)
+
     live_state = None
-    if not st.session_state.manager_state_queue.empty():
-        live_state = st.session_state.manager_state_queue.get()
+    if not q.empty():
+        live_state = q.get_nowait()
         st.session_state.last_manager_state = live_state
         p = live_state.get("perception", {})
         if p:
@@ -464,7 +483,7 @@ else:
 live_panel()
 
 # ── Trace histórico ───────────────────────────────────────────────────────────
-@st.fragment(run_every=1.0)
+@st.fragment(run_every=0.1)
 def trace_panel():
     import pandas as pd
     with st.container(border=True):

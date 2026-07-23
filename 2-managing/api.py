@@ -101,6 +101,7 @@ def put_goal(body: dict):
     return {"ok": True}
 
 
+
 # ── HTTP update_perception (desativado — usar WebSocket) ──────────────────────
 # def update_perception(msg: dict) -> None:
 #     _perception_slot.clear()

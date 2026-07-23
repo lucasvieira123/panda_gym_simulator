@@ -8,18 +8,22 @@ from config_loader import load_config
 # from manager_bridge import ManagerBridge  # TCP bridge (desativado)
 from sensors import SensorPipeline
 from environment_manager import EnvironmentManager
-from tasks.factory import create_api_task, create_hold, create_manual, create_pick_and_place, create_push, create_reach, create_scripted, create_terminal
+from tasks.factory import (
+    create_api_task, create_hold, create_manual, create_object_delivery,
+    create_pick_and_place, create_push, create_reach, create_scripted, create_terminal,
+)
 from utils import build_perception_msg, SimHUD, StepLogger
 
 
 
 def _make_task(strategy: str, sim, robot, configs):
-    if strategy == "PUSH":           return create_push(sim, robot, configs)
-    if strategy == "PICK_AND_PLACE": return create_pick_and_place(sim, robot, configs)
-    if strategy == "REACH":          return create_reach(sim, robot, configs)
-    if strategy == "HOLD":           return create_hold(sim, robot, configs)
-    if strategy == "MANUAL":         return create_manual(sim, robot, configs)
-    if strategy == "API_TASK":       return create_api_task(sim, robot, configs)
+    if strategy == "PUSH":              return create_push(sim, robot, configs)
+    if strategy == "PICK_AND_PLACE":    return create_pick_and_place(sim, robot, configs)
+    if strategy == "REACH":             return create_reach(sim, robot, configs)
+    if strategy == "HOLD":              return create_hold(sim, robot, configs)
+    if strategy == "MANUAL":            return create_manual(sim, robot, configs)
+    if strategy == "API_TASK":          return create_api_task(sim, robot, configs)
+    if strategy == "OBJECT_DELIVERY":   return create_object_delivery(sim, robot, configs)
     if strategy.startswith("SCRIPTED_TASK."):
         script_name = strategy.split(".", 1)[1]
         return create_scripted(sim, robot, configs, script_name=script_name)
@@ -49,7 +53,8 @@ def main():
     logger      = StepLogger(traces_dir=traces_dir, hud=hud)
     # gym_env = RobotTaskEnv(robot, create_push(simulation, robot, configs))
     # gym_env = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
-    gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
+    # gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
+    gym_env = RobotTaskEnv(robot, create_object_delivery(simulation, robot, configs))
 
     current_goal_mode: str | None = None
 

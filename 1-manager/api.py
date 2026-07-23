@@ -7,6 +7,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 # ── WebSocket broadcast ───────────────────────────────────────────────────────
 _ws_loop: asyncio.AbstractEventLoop | None = None
 _ws_queues: set = set()
+_dashboard_ready = threading.Event()  # sinaliza quando o primeiro cliente WS (GUI) conectou
 
 app = FastAPI()
 
@@ -22,11 +23,17 @@ async def ws_state(websocket: WebSocket):
     await websocket.accept()
     q: asyncio.Queue = asyncio.Queue()
     _ws_queues.add(q)
+    _dashboard_ready.set()          # GUI conectou — libera wait_for_dashboard()
     try:
         while True:
             msg = await q.get()
-            await websocket.send_json(msg)
+            try:
+                await websocket.send_json(msg)
+            except Exception:
+                break
     except WebSocketDisconnect:
+        pass
+    except Exception:
         pass
     finally:
         _ws_queues.discard(q)
@@ -38,6 +45,14 @@ def update_state(payload: dict) -> None:
     snapshot = dict(payload)
     for q in list(_ws_queues):
         _ws_loop.call_soon_threadsafe(q.put_nowait, snapshot)
+
+
+def wait_for_dashboard(timeout: float = 120.0) -> None:
+    """Bloqueia até o GUI conectar via WS — espelho de wait_for_client() no managing."""
+    if _dashboard_ready.wait(timeout=timeout):
+        print("[Manager] GUI conectado.")
+    else:
+        print("[Manager] GUI nao conectou. Continuando mesmo assim...")
 
 
 def start(port: int = 8001) -> None:

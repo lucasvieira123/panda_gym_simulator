@@ -18,9 +18,15 @@ def main() -> None:
         situation_strategy_map=dict(manager_cfg["plan_options"]) or None,
     )
 
+    api.start(port=8001)
+    api.wait_for_dashboard()        # espera GUI conectar antes de tudo
+
+    import time
+    time.sleep(1.5)                 # dá tempo ao browser iniciar o fragment polling
+
     # bridge  = ManagingBridge()             # TCP bridge (desativado)
     # client  = ManagingClient()             # HTTP polling (desativado)
-    client          = ManagingWsClient()
+    client          = ManagingWsClient()    # só agora conecta ao managing
     monitor         = Monitor()
     analyzer        = Analyzer(knowledge)
     planner         = Planner(knowledge)
@@ -28,7 +34,6 @@ def main() -> None:
     state           = SystemState()
     active_strategy: str | None = None
 
-    api.start(port=8001)
     print("[Manager] Aguardando percepcoes do managing...\n")
 
     while True:

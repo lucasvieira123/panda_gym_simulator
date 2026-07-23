@@ -1,3 +1,12 @@
+from .formatter import gripper_state as _gripper_state
+
+_COLOR_GRIPPER = {
+    "ABERTA":   [1.0, 0.8, 0.2],
+    "AGARRADA": [0.4, 1.0, 0.4],
+    "FECHADA":  [1.0, 0.4, 0.4],
+}
+
+
 class SimHUD:
     """Exibe o estado da simulação como texto 3D na janela do PyBullet."""
 
@@ -19,7 +28,8 @@ class SimHUD:
         success  = msg["is_success"]
         tgt_name = msg.get("active_target_name", "target")
         fingers  = msg["fingers_width"]
-        gripper  = "ABERTA" if fingers > 0.02 else "FECHADA"
+        obj_size = next(iter(msg["objects"].values()))["size"][0] if msg.get("objects") else 0.04
+        gripper  = _gripper_state(fingers, obj_size)
         ee_pos   = msg["ee_position"]
         cube_pos = msg["cube_position"]
 
@@ -32,7 +42,7 @@ class SimHUD:
             (f"Target ({tgt_name}): [{tgt_pos[0]:+.3f}, {tgt_pos[1]:+.3f}, {tgt_pos[2]:+.3f}]", _W),
             (f"Reward    : {msg['reward']:+.4f}",                                                   _W),
             (f"Sucesso   : {success}",                                                              _W),
-            (f"Garra     : {fingers:.3f} m  ({gripper})",                                          _W),
+            (f"Garra     : {fingers:.3f} m  ({gripper})",                                          _COLOR_GRIPPER[gripper]),
             (f"EE pos    : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",              _W),
             (f"Cubo      : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",        _W),
             (f"Obstaculo : {'SIM' if msg['obstacle_in_path'] else 'nao'}  (count: {msg['obstacle_count_in_path']})", _W),
