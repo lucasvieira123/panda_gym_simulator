@@ -85,8 +85,9 @@ def make_label(s: dict) -> str:
     when  = s["when"]  or "*"
     do    = s["do"]    or "-"
     then  = s["then"]  or "*"
+    prefix = "[A] " if s.get("type", "predefined") == "adaptive" else ""
     return (
-        f"{s['name']}\n"
+        f"{prefix}{s['name']}\n"
         f"─────────────────\n"
         f"Given : {given}\n"
         f"When  : {when}\n"
@@ -104,6 +105,7 @@ def build_asm() -> dict:
         "scenarios": {
             sid: {
                 "name":  s["name"],
+                "type":  s.get("type", "predefined"),
                 "given": s["given"] or "*",
                 "when":  s["when"]  or "*",
                 "do":    s["do"],
@@ -124,7 +126,8 @@ def load_asm(model: dict):
     )
     raw_scenarios = model.get("scenarios", {})
     st.session_state.scenarios   = {
-        sid: {"id": sid, **s} for sid, s in raw_scenarios.items()
+        sid: {"id": sid, "type": s.get("type", "predefined"), **s}
+        for sid, s in raw_scenarios.items()
     }
     st.session_state.transitions = model.get("transitions", [])
 
@@ -189,12 +192,13 @@ with st.sidebar:
     # ── Add Scenario ──────────────────────────────────────────────────────────
     st.subheader("Scenarios")
     with st.form("form_add_scenario", clear_on_submit=True):
-        name      = st.text_input("Name *",  placeholder="e.g. Takeoff")
-        given     = st.text_input("Given",   placeholder="e.g. h == 0")
-        when      = st.text_input("When",    placeholder="e.g. armed == True")
-        do_action = st.text_input("Do",      placeholder="e.g. takeoff_act")
-        then      = st.text_input("Then",    placeholder="e.g. h >= 100")
-        add_btn   = st.form_submit_button("Add Scenario", use_container_width=True)
+        name          = st.text_input("Name *",  placeholder="e.g. Takeoff")
+        scenario_type = st.radio("Type", ["predefined", "adaptive"], horizontal=True, index=0)
+        given         = st.text_input("Given",   placeholder="e.g. h == 0")
+        when          = st.text_input("When",    placeholder="e.g. armed == True")
+        do_action     = st.text_input("Do",      placeholder="e.g. takeoff_act")
+        then          = st.text_input("Then",    placeholder="e.g. h >= 100")
+        add_btn       = st.form_submit_button("Add Scenario", use_container_width=True)
 
     if add_btn:
         if not name.strip():
@@ -207,6 +211,7 @@ with st.sidebar:
                 st.session_state.scenarios[sid] = {
                     "id":    sid,
                     "name":  name.strip(),
+                    "type":  scenario_type,
                     "given": given.strip(),
                     "when":  when.strip(),
                     "do":    do_action.strip(),
@@ -218,7 +223,8 @@ with st.sidebar:
     if st.session_state.scenarios:
         for sid, s in list(st.session_state.scenarios.items()):
             col_name, col_btn = st.columns([3, 1])
-            col_name.markdown(f"**{s['name']}**")
+            badge = "`adaptive`" if s.get("type", "predefined") == "adaptive" else "`predefined`"
+            col_name.markdown(f"**{s['name']}** {badge}")
             if col_btn.button("🗑", key=f"del_{sid}", help="Delete scenario"):
                 del st.session_state.scenarios[sid]
                 st.session_state.transitions = [
@@ -276,6 +282,7 @@ with st.sidebar:
             {
                 "id":    sid,
                 "name":  s["name"],
+                "type":  s.get("type", "predefined"),
                 "given": s["given"] or "*",
                 "when":  s["when"]  or "*",
                 "do":    s["do"],
@@ -452,10 +459,22 @@ else:
         SPACING_X = 380
         SPACING_Y = 260
 
+        _COLORS = {
+            "predefined": {
+                "background": "#1E3A5F", "border": "#4C9BE8",
+                "highlight":  {"background": "#2A5298", "border": "#6BB3F0"},
+            },
+            "adaptive": {
+                "background": "#3D3000", "border": "#FFD700",
+                "highlight":  {"background": "#5C4800", "border": "#FFE84D"},
+            },
+        }
+
         asm_nodes = []
         for i, (sid, s) in enumerate(st.session_state.scenarios.items()):
             col = i % COLS
             row = i // COLS
+            stype = s.get("type", "predefined")
             asm_nodes.append(
                 Node(
                     id=sid,
@@ -463,8 +482,7 @@ else:
                     shape="box",
                     x=col * SPACING_X,
                     y=row * SPACING_Y,
-                    color={"background": "#1E3A5F", "border": "#4C9BE8",
-                           "highlight": {"background": "#2A5298", "border": "#6BB3F0"}},
+                    color=_COLORS[stype],
                     font={"size": 13, "color": "#FFFFFF", "face": "monospace", "align": "left"},
                 )
             )
@@ -479,6 +497,14 @@ else:
             width="100%", height=600, directed=True,
             physics=False, hierarchical=False, nodeHighlightBehavior=True,
         ))
+
+        st.markdown(
+            '<span style="display:inline-block;width:14px;height:14px;background:#1E3A5F;border:2px solid #4C9BE8;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
+            '<span style="vertical-align:middle;margin-right:16px">Predefined</span>'
+            '<span style="display:inline-block;width:14px;height:14px;background:#3D3000;border:2px solid #FFD700;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
+            '<span style="vertical-align:middle">Adaptive</span>',
+            unsafe_allow_html=True,
+        )
 
 live_panel()
 
