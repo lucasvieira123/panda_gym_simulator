@@ -100,6 +100,10 @@ def build_asm() -> dict:
         "metadata": {
             "name": st.session_state.model_name,
         },
+        "nodes": {
+            "init": {"name": "INIT", "type": "init"},
+            "end":  {"name": "END",  "type": "end"},
+        },
         "monitored_parameters": st.session_state.monitored_parameters,
         "scenarios": {
             sid: {
@@ -247,33 +251,34 @@ with st.sidebar:
     st.divider()
 
     # ── Transitions ───────────────────────────────────────────────────────────
-    if len(st.session_state.scenarios) >= 1:
-        st.subheader("Transitions")
-        names = {s["name"]: sid for sid, s in st.session_state.scenarios.items()}
-        name_list = list(names.keys())
+    st.subheader("Transitions")
+    _FIXED_NODES = {"● Init": "__init__", "◎ End": "__end__"}
+    names = {**_FIXED_NODES, **{s["name"]: sid for sid, s in st.session_state.scenarios.items()}}
+    name_list = list(names.keys())
 
-        from_name = st.selectbox("From", name_list, key="sel_from")
-        to_name   = st.selectbox("To",   name_list, key="sel_to")
+    from_name = st.selectbox("From", name_list, key="sel_from")
+    to_name   = st.selectbox("To",   name_list, key="sel_to")
 
-        if st.button("Add Transition", use_container_width=True):
-            t = {"from": names[from_name], "to": names[to_name]}
-            if t in st.session_state.transitions:
-                st.sidebar.warning("Transition already exists.")
-            else:
-                st.session_state.transitions.append(t)
-                label = f"{from_name} ↺" if from_name == to_name else f"{from_name} → {to_name}"
-                st.sidebar.success(label)
+    if st.button("Add Transition", use_container_width=True):
+        t = {"from": names[from_name], "to": names[to_name]}
+        if t in st.session_state.transitions:
+            st.sidebar.warning("Transition already exists.")
+        else:
+            st.session_state.transitions.append(t)
+            label = f"{from_name} ↺" if from_name == to_name else f"{from_name} → {to_name}"
+            st.sidebar.success(label)
 
-        id_to_name = {sid: s["name"] for sid, s in st.session_state.scenarios.items()}
-        for i, t in enumerate(st.session_state.transitions):
-            fn = id_to_name.get(t["from"], t["from"])
-            tn = id_to_name.get(t["to"],   t["to"])
-            col_t, col_td = st.columns([3, 1])
-            label = f"{fn} ↺" if t["from"] == t["to"] else f"{fn} → {tn}"
-            col_t.caption(label)
-            if col_td.button("🗑", key=f"del_t_{i}", help="Delete transition"):
-                st.session_state.transitions.pop(i)
-                st.rerun()
+    _fixed_display = {"__init__": "● Init", "__end__": "◎ End"}
+    id_to_name = {**_fixed_display, **{sid: s["name"] for sid, s in st.session_state.scenarios.items()}}
+    for i, t in enumerate(st.session_state.transitions):
+        fn = id_to_name.get(t["from"], t["from"])
+        tn = id_to_name.get(t["to"],   t["to"])
+        col_t, col_td = st.columns([3, 1])
+        label = f"{fn} ↺" if t["from"] == t["to"] else f"{fn} → {tn}"
+        col_t.caption(label)
+        if col_td.button("🗑", key=f"del_t_{i}", help="Delete transition"):
+            st.session_state.transitions.pop(i)
+            st.rerun()
 
         st.divider()
 
@@ -460,62 +465,99 @@ def live_panel():
 
 # ── Main canvas ───────────────────────────────────────────────────────────────
 
-if not st.session_state.scenarios:
-    st.info("Use the sidebar to add your first scenario.")
-else:
-    with st.container(border=True):
-        st.subheader("ASM")
+with st.container(border=True):
+    st.subheader("ASM")
 
-        COLS = 2
-        SPACING_X = 380
-        SPACING_Y = 260
+    COLS = 2
+    SPACING_X = 380
+    SPACING_Y = 260
 
-        _COLORS = {
-            "predefined": {
-                "background": "#1E3A5F", "border": "#4C9BE8",
-                "highlight":  {"background": "#2A5298", "border": "#6BB3F0"},
+    _COLORS = {
+        "predefined": {
+            "background": "#1E3A5F", "border": "#4C9BE8",
+            "highlight":  {"background": "#2A5298", "border": "#6BB3F0"},
+        },
+        "adaptive": {
+            "background": "#3D3000", "border": "#FFD700",
+            "highlight":  {"background": "#5C4800", "border": "#FFE84D"},
+        },
+    }
+
+    num_scenarios = len(st.session_state.scenarios)
+    total_rows    = max(1, (num_scenarios + COLS - 1) // COLS)
+    center_x      = int((COLS - 1) * SPACING_X / 2)
+
+    # Nós estruturais sempre presentes
+    asm_nodes = [
+        Node(
+            id="__init__",
+            label="",
+            shape="dot",
+            size=14,
+            x=center_x,
+            y=-SPACING_Y,
+            color={
+                "background": "#000000", "border": "#000000",
+                "highlight":  {"background": "#444444", "border": "#444444"},
             },
-            "adaptive": {
-                "background": "#3D3000", "border": "#FFD700",
-                "highlight":  {"background": "#5C4800", "border": "#FFE84D"},
+        ),
+        Node(
+            id="__end__",
+            label="●",
+            shape="circle",
+            size=20,
+            x=center_x,
+            y=total_rows * SPACING_Y,
+            color={
+                "background": "#FFFFFF", "border": "#000000",
+                "highlight":  {"background": "#F0F0F0", "border": "#333333"},
             },
-        }
+            font={"size": 16, "color": "#000000"},
+            borderWidth=4,
+        ),
+    ]
 
-        asm_nodes = []
-        for i, (sid, s) in enumerate(st.session_state.scenarios.items()):
-            col = i % COLS
-            row = i // COLS
-            stype = s.get("type", "predefined")
-            asm_nodes.append(
-                Node(
-                    id=sid,
-                    label=make_label(s),
-                    shape="box",
-                    x=col * SPACING_X,
-                    y=row * SPACING_Y,
-                    color=_COLORS[stype],
-                    font={"size": 13, "color": "#FFFFFF", "face": "monospace", "align": "left"},
-                )
+    for i, (sid, s) in enumerate(st.session_state.scenarios.items()):
+        col = i % COLS
+        row = i // COLS
+        stype = s.get("type", "predefined")
+        asm_nodes.append(
+            Node(
+                id=sid,
+                label=make_label(s),
+                shape="box",
+                x=col * SPACING_X,
+                y=row * SPACING_Y,
+                color=_COLORS[stype],
+                font={"size": 13, "color": "#FFFFFF", "face": "monospace", "align": "left"},
             )
-
-        asm_edges = [
-            Edge(source=t["from"], target=t["to"], directed=True,
-                 color={"color": "#4C9BE8"}, arrows="to")
-            for t in st.session_state.transitions
-        ]
-
-        agraph(nodes=asm_nodes, edges=asm_edges, config=Config(
-            width="100%", height=600, directed=True,
-            physics=False, hierarchical=False, nodeHighlightBehavior=True,
-        ))
-
-        st.markdown(
-            '<span style="display:inline-block;width:14px;height:14px;background:#1E3A5F;border:2px solid #4C9BE8;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
-            '<span style="vertical-align:middle;margin-right:16px">Predefined</span>'
-            '<span style="display:inline-block;width:14px;height:14px;background:#3D3000;border:2px solid #FFD700;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
-            '<span style="vertical-align:middle">Adaptive</span>',
-            unsafe_allow_html=True,
         )
+
+    if not st.session_state.scenarios:
+        st.caption("Add scenarios in the sidebar. Connect them to ● Init and ◎ End via Transitions.")
+
+    asm_edges = [
+        Edge(source=t["from"], target=t["to"], directed=True,
+             color={"color": "#4C9BE8"}, arrows="to")
+        for t in st.session_state.transitions
+    ]
+
+    agraph(nodes=asm_nodes, edges=asm_edges, config=Config(
+        width="100%", height=600, directed=True,
+        physics=False, hierarchical=False, nodeHighlightBehavior=True,
+    ))
+
+    st.markdown(
+        '<span style="display:inline-block;width:12px;height:12px;background:#000;border-radius:50%;vertical-align:middle;margin-right:5px"></span>'
+        '<span style="vertical-align:middle;margin-right:16px">Init</span>'
+        '<span style="display:inline-block;width:14px;height:14px;background:#fff;border:3px solid #000;border-radius:50%;vertical-align:middle;margin-right:5px"></span>'
+        '<span style="vertical-align:middle;margin-right:16px">End</span>'
+        '<span style="display:inline-block;width:14px;height:14px;background:#1E3A5F;border:2px solid #4C9BE8;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
+        '<span style="vertical-align:middle;margin-right:16px">Predefined</span>'
+        '<span style="display:inline-block;width:14px;height:14px;background:#3D3000;border:2px solid #FFD700;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
+        '<span style="vertical-align:middle">Adaptive</span>',
+        unsafe_allow_html=True,
+    )
 
 live_panel()
 

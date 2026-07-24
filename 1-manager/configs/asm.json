@@ -2,6 +2,10 @@
   "metadata": {
     "name": "arm_SAS"
   },
+  "nodes": {
+    "init": { "name": "INIT", "type": "init" },
+    "end":  { "name": "END",  "type": "end"  }
+  },
   "monitored_parameters": {
     "object_available": {
       "type": "int",
@@ -118,37 +122,16 @@
     }
   },
   "transitions": [
-    {
-      "from": "approach_object",
-      "to": "grasp_object"
-    },
-    {
-      "from": "grasp_object",
-      "to": "lift_object"
-    },
-    {
-      "from": "grasp_object",
-      "to": "retry_grasp"
-    },
-    {
-      "from": "retry_grasp",
-      "to": "lift_object"
-    },
-    {
-      "from": "retry_grasp",
-      "to": "safe_abort"
-    },
-    {
-      "from": "lift_object",
-      "to": "transport_object"
-    },
-    {
-      "from": "transport_object",
-      "to": "place_object"
-    },
-    {
-      "from": "retry_grasp",
-      "to": "retry_grasp"
-    }
+    { "from": "__init__",        "to": "approach_object"  },
+    { "from": "approach_object", "to": "grasp_object"     },
+    { "from": "grasp_object",    "to": "lift_object"      },
+    { "from": "grasp_object",    "to": "retry_grasp"      },
+    { "from": "retry_grasp",     "to": "retry_grasp"      },
+    { "from": "retry_grasp",     "to": "lift_object"      },
+    { "from": "retry_grasp",     "to": "safe_abort"       },
+    { "from": "lift_object",     "to": "transport_object" },
+    { "from": "transport_object","to": "place_object"     },
+    { "from": "place_object",    "to": "__end__"          },
+    { "from": "safe_abort",      "to": "__end__"          }
   ]
 }
