@@ -79,11 +79,16 @@ def scenario_id(name: str) -> str:
     return name.strip().lower().replace(" ", "_")
 
 
+def _fmt_condition(expr: str, indent: int = 9) -> str:
+    pad = " " * indent
+    return f"\n{pad}AND ".join(part.strip() for part in expr.split(" AND "))
+
+
 def make_label(s: dict) -> str:
-    given = s["given"] or "*"
-    when  = s["when"]  or "*"
+    given = _fmt_condition(s["given"] or "*")
+    when  = _fmt_condition(s["when"]  or "*")
     do    = s["do"]    or "-"
-    then  = s["then"]  or "*"
+    then  = _fmt_condition(s["then"]  or "*")
     prefix = "[A] " if s.get("type", "domain") == "adaptive" else "[D] "
     return (
         f"{prefix}{s['name']}\n"
