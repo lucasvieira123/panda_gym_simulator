@@ -1,5 +1,0 @@
-{
-  "retry_grasp" : "grasp_completed == 1 AND finger_contacts < 2 AND grasp_attempts < 3",
-
-  "safe_abort" : "grasp_completed == 1 AND finger_contacts < 2 AND grasp_attempts >= 3"
-}

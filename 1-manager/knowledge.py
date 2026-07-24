@@ -29,6 +29,23 @@ class SystemState:
     current_strategy: str = "PUSH"
     current_situation: str = "normal"
     step: int = 0
+    # ASM monitored parameters
+    object_available:        int = 0
+    task_started:            int = 0
+    gripper_width_cm:        int = 0
+    distance_ee_object_cm:   int = 0
+    grasp_completed:         int = 0
+    finger_contacts:         int = 0
+    grasp_attempts:          int = 0
+    object_lift_height_cm:   int = 0
+    distance_object_goal_cm: int = 0
+    task_aborted:            int = 0
+    # managing perception
+    current_subtask: str = ""
+    # MAPE-K state
+    current_asm_scenario: str = "__init__"
+    goal_status: str = "not_applicable"
+    matched_scenario: object = None
 
     def to_eval_dict(self) -> dict:
         ee  = self.ee_position
@@ -61,6 +78,18 @@ class SystemState:
             "action_gripper": float(self.action[3]),
             "j0": float(ja[0]), "j1": float(ja[1]), "j2": float(ja[2]),
             "j3": float(ja[3]), "j4": float(ja[4]), "j5": float(ja[5]), "j6": float(ja[6]),
+            "current_subtask":        self.current_subtask,
+            # ASM monitored parameters
+            "object_available":       int(self.object_available),
+            "task_started":           int(self.task_started),
+            "gripper_width_cm":       int(self.gripper_width_cm),
+            "distance_ee_object_cm":  int(self.distance_ee_object_cm),
+            "grasp_completed":        int(self.grasp_completed),
+            "finger_contacts":        int(self.finger_contacts),
+            "grasp_attempts":         int(self.grasp_attempts),
+            "object_lift_height_cm":  int(self.object_lift_height_cm),
+            "distance_object_goal_cm":int(self.distance_object_goal_cm),
+            "task_aborted":           int(self.task_aborted),
         }
 
 

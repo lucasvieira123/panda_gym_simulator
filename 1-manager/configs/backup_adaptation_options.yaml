@@ -1,51 +1,5 @@
-# Expressoes Python puras — mesma sintaxe de um if
-# Avaliadas em ordem: primeira que for True vence
-#
-# ── Campos disponíveis ───────────────────────────────────────────────────────
-#
-# Progresso:
-#   episode                         int    episodio atual
-#   step                            int    step atual dentro do episodio
-#
-# End-effector:
-#   ee_x, ee_y, ee_z                float  posicao do end-effector (metros)
-#   ee_vx, ee_vy, ee_vz             float  velocidade do end-effector (m/s)
-#   fingers_width                   float  largura da garra (metros)
-#
-# Cubo:
-#   cube_x, cube_y, cube_z          float  posicao do cubo (metros)
-#   cube_roll, cube_pitch, cube_yaw float  rotacao do cubo (radianos)
-#   cube_vx, cube_vy, cube_vz       float  velocidade linear do cubo (m/s)
-#
-# Goal:
-#   target_x, target_y, target_z    float  posicao do target (metros)
-#   dist_ee_to_cube                 float  distancia EE -> cubo (metros)
-#   dist_cube_to_target             float  distancia cubo -> target (metros)
-#
-# Resultado:
-#   reward                          float  reward do step atual
-#   is_success                      bool   True se o objetivo foi atingido
-#
-# Obstaculos:
-#   obstacle_in_path                bool   True se algum obstaculo bloqueia o caminho
-#   obstacle_count_in_path          int    numero de obstaculos no caminho cubo->target
-#
-# Acao executada (ultimo step):
-#   action_x, action_y, action_z    float  direcao do movimento [-1..1]
-#   action_gripper                  float  gripper: +1.0=abrir  -1.0=fechar
-#
-# Juntas (j0..j6):
-#   j0, j1, j2, j3, j4, j5, j6     float  angulos das 7 juntas (radianos)
-#
-# ── Exemplos ─────────────────────────────────────────────────────────────────
-#   "obstacle_count_in_path >= 2"
-#   "dist_cube_to_target < 0.05"
-#   "fingers_width < 0.02 and dist_ee_to_cube < 0.10"
-#   "obstacle_count_in_path == 1 and step > 10"
-#   "cube_z > 0.05"
-#   "is_success"
-#   "reward > 0"
-# ─────────────────────────────────────────────────────────────────────────────
+{
+  "retry_grasp" : "grasp_completed == 1 AND finger_contacts < 2 AND grasp_attempts < 3",
 
-one_obstacle_situation: "obstacle_count_in_path == 1"
-two_obstacles_situation:    "obstacle_count_in_path >= 2"
+  "safe_abort" : "grasp_completed == 1 AND finger_contacts < 2 AND grasp_attempts >= 3"
+}

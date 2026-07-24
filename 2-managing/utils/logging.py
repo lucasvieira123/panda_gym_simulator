@@ -68,6 +68,8 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
 
     if task is not None:
         msg["current_task"] = _task_label(task)
+        if hasattr(task, "current_subtask"):
+            msg["current_subtask"] = task.current_subtask
         if hasattr(task, "active_goal_name"):
             msg["active_target_name"] = task.active_goal_name()
         if hasattr(task, "_goal_mode") and "target_goal" in msg:

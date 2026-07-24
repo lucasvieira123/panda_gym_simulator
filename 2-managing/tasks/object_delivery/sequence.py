@@ -95,10 +95,8 @@ class ObjectDeliverySequence(_ObjectTask):
 
         return action
 
-    # ── ASM state ────────────────────────────────────────────────────────────
-
     @property
-    def asm_state(self) -> str:
+    def current_subtask(self) -> str:
         return self._state
 
     @property
