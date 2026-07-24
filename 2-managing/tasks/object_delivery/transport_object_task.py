@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — TRANSPORT_OBJECT
 # Given : object_height_cm >= lift_height_cm, goal_reachable == true
@@ -53,7 +54,7 @@ class TransportObjectTask(_ObjectTask):
 
         if self._phase == _PHASE_MOVE:
             if xy_dist < self.threshold:
-                print("[TransportObject] Postcondição: distance_ee_goal <= 5cm ✓")
+                print(f"[{ts()}][TransportObject] Postcondição: distance_ee_goal <= 5cm ✓")
                 self._phase = _PHASE_DONE
 
         if self._phase == _PHASE_DONE:

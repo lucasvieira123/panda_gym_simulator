@@ -8,7 +8,7 @@ from typing import Dict, List
 class AsmScenario:
     key:   str
     name:  str
-    type:  str   # "predefined" | "adaptive"
+    type:  str   # "domain" | "adaptive"
     given: str
     when:  str
     do:    str
@@ -43,7 +43,7 @@ def load_asm(path: str | Path) -> Asm:
         scenarios[key] = AsmScenario(
             key=key,
             name=s["name"],
-            type=s.get("type", "predefined"),
+            type=s.get("type", "domain"),
             given=s.get("given", "*"),
             when=s.get("when",  "*"),
             do=s.get("do",    ""),

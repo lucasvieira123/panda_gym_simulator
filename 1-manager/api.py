@@ -3,6 +3,7 @@ import threading
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from ts import ts
 
 # ── WebSocket broadcast ───────────────────────────────────────────────────────
 _ws_loop: asyncio.AbstractEventLoop | None = None
@@ -50,9 +51,9 @@ def update_state(payload: dict) -> None:
 def wait_for_dashboard(timeout: float = 120.0) -> None:
     """Bloqueia até o GUI conectar via WS — espelho de wait_for_client() no managing."""
     if _dashboard_ready.wait(timeout=timeout):
-        print("[Manager] GUI conectado.")
+        print(f"[{ts()}][Manager] GUI conectado.")
     else:
-        print("[Manager] GUI nao conectou. Continuando mesmo assim...")
+        print(f"[{ts()}][Manager] GUI nao conectou. Continuando mesmo assim...")
 
 
 def start(port: int = 8001) -> None:

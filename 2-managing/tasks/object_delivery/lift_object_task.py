@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — LIFT_OBJECT
 # Given : gripper_contact == true
@@ -53,7 +54,7 @@ class LiftObjectTask(_ObjectTask):
 
         if self._phase == _PHASE_LIFT:
             if abs(ee_pos[2] - target_z) < self.threshold:
-                print(f"[LiftObject] Postcondição: object_height >= {self.lift_height*100:.0f}cm ✓")
+                print(f"[{ts()}][LiftObject] Postcondição: object_height >= {self.lift_height*100:.0f}cm ✓")
                 self._phase = _PHASE_DONE
 
         else:

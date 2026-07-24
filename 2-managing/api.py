@@ -4,6 +4,7 @@ import threading
 
 import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from utils.ts import ts
 
 # ── WebSocket broadcast ───────────────────────────────────────────────────────
 _ws_loop: asyncio.AbstractEventLoop | None = None
@@ -132,6 +133,13 @@ def get_command() -> dict | None:
         return None
 
 
+def wait_for_command(timeout: float = 5.0) -> dict | None:
+    try:
+        return _command_queue.get(timeout=timeout)
+    except queue.Empty:
+        return None
+
+
 def get_waypoints() -> dict | None:
     try:
         return _waypoints_queue.get_nowait()
@@ -158,10 +166,10 @@ def wait_for_client(timeout: float = 60.0) -> None:
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         if _ws_queues:
-            print("[Managing] Manager conectado. Iniciando simulação...")
+            print(f"[{ts()}][Managing] Manager conectado. Iniciando simulação...")
             return
         time.sleep(0.05)
-    print("[Managing] Nenhum manager conectado. Continuando mesmo assim...")
+    print(f"[{ts()}][Managing] Nenhum manager conectado. Continuando mesmo assim...")
 
 
 def start(host: str = "0.0.0.0", port: int = 8000) -> None:

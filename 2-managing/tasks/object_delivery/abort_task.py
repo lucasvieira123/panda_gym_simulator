@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — SAFE_ABORT
 # Given : max_retries_exceeded == true  OR  safety_violation == true
@@ -52,7 +53,7 @@ class AbortTask(_ObjectTask):
         elif self._phase == _PHASE_CENTER:
             target = self.neutral_pos
             if np.linalg.norm(ee_pos - self.neutral_pos) < self.threshold:
-                print("[SafeAbort] Postcondição: robot_at_safe_position == true ✓")
+                print(f"[{ts()}][SafeAbort] Postcondição: robot_at_safe_position == true ✓")
                 self._phase = _PHASE_DONE
 
         else:

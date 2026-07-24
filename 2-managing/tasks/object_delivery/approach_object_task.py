@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — APPROACH_OBJECT
 # Given : gripper_width_cm >= 6.0
@@ -68,7 +69,7 @@ class ApproachObjectTask(_ObjectTask):
         elif self._phase == _PHASE_CLOSE:
             target = grasp_target
             if np.linalg.norm(ee_pos - grasp_target) < self.phase_threshold:
-                print("[ApproachObject] Postcondição: dedos alinhados com centro geométrico ✓")
+                print(f"[{ts()}][ApproachObject] Postcondição: dedos alinhados com centro geométrico ✓")
                 self._phase = _PHASE_DONE
 
         else:  # _PHASE_DONE — segura posição

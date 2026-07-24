@@ -1,4 +1,5 @@
 from asm_loader import Asm, AsmScenario
+from ts import ts
 
 
 def _normalise(expr: str) -> str:
@@ -28,7 +29,7 @@ class AsmEvaluator:
 
     At each step, evaluates the candidates reachable from current_node
     against the current perception context.  Returns the matched scenario
-    (predefined or adaptive) or None when no candidate applies yet.
+    (domain or adaptive) or None when no candidate applies yet.
     Advances current_node automatically when a match is found.
     """
 
@@ -54,7 +55,7 @@ class AsmEvaluator:
         Evaluates candidates reachable from current_node.
 
         Returns:
-          AsmScenario  — matched scenario (check .type for "adaptive" vs "predefined")
+          AsmScenario  — matched scenario (check .type for "adaptive" vs "domain")
           None         — no candidate matched yet (mid-task) or execution is done
         """
         if self.done:
@@ -79,7 +80,7 @@ class AsmEvaluator:
                 prev = self._current_node
                 self._current_node = candidate_key
                 tag = "[ADAPT]" if scenario.type == "adaptive" else "[OK]"
-                print(f"[ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
+                print(f"[{ts()}][ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
                 return scenario
 
         return None
@@ -92,5 +93,5 @@ class AsmEvaluator:
         if current_scenario is None:
             return
         if _eval(current_scenario.then, context):
-            print(f"[ASM] [DONE] {current_scenario.name} → __end__")
+            print(f"[{ts()}][ASM] [DONE] {current_scenario.name} → __end__")
             self._current_node = "__end__"

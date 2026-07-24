@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 from .approach_object_task import ApproachObjectTask
 from .grasp_object_task import GraspObjectTask
 from .lift_object_task import LiftObjectTask
@@ -103,6 +104,16 @@ class ObjectDeliverySequence(_ObjectTask):
     def sequence_done(self) -> bool:
         return self._seq_done
 
+    def force_state(self, state_name: str) -> None:
+        """Manager-directed transition after adaptation. state_name uses managing's own constants."""
+        if state_name not in self._sub:
+            print(f"[{ts()}][ObjectDelivery] force_state: estado desconhecido '{state_name}'")
+            return
+        prev = self._state
+        self._state = state_name
+        self._active.reset_phase()
+        print(f"[{ts()}][ObjectDelivery] Manager dirigiu: {prev} → {self._state}")
+
     # ── helpers ──────────────────────────────────────────────────────────────
 
     @property
@@ -140,7 +151,7 @@ class ObjectDeliverySequence(_ObjectTask):
             self._state = STATE_PLACE
 
         elif self._state == STATE_PLACE:
-            print("[ObjectDelivery] Entrega concluída! ✓")
+            print(f"[{ts()}][ObjectDelivery] Entrega concluída! ✓")
             self._advance_goal()
             self._seq_done = True
             return
@@ -149,5 +160,5 @@ class ObjectDeliverySequence(_ObjectTask):
         #     self._seq_done = True
         #     return
 
-        print(f"[ObjectDelivery] {prev} → {self._state}")
+        print(f"[{ts()}][ObjectDelivery] {prev} → {self._state}")
         self._active.reset_phase()

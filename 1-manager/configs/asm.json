@@ -66,7 +66,7 @@
   "scenarios": {
     "approach_object": {
       "name": "APPROACH_OBJECT",
-      "type": "predefined",
+      "type": "domain",
       "given": "object_available == true AND gripper_width_cm >= 6",
       "when": "task_started == 1",
       "do": "approach_object()",
@@ -74,7 +74,7 @@
     },
     "grasp_object": {
       "name": "GRASP_OBJECT",
-      "type": "predefined",
+      "type": "domain",
       "given": "gripper_width_cm >= 6",
       "when": "distance_ee_object_cm <= 2",
       "do": "close_gripper()",
@@ -98,7 +98,7 @@
     },
     "lift_object": {
       "name": "LIFT_OBJECT",
-      "type": "predefined",
+      "type": "domain",
       "given": "finger_contacts >= 2",
       "when": "grasp_completed == 1",
       "do": "lift_object()",
@@ -106,7 +106,7 @@
     },
     "transport_object": {
       "name": "TRANSPORT_OBJECT",
-      "type": "predefined",
+      "type": "domain",
       "given": "finger_contacts >= 2",
       "when": "object_lift_height_cm >= 10",
       "do": "transport_to_goal()",
@@ -114,7 +114,7 @@
     },
     "place_object": {
       "name": "PLACE_OBJECT",
-      "type": "predefined",
+      "type": "domain",
       "given": "object_lift_height_cm >= 10 AND finger_contacts >= 2",
       "when": "distance_object_goal_cm <= 5",
       "do": "lower_object(); open_gripper()",
@@ -126,9 +126,9 @@
     { "from": "approach_object", "to": "grasp_object"     },
     { "from": "grasp_object",    "to": "lift_object"      },
     { "from": "grasp_object",    "to": "retry_grasp"      },
+    { "from": "grasp_object",     "to": "safe_abort"       },
     { "from": "retry_grasp",     "to": "retry_grasp"      },
     { "from": "retry_grasp",     "to": "lift_object"      },
-    { "from": "retry_grasp",     "to": "safe_abort"       },
     { "from": "lift_object",     "to": "transport_object" },
     { "from": "transport_object","to": "place_object"     },
     { "from": "place_object",    "to": "__end__"          },

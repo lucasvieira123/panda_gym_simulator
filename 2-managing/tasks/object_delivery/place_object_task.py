@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — PLACE_OBJECT
 # Given : distance_ee_goal_cm <= 5.0
@@ -68,7 +69,7 @@ class PlaceObjectTask(_ObjectTask):
             gripper = 1.0
             self._release_count += 1
             if self._release_count >= self.release_steps:
-                print("[PlaceObject] Postcondição: object_at_goal == true, gripper open ✓")
+                print(f"[{ts()}][PlaceObject] Postcondição: object_at_goal == true, gripper open ✓")
                 self._phase = _PHASE_DONE
 
         return np.array([0.0, 0.0, 0.0, gripper], dtype=np.float32)

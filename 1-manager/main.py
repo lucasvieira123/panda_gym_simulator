@@ -1,5 +1,9 @@
+import atexit
+import sys
 import api
 from analyze import Analyzer
+from perception_printer import print_perception
+from trace import TraceWriter
 from asm_loader import load_asm
 from asm_evaluator import AsmEvaluator
 from execute import Executor
@@ -8,12 +12,32 @@ from monitor import Monitor
 from plan import Planner
 from managing_ws_client import ManagingWsClient
 from pathlib import Path
+from ts import ts, set_step
 
 
 _ASM_PATH = Path(__file__).parent / "configs" / "asm.json"
 
 
 def main() -> None:
+    _writer      = TraceWriter()
+    _real_stdout = sys.stdout
+
+    class _Tee:
+        def write(self, text):
+            _real_stdout.write(text)
+            _writer._file.write(text)
+            _writer._file.flush()
+        def flush(self):
+            _real_stdout.flush()
+        def isatty(self):
+            return _real_stdout.isatty()
+
+    sys.stdout = _Tee()
+    atexit.register(_writer.close)
+    atexit.register(lambda: setattr(sys, "stdout", _real_stdout))
+
+    print(f"[Trace] Gravando em: {_writer.path}")
+
     asm           = load_asm(_ASM_PATH)
     asm_evaluator = AsmEvaluator(asm)
 
@@ -30,23 +54,41 @@ def main() -> None:
     executor = Executor(client)
     state    = SystemState()
 
-    print("[Manager] Aguardando percepcoes do managing...\n")
+    print(f"[{ts()}][Manager] Aguardando percepcoes do managing...\n")
 
-    while True:
+    _post_adaptation = False  # True após enviar "adapt", até próximo "ok" do ASM
+
+    while client.alive:
         msg = client.get_perception(timeout=30.0)
         if msg is None:
-            print("[Manager] Nenhuma percepcao recebida. Aguardando...")
             continue
 
-        print(f"[Manager] ep={msg.get('episode')} step={msg.get('step')} reward={msg.get('reward', 0):.4f}")
+        set_step(msg.get("step", 0))
+        print(f"[{ts()}][Manager] ep={msg.get('episode')} subtask={msg.get('current_subtask','')} reward={msg.get('reward', 0):.4f}")
 
         state = monitor.update(msg, state)      # M
+        print_perception(msg, state)
+
         state = analyzer.analyze(state)         # A
 
-        if state.goal_status == "violated":
+        # E — sempre responde ao checkpoint do managing
+        if state.goal_status == "not_applicable":
+            executor.send_continue()
+
+        elif state.goal_status == "ok":
+            if _post_adaptation:
+                # manager dirige o que vem depois da adaptação (ASM tem a visão)
+                executor.send_transition(state.current_asm_scenario)
+                _post_adaptation = False
+                print(f"[{ts()}][Manager] Pós-adaptação → transition para {state.current_asm_scenario}")
+            else:
+                executor.send_continue()
+
+        elif state.goal_status == "violated":
             strategy = planner.plan(state)      # P
-            executor.execute(strategy)          # E
-            print(f"[Manager] Adaptacao executada: {strategy}")
+            executor.send_adapt(strategy)       # E
+            _post_adaptation = True
+            print(f"[{ts()}][Manager] Adaptacao iniciada: {strategy}")
 
         api.update_state({
             "perception":           msg,

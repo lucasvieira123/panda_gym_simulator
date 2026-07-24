@@ -5,14 +5,22 @@ import time
 
 import requests
 from websockets.sync.client import connect
+from ts import ts
 
 
 class ManagingWsClient:
+    _MAX_RETRIES = 3
+
     def __init__(self, host: str = "localhost", port: int = 8000) -> None:
         self._ws_url   = f"ws://{host}:{port}/ws/perception"
         self._http_url = f"http://{host}:{port}"
         self._queue: queue.Queue = queue.Queue(maxsize=1)
+        self._alive    = True
         threading.Thread(target=self._receive_loop, daemon=True).start()
+
+    @property
+    def alive(self) -> bool:
+        return self._alive
 
     def get_perception(self, timeout: float = 10.0) -> dict | None:
         deadline = time.monotonic() + timeout
@@ -23,21 +31,23 @@ class ManagingWsClient:
                 continue
         return None
 
-    def send_command(self, strategy: str) -> None:
+    def send_command(self, payload: dict) -> None:
         try:
             requests.put(
                 f"{self._http_url}/task",
-                json={"strategy": strategy},
+                json=payload,
                 timeout=2.0,
             )
         except Exception:
             pass
 
     def _receive_loop(self) -> None:
-        while True:
+        retries = 0
+        while retries < self._MAX_RETRIES:
             try:
                 with connect(self._ws_url, open_timeout=1.0) as ws:
-                    print(f"[WsClient] Conectado a {self._ws_url}")
+                    retries = 0
+                    print(f"[{ts()}][WsClient] Conectado a {self._ws_url}")
                     for raw in ws:
                         msg = json.loads(raw)
                         try:
@@ -46,5 +56,9 @@ class ManagingWsClient:
                             self._queue.get_nowait()
                             self._queue.put_nowait(msg)
             except Exception as e:
-                print(f"[WsClient] Desconectado ({e}). Reconectando em 0.01s...")
-                time.sleep(0.01)
+                retries += 1
+                print(f"[{ts()}][WsClient] Falha ({e}). Tentativa {retries}/{self._MAX_RETRIES}...")
+                time.sleep(0.5)
+
+        print(f"[{ts()}][WsClient] Sem conexão após {self._MAX_RETRIES} tentativas. Encerrando.")
+        self._alive = False

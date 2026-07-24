@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — RETRY_GRASP
 # Given : gripper_contact == false (falha no grasp)
@@ -47,7 +48,7 @@ class RetryGraspTask(_ObjectTask):
 
         if self._phase == _PHASE_RETRACT:
             if np.linalg.norm(ee_pos - target) < self.threshold:
-                print("[RetryGrasp] EE retraído — aguardando manager re-iniciar GRASP ✓")
+                print(f"[{ts()}][RetryGrasp] EE retraído — aguardando manager re-iniciar GRASP ✓")
                 self._phase = _PHASE_DONE
         else:
             target = ee_pos  # segura posição

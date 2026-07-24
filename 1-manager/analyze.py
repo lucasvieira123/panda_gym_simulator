@@ -1,5 +1,6 @@
 from asm_evaluator import AsmEvaluator
 from knowledge import SystemState
+from ts import ts
 
 
 class Analyzer:
@@ -13,7 +14,7 @@ class Analyzer:
         matched = self._evaluator.evaluate(context)
         state.current_asm_scenario = self._evaluator.current_node
 
-        print(f"[Analyzer] ASM node={state.current_asm_scenario}  goal_status=", end="")
+        print(f"[{ts()}][Analyzer] ASM node={state.current_asm_scenario}  goal_status=", end="")
 
         if matched is None:
             state.goal_status = "not_applicable"
@@ -21,7 +22,7 @@ class Analyzer:
             print("not_applicable")
             return state
 
-        if matched.type == "predefined":
+        if matched.type == "domain":
             state.goal_status = "ok"
             state.matched_scenario = None
             print(f"ok  (scenario={matched.name})")

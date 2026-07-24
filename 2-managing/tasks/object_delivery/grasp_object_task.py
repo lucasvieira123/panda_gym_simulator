@@ -3,6 +3,7 @@ from typing import Callable
 import numpy as np
 
 from .._object_task import _ObjectTask
+from utils import ts
 
 # ASM — GRASP_OBJECT
 # Given : distance_ee_object_cm <= 2.0, gripper_width_cm >= 6.0
@@ -52,10 +53,10 @@ class GraspObjectTask(_ObjectTask):
             gripper = -1.0  # mantém fechada
             dist = np.linalg.norm(ee_pos - obj_pos)
             if dist < self.contact_threshold + 0.03:  # objeto dentro da garra
-                print("[GraspObject] Postcondição: gripper_contact == true ✓")
+                print(f"[{ts()}][GraspObject] Postcondição: gripper_contact == true ✓")
                 self._phase = _PHASE_DONE
             else:
-                print("[GraspObject] Contato não detectado — sinaliza RETRY_GRASP")
+                print(f"[{ts()}][GraspObject] Contato não detectado — sinaliza RETRY_GRASP")
                 self._phase = _PHASE_DONE  # manager decide retry via ASM
 
         else:  # _PHASE_DONE

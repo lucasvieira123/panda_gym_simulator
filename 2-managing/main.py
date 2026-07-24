@@ -12,7 +12,7 @@ from tasks.factory import (
     create_api_task, create_hold, create_manual, create_object_delivery,
     create_pick_and_place, create_push, create_reach, create_scripted, create_terminal,
 )
-from utils import build_perception_msg, SimHUD, StepLogger
+from utils import build_perception_msg, SimHUD, StepLogger, ts, set_step
 
 
 
@@ -28,6 +28,34 @@ def _make_task(strategy: str, sim, robot, configs):
         script_name = strategy.split(".", 1)[1]
         return create_scripted(sim, robot, configs, script_name=script_name)
     return None
+
+
+def _handle_command(cmd: dict | None, gym_env, sequence, sim, robot, configs) -> None:
+    """Handles manager checkpoint response. Managing knows nothing about ASM."""
+    if cmd is None:
+        return  # timeout — graceful degradation, continues normally
+
+    action = cmd.get("action", "continue")
+
+    if action == "continue":
+        pass  # managing follows its own sequence flow
+
+    elif action == "adapt":
+        scenario = cmd.get("to", "")
+        adaptive_task = _make_task(scenario, sim, robot, configs)
+        if adaptive_task:
+            adaptive_task.reset()
+            gym_env.task = adaptive_task
+            print(f"[{ts()}][Managing] Adaptação iniciada: {scenario}")
+        else:
+            print(f"[{ts()}][Managing] Adaptação desconhecida: '{scenario}' — ignorada")
+
+    elif action == "transition":
+        state_name = cmd.get("to", "")
+        if hasattr(sequence, "force_state"):
+            sequence.force_state(state_name)
+        gym_env.task = sequence  # restaura sequência como task activa
+        print(f"[{ts()}][Managing] Sequência retomada em: {state_name}")
 
 
 def main():
@@ -54,7 +82,8 @@ def main():
     # gym_env = RobotTaskEnv(robot, create_push(simulation, robot, configs))
     # gym_env = RobotTaskEnv(robot, create_hold(simulation, robot, configs))
     # gym_env = RobotTaskEnv(robot, create_pick_and_place(simulation, robot, configs))
-    gym_env = RobotTaskEnv(robot, create_object_delivery(simulation, robot, configs))
+    sequence  = create_object_delivery(simulation, robot, configs)
+    gym_env   = RobotTaskEnv(robot, sequence)
 
     current_goal_mode: str | None = None
 
@@ -64,16 +93,7 @@ def main():
         observation, info = gym_env.reset(seed=configs["simulation"]["seed"])
 
         for step in range(configs["simulation"]["max_steps"]):
-            cmd = api.get_command()
-            if cmd:
-                new_task = _make_task(cmd["strategy"], simulation, robot, configs)
-                if new_task:
-                    new_task.reset()
-                    if current_goal_mode is not None:
-                        new_task.set_goal_mode(current_goal_mode)
-                    gym_env.task = new_task
-                    print(f"[Managing] Task trocada: {cmd['strategy']}")
-
+            set_step(step + 1)
             env_cmd = api.get_environment_changes()
             if env_cmd:
                 env.apply_environment_command(env_cmd)
@@ -104,6 +124,11 @@ def main():
             api.update_perception(perception_msg)
             # bridge.send_perception(perception_msg)  # TCP bridge (desativado)
             logger.log(perception_msg)
+
+            # ── checkpoint: bloqueia até manager responder ────────────────────
+            cmd = api.wait_for_command(timeout=5.0)
+            _handle_command(cmd, gym_env, sequence, simulation, robot, configs)
+            # ─────────────────────────────────────────────────────────────────
 
             time.sleep(configs["simulation"]["step_delay"])
 
