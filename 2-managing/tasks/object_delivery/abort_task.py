@@ -66,6 +66,9 @@ class AbortTask(_ObjectTask):
 
         return np.array([direction[0], direction[1], direction[2], gripper], dtype=np.float32)
 
+    def is_success(self, achieved_goal, desired_goal, info={}):
+        return np.array(self._phase == _PHASE_DONE, dtype=bool)
+
     @property
     def done(self) -> bool:
         return self._phase == _PHASE_DONE

@@ -126,7 +126,7 @@
     { "from": "approach_object", "to": "grasp_object"     },
     { "from": "grasp_object",    "to": "lift_object"      },
     { "from": "grasp_object",    "to": "retry_grasp"      },
-    { "from": "grasp_object",     "to": "safe_abort"       },
+    { "from": "retry_grasp",     "to": "safe_abort"       },
     { "from": "retry_grasp",     "to": "retry_grasp"      },
     { "from": "retry_grasp",     "to": "lift_object"      },
     { "from": "lift_object",     "to": "transport_object" },

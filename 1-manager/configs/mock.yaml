@@ -1,0 +1,3 @@
+mock:
+  enabled: true
+  finger_contacts: 1              # força finger_contacts=1 sempre → testa safe_abort após 3 tentativas

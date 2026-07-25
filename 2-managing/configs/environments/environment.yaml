@@ -16,6 +16,7 @@ objects:
   - name: "object_1"
     type: "box"
     size: [0.04, 0.04, 0.04]
+    # size: [0.045, 0.030, 0.020]
     mass: 1.0
     initial_position: [-0.25, 0.0, 0.02]
     color: [0.1, 0.2, 0.9, 1.0]

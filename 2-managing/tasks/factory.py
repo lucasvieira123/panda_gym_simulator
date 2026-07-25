@@ -124,6 +124,30 @@ def create_terminal(sim: PyBullet, robot: Panda, configs: dict, object_name: str
     )
 
 
+def create_safe_abort(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> AbortTask:
+    obj_cfg = _get_object_cfg(configs, object_name)
+    return AbortTask(
+        sim=sim,
+        get_ee_position=robot.get_ee_position,
+        get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
+        target_goal_cfg=configs["target_goal"],
+        object_cfg=obj_cfg,
+        task_cfg=configs.get("simulation"),
+    )
+
+
+def create_retry_grasp(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> RetryGraspTask:
+    obj_cfg = _get_object_cfg(configs, object_name)
+    return RetryGraspTask(
+        sim=sim,
+        get_ee_position=robot.get_ee_position,
+        get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
+        target_goal_cfg=configs["target_goal"],
+        object_cfg=obj_cfg,
+        task_cfg=configs.get("simulation"),
+    )
+
+
 def create_object_delivery(
     sim: PyBullet,
     robot: Panda,

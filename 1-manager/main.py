@@ -67,6 +67,7 @@ def main() -> None:
         print(f"[{ts()}][Manager] ep={msg.get('episode')} subtask={msg.get('current_subtask','')} reward={msg.get('reward', 0):.4f}")
 
         state = monitor.update(msg, state)      # M
+
         print_perception(msg, state)
 
         state = analyzer.analyze(state)         # A

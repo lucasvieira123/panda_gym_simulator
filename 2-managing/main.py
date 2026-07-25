@@ -10,7 +10,8 @@ from sensors import SensorPipeline
 from environment_manager import EnvironmentManager
 from tasks.factory import (
     create_api_task, create_hold, create_manual, create_object_delivery,
-    create_pick_and_place, create_push, create_reach, create_scripted, create_terminal,
+    create_pick_and_place, create_push, create_reach, create_retry_grasp,
+    create_safe_abort, create_scripted, create_terminal,
 )
 from utils import build_perception_msg, SimHUD, StepLogger, ts, set_step
 
@@ -24,6 +25,8 @@ def _make_task(strategy: str, sim, robot, configs):
     if strategy == "MANUAL":            return create_manual(sim, robot, configs)
     if strategy == "API_TASK":          return create_api_task(sim, robot, configs)
     if strategy == "OBJECT_DELIVERY":   return create_object_delivery(sim, robot, configs)
+    if strategy == "RETRY_GRASP":       return create_retry_grasp(sim, robot, configs)
+    if strategy == "SAFE_ABORT":        return create_safe_abort(sim, robot, configs)
     if strategy.startswith("SCRIPTED_TASK."):
         script_name = strategy.split(".", 1)[1]
         return create_scripted(sim, robot, configs, script_name=script_name)
