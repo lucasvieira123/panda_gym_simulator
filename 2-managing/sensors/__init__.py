@@ -5,6 +5,7 @@ from .predefined_robot_sensor import LiveRobotSensor
 from .predefined_target_goal_sensor import LiveTargetGoalSensor
 from .predefined_scripts_sensor import PredefinedScriptsSensor
 from .obstacles_in_path_sensor import ObstaclesInPathSensor
+from .finger_contact_sensor import FingerContactSensor
 from .pipeline import SensorPipeline
 
 __all__ = [
@@ -15,5 +16,6 @@ __all__ = [
     "LiveTargetGoalSensor",
     "PredefinedScriptsSensor",
     "ObstaclesInPathSensor",
+    "FingerContactSensor",
     "SensorPipeline",
 ]

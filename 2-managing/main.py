@@ -77,7 +77,7 @@ def main():
     api.update_obstacles(env.get_obstacles())
     api.update_objects(env.get_objects())
 
-    pipeline    = SensorPipeline(configs, env)
+    pipeline    = SensorPipeline(configs, env, sim=simulation)
     # bridge    = ManagerBridge()  # TCP bridge (desativado)
     hud         = SimHUD(simulation.physics_client)
     traces_dir  = configs["simulation"].get("traces_dir")

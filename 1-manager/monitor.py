@@ -2,8 +2,8 @@ import numpy as np
 
 from knowledge import SystemState
 
-_GRIPPER_CLOSED_THRESHOLD = 0.040  # m — garra considerada fechada (≤)
-_GRIPPER_OPEN_THRESHOLD   = 0.060  # m — garra considerada aberta (histerese)
+_GRIPPER_CLOSED_THRESHOLD = 0.060  # m — garra considerada fechada (≤) — cobre objetos até ~6cm
+_GRIPPER_OPEN_THRESHOLD   = 0.075  # m — garra considerada aberta (histerese)
 
 
 class Monitor:
@@ -62,7 +62,7 @@ class Monitor:
         state.distance_ee_object_cm   = int(dec   * 100)
         state.distance_object_goal_cm = int(dct_xy * 100)
         state.grasp_completed         = new_grasp
-        state.finger_contacts         = 2 if new_grasp == 1 else 0
+        state.finger_contacts         = int(msg.get("finger_contacts", 0))
         state.object_lift_height_cm   = max(0, int((cz - self._initial_cube_z) * 100))
         state.task_aborted            = 0
 

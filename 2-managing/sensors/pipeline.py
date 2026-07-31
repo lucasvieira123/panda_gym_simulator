@@ -1,3 +1,4 @@
+from .finger_contact_sensor import FingerContactSensor
 from .obstacles_in_path_sensor import ObstaclesInPathSensor
 from .predefined_objects_obstacles_sensor import LiveObjectsObstaclesSensor
 from .predefined_robot_sensor import LiveRobotSensor
@@ -21,7 +22,7 @@ class SensorPipeline:
         # perception contém dados estáticos + runtime mesclados
     """
 
-    def __init__(self, configs: dict, env) -> None:
+    def __init__(self, configs: dict, env, sim=None) -> None:
         self._static_data: dict = {}
         for sensor in [
             InitialSceneSensor(configs),
@@ -35,6 +36,9 @@ class SensorPipeline:
             LiveTargetGoalSensor(configs, env),
             LiveRobotSensor(configs),
         ]
+
+        if sim is not None:
+            self._runtime_sensors.append(FingerContactSensor(configs, sim))
 
     @property
     def static(self) -> dict:

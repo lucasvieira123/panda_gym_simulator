@@ -3,7 +3,7 @@ from ts import ts
 _COL = 46  # largura da coluna RAW
 
 _PAIRED_RAW_KEYS = {"fingers_width", "dist_ee_to_cube", "dist_cube_to_target",
-                    "cube_position", "target_position"}
+                    "cube_position", "finger_contacts"}
 
 
 def _fmt(v) -> str:
@@ -30,7 +30,7 @@ def print_perception(msg: dict, state) -> None:
          f"object_lift_height_cm = {state.object_lift_height_cm} cm"),
         (f"cube_position (xy)    = [{cube[0]:.3f}, {cube[1]:.3f}]",
          f"grasp_completed       = {state.grasp_completed}"),
-        (f"target_position (xy)  = [{tgt[0]:.3f}, {tgt[1]:.3f}]",
+        (f"finger_contacts (raw) = {msg.get('finger_contacts', 0)}",
          f"finger_contacts       = {state.finger_contacts}"),
     ]
 

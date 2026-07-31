@@ -34,7 +34,7 @@ def format_step(msg: dict) -> str:
     lines += [
         f"  EE posição      : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",
         f"  EE velocidade   : [{ee_vel[0]:+.3f}, {ee_vel[1]:+.3f}, {ee_vel[2]:+.3f}]",
-        f"  Garra           : {fingers:.3f} m  ({gripper_state_})",
+        f"  Garra           : {fingers:.3f} m  ({gripper_state_})  contatos={msg.get('finger_contacts', '?')}",
         f"  Cubo posição    : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",
         f"  Target ({msg.get('active_target_name', 'target')}): [{target_pos[0]:+.3f}, {target_pos[1]:+.3f}, {target_pos[2]:+.3f}]",
         f"  Dist EE→Cubo    : {msg['dist_ee_to_cube']:.4f} m",
