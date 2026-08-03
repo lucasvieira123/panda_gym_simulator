@@ -1,0 +1,120 @@
+────────────────────────────────────────────
+ Ep  1 | Step   1
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.966, +0.000, -0.259, +1.000]
+  EE posição      : [+0.011, +0.000, +0.188]
+  EE velocidade   : [-0.435, +0.000, -0.140]
+  Garra           : 0.070 m  (ABERTA)
+  Cubo posição    : [-0.250, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.3103 m
+  Dist Cubo→target: 0.4000 m
+  Reward          : -0.4000
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.35, +0.00, -1.98, -0.00, +2.33, +0.79]
+  Juntas veloc.   : [-0.00, -0.81, +0.01, -1.59, -0.00, +0.50, -0.03]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   2
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.967, -0.000, -0.254, +1.000]
+  EE posição      : [-0.021, +0.000, +0.178]
+  EE velocidade   : [-0.354, +0.000, -0.105]
+  Garra           : 0.079 m  (ABERTA)
+  Cubo posição    : [-0.250, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.2785 m
+  Dist Cubo→target: 0.4000 m
+  Reward          : -0.4000
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.28, +0.00, -2.10, -0.00, +2.39, +0.79]
+  Juntas veloc.   : [-0.00, -0.65, +0.00, -1.28, -0.00, +0.47, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   3
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.969, -0.000, -0.247, +1.000]
+  EE posição      : [-0.053, +0.000, +0.169]
+  EE velocidade   : [-0.389, +0.000, -0.113]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [-0.250, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.2465 m
+  Dist Cubo→target: 0.4000 m
+  Reward          : -0.4000
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.22, +0.00, -2.23, -0.00, +2.45, +0.79]
+  Juntas veloc.   : [-0.00, -0.68, +0.00, -1.33, -0.00, +0.49, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   4
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.971, -0.000, -0.240, +1.000]
+  EE posição      : [-0.087, +0.000, +0.159]
+  EE velocidade   : [-0.389, +0.000, -0.106]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [-0.250, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.2140 m
+  Dist Cubo→target: 0.4000 m
+  Reward          : -0.4000
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.16, +0.00, -2.35, -0.00, +2.51, +0.79]
+  Juntas veloc.   : [-0.00, -0.66, +0.00, -1.28, +0.00, +0.47, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   5
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.973, -0.000, -0.231, +1.000]
+  EE posição      : [-0.121, +0.000, +0.149]
+  EE velocidade   : [-0.408, +0.001, -0.115]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [-0.250, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.1822 m
+  Dist Cubo→target: 0.4000 m
+  Reward          : -0.4000
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.10, +0.00, -2.47, -0.00, +2.57, +0.79]
+  Juntas veloc.   : [-0.00, -0.65, +0.00, -1.28, +0.00, +0.47, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]

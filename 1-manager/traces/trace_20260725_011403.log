@@ -1,0 +1,2 @@
+[Trace] Gravando em: C:\Users\lucas_alves\Workspace\self-adaptive-arm-simulator\1-manager\traces\trace_20260725_011403.log
+[step=   0 01:14:03.635][Manager] MOCK ativo: {'enabled': True, 'finger_contacts': 1}

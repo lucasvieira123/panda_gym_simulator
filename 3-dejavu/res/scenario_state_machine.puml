@@ -1,0 +1,105 @@
+@startuml
+title ScenarioStateMachine
+state "root" as root {
+  [*] --> INIT
+  S20 --> [*] : [True]
+  state "ERR_23" as ERR23
+  state "ERR_19" as ERR19
+  state "ERR_17" as ERR17
+  state "ERR_15" as ERR15
+  state "ERR_13" as ERR13
+  state "ERR_11" as ERR11
+  state "ERR_9" as ERR9
+  state "ERR_7" as ERR7
+  state "ERR_5" as ERR5
+  state "ERR_3" as ERR3
+  state "ERR_1" as ERR1
+  state "S20" as S20
+S20 : **inv:** armed == False
+  state "PHI_19" as PHI19
+PHI19 : **inv:** True
+PHI19 --> S20 : [armed == False]
+PHI19 --> ERR19 : [not (armed == False)]
+  state "S18" as S18
+S18 : **inv:** armed == True
+S18 --> PHI19 : shutdown_act
+  state "PHI_17" as PHI17
+PHI17 : **inv:** True
+PHI17 --> S18 : [armed == True]
+PHI17 --> ERR17 : [not (armed == True)]
+  state "S24" as S24
+S24 : **inv:** h == 0
+S24 --> PHI17 : [h == 0]
+  state "PHI_23" as PHI23
+PHI23 : **inv:** True
+PHI23 --> S24 : [h == 0]
+PHI23 --> ERR23 : [not (h == 0)]
+  state "S22" as S22
+S22 : **inv:** h >= 100
+S22 --> PHI23 : safeland_act
+  state "PHI_21" as PHI21
+PHI21 : **inv:** True
+PHI21 --> S22 : [h >= 100]
+  state "S16" as S16
+S16 : **inv:** h == 0
+S16 --> PHI17 : [h == 0]
+  state "PHI_15" as PHI15
+PHI15 : **inv:** True
+PHI15 --> S16 : [h == 0]
+PHI15 --> ERR15 : [not (h == 0)]
+  state "S14" as S14
+S14 : **inv:** h >= 100
+S14 --> PHI15 : land_act
+  state "PHI_13" as PHI13
+PHI13 : **inv:** True
+PHI13 --> S14 : [h >= 100]
+PHI13 --> ERR13 : [not (h >= 100)]
+  state "S12" as S12
+S12 : **inv:** (delta_dt >= 10) and (h >= 100)
+S12 --> PHI5 : [h >= 100]
+  state "PHI_11" as PHI11
+PHI11 : **inv:** True
+PHI11 --> S12 : [(delta_dt >= 10) and (h >= 100)]
+PHI11 --> ERR11 : [not ((delta_dt >= 10) and (h >= 100))]
+  state "S10" as S10
+S10 : **inv:** h >= 100
+S10 --> PHI11 : manoeuvre_act
+  state "PHI_9" as PHI9
+PHI9 : **inv:** True
+PHI9 --> S10 : [h >= 100]
+PHI9 --> ERR9 : [not (h >= 100)]
+  state "S8" as S8
+S8 : **inv:** True
+S8 --> PHI9 : [(b > 10) and (dt > 0)]
+S8 --> PHI13 : [(dt == 0) and (b > 10)]
+S8 --> PHI21 : [b <= 10]
+  state "PHI_7" as PHI7
+PHI7 : **inv:** True
+PHI7 --> S8 : [True]
+PHI7 --> ERR7 : [not (True)]
+  state "S6" as S6
+S6 : **inv:** True
+S6 --> PHI7 : checkstatus_act
+  state "PHI_5" as PHI5
+PHI5 : **inv:** True
+PHI5 --> S6 : [True]
+PHI5 --> ERR5 : [not (True)]
+  state "S4" as S4
+S4 : **inv:** h >= 100
+S4 --> PHI5 : [h >= 100]
+  state "PHI_3" as PHI3
+PHI3 : **inv:** True
+PHI3 --> S4 : [h >= 100]
+PHI3 --> ERR3 : [not (h >= 100)]
+  state "S2" as S2
+S2 : **inv:** h == 0
+S2 --> PHI3 : takeoff_act
+  state "PHI_1" as PHI1
+PHI1 : **inv:** True
+PHI1 --> S2 : [h == 0]
+PHI1 --> ERR1 : [not (h == 0)]
+  state "INIT" as INIT
+INIT : **inv:** True
+INIT --> PHI1 : [armed == True]
+}
+@enduml

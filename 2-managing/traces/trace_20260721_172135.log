@@ -1,0 +1,975 @@
+────────────────────────────────────────────
+ Ep  1 | Step   1
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.108, +0.000, -0.994, +1.000]
+  EE posição      : [+0.040, +0.000, +0.171]
+  EE velocidade   : [-0.265, -0.001, -1.261]
+  Garra           : 0.070 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.1510 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.45, +0.00, -1.88, -0.00, +2.35, +0.79]
+  Juntas veloc.   : [-0.00, +1.91, +0.00, -0.24, -0.01, +0.69, -0.03]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   2
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.198, -0.000, -0.980, +1.000]
+  EE posição      : [+0.028, +0.000, +0.114]
+  EE velocidade   : [-0.377, +0.000, -1.176]
+  Garra           : 0.079 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0944 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.53, +0.00, -1.90, -0.00, +2.41, +0.79]
+  Juntas veloc.   : [-0.00, +1.83, +0.00, -0.17, -0.00, +0.47, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   3
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.336, -0.000, +0.942, +1.000]
+  EE posição      : [+0.014, +0.000, +0.080]
+  EE velocidade   : [-0.211, +0.000, -0.558]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0620 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.60, +0.00, -1.86, -0.00, +2.34, +0.79]
+  Juntas veloc.   : [-0.00, +1.09, +0.00, +0.40, +0.00, -0.55, -0.00]
+  Cubo rotação    : [+0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   4
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.100, -0.000, -0.371, +1.000]
+  EE posição      : [+0.022, +0.000, +0.057]
+  EE velocidade   : [-0.049, -0.001, -0.365]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0378 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.63, +0.00, -1.90, -0.00, +2.51, +0.79]
+  Juntas veloc.   : [+0.00, +0.54, -0.00, -0.37, -0.03, +1.31, +0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   5
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.031, -0.000, -0.139, +1.000]
+  EE posição      : [+0.024, +0.000, +0.051]
+  EE velocidade   : [+0.020, +0.000, -0.038]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0312 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.64, +0.00, -1.91, -0.00, +2.55, +0.79]
+  Juntas veloc.   : [+0.00, +0.07, -0.00, -0.05, -0.00, +0.32, -0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   6
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.018, -0.000, -0.095, +1.000]
+  EE posição      : [+0.025, +0.000, +0.047]
+  EE velocidade   : [+0.003, -0.000, -0.034]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0271 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.65, +0.00, -1.91, -0.00, +2.56, +0.79]
+  Juntas veloc.   : [+0.00, +0.08, -0.00, +0.02, -0.00, +0.08, +0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   7
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.014, -0.000, -0.072, +1.000]
+  EE posição      : [+0.025, +0.000, +0.044]
+  EE velocidade   : [+0.002, -0.000, -0.025]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0241 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.66, +0.00, -1.91, -0.00, +2.56, +0.79]
+  Juntas veloc.   : [-0.00, +0.06, -0.00, +0.02, -0.00, +0.04, -0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   8
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.012, -0.000, -0.059, +1.000]
+  EE posição      : [+0.026, +0.000, +0.041]
+  EE velocidade   : [+0.002, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0216 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.66, +0.00, -1.90, -0.00, +2.57, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.02, -0.00, +0.03, -0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step   9
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.013, -0.000, -0.059, +1.000]
+  EE posição      : [+0.026, +0.000, +0.039]
+  EE velocidade   : [+0.002, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0191 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.67, +0.00, -1.90, -0.00, +2.57, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.02, -0.00, +0.02, -0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  10
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.013, -0.000, -0.059, +1.000]
+  EE posição      : [+0.026, +0.000, +0.036]
+  EE velocidade   : [+0.002, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0167 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.68, +0.00, -1.90, -0.00, +2.57, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.02, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, -0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  11
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.014, +0.000, -0.058, +1.000]
+  EE posição      : [+0.026, -0.000, +0.034]
+  EE velocidade   : [+0.002, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0142 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.68, +0.00, -1.89, -0.00, +2.58, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.02, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, +0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  12
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.015, +0.000, -0.058, +1.000]
+  EE posição      : [+0.027, -0.000, +0.031]
+  EE velocidade   : [+0.002, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0118 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.69, +0.00, -1.89, -0.00, +2.58, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.03, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, +0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  13
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.016, +0.000, -0.058, +1.000]
+  EE posição      : [+0.027, -0.000, +0.029]
+  EE velocidade   : [+0.003, -0.000, -0.020]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0093 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.70, +0.00, -1.89, -0.00, +2.58, +0.79]
+  Juntas veloc.   : [-0.00, +0.05, -0.00, +0.03, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, +0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  14
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.018, +0.000, -0.057, +1.000]
+  EE posição      : [+0.028, -0.000, +0.027]
+  EE velocidade   : [+0.003, -0.000, -0.019]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0069 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.70, +0.00, -1.88, -0.00, +2.59, +0.79]
+  Juntas veloc.   : [+0.00, +0.05, -0.00, +0.03, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, +0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  15
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.020, +0.000, -0.057, +1.000]
+  EE posição      : [+0.028, -0.000, +0.024]
+  EE velocidade   : [+0.003, +0.000, -0.019]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0046 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.71, +0.00, -1.88, -0.00, +2.59, +0.79]
+  Juntas veloc.   : [+0.00, +0.05, -0.00, +0.03, -0.00, +0.02, +0.00]
+  Cubo rotação    : [-0.000, +0.000, -0.000]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  16
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.023, +0.000, -0.055, -1.000]
+  EE posição      : [+0.029, -0.000, +0.022]
+  EE velocidade   : [+0.004, -0.000, -0.018]
+  Garra           : 0.038 m  (AGARRADA)
+  Cubo posição    : [+0.030, +0.000, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0022 m
+  Dist Cubo→target: 0.1200 m
+  Reward          : -0.1200
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.71, +0.00, -1.88, -0.00, +2.59, +0.79]
+  Juntas veloc.   : [+0.00, +0.05, -0.00, +0.03, -0.00, +0.02, -0.00]
+  Cubo rotação    : [+0.000, +0.000, -0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.003, +0.004, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  17
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.006, -0.000, +1.000, -1.000]
+  EE posição      : [+0.014, +0.000, +0.028]
+  EE velocidade   : [+0.063, +0.000, +0.440]
+  Garra           : 0.031 m  (AGARRADA)
+  Cubo posição    : [+0.019, +0.000, +0.024]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0065 m
+  Dist Cubo→target: 0.1313 m
+  Reward          : -0.1313
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.68, +0.00, -1.89, -0.00, +2.52, +0.79]
+  Juntas veloc.   : [-0.00, -0.88, +0.00, -0.17, +0.00, -0.55, -0.00]
+  Cubo rotação    : [+0.023, +0.039, -0.016]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.081, +0.025, +0.261]
+────────────────────────────────────────────
+ Ep  1 | Step  18
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.145, -0.000, +0.989, -1.000]
+  EE posição      : [+0.017, +0.000, +0.053]
+  EE velocidade   : [+0.317, -0.000, +0.863]
+  Garra           : 0.028 m  (AGARRADA)
+  Cubo posição    : [+0.018, +0.000, +0.042]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0116 m
+  Dist Cubo→target: 0.1341 m
+  Reward          : -0.1341
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.63, +0.00, -1.92, -0.00, +2.51, +0.79]
+  Juntas veloc.   : [-0.00, -1.52, -0.00, -0.19, +0.00, -0.07, +0.00]
+  Cubo rotação    : [+0.037, +0.018, -0.011]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.151, +0.005, +0.650]
+────────────────────────────────────────────
+ Ep  1 | Step  19
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.162, -0.000, +0.987, -1.000]
+  EE posição      : [+0.024, +0.000, +0.091]
+  EE velocidade   : [+0.200, +0.001, +0.695]
+  Garra           : 0.025 m  (AGARRADA)
+  Cubo posição    : [+0.025, -0.000, +0.076]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0153 m
+  Dist Cubo→target: 0.1374 m
+  Reward          : -0.1374
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.56, +0.00, -1.92, -0.00, +2.47, +0.79]
+  Juntas veloc.   : [-0.00, -1.18, +0.00, -0.04, +0.00, -0.31, -0.00]
+  Cubo rotação    : [+0.004, -0.009, +0.041]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.236, +0.014, +0.813]
+────────────────────────────────────────────
+ Ep  1 | Step  20
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.140, -0.000, +0.990, -1.000]
+  EE posição      : [+0.027, -0.000, +0.127]
+  EE velocidade   : [+0.191, +0.000, +0.801]
+  Garra           : 0.032 m  (AGARRADA)
+  Cubo posição    : [+0.029, -0.000, +0.109]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0172 m
+  Dist Cubo→target: 0.1506 m
+  Reward          : -0.1506
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.50, +0.00, -1.91, -0.00, +2.40, +0.79]
+  Juntas veloc.   : [-0.00, -1.29, +0.00, +0.10, +0.00, -0.55, -0.00]
+  Cubo rotação    : [-0.032, -0.029, +0.008]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.223, +0.002, +0.819]
+────────────────────────────────────────────
+ Ep  1 | Step  21
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.423, +0.001, -0.906, -1.000]
+  EE posição      : [+0.058, +0.000, +0.141]
+  EE velocidade   : [+0.115, -0.000, -0.454]
+  Garra           : 0.031 m  (AGARRADA)
+  Cubo posição    : [+0.052, -0.000, +0.125]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0163 m
+  Dist Cubo→target: 0.1437 m
+  Reward          : -0.1437
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.52, +0.00, -1.86, -0.00, +2.46, +0.79]
+  Juntas veloc.   : [+0.00, +1.12, -0.00, +0.54, -0.00, +0.49, +0.00]
+  Cubo rotação    : [-0.037, +0.094, +0.016]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.332, -0.013, -0.295]
+────────────────────────────────────────────
+ Ep  1 | Step  22
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.976, -0.000, -0.218, -1.000]
+  EE posição      : [+0.074, -0.000, +0.118]
+  EE velocidade   : [+0.177, +0.002, -0.531]
+  Garra           : 0.032 m  (AGARRADA)
+  Cubo posição    : [+0.066, -0.000, +0.103]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0172 m
+  Dist Cubo→target: 0.1180 m
+  Reward          : -0.1180
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.64, +0.00, -1.70, -0.00, +2.33, +0.79]
+  Juntas veloc.   : [-0.00, +1.82, -0.00, +1.86, +0.03, -1.01, -0.00]
+  Cubo rotação    : [+0.012, +0.143, -0.003]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.232, -0.005, -0.546]
+────────────────────────────────────────────
+ Ep  1 | Step  23
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+1.000, +0.001, +0.026, -1.000]
+  EE posição      : [+0.094, -0.000, +0.099]
+  EE velocidade   : [+0.126, +0.000, -0.430]
+  Garra           : 0.031 m  (AGARRADA)
+  Cubo posição    : [+0.086, -0.000, +0.082]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0191 m
+  Dist Cubo→target: 0.0891 m
+  Reward          : -0.0891
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.74, +0.00, -1.57, -0.00, +2.28, +0.79]
+  Juntas veloc.   : [-0.00, +1.33, +0.00, +1.25, +0.00, -0.36, +0.00]
+  Cubo rotação    : [-0.010, +0.121, -0.024]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.234, +0.007, -0.440]
+────────────────────────────────────────────
+ Ep  1 | Step  24
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.934, +0.000, +0.358, -1.000]
+  EE posição      : [+0.110, -0.000, +0.088]
+  EE velocidade   : [+0.171, +0.000, -0.162]
+  Garra           : 0.034 m  (AGARRADA)
+  Cubo posição    : [+0.100, -0.001, +0.070]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0204 m
+  Dist Cubo→target: 0.0703 m
+  Reward          : -0.0703
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.81, +0.00, -1.47, -0.00, +2.24, +0.79]
+  Juntas veloc.   : [+0.00, +0.86, +0.00, +1.12, +0.00, -0.32, -0.00]
+  Cubo rotação    : [+0.005, +0.105, -0.004]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.182, +0.007, -0.089]
+────────────────────────────────────────────
+ Ep  1 | Step  25
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.776, +0.000, +0.631, -1.000]
+  EE posição      : [+0.124, +0.000, +0.091]
+  EE velocidade   : [+0.202, -0.000, +0.194]
+  Garra           : 0.036 m  (AGARRADA)
+  Cubo posição    : [+0.114, -0.001, +0.073]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0208 m
+  Dist Cubo→target: 0.0637 m
+  Reward          : -0.0637
+  Sucesso         : False
+  Obstáculo caminho: SIM  (count: 1)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.85, +0.00, -1.39, -0.00, +2.20, +0.79]
+  Juntas veloc.   : [+0.00, +0.17, +0.00, +0.79, -0.00, -0.29, +0.00]
+  Cubo rotação    : [+0.005, +0.080, -0.001]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.225, -0.005, +0.158]
+────────────────────────────────────────────
+ Ep  1 | Step  26
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.662, -0.000, +0.749, -1.000]
+  EE posição      : [+0.137, -0.000, +0.106]
+  EE velocidade   : [+0.234, -0.000, +0.484]
+  Garra           : 0.038 m  (AGARRADA)
+  Cubo posição    : [+0.127, -0.001, +0.087]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0215 m
+  Dist Cubo→target: 0.0708 m
+  Reward          : -0.0708
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.86, +0.00, -1.32, -0.00, +2.16, +0.79]
+  Juntas veloc.   : [+0.00, -0.31, -0.00, +0.63, +0.00, -0.32, +0.00]
+  Cubo rotação    : [-0.002, +0.055, +0.005]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.258, -0.004, +0.464]
+────────────────────────────────────────────
+ Ep  1 | Step  27
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.672, +0.000, +0.741, -1.000]
+  EE posição      : [+0.151, +0.000, +0.132]
+  EE velocidade   : [+0.215, +0.001, +0.512]
+  Garra           : 0.036 m  (AGARRADA)
+  Cubo posição    : [+0.141, -0.001, +0.112]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0231 m
+  Dist Cubo→target: 0.0920 m
+  Reward          : -0.0920
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.87, +0.00, -1.25, -0.00, +2.11, +0.79]
+  Juntas veloc.   : [-0.00, -0.30, +0.00, +0.69, -0.00, -0.39, +0.00]
+  Cubo rotação    : [-0.023, +0.021, +0.001]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.243, +0.002, +0.509]
+────────────────────────────────────────────
+ Ep  1 | Step  28
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.011, -0.000, -1.000, -1.000]
+  EE posição      : [+0.164, +0.000, +0.130]
+  EE velocidade   : [-0.101, +0.000, -0.744]
+  Garra           : 0.036 m  (AGARRADA)
+  Cubo posição    : [+0.151, -0.001, +0.108]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0250 m
+  Dist Cubo→target: 0.0884 m
+  Reward          : -0.0884
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.88, +0.00, -1.26, -0.00, +2.19, +0.79]
+  Juntas veloc.   : [+0.00, +1.03, -0.00, -0.04, -0.00, +0.58, -0.00]
+  Cubo rotação    : [+0.008, +0.049, +0.010]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.105, -0.003, -0.731]
+────────────────────────────────────────────
+ Ep  1 | Step  29
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.124, -0.000, -0.992, -1.000]
+  EE posição      : [+0.153, +0.000, +0.084]
+  EE velocidade   : [-0.379, +0.000, -1.210]
+  Garra           : 0.038 m  (AGARRADA)
+  Cubo posição    : [+0.139, -0.001, +0.062]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0263 m
+  Dist Cubo→target: 0.0433 m
+  Reward          : -0.0433
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.94, +0.00, -1.25, -0.00, +2.20, +0.79]
+  Juntas veloc.   : [+0.00, +1.64, -0.00, +0.03, -0.00, +0.08, +0.00]
+  Cubo rotação    : [-0.002, +0.101, +0.004]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.411, -0.004, -1.191]
+────────────────────────────────────────────
+ Ep  1 | Step  30
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.019, -0.000, -0.410, -1.000]
+  EE posição      : [+0.142, +0.000, +0.042]
+  EE velocidade   : [-0.314, +0.001, -0.889]
+  Garra           : 0.039 m  (AGARRADA)
+  Cubo posição    : [+0.128, -0.002, +0.022]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0252 m
+  Dist Cubo→target: 0.0225 m
+  Reward          : -0.0225
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +1.00, +0.00, -1.25, -0.00, +2.22, +0.79]
+  Juntas veloc.   : [+0.00, +1.23, +0.00, +0.02, -0.00, +0.17, -0.00]
+  Cubo rotação    : [+0.020, +0.101, +0.002]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.355, -0.107, -0.524]
+────────────────────────────────────────────
+ Ep  1 | Step  31
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.020, -0.000, -0.057, -1.000]
+  EE posição      : [+0.139, +0.000, +0.021]
+  EE velocidade   : [-0.027, -0.000, -0.161]
+  Garra           : 0.033 m  (AGARRADA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0154 m
+  Dist Cubo→target: 0.0263 m
+  Reward          : -0.0263
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +1.03, +0.00, -1.26, -0.00, +2.26, +0.79]
+  Juntas veloc.   : [+0.00, +0.22, -0.00, -0.05, -0.00, +0.29, -0.00]
+  Cubo rotação    : [+0.000, +0.000, +0.011]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.018, -0.015, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  32
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.110, -0.000, +0.994, +1.000]
+  EE posição      : [+0.131, +0.000, +0.020]
+  EE velocidade   : [+0.036, -0.000, +0.229]
+  Garra           : 0.074 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0075 m
+  Dist Cubo→target: 0.0263 m
+  Reward          : -0.0263
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +1.02, +0.00, -1.26, -0.00, +2.22, +0.79]
+  Juntas veloc.   : [-0.00, -0.38, +0.00, -0.06, +0.00, -0.26, -0.00]
+  Cubo rotação    : [+0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  33
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.187, -0.000, +0.982, +1.000]
+  EE posição      : [+0.136, +0.000, +0.037]
+  EE velocidade   : [+0.248, -0.000, +0.654]
+  Garra           : 0.079 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0210 m
+  Dist Cubo→target: 0.0263 m
+  Reward          : -0.0263
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.99, +0.00, -1.27, -0.00, +2.22, +0.79]
+  Juntas veloc.   : [-0.00, -0.93, +0.00, -0.08, -0.00, +0.01, +0.00]
+  Cubo rotação    : [+0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  34
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.168, -0.000, +0.986, +1.000]
+  EE posição      : [+0.144, +0.000, +0.070]
+  EE velocidade   : [+0.264, +0.000, +0.849]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0539 m
+  Dist Cubo→target: 0.0263 m
+  Reward          : -0.0263
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.94, +0.00, -1.28, -0.00, +2.20, +0.79]
+  Juntas veloc.   : [-0.00, -1.18, +0.00, -0.03, +0.00, -0.16, -0.00]
+  Cubo rotação    : [+0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, +0.000, +0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  35
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.125, -0.000, +0.992, +1.000]
+  EE posição      : [+0.148, +0.000, +0.108]
+  EE velocidade   : [+0.156, +0.000, +0.724]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target): [+0.150, +0.000, +0.020]
+  Dist EE→Cubo    : 0.0914 m
+  Dist Cubo→target: 0.0263 m
+  Reward          : -0.0263
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.89, +0.00, -1.27, -0.00, +2.15, +0.79]
+  Juntas veloc.   : [-0.00, -0.99, +0.00, +0.04, +0.00, -0.37, -0.00]
+  Cubo rotação    : [-0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  36
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [+0.141, -0.000, +0.990, +1.000]
+  EE posição      : [+0.150, -0.000, +0.143]
+  EE velocidade   : [+0.136, +0.000, +0.789]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target_1): [+0.150, +0.100, +0.020]
+  Dist EE→Cubo    : 0.1262 m
+  Dist Cubo→target_1: 0.1053 m
+  Reward          : -0.1053
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.85, +0.00, -1.25, -0.00, +2.09, +0.79]
+  Juntas veloc.   : [-0.00, -1.03, +0.00, +0.13, +0.00, -0.48, -0.00]
+  Cubo rotação    : [-0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  37
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.747, -0.056, -0.662, +1.000]
+  EE posição      : [+0.147, -0.002, +0.144]
+  EE velocidade   : [-0.305, -0.021, -0.701]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target_1): [+0.150, +0.100, +0.020]
+  Dist EE→Cubo    : 0.1260 m
+  Dist Cubo→target_1: 0.1053 m
+  Reward          : -0.1053
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.80, +0.00, -1.35, -0.00, +2.19, +0.78]
+  Juntas veloc.   : [-0.03, +0.34, -0.00, -1.12, -0.00, +0.73, -0.03]
+  Cubo rotação    : [-0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  38
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.696, +0.016, -0.718, +1.000]
+  EE posição      : [+0.126, -0.002, +0.105]
+  EE velocidade   : [-0.342, +0.006, -0.742]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target_1): [+0.150, +0.100, +0.020]
+  Dist EE→Cubo    : 0.0850 m
+  Dist Cubo→target_1: 0.1053 m
+  Reward          : -0.1053
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.82, +0.00, -1.42, -0.00, +2.23, +0.78]
+  Juntas veloc.   : [+0.01, +0.64, +0.00, -0.69, -0.00, +0.33, +0.01]
+  Cubo rotação    : [-0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [+0.000, -0.000, -0.000]
+────────────────────────────────────────────
+ Ep  1 | Step  39
+────────────────────────────────────────────
+  Task            : PICK_AND_PLACE
+  Action          : [-0.138, -0.008, +0.990, +1.000]
+  EE posição      : [+0.104, -0.002, +0.082]
+  EE velocidade   : [-0.207, -0.002, -0.255]
+  Garra           : 0.080 m  (ABERTA)
+  Cubo posição    : [+0.124, -0.002, +0.020]
+  Target (target_1): [+0.150, +0.100, +0.020]
+  Dist EE→Cubo    : 0.0657 m
+  Dist Cubo→target_1: 0.1053 m
+  Reward          : -0.1053
+  Sucesso         : False
+  Obstáculo caminho: nao  (count: 0)
+  Obstáculo [obstacle_1]: tipo=box  massa=0.0 kg  tamanho=[0.02, 0.3, 0.02]
+  Objeto [object_1]: tipo=box  massa=1.0 kg  tamanho=[0.04, 0.04, 0.04]
+  Target goal     : {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}, {'name': 'target_1', 'position': [0.15000000596046448, 0.10000000149011612, 0.019999999552965164]}, {'name': 'target_2', 'position': [-0.10000000149011612, 0.0, 0.019999999552965164]}, {'name': 'target_3', 'position': [-0.10000000149011612, 0.10000000149011612, 0.019999999552965164]}], 'mode': 'goal_sequence'}
+  Mesa            : 1.1x0.7x0.4 m  offset_x=-0.3
+  Robô config     : control=ee  block_gripper=False  base=[-0.6, 0.0, 0.05]
+  Scripts         : ['script_1', 'reach_only', 'left_right']
+  Juntas ângulos  : [-0.00, +0.83, +0.00, -1.44, -0.00, +2.18, +0.78]
+  Juntas veloc.   : [-0.00, +0.24, -0.00, -0.13, +0.00, -0.42, -0.00]
+  Cubo rotação    : [-0.000, +0.000, +0.012]  (roll/pitch/yaw)
+  Cubo vel.linear : [-0.000, -0.000, +0.000]

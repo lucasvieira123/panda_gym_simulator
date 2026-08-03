@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "managing/main.py",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:\\Users\\lucas_alves\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "program": "${workspaceFolder}/managing/main.py",
+            "cwd": "${workspaceFolder}/managing",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "manager/main.py",
+            "type": "debugpy",
+            "request": "launch",
+            "python": "C:\\Users\\lucas_alves\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "program": "${workspaceFolder}/manager/main.py",
+            "cwd": "${workspaceFolder}/manager",
+            "console": "integratedTerminal"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "managing + manager",
+            "configurations": ["managing/main.py", "manager/main.py"]
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+h,dt,delta_dt,b,armed,wind_speed,humidity,vibration,action
+0.0,100.0,0.0,100.0,FALSE,9.2,60.0,0,-
+0.0,100.0,0.0,96.0,TRUE,9.1,60.5,52,takeoff_act (Takeoff)
+104.7,100.0,0.0,93.0,TRUE,9.1,60.3,47,checkstatus_act (Checkstatus)
+104.1,100.0,0.0,88.0,TRUE,9.0,61.0,54,manoeuvre_act (Flying)
+104.9,89.0,11.0,85.0,TRUE,9.0,61.5,52,checkstatus_act (Checkstatus)
+103.8,89.0,0.0,81.0,TRUE,8.9,61.5,52,manoeuvre_act (Flying)
+104.6,77.0,12.0,76.0,TRUE,8.9,61.6,52,checkstatus_act (Checkstatus)
+105.0,77.0,0.0,73.0,TRUE,8.8,61.6,72,manoeuvre_act (Flying)
+63.2,67.0,10.0,69.0,TRUE,8.9,61.7,70,checkstatus_act (Checkstatus)

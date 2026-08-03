@@ -1,0 +1,77 @@
+{
+  "h": {
+    "min_value": 0,
+    "max_value": 150,
+    "type": "int"
+  },
+  "b": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "dt": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "vibration": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "wind_speed": {
+    "min_value": 0,
+    "max_value": 360,
+    "type": "int"
+  },
+  "delta_dt": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "payload": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "satellite_count": {
+    "min_value": 0,
+    "max_value": 15,
+    "type": "int"
+  },
+  "delta_flight_time": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p1": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p2": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p3": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p4": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p5": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  },
+  "p6": {
+    "min_value": 0,
+    "max_value": 100,
+    "type": "int"
+  }
+}

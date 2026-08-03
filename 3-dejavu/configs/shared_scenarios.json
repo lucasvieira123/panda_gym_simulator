@@ -1,0 +1,23 @@
+[
+  {
+    "name": "cand_low_speed_flying",
+    "given": "h < 100 AND vibration >= 50 AND wind_speed > 60",
+    "when": "b > 10 AND dt > 0",
+    "do": "setSpeed(Low) AND maneuver_act",
+    "then": "delta_dt >= 10 AND h >= 90"
+  },
+  {
+    "name": "cand_limited_satellite_flying",
+    "given": "h > 10 AND vibration >= 30",
+    "when": "b > 10 AND dt > 0",
+    "do": "RedefSatSignal()",
+    "then": "delta_dt >= 10 AND h >= 100 AND satellite_count >= 7"
+  },
+  {
+    "name": "cand_hover_mode_flying",
+    "given": "h < 70 AND vibration <= 80",
+    "when": "b > 10 AND dt > 0",
+    "do": "setFlyingMode(Hover) AND maneuver_act",
+    "then": "delta_dt >= 10 AND h <= 80 AND delta_flight_time < 60"
+  }
+]

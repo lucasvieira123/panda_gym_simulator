@@ -1,0 +1,6 @@
+[Trace] Gravando em: C:\Users\lucas_alves\Workspace\self-adaptive-arm-simulator\1-manager\traces\trace_20260802_163030.log
+[step=   0 16:30:31.938][Manager] GUI conectado.
+[step=   0 16:30:33.439][Manager] Aguardando percepcoes do managing...
+
+[step=   0 16:30:34.452][WsClient] Falha (timed out while waiting for handshake response). Tentativa 1/3...
+[step=   0 16:30:34.966][WsClient] Conectado a ws://localhost:8000/ws/perception

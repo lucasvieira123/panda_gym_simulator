@@ -1,0 +1,199 @@
+statechart:
+  name: ScenarioStateMachine
+  description: 'Generated from hAS model: Drone Delivery hAS Model'
+  root state:
+    name: root
+    initial: INIT
+    states:
+    - name: INIT
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_1
+        guard: armed == True
+    - name: PHI_1
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S2
+        guard: h == 0
+      - target: ERR_1
+        guard: not (h == 0)
+    - name: S2
+      contract:
+      - always: h == 0
+      transitions:
+      - target: PHI_3
+        event: takeoff_act (Takeoff)
+    - name: PHI_3
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S4
+        guard: h >= 100
+      - target: ERR_3
+        guard: not (h >= 100)
+    - name: S4
+      contract:
+      - always: h >= 100
+      transitions:
+      - target: PHI_5
+        guard: h >= 100
+    - name: PHI_5
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S6
+        guard: 'True'
+      - target: ERR_5
+        guard: not (True)
+    - name: S6
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_7
+        event: checkstatus_act (CheckStatus)
+    - name: PHI_7
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S8
+        guard: 'True'
+      - target: ERR_7
+        guard: not (True)
+    - name: S8
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_9
+        guard: b > 10 and dt > 0
+      - target: PHI_13
+        guard: dt == 0 and b > 10
+      - target: PHI_17
+        guard: b <= 10
+    - name: PHI_9
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S10
+        guard: h >= 100
+      - target: ERR_9
+        guard: not (h >= 100)
+    - name: S10
+      contract:
+      - always: h >= 100
+      transitions:
+      - target: PHI_11
+        event: maneuver_act (Flying)
+    - name: PHI_11
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S12
+        guard: delta_dt >= 10 and h >= 100
+      - target: ERR_11
+        guard: not (delta_dt >= 10 and h >= 100)
+    - name: S12
+      contract:
+      - always: delta_dt >= 10 and h >= 100
+      transitions:
+      - target: PHI_5
+        guard: h >= 100
+    - name: PHI_13
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S14
+        guard: h >= 100
+      - target: ERR_13
+        guard: not (h >= 100)
+    - name: S14
+      contract:
+      - always: h >= 100
+      transitions:
+      - target: PHI_15
+        event: land_act (Landing)
+    - name: PHI_15
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S16
+        guard: h == 0
+      - target: ERR_15
+        guard: not (h == 0)
+    - name: S16
+      contract:
+      - always: h == 0
+      transitions:
+      - target: PHI_21
+        guard: h == 0
+    - name: PHI_17
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S18
+        guard: h >= 100
+      - target: ERR_17
+        guard: not (h >= 100)
+    - name: S18
+      contract:
+      - always: h >= 100
+      transitions:
+      - target: PHI_19
+        event: safeland_act (Safe Landing)
+    - name: PHI_19
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S20
+        guard: h == 0
+      - target: ERR_19
+        guard: not (h == 0)
+    - name: S20
+      contract:
+      - always: h == 0
+      transitions:
+      - target: PHI_21
+        guard: h == 0
+    - name: PHI_21
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S22
+        guard: armed == True
+      - target: ERR_21
+        guard: not (armed == True)
+    - name: S22
+      contract:
+      - always: armed == True
+      transitions:
+      - target: PHI_23
+        event: shutdown_act (Shut Down)
+    - name: PHI_23
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S24
+        guard: armed == False
+      - target: ERR_23
+        guard: not (armed == False)
+    - name: S24
+      contract:
+      - always: armed == False
+      transitions:
+      - target: FINAL
+        guard: 'True'
+    - name: ERR_1
+    - name: ERR_11
+    - name: ERR_13
+    - name: ERR_15
+    - name: ERR_17
+    - name: ERR_19
+    - name: ERR_21
+    - name: ERR_23
+    - name: ERR_3
+    - name: ERR_5
+    - name: ERR_7
+    - name: ERR_9
+    - name: FINAL
+      type: final
