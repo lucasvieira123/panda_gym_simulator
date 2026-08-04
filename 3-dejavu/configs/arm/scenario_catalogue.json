@@ -1,0 +1,50 @@
+{
+  "metadata": {
+    "name": "Gripper Catalogue"
+  },
+  "monitored_parameters": {
+    "grip_force":       { "type": "float", "min": 0, "max": 100 },
+    "contact_detected": { "type": "int", "min": 0, "max": 1 },
+    "slip_detected":    { "type": "int", "min": 0, "max": 1 },
+    "gripper_opening":  { "type": "float", "min": 0, "max": 80 },
+    "object_weight":    { "type": "float", "min": 0, "max": 5 },
+    "current_draw":     { "type": "float", "min": 0, "max": 10 }
+  },
+  "scenarios": {
+    "stable_grip": {
+      "name": "Stable Grip",
+      "given": "contact_detected == 1 and slip_detected == 0",
+      "when": "grip_force >= 10 and grip_force <= 80",
+      "do": "maintainGrip()",
+      "then": "slip_detected == 0"
+    },
+    "slip_recovery": {
+      "name": "Slip Recovery",
+      "given": "slip_detected == 1 and grip_force < 80",
+      "when": "contact_detected == 1",
+      "do": "increaseGripForce()",
+      "then": "slip_detected == 0"
+    },
+    "motor_overload_release": {
+      "name": "Motor Overload Release",
+      "given": "current_draw > 8",
+      "when": "grip_force > 0",
+      "do": "emergencyRelease()",
+      "then": "current_draw < 5 and contact_detected == 0"
+    },
+    "empty_grip": {
+      "name": "Empty Grip",
+      "given": "contact_detected == 0 and gripper_opening < 10",
+      "when": "*",
+      "do": "openGripper()",
+      "then": "gripper_opening > 60"
+    },
+    "overweight_abort": {
+      "name": "Overweight Abort",
+      "given": "object_weight > 3.5",
+      "when": "contact_detected == 1",
+      "do": "releaseObject()",
+      "then": "contact_detected == 0 and gripper_opening > 50"
+    }
+  }
+}
