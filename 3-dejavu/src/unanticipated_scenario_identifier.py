@@ -19,7 +19,7 @@ class UnanticipatedScenarioIdentifier:
 
     def __init__(self):
         self.cfg = load_config(DEJAVU_CONF_PATH)
-        self.modelling_anticipated_scenarios = load_config(self.cfg["anticipated_scenarios_yaml"])
+        self.modelling_anticipated_scenarios = load_config(self.cfg["anticipated_scenarios_path"])
        
 
     def get_scenario_by_name(self, name: str) -> dict:

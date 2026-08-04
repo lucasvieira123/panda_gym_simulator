@@ -1,10 +1,7 @@
-from os import PathLike
 from pathlib import Path
 import pandas as pd
-from schema import Optional
 from typing import Optional, List
 
-from drone_behavior_simulator import TelemetryTick
 from sismic.io import import_from_yaml
 from sismic.interpreter import Interpreter
 import re
@@ -71,7 +68,7 @@ class StateMachineEngine:
         # print("MACROSTEP:", ms)
         # print("CURRENT STATE:", self.state_infos())
 
-    def update_context(self, runtime_data_tick: TelemetryTick):
+    def update_context(self, runtime_data_tick: dict):
         self.itp.context.update({
             "armed": runtime_data_tick.armed,
             "h": runtime_data_tick.h,
@@ -157,7 +154,7 @@ class StateMachineEngine:
         print("Action to execute after:", self.itp._external_queue)
         # self.update_monitored_scenarios()
 
-    def check_state_machine(self, runtime_data_tick: TelemetryTick) -> list:
+    def check_state_machine(self, runtime_data_tick: dict) -> list:
         
         # print("TICK RECEIVED:", runtime_data_tick)
         
@@ -186,22 +183,22 @@ class AntecipatedScenarioMonitor:
     
     def __init__(self, initial_context: dict) -> None:
         self.cfg = load_config(DEJAVU_CONF_PATH)
-        self.latest: Optional[TelemetryTick] = None
-        self.history_runtime_data: List[TelemetryTick] = []  # opcional (pode desligar se ficar grande)
+        self.latest: Optional[dict] = None
+        self.history_runtime_data: List[dict] = []  # opcional (pode desligar se ficar grande)
         self.state_machine_engine = StateMachineEngine(initial_context)
 
-        self.new_csv = self.next_csv_path(self.cfg["checked_scenarios_folder"])
+        self.new_csv = self.next_csv_path(self.cfg["monitored_scenarios_folder"])
         self.new_csv.write_text("", encoding="utf-8")
 
 
-    def next_csv_path(self, folder: str, prefix: str = "checked_scenarios_", digits: int = 3) -> Path:
+    def next_csv_path(self, folder: str, prefix: str = "monitored_scenarios_", digits: int = 3) -> Path:
         folder = Path(folder)
         folder.mkdir(parents=True, exist_ok=True)          # cria o diretório se não existir
         n_csv = len(list(folder.glob("*.csv")))            # conta quantos CSV existem
         next_n = n_csv + 1
         return folder / f"{prefix}{next_n:0{digits}d}.csv" # ex: checked_scenarios_001.csv
 
-    def handle_runtime_data(self, runtime_data_tick: TelemetryTick) -> None:
+    def handle_runtime_data(self, runtime_data_tick: dict) -> None:
         self.latest = runtime_data_tick
         self.history_runtime_data.append(runtime_data_tick)
 

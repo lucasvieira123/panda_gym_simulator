@@ -11,14 +11,14 @@ class UnanticipatedScenariosDetector:
 
     def detects(self) -> pd.DataFrame:
         def extract_id(p: Path) -> int:
-            m = re.search(r"checked_scenarios_(\d+)\.csv$", p.name)
+            m = re.search(r"monitored_scenarios_(\d+)\.csv$", p.name)
             return int(m.group(1)) if m else -1
         
         def pick_latest_checked_csv() -> Path:
-            folder = Path(self.cfg["checked_scenarios_folder"])
-            candidates = list(folder.glob("checked_scenarios_*.csv"))
+            folder = Path(self.cfg["monitored_scenarios_folder"])
+            candidates = list(folder.glob("monitored_scenarios_*.csv"))
             if not candidates:
-                raise FileNotFoundError(f"Nenhum 'checked_scenarios_*.csv' em: {folder}")
+                raise FileNotFoundError(f"Nenhum 'monitored_scenarios_*.csv' em: {folder}")
 
             latest = max(candidates, key=extract_id)
             return latest

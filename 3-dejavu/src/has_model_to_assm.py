@@ -198,7 +198,7 @@ if __name__ == "__main__":
     else:
         has_model_path = PROJECT_ROOT / "res" / "drone_has_model.json"
 
-    output_path = PROJECT_ROOT / "res" / "scenario_state_machine1.yaml"
+    output_path = PROJECT_ROOT / "configs" / "arm" / "scenario_state_machine.yaml"
 
     with open(has_model_path, encoding="utf-8") as f:
         has_model = json.load(f)
