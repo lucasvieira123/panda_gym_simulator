@@ -7,12 +7,14 @@ _VENV_ACTIVATE = _ROOT / ".venv" / "Scripts" / "activate.bat"
 _COMPONENTS = {
     "managing": _ROOT / "2-managing",
     "manager":  _ROOT / "1-manager",
+    "dejavu":   _ROOT / "3-dejavu",
 }
 
 
 _ENTRY_POINTS = {
     "managing": "src/main.py",
     "manager":  "src/main.py",
+    "dejavu":   "src/dejavu.py",
 }
 
 

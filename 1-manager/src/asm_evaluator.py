@@ -34,8 +34,9 @@ class AsmEvaluator:
     """
 
     def __init__(self, asm: Asm) -> None:
-        self._asm          = asm
-        self._current_node = "__init__"
+        self._asm              = asm
+        self._current_node     = "__init__"
+        self._pending_transition: str | None = None  # candidato cujas condições já foram validadas
 
     # ── public ──────────────────────────────────────────────────────────────────
 
@@ -48,7 +49,8 @@ class AsmEvaluator:
         return self._current_node == "__end__"
 
     def reset(self) -> None:
-        self._current_node = "__init__"
+        self._current_node        = "__init__"
+        self._pending_transition  = None
 
     def evaluate(self, context: dict) -> AsmScenario | None:
         """
@@ -76,7 +78,47 @@ class AsmEvaluator:
             if scenario is None:
                 continue
 
-            if _eval(scenario.given, context) and _eval(scenario.when, context):
+            # ── ROLLBACK ──────────────────────────────────────────────────────
+            # Comportamento original: avança por given+when para todos os tipos.
+            # Problema: ASM 1-tick adiantado nos cenários de domínio.
+            # Para reverter: descomenta as 4 linhas abaixo e apaga o bloco novo.
+            # if _eval(scenario.given, context) and _eval(scenario.when, context):
+            #     prev = self._current_node
+            #     self._current_node = candidate_key
+            #     tag = "[ADAPT]" if scenario.type == "adaptive" else "[OK]"
+            #     print(f"[{ts()}][ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
+            #     return scenario
+            # ──────────────────────────────────────────────────────────────────
+
+            should_advance = False
+            if scenario.type == "adaptive":
+                # Trigger por condições — manager precisa detectar para agir
+                should_advance = _eval(scenario.given, context) and _eval(scenario.when, context)
+            else:
+                # Domain — duas fases:
+                #
+                # Fase 1 (subtask ainda não mudou): avalia condições e marca pending
+                #   → validação acontece aqui, no contexto correto (último step do cenário atual)
+                #
+                # Fase 2 (subtask mudou): avança o ASM usando o pending como prova de validade
+                #   → se não havia pending: managing transitou sem condições validadas → [WARN]
+
+                # Fase 1: marcar pending quando condições satisfeitas
+                if self._pending_transition != candidate_key:
+                    if _eval(scenario.given, context) and _eval(scenario.when, context):
+                        self._pending_transition = candidate_key
+                        print(f"[{ts()}][ASM] [PENDING] {self._current_node} → {candidate_key}: condições satisfeitas, aguardando managing")
+                else:
+                    print(f"[{ts()}][ASM] [PENDING] {self._current_node} → {candidate_key}: aguardando managing (já validado)")
+
+                # Fase 2: avançar quando managing já está neste cenário
+                if context.get("current_subtask") == scenario.name:
+                    should_advance = True
+                    if self._pending_transition != candidate_key:
+                        print(f"[{ts()}][ASM] [WARN] {self._current_node} → {candidate_key}: managing transitou sem condições validadas")
+                    self._pending_transition = None
+
+            if should_advance:
                 prev = self._current_node
                 self._current_node = candidate_key
                 tag = "[ADAPT]" if scenario.type == "adaptive" else "[OK]"

@@ -5,6 +5,7 @@ from monitor_abs import MonitorAbs
 
 _GRIPPER_CLOSED_THRESHOLD = 0.060  # m — garra considerada fechada (≤) — cobre objetos até ~6cm
 _GRIPPER_OPEN_THRESHOLD   = 0.075  # m — garra considerada aberta (histerese)
+_FINGER_LENGTH_M          = 0.025  # m — distância pulso→ponta dos dedos (Franka Panda)
 
 
 class MonitorARM(MonitorAbs):
@@ -32,11 +33,20 @@ class MonitorARM(MonitorAbs):
         if "cube_rotation" in msg:
             state.cube_rotation        = np.array(msg["cube_rotation"],        dtype=np.float32)
             state.cube_linear_velocity = np.array(msg["cube_linear_velocity"], dtype=np.float32)
-        state.step            = int(msg.get("step", state.step))
-        state.episode         = int(msg.get("episode", state.episode))
-        state.reward          = float(msg.get("reward", 0.0))
-        state.is_success      = bool(msg.get("is_success", False))
-        state.current_subtask = msg.get("current_subtask", "")
+        state.step               = int(msg.get("step", state.step))
+        state.episode            = int(msg.get("episode", state.episode))
+        state.reward             = float(msg.get("reward", 0.0))
+        state.is_success         = bool(msg.get("is_success", False))
+        state.current_subtask    = msg.get("current_subtask", "")
+        state.current_task       = msg.get("current_task", "")
+        state.active_target_name = msg.get("active_target_name", "")
+        state.obstacles          = msg.get("obstacles", {})
+        state.objects            = msg.get("objects", {})
+        state.scripts            = msg.get("scripts", {})
+        state.target_goal        = msg.get("target_goal", {})
+        state.scene              = msg.get("scene", {})
+        state.robot_config       = msg.get("robot_config", {})
+        state.obstacle_positions = msg.get("obstacle_positions", {})
 
         # ── ASM monitored parameters (mapeados a partir dos sensores) ────────────
         fw     = state.fingers_width
@@ -57,12 +67,13 @@ class MonitorARM(MonitorAbs):
         state.object_available        = 1
         state.task_started            = 1
         state.gripper_width_cm        = int(fw     * 100)
-        state.distance_ee_object_cm   = int(dec    * 100)
+        # state.distance_ee_object_cm   = int(dec * 100)  # distância ao centro do cubo (rollback)
+        state.distance_ee_object_cm   = max(0, int((dec - _FINGER_LENGTH_M) * 100))  # distância ao ponto de grasp
         state.distance_object_goal_cm = int(dct_xy * 100)
         state.grasp_completed         = new_grasp
         state.finger_contacts         = int(msg.get("finger_contacts", 0))
         state.object_lift_height_cm   = max(0, int((cz - self._initial_cube_z) * 100))
-        state.task_aborted            = 0
+        state.task_aborted            = int(state.current_task == "ABORT" and state.is_success)
 
         if state.grasp_completed == 1 and self._prev_grasp_completed == 0:
             self._grasp_attempts += 1

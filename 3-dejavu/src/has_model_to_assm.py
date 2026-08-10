@@ -100,10 +100,10 @@ def has_to_assm(has_model: dict) -> dict:
         })
         err_states.add(f"ERR_{n}")
 
-        # S_(n+1) — contract Given, waits for Do event
+        # S_(n+1) — waits for Do event; no invariant because Do may modify Given
         states.append({
             "name":     f"S{n+1}",
-            "contract": [{"always": given}],
+            "contract": [{"always": "True"}],
             "transitions": [
                 {"target": f"PHI_{n+2}", "event": f"{do_action} ({name})"}
             ],
@@ -124,7 +124,10 @@ def has_to_assm(has_model: dict) -> dict:
         next_transitions = [
             {
                 "target": f"PHI_{state_nums[target_sid]}",
-                "guard":  normalize_expr(scenarios[target_sid]["when"]),
+                "guard":  (
+                    f"{normalize_expr(scenarios[target_sid]['given'])}"
+                    f" and {normalize_expr(scenarios[target_sid]['when'])}"
+                ),
             }
             for target_sid in outgoing[sid]
         ]

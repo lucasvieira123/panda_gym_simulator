@@ -521,6 +521,61 @@ def live_panel():
                     if perception.get("scripts"):
                         st.markdown(f"**Scripts** `{list(perception['scripts'].keys())}`")
 
+# ── SVG export ───────────────────────────────────────────────────────────────
+
+def _asm_to_svg() -> str | None:
+    try:
+        import graphviz
+    except ImportError:
+        return None
+
+    dot = graphviz.Digraph(
+        name="ASM",
+        graph_attr={
+            "rankdir": "TB", "splines": "ortho",
+            "nodesep": "0.7", "ranksep": "1.0",
+            "bgcolor": "white",
+        },
+        node_attr={"fontname": "Courier New", "fontsize": "10"},
+        edge_attr={"fontname": "Courier New", "fontsize": "9"},
+    )
+
+    dot.node("__init__", label="", shape="circle",
+             style="filled", fillcolor="#000000", fontcolor="white", width="0.3")
+    dot.node("__end__", label="●", shape="doublecircle",
+             style="filled", fillcolor="#FFFFFF", fontcolor="black", width="0.4")
+
+    for sid, s in st.session_state.scenarios.items():
+        stype = s.get("type", "domain")
+        fill  = "#1E3A5F" if stype == "domain" else "#3D3000"
+        border = "#4C9BE8" if stype == "domain" else "#FFD700"
+        prefix = "[A]" if stype == "adaptive" else "[D]"
+
+        def _fmt(expr):
+            if not expr or expr == "*":
+                return "*"
+            return " AND\n  ".join(p.strip() for p in expr.split(" AND "))
+
+        label = (
+            f"{prefix} {s['name']}\n"
+            f"{'─' * 20}\n"
+            f"Given : {_fmt(s.get('given','*'))}\n"
+            f"When  : {_fmt(s.get('when','*'))}\n"
+            f"Do    : {s.get('do','-')}\n"
+            f"Then  : {_fmt(s.get('then','*'))}"
+        )
+        dot.node(sid, label=label, shape="box", style="filled,rounded",
+                 fillcolor=fill, fontcolor="white", color=border)
+
+    for t in st.session_state.transitions:
+        dot.edge(t["from"], t["to"])
+
+    try:
+        return dot.pipe(format="svg").decode("utf-8")
+    except Exception:
+        return None
+
+
 # ── Main canvas ───────────────────────────────────────────────────────────────
 
 with st.container(border=True):
@@ -604,6 +659,18 @@ with st.container(border=True):
         width="100%", height=600, directed=True,
         physics=False, hierarchical=False, nodeHighlightBehavior=True,
     ))
+
+    svg = _asm_to_svg()
+    if svg:
+        st.download_button(
+            label="⬇ Download SVG",
+            data=svg,
+            file_name="asm.svg",
+            mime="image/svg+xml",
+            use_container_width=False,
+        )
+    else:
+        st.caption("Para exportar SVG: `pip install graphviz` + instalar [Graphviz](https://graphviz.org/download/) no sistema.")
 
     st.markdown(
         '<span style="display:inline-block;width:12px;height:12px;background:#000;border-radius:50%;vertical-align:middle;margin-right:5px"></span>'

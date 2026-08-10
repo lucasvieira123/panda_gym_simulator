@@ -37,6 +37,9 @@ def print_perception(msg: dict, state) -> None:
     # ── 2. monitored sem equivalente raw ─────────────────────────────────────
     mon_only = [
         f"grasp_attempts        = {state.grasp_attempts}",
+        f"task_started          = {state.task_started}",
+        f"object_available      = {state.object_available}",
+        f"task_aborted          = {state.task_aborted}",
     ]
 
     # ── 3. raw sem equivalente monitored ─────────────────────────────────────

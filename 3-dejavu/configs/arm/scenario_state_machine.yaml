@@ -16,12 +16,12 @@ statechart:
       - always: 'True'
       transitions:
       - target: S2
-        guard: object_available == True and gripper_width_cm >= 6
+        guard: object_available >= 1 and gripper_width_cm >= 6
       - target: ERR_1
-        guard: not (object_available == True and gripper_width_cm >= 6)
+        guard: not (object_available >= 1 and gripper_width_cm >= 6)
     - name: S2
       contract:
-      - always: object_available == True and gripper_width_cm >= 6
+      - always: 'True'
       transitions:
       - target: PHI_3
         event: approach_object() (APPROACH_OBJECT)
@@ -38,7 +38,7 @@ statechart:
       - always: distance_ee_object_cm <= 2
       transitions:
       - target: PHI_5
-        guard: distance_ee_object_cm <= 2
+        guard: gripper_width_cm >= 6 and distance_ee_object_cm <= 2
     - name: PHI_5
       contract:
       - always: 'True'
@@ -49,7 +49,7 @@ statechart:
         guard: not (gripper_width_cm >= 6)
     - name: S6
       contract:
-      - always: gripper_width_cm >= 6
+      - always: 'True'
       transitions:
       - target: PHI_7
         event: close_gripper() (GRASP_OBJECT)
@@ -58,17 +58,17 @@ statechart:
       - always: 'True'
       transitions:
       - target: S8
-        guard: grasp_completed == 1 and finger_contacts >= 2
+        guard: grasp_completed == 1
       - target: ERR_7
-        guard: not (grasp_completed == 1 and finger_contacts >= 2)
+        guard: not (grasp_completed == 1)
     - name: S8
       contract:
-      - always: grasp_completed == 1 and finger_contacts >= 2
+      - always: grasp_completed == 1
       transitions:
       - target: PHI_17
-        guard: grasp_completed == 1
+        guard: finger_contacts >= 2 and grasp_completed == 1
       - target: PHI_9
-        guard: grasp_completed == 1
+        guard: finger_contacts < 2 and grasp_attempts < 3 and grasp_completed == 1
     - name: PHI_9
       contract:
       - always: 'True'
@@ -79,11 +79,10 @@ statechart:
         guard: not (finger_contacts < 2 and grasp_attempts < 3)
     - name: S10
       contract:
-      - always: finger_contacts < 2 and grasp_attempts < 3
+      - always: 'True'
       transitions:
       - target: PHI_11
-        event: open_gripper(); realign_gripper(); close_gripper(); attemp_increment()
-          (RETRY_GRASP)
+        event: retry_grasp() (RETRY_GRASP)
     - name: PHI_11
       contract:
       - always: 'True'
@@ -97,11 +96,12 @@ statechart:
       - always: grasp_completed == 1
       transitions:
       - target: PHI_13
-        guard: grasp_completed == 1
+        guard: finger_contacts < 2 and grasp_attempts >= 3 and grasp_completed ==
+          1
       - target: PHI_9
-        guard: grasp_completed == 1
+        guard: finger_contacts < 2 and grasp_attempts < 3 and grasp_completed == 1
       - target: PHI_17
-        guard: grasp_completed == 1
+        guard: finger_contacts >= 2 and grasp_completed == 1
     - name: PHI_13
       contract:
       - always: 'True'
@@ -112,10 +112,10 @@ statechart:
         guard: not (finger_contacts < 2 and grasp_attempts >= 3)
     - name: S14
       contract:
-      - always: finger_contacts < 2 and grasp_attempts >= 3
+      - always: 'True'
       transitions:
       - target: PHI_15
-        event: open_gripper(); abort_task() (SAFE_ABORT)
+        event: abort_grasp() (SAFE_ABORT)
     - name: PHI_15
       contract:
       - always: 'True'
@@ -140,7 +140,7 @@ statechart:
         guard: not (finger_contacts >= 2)
     - name: S18
       contract:
-      - always: finger_contacts >= 2
+      - always: 'True'
       transitions:
       - target: PHI_19
         event: lift_object() (LIFT_OBJECT)
@@ -157,7 +157,7 @@ statechart:
       - always: object_lift_height_cm >= 10 and finger_contacts >= 2
       transitions:
       - target: PHI_21
-        guard: object_lift_height_cm >= 10
+        guard: finger_contacts >= 2 and object_lift_height_cm >= 10
     - name: PHI_21
       contract:
       - always: 'True'
@@ -168,7 +168,7 @@ statechart:
         guard: not (finger_contacts >= 2)
     - name: S22
       contract:
-      - always: finger_contacts >= 2
+      - always: 'True'
       transitions:
       - target: PHI_23
         event: transport_to_goal() (TRANSPORT_OBJECT)
@@ -188,7 +188,8 @@ statechart:
           >= 2
       transitions:
       - target: PHI_25
-        guard: distance_object_goal_cm <= 5
+        guard: object_lift_height_cm >= 10 and finger_contacts >= 2 and distance_object_goal_cm
+          <= 5
     - name: PHI_25
       contract:
       - always: 'True'
@@ -199,10 +200,10 @@ statechart:
         guard: not (object_lift_height_cm >= 10 and finger_contacts >= 2)
     - name: S26
       contract:
-      - always: object_lift_height_cm >= 10 and finger_contacts >= 2
+      - always: 'True'
       transitions:
       - target: PHI_27
-        event: lower_object(); open_gripper() (PLACE_OBJECT)
+        event: place_object() (PLACE_OBJECT)
     - name: PHI_27
       contract:
       - always: 'True'

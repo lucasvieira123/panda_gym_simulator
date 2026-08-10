@@ -40,9 +40,61 @@ def _build_graph(assm: dict) -> tuple[list, list]:
                 directed=True, arrows="to",
                 label=label,
                 color={"color": "#90A4AE"},
-                font={"size": 11, "color": "#CFD8DC", "align": "middle"},
+                font={"size": 11, "color": "#000000", "align": "middle"},
             ))
     return nodes, edges
+
+
+def _to_svg(assm: dict) -> str | None:
+    try:
+        import graphviz
+    except ImportError:
+        return None
+
+    dot = graphviz.Digraph(
+        name="StateMachine",
+        graph_attr={
+            "rankdir": "TB", "splines": "ortho",
+            "nodesep": "0.6", "ranksep": "0.9",
+            "bgcolor": "white",
+        },
+        node_attr={"fontname": "Courier New", "fontsize": "10"},
+        edge_attr={"fontname": "Courier New", "fontsize": "9"},
+    )
+
+    states = assm["statechart"]["root state"]["states"]
+    for state in states:
+        name = state["name"]
+        always = next(
+            (c["always"] for c in state.get("contract", []) if "always" in c),
+            None,
+        )
+        label = f"{name}\n{always}" if always and always != "True" else name
+
+        if name == "INIT":
+            dot.node(name, label=label, shape="circle",
+                     style="filled", fillcolor="#2E7D32", fontcolor="white")
+        elif name == "FINAL":
+            dot.node(name, label=label, shape="doublecircle",
+                     style="filled", fillcolor="#1A237E", fontcolor="white")
+        elif name.startswith("ERR"):
+            dot.node(name, label=label, shape="box",
+                     style="filled", fillcolor="#7B1010", fontcolor="white")
+        elif name.startswith("PHI"):
+            dot.node(name, label=label, shape="diamond",
+                     style="filled", fillcolor="#4A235A", fontcolor="white")
+        else:
+            dot.node(name, label=label, shape="box",
+                     style="filled,rounded", fillcolor="#1E3A5F", fontcolor="white")
+
+        for tr in state.get("transitions", []):
+            edge_label = tr.get("event", tr.get("guard", ""))
+            dot.edge(name, tr["target"], label=edge_label)
+
+    try:
+        return dot.pipe(format="svg").decode("utf-8")
+    except Exception:
+        return None
 
 
 def render() -> None:
@@ -56,3 +108,15 @@ def render() -> None:
         width="100%", height=700, directed=True,
         physics=False, hierarchical=True, nodeHighlightBehavior=True,
     ))
+
+    svg = _to_svg(assm)
+    if svg:
+        st.download_button(
+            label="⬇ Download SVG",
+            data=svg,
+            file_name="state_machine.svg",
+            mime="image/svg+xml",
+            use_container_width=False,
+        )
+    else:
+        st.caption("Para exportar SVG: `pip install graphviz` + instalar [Graphviz](https://graphviz.org/download/) no sistema.")

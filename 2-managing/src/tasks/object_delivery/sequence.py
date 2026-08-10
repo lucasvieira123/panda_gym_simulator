@@ -91,10 +91,26 @@ class ObjectDeliverySequence(_ObjectTask):
 
         action = self._active.compute_action()
 
-        if self._active.done:
-            self._transition()
+        # ── ROLLBACK ─────────────────────────────────────────────────────────
+        # Comportamento original: _transition() dentro do compute_action().
+        # Problema: current_subtask já muda antes da perception ser enviada,
+        # causando inconsistência (label=GRASP mas action/sensores ainda do APPROACH).
+        # Para reverter: descomenta as 2 linhas abaixo e apaga advance_if_done().
+        # if self._active.done:
+        #     self._transition()
+        # ─────────────────────────────────────────────────────────────────────
 
         return action
+
+    def advance_if_done(self) -> None:
+        """Transiciona para a próxima subtask SE a atual terminou.
+
+        Chamado em main.py APÓS a perception ser enviada, garantindo que
+        current_subtask no trace reflecte a action que foi realmente executada.
+        Para reverter: apaga este método e descomenta o bloco ROLLBACK acima.
+        """
+        if not self._seq_done and self._active.done:
+            self._transition()
 
     @property
     def current_subtask(self) -> str:

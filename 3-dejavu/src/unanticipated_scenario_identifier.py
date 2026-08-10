@@ -24,8 +24,10 @@ class UnanticipatedScenarioIdentifier:
 
     def get_scenario_by_name(self, name: str) -> dict:
         name_key = name.casefold().strip()
-        for sc in self.modelling_anticipated_scenarios.get("scenarios", []):
-            if sc.get("name", "").casefold().strip() == name_key:
+        scenarios = self.modelling_anticipated_scenarios.get("scenarios", {})
+        items = scenarios.items() if isinstance(scenarios, dict) else ((s.get("name", ""), s) for s in scenarios)
+        for key, sc in items:
+            if sc.get("name", key).casefold().strip() == name_key:
                 return sc
         raise KeyError(f"Cenário com name='{name}' não encontrado")
     
@@ -72,7 +74,7 @@ class UnanticipatedScenarioIdentifier:
         violated_scenario_name = unanticipated_scenarios_df["anticipated_scenario"].iloc[0]
 
         violated_scenario = self.get_scenario_by_name(violated_scenario_name)
-        id = violated_scenario["id"]
+        id = violated_scenario.get("id", violated_scenario_name)
         given = violated_scenario.get("given", {})
         when = violated_scenario.get("when", {})
         do = violated_scenario.get("do", {})

@@ -8,6 +8,7 @@ def init() -> None:
         "dj_scenarios":      {},
         "dj_sm_loaded":      False,
         "dj_assm":           None,
+        "dj_live":           None,   # último payload recebido via WS do DejaVu
     }
     for key, value in defaults.items():
         if key not in st.session_state:

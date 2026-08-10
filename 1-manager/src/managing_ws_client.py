@@ -22,7 +22,14 @@ class ManagingWsClient:
     def alive(self) -> bool:
         return self._alive
 
-    def get_perception(self, timeout: float = 10.0) -> dict | None:
+    def get_perception(self, timeout: float | None = None) -> dict | None:
+        if timeout is None:
+            while self._alive:
+                try:
+                    return self._queue.get(timeout=0.1)
+                except queue.Empty:
+                    continue
+            return None
         deadline = time.monotonic() + timeout
         while time.monotonic() < deadline:
             try:

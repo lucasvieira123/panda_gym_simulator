@@ -1,4 +1,4 @@
-anticipated_scenarios_path: "configs/arm/asm.json"
+anticipated_scenarios_path: "../1-manager/configs/arm/asm.json"
 scenario_state_machine_yaml: "configs/arm/scenario_state_machine.yaml"
 monitored_scenarios_folder: "output/arm/monitored_scenarios/"
 similarities_file: "output/arm/similarities.jsonl"

@@ -131,7 +131,13 @@ def main():
             # ── checkpoint: bloqueia até manager responder ────────────────────
             cmd = api.wait_for_command(timeout=5.0)
             _handle_command(cmd, gym_env, sequence, simulation, robot, configs)
-            # ─────────────────────────────────────────────────────────────────
+
+            # ── ROLLBACK ──────────────────────────────────────────────────────
+            # Comportamento original: a transição acontecia dentro de
+            # compute_action() — apaga as 2 linhas abaixo para reverter.
+            if gym_env.task is sequence:
+                sequence.advance_if_done()
+            # ──────────────────────────────────────────────────────────────────
 
             time.sleep(configs["simulation"]["step_delay"])
 

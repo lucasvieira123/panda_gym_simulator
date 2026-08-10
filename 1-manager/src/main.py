@@ -60,7 +60,7 @@ def main() -> None:
     _post_adaptation = False  # True após enviar "adapt", até próximo "ok" do ASM
 
     while client.alive:
-        msg = client.get_perception(timeout=30.0)
+        msg = client.get_perception()
         if msg is None:
             continue
 
@@ -72,6 +72,9 @@ def main() -> None:
         print_perception(msg, state)
 
         state = analyzer.analyze(state)         # A
+
+        dj = api.send_to_dejavu(state.to_new_perception())  # DejaVu checkpoint
+        print(f"[{ts()}][DejaVu] {dj}")
 
         # E — sempre responde ao checkpoint do managing
         if state.goal_status == "not_applicable":
