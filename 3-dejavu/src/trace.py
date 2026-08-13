@@ -6,9 +6,10 @@ _DEFAULT_TRACES_DIR = os.path.join(_DEJAVU_DIR, "traces")
 
 
 class TraceWriter:
-    def __init__(self, traces_dir: str = _DEFAULT_TRACES_DIR) -> None:
+    def __init__(self, traces_dir: str = _DEFAULT_TRACES_DIR, ts: str | None = None) -> None:
         os.makedirs(traces_dir, exist_ok=True)
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if ts is None:
+            ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         self._path = os.path.join(traces_dir, f"trace_{ts}.log")
         self._file = open(self._path, "w", encoding="utf-8")
 

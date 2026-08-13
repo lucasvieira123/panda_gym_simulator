@@ -1,5 +1,3 @@
-from pathlib import Path
-import pandas as pd
 from typing import Optional, List
 
 from sismic.io import import_from_yaml
@@ -22,7 +20,7 @@ class StateMachineEngine:
         self.state_machine = import_from_yaml(filepath=self.cfg["scenario_state_machine_yaml"])
         self.itp = Interpreter(self.state_machine, initial_context=_initial_context)
 
-        self.monitored_scenarios_df = pd.DataFrame(columns=_initial_context.keys())
+        self._last_sat: bool | None = None
 
         # Transições executadas no último tick — lidas pelo trace_printer
         self.last_transitions: list[dict] = []
@@ -44,18 +42,6 @@ class StateMachineEngine:
             return action_part, scenario
         return s.strip(), None
     
-    def update_monitored_scenarios(self):
-        new_context = self.itp.context.copy()
-        action = new_context["action"]
-        action, scenario = self.parse_action_and_scenario(action)
-
-        new_context.update({
-            "action": action,
-            "anticipated_scenario": scenario,
-            "SAT": None
-            })
-        self.monitored_scenarios_df = pd.concat([self.monitored_scenarios_df, pd.DataFrame([new_context])], ignore_index=True)
-
     def initialize_state_machine(self):
         ms=self.itp.execute()
         print("State machine initialized.")
@@ -119,7 +105,7 @@ class StateMachineEngine:
 
 
     
-    def execute_transition_path(self, sat_row_offset: int = -2):
+    def execute_transition_path(self):
         ms = None
         for _ in range(2):
             ms = self.itp.execute_once()
@@ -127,11 +113,11 @@ class StateMachineEngine:
                 break
             self.print_step(ms)
         if ms is None:
-            self.monitored_scenarios_df.loc[self.monitored_scenarios_df.index[sat_row_offset], "SAT"] = False
+            self._last_sat = False
         else:
             executed_transition = ms.transitions[0]
             is_error = self.arrived_error_state(executed_transition)
-            self.monitored_scenarios_df.loc[self.monitored_scenarios_df.index[sat_row_offset], "SAT"] = not is_error
+            self._last_sat = not is_error
     
     def execute_new_context_path(self):
           # Execute the state
@@ -231,7 +217,6 @@ class StateMachineEngine:
         self.last_action_queued = None
 
         self.update_context(runtime_data_tick)
-        self.update_monitored_scenarios()
 
         if self.there_is_transition_to_execute():
             self.execute_transition_path()
@@ -246,7 +231,7 @@ class StateMachineEngine:
             # então guards de pré-condição (ex: gripper >= 6) falham e o SM trava.
             # Para reverter: descomenta as 3 linhas abaixo e apaga o bloco novo.
             # self.add_transition_to_execute_after()
-            # self.execute_transition_path(sat_row_offset=-1)
+            # self.execute_transition_path()
             # self.execute_new_context_path()
             # ──────────────────────────────────────────────────────────────────
 
@@ -260,7 +245,7 @@ class StateMachineEngine:
                 self.itp.context["action"] = action_label
 
             self.add_transition_to_execute_after()
-            self.execute_transition_path(sat_row_offset=-1)
+            self.execute_transition_path()
             self.execute_new_context_path()
 
             self.update_context(runtime_data_tick)
@@ -277,46 +262,26 @@ class StateMachineEngine:
             for event_label in self._synthesize_adaptive_events():
                 self.itp.context["action"] = event_label
                 self.add_transition_to_execute_after()
-                self.execute_transition_path(sat_row_offset=-1)
+                self.execute_transition_path()
                 self.execute_new_context_path()
             self.itp.context["action"] = None
 
         self._prev_tick = runtime_data_tick
-        return self.monitored_scenarios_df.copy()
+        return self._last_sat
 
 
 class AntecipatedScenarioMonitor:
-    
+
     def __init__(self, initial_context: dict) -> None:
-        self.cfg = load_config(DEJAVU_CONF_PATH)
         self.latest: Optional[dict] = None
-        self.history_runtime_data: List[dict] = []  # opcional (pode desligar se ficar grande)
+        self.history_runtime_data: List[dict] = []
         self.state_machine_engine = StateMachineEngine(initial_context)
-
-        self.new_csv = self.next_csv_path(self.cfg["monitored_scenarios_folder"])
-        self.new_csv.write_text("", encoding="utf-8")
-
-
-    def next_csv_path(self, folder: str, prefix: str = "monitored_scenarios_", digits: int = 3) -> Path:
-        folder = Path(folder)
-        folder.mkdir(parents=True, exist_ok=True)          # cria o diretório se não existir
-        n_csv = len(list(folder.glob("*.csv")))            # conta quantos CSV existem
-        next_n = n_csv + 1
-        return folder / f"{prefix}{next_n:0{digits}d}.csv" # ex: checked_scenarios_001.csv
 
     def handle_runtime_data(self, runtime_data_tick: dict) -> None:
         self.latest = runtime_data_tick
         self.history_runtime_data.append(runtime_data_tick)
 
-        checked_scenarios_df = self.state_machine_engine.check_state_machine(runtime_data_tick)
-        checked_scenarios_df.to_csv(self.new_csv, index=False)
+        sat = self.state_machine_engine.check_state_machine(runtime_data_tick)
 
-        rows_false = checked_scenarios_df[checked_scenarios_df["SAT"] == False]
-        if not rows_false.empty:
+        if sat is False:
             print(f"{RED}=== ALERT: Unexpected Scenario Detected! ==={RESET}")
-            print(f"{RED} {rows_false} {RESET}")
-
-
-        # act = runtime_data_tick.action if runtime_data_tick.action else "-"
-
-        # print(f"[exec={runtime_data_tick.execution} t={runtime_data_tick.t:02d}] action={act:15s} h={runtime_data_tick.h:6.1f} b={runtime_data_tick.b:5.1f} vib={runtime_data_tick.vibration:.2f}")

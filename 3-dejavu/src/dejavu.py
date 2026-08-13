@@ -1,15 +1,17 @@
 import atexit
 import sys
+from datetime import datetime
 
 import api
+from constants import DEJAVU_CONF_PATH, PROJECT_ROOT
+from utils import load_config
 from manager_ws_client import ManagerWsClient
+from antecipated_scenario_dataset_recorder import AntecipatedScenarioDatasetRecorder
 from antecipated_scenario_monitor import AntecipatedScenarioMonitor
-from unanticipated_scenarios_detector import UnanticipatedScenariosDetector
 from unanticipated_scenario_identifier import UnanticipatedScenarioIdentifier
 from trace import TraceWriter
 from trace_printer import (
     format_tick,
-    format_pipeline_detect,
     format_pipeline_identify,
     format_pipeline_diagnose,
     format_pipeline_similarities,
@@ -81,9 +83,7 @@ def _active_state(monitor: AntecipatedScenarioMonitor) -> str:
 
 
 def _last_sat(monitor: AntecipatedScenarioMonitor):
-    df = monitor.state_machine_engine.monitored_scenarios_df
-    sat_vals = df["SAT"].dropna()
-    return sat_vals.iloc[-1] if not sat_vals.empty else None
+    return monitor.state_machine_engine._last_sat
 
 
 def _log(writer: TraceWriter, msg: str) -> None:
@@ -92,8 +92,15 @@ def _log(writer: TraceWriter, msg: str) -> None:
 
 
 def main() -> None:
-    writer = TraceWriter()
+    cfg        = load_config(DEJAVU_CONF_PATH)
+    ts         = datetime.now().strftime("%Y%m%d_%H%M%S")
+    traces_dir = str(PROJECT_ROOT / cfg.get("traces_folder", "output/arm/traces"))
+    writer     = TraceWriter(traces_dir, ts=ts)
     atexit.register(writer.close)
+
+    dataset_dir = str(PROJECT_ROOT / cfg.get("antecipated_scenario_dataset_folder", "output/arm/antecipated_scenario_dataset"))
+    recorder    = AntecipatedScenarioDatasetRecorder(dataset_dir, ts=ts)
+    atexit.register(recorder.save)
 
     _log(writer, f"[Trace] Gravando em: {writer.path}")
 
@@ -106,7 +113,6 @@ def main() -> None:
     api.wait_for_console(timeout=30.0)
 
     monitor    = AntecipatedScenarioMonitor(_SM_INITIAL.copy())
-    detector   = UnanticipatedScenariosDetector()
     identifier = UnanticipatedScenarioIdentifier()
 
     prev_subtask:  str | None  = None
@@ -115,7 +121,8 @@ def main() -> None:
 
     _log(writer, "[DejaVu] Aguardando new_perception do Manager...")
 
-    while client.alive:
+    try:
+      while client.alive:
         perception = client.get_new_perception(timeout=30.0)
         if perception is None:
             continue
@@ -138,31 +145,30 @@ def main() -> None:
         sat           = _last_sat(monitor)
         unanticipated = sat is False
 
+        # ── Dataset ───────────────────────────────────────────────────────────
+        recorder.record(perception, active_state=active, sat=sat)
+
         sm_eng = monitor.state_machine_engine
 
         # ── Trace por tick ────────────────────────────────────────────────────
         _log(writer, format_tick(
-            episode       = episode,
-            step          = step,
-            subtask       = subtask,
-            sm_params     = sm_tick,
-            active_state  = active,
-            sat           = sat,
-            transitions   = sm_eng.last_transitions,
-            action_queued = sm_eng.last_action_queued,
-            unanticipated = unanticipated,
+            episode        = episode,
+            step           = step,
+            subtask        = subtask,
+            sm_params      = sm_tick,
+            active_state   = active,
+            sat            = sat,
+            transitions    = sm_eng.last_transitions,
+            action_queued  = sm_eng.last_action_queued,
+            unanticipated  = unanticipated,
+            context_params = perception,
         ))
 
         # ── Pipeline de diagnóstico (só na 1ª detecção por episódio) ──────────
         if unanticipated and identified is None:
-            detected_df = None
             try:
-                detected_df = detector.detects()
-                _log(writer, format_pipeline_detect(detected_df))
-
-                identified = identifier.identifies(detected_df)
+                identified = identifier.identifies(None)
                 _log(writer, format_pipeline_identify(identified))
-
             except Exception as e:
                 _log(writer, f"  [PIPELINE] Erro: {e}")
 
@@ -180,6 +186,8 @@ def main() -> None:
             "new_perception":  perception,
             "identified":      identified,
         })
+    finally:
+        recorder.save()
 
 
 if __name__ == "__main__":
