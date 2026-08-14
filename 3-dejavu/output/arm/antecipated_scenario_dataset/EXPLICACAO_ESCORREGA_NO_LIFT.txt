@@ -1,0 +1,31 @@
+EXPLICAÇÃO DA SITUAÇÃO NÃO PREVISTA: ESCORREGAMENTO NO LIFT
+
+A situação não prevista deve ser associada à subtarefa LIFT_OBJECT, mesmo que o DejaVu registre SAT=False somente quando o CSV já indica TRANSPORT_OBJECT.
+
+O problema físico acontece durante o lift. Nos últimos passos de LIFT_OBJECT, o objeto perde o contato com os dedos, não alcança a altura mínima esperada e se afasta da garra. Portanto, quando o sistema inicia TRANSPORT_OBJECT, o objeto já caiu e não existe uma preensão válida para realizar o transporte.
+
+A sequência observada é:
+
+1. O robô executa lift_object() durante LIFT_OBJECT.
+2. Durante essa execução, o objeto escorrega e a elevação falha.
+3. O ambiente muda current_subtask para TRANSPORT_OBJECT.
+4. Nesse momento, a máquina de estados valida o resultado da ação lift_object().
+5. A pós-condição PHI_19 verifica se:
+   - object_lift_height_cm >= 10;
+   - finger_contacts >= 2.
+6. Como essas condições não são satisfeitas, a máquina entra em ERR_19 e registra SAT=False.
+
+O sistema não detecta a situação durante LIFT_OBJECT porque, na implementação atual, PHI_19 funciona como uma pós-condição da atividade lift_object(). Ela é avaliada quando a atividade termina e ocorre a tentativa de transição para a próxima subtarefa. Durante os passos intermediários do lift, o estado permanece em S18 e o trace registra que não houve transição naquele ciclo. Assim, o sistema acompanha a execução, mas ainda não classifica formalmente o resultado como insatisfatório.
+
+Também existe uma diferença de sincronização entre o ambiente e a máquina de estados. No passo da validação, o ambiente já atualizou current_subtask para TRANSPORT_OBJECT, enquanto a máquina de estados ainda está verificando se a atividade anterior, lift_object() de LIFT_OBJECT, terminou corretamente. Por isso, o CSV associa o primeiro SAT=False a TRANSPORT_OBJECT, embora a falha avaliada pertença ao lift.
+
+Em resumo:
+
+- Local da falha física: LIFT_OBJECT.
+- Atividade que falhou: lift_object().
+- Momento da detecção formal: entrada em TRANSPORT_OBJECT.
+- Condição violada: PHI_19.
+- Estado de erro: ERR_19.
+- Motivo do atraso: a validação é feita ao final do lift, na transição para o transporte, e não continuamente durante sua execução.
+
+Portanto, para uma abordagem de tratamento ou adaptação, o escorregamento deve ser considerado um problema de LIFT_OBJECT. TRANSPORT_OBJECT é apenas o ponto em que o modelo atual confirma formalmente que o lift terminou em uma condição inválida. Se a intenção for reagir antes da queda completa, será necessário monitorar durante o lift sinais como perda de contatos, altura insuficiente e aumento da distância entre o objeto e a garra.

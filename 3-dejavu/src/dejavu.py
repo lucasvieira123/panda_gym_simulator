@@ -46,7 +46,7 @@ _SUBTASK_TO_ACTION = {
 }
 
 
-def _sm_params(perception: dict, prev_subtask: str | None) -> tuple[dict, str | None]:
+def _sm_params(perception: dict, prev_subtask: str | None) -> tuple[dict, str | None, bool]:
     subtask = (perception.get("current_subtask") or "").upper()
 
     # ── ROLLBACK ──────────────────────────────────────────────────────────────
@@ -60,6 +60,10 @@ def _sm_params(perception: dict, prev_subtask: str | None) -> tuple[dict, str | 
     subtask_changed = subtask != (prev_subtask or "") and prev_subtask
     task_complete   = perception.get("is_success", False) and prev_subtask and not subtask_changed
     action = _SUBTASK_TO_ACTION.get(prev_subtask) if (subtask_changed or task_complete) else None
+    # Quando a ação é disparada por task_complete (is_success), o contexto atual já
+    # reflete o estado pós-ação — não rebobinar para _prev_tick, pois os guards de
+    # pós-condição (ex: PHI_27: gripper_width_cm >= 6) precisam do tick atual.
+    skip_rewind = bool(task_complete)
     return {
         "task_started":            perception.get("task_started",            0),
         "object_available":        perception.get("object_available",        0),
@@ -73,7 +77,7 @@ def _sm_params(perception: dict, prev_subtask: str | None) -> tuple[dict, str | 
         "task_aborted":            perception.get("task_aborted",            0),
         "action":                  action,
         "current_subtask":         subtask,  # "" = adaptativo; non-empty = domínio
-    }, subtask or None
+    }, subtask or None, skip_rewind
 
 
 def _active_state(monitor: AntecipatedScenarioMonitor) -> str:
@@ -138,8 +142,8 @@ def main() -> None:
             prev_episode = episode
 
         # ── State machine ─────────────────────────────────────────────────────
-        sm_tick, prev_subtask = _sm_params(perception, prev_subtask)
-        monitor.handle_runtime_data(sm_tick)
+        sm_tick, prev_subtask, skip_rewind = _sm_params(perception, prev_subtask)
+        monitor.handle_runtime_data(sm_tick, skip_rewind=skip_rewind)
 
         active        = _active_state(monitor)
         sat           = _last_sat(monitor)

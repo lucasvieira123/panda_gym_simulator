@@ -20,7 +20,8 @@ objects:
     mass: 1.0
     initial_position: [-0.25, 0.0, 0.02]
     color: [0.1, 0.2, 0.9, 1.0]
-    lateral_friction: 0.5  # 0.155 (escorrega)  0.5 (normal)
+    # lateral_friction: 0.5  # 0.155 (escorrega)  0.5 (normal)
+    lateral_friction: 0.130  # 0.155 (escorrega no place)  0.5 (normal)
     spinning_friction: 0.001
 
   # - name: "unknown_object"

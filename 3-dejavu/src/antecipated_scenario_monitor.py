@@ -212,7 +212,7 @@ class StateMachineEngine:
                     events.append(transition.event)
         return events
 
-    def check_state_machine(self, runtime_data_tick: dict) -> list:
+    def check_state_machine(self, runtime_data_tick: dict, skip_rewind: bool = False) -> list:
         self.last_transitions = []
         self.last_action_queued = None
 
@@ -239,8 +239,9 @@ class StateMachineEngine:
 
             # Rebobina para o contexto do tick anterior (percepção pré-ação)
             # para que os guards de pré-condição sejam avaliados corretamente.
-            # Após a ação disparar e os guards rodarem, restaura o tick atual.
-            if self._prev_tick is not None:
+            # skip_rewind=True quando is_success disparou a ação: o tick atual já
+            # é o estado pós-ação correto para avaliar pós-condições (ex: PHI_27).
+            if not skip_rewind and self._prev_tick is not None:
                 self.update_context(self._prev_tick)
                 self.itp.context["action"] = action_label
 
@@ -277,11 +278,11 @@ class AntecipatedScenarioMonitor:
         self.history_runtime_data: List[dict] = []
         self.state_machine_engine = StateMachineEngine(initial_context)
 
-    def handle_runtime_data(self, runtime_data_tick: dict) -> None:
+    def handle_runtime_data(self, runtime_data_tick: dict, skip_rewind: bool = False) -> None:
         self.latest = runtime_data_tick
         self.history_runtime_data.append(runtime_data_tick)
 
-        sat = self.state_machine_engine.check_state_machine(runtime_data_tick)
+        sat = self.state_machine_engine.check_state_machine(runtime_data_tick, skip_rewind=skip_rewind)
 
         if sat is False:
             print(f"{RED}=== ALERT: Unexpected Scenario Detected! ==={RESET}")

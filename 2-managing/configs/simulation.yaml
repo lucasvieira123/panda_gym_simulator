@@ -13,7 +13,7 @@ traces_dir: "traces" # pasta relativa ao managing/ onde os traces são salvos
 distance_threshold: 0.05 #Distância mínima para considerar que a box chegou no goal (5cm)
 grasp_height_offset: 0.0 #Offset vertical somado ao centro da box: EE fica 1cm acima do centro (dentro da metade superior da box)
 approach_height: 0.1 #Altura que o braço sobe antes de se mover horizontalmente (10cm) — evita colidir com obstáculos
-phase_threshold: 0.02 #Distância mínima para considerar que o braço chegou num waypoint e pode avançar para a próxima fase (2cm)
+phase_threshold: 0.045 #Distância mínima para considerar que o braço chegou num waypoint e pode avançar para a próxima fase (2cm)
 approach_offset: 0.05 #Só para PushTask — distância atrás da box onde a garra se posiciona antes de empurrar (5cm)
 push_speed: 0.3 #Só para PushTask — intensidade do empurrão (0.0 a 1.0)
 move_speed: 0.5 #Só para ManualTask — sensibilidade do teclado (0.0 a 1.0)

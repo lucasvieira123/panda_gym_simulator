@@ -1,0 +1,7 @@
+[Trace] Gravando em: C:\Users\lucas_alves\Workspace\self-adaptive-arm-simulator\1-manager\traces\trace_20260814_012737.log
+[step=   0 01:27:38.365][Manager] DejaVu conectado.
+[step=   0 01:27:38.708][Manager] DejaVu conectado.
+[step=   0 01:27:38.947][Manager] GUI conectado.
+[step=   0 01:27:40.449][Manager] Aguardando percepcoes do managing...
+
+[step=   0 01:27:40.479][WsClient] Conectado a ws://localhost:8000/ws/perception
