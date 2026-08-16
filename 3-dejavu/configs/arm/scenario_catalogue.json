@@ -1,50 +1,76 @@
 {
   "metadata": {
-    "name": "Gripper Catalogue"
+    "name": "Lift Scenarios Catalogue — Multi-Application"
   },
   "monitored_parameters": {
-    "grip_force":       { "type": "float", "min": 0, "max": 100 },
-    "contact_detected": { "type": "int", "min": 0, "max": 1 },
-    "slip_detected":    { "type": "int", "min": 0, "max": 1 },
-    "gripper_opening":  { "type": "float", "min": 0, "max": 80 },
-    "object_weight":    { "type": "float", "min": 0, "max": 5 },
-    "current_draw":     { "type": "float", "min": 0, "max": 10 }
+    "object_available":        { "type": "int",   "min_value": 0,    "max_value": 10   },
+    "task_started":            { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "gripper_width_cm":        { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "distance_ee_object_cm":   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "grasp_completed":         { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "finger_contacts":         { "type": "int",   "min_value": 0,    "max_value": 5    },
+    "grasp_attempts":          { "type": "int",   "min_value": 0,    "max_value": 5    },
+    "object_lift_height_cm":   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "distance_object_goal_cm": { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "task_aborted":            { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "teste":                   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "lateral_friction":        { "type": "float", "min_value": 0.0,  "max_value": 2.0  },
+    "grip_pressure":           { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "vacuum_level":            { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "ambient_temperature":     { "type": "float", "min_value": 0.0,  "max_value": 60.0  },
+    "object_secured":          { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "joint_torque":            { "type": "float", "min_value": 0.0,  "max_value": 20.0  },
+    "motor_temperature":       { "type": "float", "min_value": 0.0,  "max_value": 100.0 }
   },
   "scenarios": {
-    "stable_grip": {
-      "name": "Stable Grip",
-      "given": "contact_detected == 1 and slip_detected == 0",
-      "when": "grip_force >= 10 and grip_force <= 80",
-      "do": "maintainGrip()",
-      "then": "slip_detected == 0"
+
+    "lift_slip_low_friction": {
+      "name": "Lift Slip — Low Friction Surface",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.4",
+      "when":  "grasp_completed == 1",
+      "do":    "apply_vacuum_assist()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2"
     },
-    "slip_recovery": {
-      "name": "Slip Recovery",
-      "given": "slip_detected == 1 and grip_force < 80",
-      "when": "contact_detected == 1",
-      "do": "increaseGripForce()",
-      "then": "slip_detected == 0"
+
+    "cobot_lift_grip_pressure": {
+      "name": "Cobot Lift Failure — Grip Pressure",
+      "given": "object_lift_height_cm < 10 AND grip_pressure < 40",
+      "when":  "grasp_completed == 1",
+      "do":    "increase_grip_pressure()",
+      "then":  "object_lift_height_cm >= 10 AND grip_pressure >= 40"
     },
-    "motor_overload_release": {
-      "name": "Motor Overload Release",
-      "given": "current_draw > 8",
-      "when": "grip_force > 0",
-      "do": "emergencyRelease()",
-      "then": "current_draw < 5 and contact_detected == 0"
+
+    "suction_arm_vacuum_loss": {
+      "name": "Suction Arm Lift — Vacuum Loss",
+      "given": "vacuum_level < 50 AND ambient_temperature > 35",
+      "when":  "grasp_completed == 1",
+      "do":    "emergency_vacuum_pump()",
+      "then":  "vacuum_level >= 70 AND object_secured == 1"
     },
-    "empty_grip": {
-      "name": "Empty Grip",
-      "given": "contact_detected == 0 and gripper_opening < 10",
-      "when": "*",
-      "do": "openGripper()",
-      "then": "gripper_opening > 60"
+
+    "parallel_arm_contact_loss": {
+      "name": "Parallel Arm Lift — Contact Loss",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2",
+      "when":  "grasp_completed == 1",
+      "do":    "reposition_and_regrip()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2"
     },
-    "overweight_abort": {
-      "name": "Overweight Abort",
-      "given": "object_weight > 3.5",
-      "when": "contact_detected == 1",
-      "do": "releaseObject()",
-      "then": "contact_detected == 0 and gripper_opening > 50"
+
+    "lightweight_arm_height_only": {
+      "name": "Lightweight Arm Lift — Height Verification Only",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2",
+      "when":  "grasp_completed == 1",
+      "do":    "extend_lift_phase()",
+      "then":  "object_lift_height_cm >= 12"
+    },
+
+    "heavy_duty_arm_motor_overload": {
+      "name": "Heavy Duty Arm — Motor Overload During Lift",
+      "given": "joint_torque > 8 AND motor_temperature > 60",
+      "when":  "grasp_completed == 1",
+      "do":    "reduce_lift_speed()",
+      "then":  "object_lift_height_cm >= 10 AND joint_torque < 5"
     }
+
   }
 }

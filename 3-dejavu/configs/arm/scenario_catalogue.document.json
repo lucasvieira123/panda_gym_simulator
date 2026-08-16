@@ -1,0 +1,145 @@
+{
+  "_comment": [
+    "SCENARIO CATALOGUE — example / reference file",
+    "",
+    "This file is the similarity input for the SimilarityBasedAdapter.",
+    "It contains two sections: monitored_parameters and scenarios.",
+    "",
+    "─── monitored_parameters ───────────────────────────────────────────────────",
+    "Defines the numeric domain (type, min_value, max_value) of every variable",
+    "that may appear in any scenario condition (given / when / then).",
+    "",
+    "The Jaccard similarity algorithm uses min_value and max_value to compute",
+    "interval lengths. If a variable is missing here, its Jaccard score is 0.",
+    "",
+    "IMPORTANT — ASM parameter contract:",
+    "  Any parameter that also exists in the Anticipated Scenario Model (asm.json)",
+    "  MUST appear here with the EXACT SAME name and the SAME min_value/max_value",
+    "  range. The similarity is calculated between the diagnosed scenario (whose",
+    "  variables come from the ASM) and the catalogue candidates. If the name or",
+    "  range differs, the pairing fails and the score drops to zero for that variable.",
+    "",
+    "  Note on format: asm.json uses 'min'/'max'; this file uses 'min_value'/'max_value'.",
+    "  When copying ranges from the ASM, rename the keys accordingly.",
+    "",
+    "Parameters are grouped into two categories:",
+    "  [ASM] — mirrored from asm.json; name and range must stay in sync.",
+    "  [CAT] — catalogue-only; variables used by candidate scenarios from other",
+    "           applications that do not exist in the ASM.",
+    "",
+    "─── scenarios ───────────────────────────────────────────────────────────────",
+    "Each candidate scenario represents a known situation from another robotic",
+    "application. It follows the same Given/When/Do/Then structure as the ASM.",
+    "",
+    "STRATEGY — uniform 'when' across all candidates:",
+    "  All candidates in this catalogue intentionally share the same 'when' condition",
+    "  as the diagnosed scenario. This is NOT a requirement of the similarity algorithm",
+    "  (which computes when_sim normally for any condition), but a deliberate design",
+    "  choice that enforces a semantic constraint:",
+    "",
+    "    A candidate with a different 'when' represents a situation that cannot be",
+    "    activated under the same conditions as the diagnosed scenario. Such a candidate",
+    "    would be semantically inapplicable as an adaptation — even if its given/then",
+    "    are similar. By pre-filtering the catalogue to candidates with the same 'when',",
+    "    we guarantee that every ranked result is a valid adaptation option.",
+    "",
+    "  The practical effect: when_sim = 1.0 for all candidates, so 'when' contributes",
+    "  a fixed 1/3 to every score and the ranking is driven entirely by given and then.",
+    "",
+    "Similarity scores (against a diagnosed LIFT_OBJECT scenario):",
+    "  lift_slip_low_friction   → ~0.99  HIGH   (same parameters, near-identical ranges)",
+    "  cobot_lift_grip_pressure → ~0.61  MEDIUM (partial parameter overlap)",
+    "  suction_arm_vacuum_loss  → ~0.33  LOW    (no shared parameters beyond 'when')",
+    "",
+    "The minimum possible score is 0.33 because 'when' contributes a fixed 1/3",
+    "when all candidates share the same 'when' condition as the diagnosed scenario."
+  ],
+
+  "metadata": {
+    "name": "Lift Scenarios Catalogue — Multi-Application"
+  },
+
+  "monitored_parameters": {
+
+    "_comment_asm": "Parameters mirrored from asm.json — name and range MUST match exactly.",
+
+    "object_available":        { "type": "int",   "min_value": 0,   "max_value": 10,  "_source": "ASM" },
+    "task_started":            { "type": "int",   "min_value": 0,   "max_value": 1,   "_source": "ASM" },
+    "gripper_width_cm":        { "type": "int",   "min_value": 0,   "max_value": 100, "_source": "ASM" },
+    "distance_ee_object_cm":   { "type": "int",   "min_value": 0,   "max_value": 100, "_source": "ASM" },
+    "grasp_completed":         { "type": "int",   "min_value": 0,   "max_value": 1,   "_source": "ASM" },
+    "finger_contacts":         { "type": "int",   "min_value": 0,   "max_value": 5,   "_source": "ASM" },
+    "grasp_attempts":          { "type": "int",   "min_value": 0,   "max_value": 5,   "_source": "ASM" },
+    "object_lift_height_cm":   { "type": "int",   "min_value": 0,   "max_value": 100, "_source": "ASM" },
+    "distance_object_goal_cm": { "type": "int",   "min_value": 0,   "max_value": 100, "_source": "ASM" },
+    "task_aborted":            { "type": "int",   "min_value": 0,   "max_value": 1,   "_source": "ASM" },
+
+    "_comment_cat": "Catalogue-only parameters — used by candidate scenarios from other applications.",
+
+    "lateral_friction":        { "type": "float", "min_value": 0.0, "max_value": 2.0,   "_source": "CAT" },
+    "grip_pressure":           { "type": "float", "min_value": 0.0, "max_value": 100.0, "_source": "CAT" },
+    "vacuum_level":            { "type": "float", "min_value": 0.0, "max_value": 100.0, "_source": "CAT" },
+    "ambient_temperature":     { "type": "float", "min_value": 0.0, "max_value": 60.0,  "_source": "CAT" },
+    "object_secured":          { "type": "int",   "min_value": 0,   "max_value": 1,     "_source": "CAT" },
+    "joint_torque":            { "type": "float", "min_value": 0.0, "max_value": 20.0,  "_source": "CAT" },
+    "motor_temperature":       { "type": "float", "min_value": 0.0, "max_value": 100.0, "_source": "CAT" }
+  },
+
+  "scenarios": {
+
+    "lift_slip_low_friction": {
+      "_comment": "HIGH similarity (~0.99). Same parameters as a diagnosed LIFT_OBJECT failure — identical given/then structure, slightly wider lateral_friction threshold.",
+      "name":  "Lift Slip — Low Friction Surface",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.4",
+      "when":  "grasp_completed == 1",
+      "do":    "apply_vacuum_assist()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+
+    "cobot_lift_grip_pressure": {
+      "_comment": "MEDIUM similarity (~0.61). Shares object_lift_height_cm with the diagnosed scenario; grip_pressure is a cobot-specific parameter not present in the ASM.",
+      "name":  "Cobot Lift Failure — Grip Pressure",
+      "given": "object_lift_height_cm < 10 AND grip_pressure < 40",
+      "when":  "grasp_completed == 1",
+      "do":    "increase_grip_pressure()",
+      "then":  "object_lift_height_cm >= 10 AND grip_pressure >= 40"
+    },
+
+    "suction_arm_vacuum_loss": {
+      "_comment": "LOW similarity (~0.33). No shared parameters in given/then — all variables are suction-specific. Score is the minimum possible (1/3 from the shared 'when').",
+      "name":  "Suction Arm Lift — Vacuum Loss",
+      "given": "vacuum_level < 50 AND ambient_temperature > 35",
+      "when":  "grasp_completed == 1",
+      "do":    "emergency_vacuum_pump()",
+      "then":  "vacuum_level >= 70 AND object_secured == 1"
+    },
+
+    "parallel_arm_contact_loss": {
+      "_comment": "HIGH similarity (~0.90). Same parameters as diagnosed given/then but without lateral_friction (this system has no friction sensor). Tversky penalty = 0.31 for the missing param; Jaccard on matched params = 1.0.",
+      "name":  "Parallel Arm Lift — Contact Loss",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2",
+      "when":  "grasp_completed == 1",
+      "do":    "reposition_and_regrip()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+
+    "lightweight_arm_height_only": {
+      "_comment": "MEDIUM-HIGH similarity (~0.73). Same given as parallel_arm_contact_loss (given_sim = 0.69); then monitors only lift height (stricter threshold: >= 12cm), dropping finger_contacts — penalty = 0.47 on then, Jaccard = 0.98 on height.",
+      "name":  "Lightweight Arm Lift — Height Verification Only",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2",
+      "when":  "grasp_completed == 1",
+      "do":    "extend_lift_phase()",
+      "then":  "object_lift_height_cm >= 12"
+    },
+
+    "heavy_duty_arm_motor_overload": {
+      "_comment": "MEDIUM-LOW similarity (~0.50). Completely different given parameters (torque + temperature vs height + contacts + friction) — given_sim = 0. Then shares only object_lift_height_cm with the diagnosed; penalty = 0.50, Jaccard = 1.0 on height — then_sim = 0.50.",
+      "name":  "Heavy Duty Arm — Motor Overload During Lift",
+      "given": "joint_torque > 8 AND motor_temperature > 60",
+      "when":  "grasp_completed == 1",
+      "do":    "reduce_lift_speed()",
+      "then":  "object_lift_height_cm >= 10 AND joint_torque < 5"
+    }
+
+  }
+}

@@ -192,7 +192,9 @@ def format_pipeline_diagnose(diagnosed: dict | None) -> str:
         f"  ┌─ DIAGNOSE {'─' * len(_BOX)}",
         f"  │  Nome  : {diagnosed.get('name', '?')}",
         f"  │  Given : {diagnosed.get('given', '?')}",
+        f"  │  When  : {diagnosed.get('when', '?')}",
         f"  │  Do    : {diagnosed.get('do', '?')}",
+        f"  │  Then  : {diagnosed.get('then', '?')}",
         f"  └{'─' * 69}",
     ]
     return "\n".join(lines)
@@ -202,12 +204,12 @@ def format_pipeline_similarities(similarities: list | None) -> str:
     if not similarities:
         return ""
     lines = [f"  ┌─ SIMILARITIES {'─' * len(_BOX)}"]
-    for i, s in enumerate(similarities[:5], 1):
-        result = s.get("similarity_result", {})
-        score  = result.get("similarity", result.get("score", "?"))
-        cand   = s.get("candidate", {})
-        name   = cand.get("name", f"candidate_{i}")
-        lines.append(f"  │  [{i}] {name:<40} score={score}")
+    for i, s in enumerate(similarities, 1):
+        score = s.get("similarity_result", "?")
+        cand  = s.get("candidate", {})
+        name  = cand.get("name", f"candidate_{i}")
+        score_str = f"{score:.5f}" if isinstance(score, float) else str(score)
+        lines.append(f"  │  [{i}] {name:<40} score={score_str}")
     lines.append(f"  └{'─' * 69}")
     return "\n".join(lines)
 

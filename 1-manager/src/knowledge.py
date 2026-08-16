@@ -30,16 +30,17 @@ class SystemState:
     current_situation: str = "normal"
     step: int = 0
     # ASM monitored parameters
-    object_available:        int = 0
-    task_started:            int = 0
-    gripper_width_cm:        int = 0
-    distance_ee_object_cm:   int = 0
-    grasp_completed:         int = 0
-    finger_contacts:         int = 0
-    grasp_attempts:          int = 0
-    object_lift_height_cm:   int = 0
-    distance_object_goal_cm: int = 0
-    task_aborted:            int = 0
+    object_available:        int   = 0
+    task_started:            int   = 0
+    gripper_width_cm:        int   = 0
+    distance_ee_object_cm:   int   = 0
+    grasp_completed:         int   = 0
+    finger_contacts:         int   = 0
+    grasp_attempts:          int   = 0
+    object_lift_height_cm:   int   = 0
+    distance_object_goal_cm: int   = 0
+    task_aborted:            int   = 0
+    lateral_friction:        float = 0.0
     # managing perception — unmapped fields from perception msg
     current_subtask:    str  = ""
     current_task:       str  = ""
@@ -82,6 +83,7 @@ class SystemState:
             "object_lift_height_cm":   int(self.object_lift_height_cm),
             "distance_object_goal_cm": int(self.distance_object_goal_cm),
             "task_aborted":            int(self.task_aborted),
+            "lateral_friction":        float(self.lateral_friction),
             # raw sensor scalars (observed)
             "fingers_width":           float(self.fingers_width),
             "dist_ee_to_cube":         float(self.dist_ee_to_cube),
@@ -108,7 +110,12 @@ class SystemState:
             "current_task":       self.current_task,
             "active_target_name": self.active_target_name,
             # dicts — DejaVu serializa conforme necessário
-            "objects":            self.objects,
+            # campos já promovidos a parâmetros flat são removidos dos dicts aninhados
+            "objects":            {
+                obj: {k: v for k, v in data.items() if k not in {"lateral_friction"}}
+                if isinstance(data, dict) else data
+                for obj, data in self.objects.items()
+            },
             "obstacles":          self.obstacles,
             "scene":              self.scene,
             "robot_config":       self.robot_config,

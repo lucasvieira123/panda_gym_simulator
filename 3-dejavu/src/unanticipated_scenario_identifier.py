@@ -61,7 +61,7 @@ class UnanticipatedScenarioIdentifier:
         #     return "*"
         if len(conds) == 1:
             return conds[0]
-        return " and ".join(f"({c})" for c in conds)
+        return " AND ".join(f"({c})" for c in conds)
 
     def identifies(self, unanticipated_scenarios_df: pd.DataFrame):
         

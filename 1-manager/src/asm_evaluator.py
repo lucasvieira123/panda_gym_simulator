@@ -48,6 +48,11 @@ class AsmEvaluator:
     def done(self) -> bool:
         return self._current_node == "__end__"
 
+    @property
+    def pending_scenario_key(self) -> str | None:
+        """Cenário de domínio cujas condições já foram validadas, aguardando managing."""
+        return self._pending_transition
+
     def reset(self) -> None:
         self._current_node        = "__init__"
         self._pending_transition  = None

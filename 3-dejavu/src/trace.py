@@ -11,7 +11,7 @@ class TraceWriter:
         if ts is None:
             ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         self._path = os.path.join(traces_dir, f"trace_{ts}.log")
-        self._file = open(self._path, "w", encoding="utf-8")
+        self._file = open(self._path, "w", encoding="utf-8-sig")
 
     @property
     def path(self) -> str:

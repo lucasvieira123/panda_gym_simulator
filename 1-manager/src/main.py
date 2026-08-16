@@ -57,7 +57,8 @@ def main() -> None:
 
     print(f"[{ts()}][Manager] Aguardando percepcoes do managing...\n")
 
-    _post_adaptation = False  # True após enviar "adapt", até próximo "ok" do ASM
+    _post_adaptation     = False       # True após enviar "adapt", até próximo "ok" do ASM
+    _dj_adapted_episode: int | None = None  # episódio em que já agimos na rec. DejaVu
 
     while client.alive:
         msg = client.get_perception()
@@ -65,7 +66,8 @@ def main() -> None:
             continue
 
         set_step(msg.get("step", 0))
-        print(f"[{ts()}][Manager] ep={msg.get('episode')} subtask={msg.get('current_subtask','')} reward={msg.get('reward', 0):.4f}")
+        episode = msg.get("episode")
+        print(f"[{ts()}][Manager] ep={episode} subtask={msg.get('current_subtask','')} reward={msg.get('reward', 0):.4f}")
 
         state = monitor.update(msg, state)      # M
 
@@ -76,8 +78,33 @@ def main() -> None:
         dj = api.send_to_dejavu(state.to_new_perception())  # DejaVu checkpoint
         print(f"[{ts()}][DejaVu] {dj}")
 
-        # E — sempre responde ao checkpoint do managing
-        if state.goal_status == "not_applicable":
+        dj_unanticipated = bool(dj.get("unanticipated")) if dj else False
+        dj_adaptation    = dj.get("adaptation")          if dj else None
+
+        # E — prioridade: DejaVu age apenas quando o ASM interno não reconhece a violação.
+        # Se goal_status == "violated", o ASM interno já sabe tratar → planner interno ganha.
+        pending_domain = asm_evaluator.pending_scenario_key
+
+        if (dj_unanticipated and dj_adaptation
+                and state.goal_status != "violated"
+                and _dj_adapted_episode != episode
+                and not _post_adaptation):
+            # DejaVu detectou algo que o ASM interno não capturou.
+            # Tratamos como cenário adaptativo: send_adapt com o "do" do candidato top-1.
+            executor.send_adapt(dj_adaptation["do"])
+            _post_adaptation    = True
+            _dj_adapted_episode = episode
+            print(f"[{ts()}][Manager][DejaVu] Adaptação: {dj_adaptation['candidate_name']} (score={dj_adaptation['score']:.3f}) → {dj_adaptation['do']}")
+
+        elif _post_adaptation and state.goal_status == "not_applicable" and pending_domain:
+            # Pós-adaptação bloqueada: o managing completou a tarefa adaptativa mas aguarda
+            # um transition para retomar o fluxo de domínio. O ASM já validou as condições
+            # (pending_domain); enviamos o transition agora para desbloquear.
+            executor.send_transition(pending_domain)
+            _post_adaptation = False
+            print(f"[{ts()}][Manager] Pós-adaptação → transition para {pending_domain}")
+
+        elif state.goal_status == "not_applicable":
             executor.send_continue()
 
         elif state.goal_status == "ok":
@@ -90,10 +117,10 @@ def main() -> None:
                 executor.send_continue()
 
         elif state.goal_status == "violated":
-            strategy = planner.plan(state)      # P
+            strategy = planner.plan(state)      # P — ASM interno conhece o cenário
             executor.send_adapt(strategy)       # E
             _post_adaptation = True
-            print(f"[{ts()}][Manager] Adaptacao iniciada: {strategy}")
+            print(f"[{ts()}][Manager] Adaptação interna: {strategy}")
 
         api.update_state({
             "perception":           msg,

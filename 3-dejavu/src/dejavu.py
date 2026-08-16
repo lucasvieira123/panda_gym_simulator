@@ -1,6 +1,10 @@
 import atexit
+import json
+import os
 import sys
 from datetime import datetime
+
+import pandas as pd
 
 import api
 from constants import DEJAVU_CONF_PATH, PROJECT_ROOT
@@ -9,6 +13,8 @@ from manager_ws_client import ManagerWsClient
 from antecipated_scenario_dataset_recorder import AntecipatedScenarioDatasetRecorder
 from antecipated_scenario_monitor import AntecipatedScenarioMonitor
 from unanticipated_scenario_identifier import UnanticipatedScenarioIdentifier
+from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
+from similarity_based_adapter import SimilarityBasedAdapter
 from trace import TraceWriter
 from trace_printer import (
     format_tick,
@@ -86,6 +92,12 @@ def _active_state(monitor: AntecipatedScenarioMonitor) -> str:
     return states[0] if states else "—"
 
 
+def _active_scenario(monitor: AntecipatedScenarioMonitor) -> dict:
+    return monitor.state_machine_engine.itp.context.get(
+        "active_scenario", {"name": "", "type": None}
+    )
+
+
 def _last_sat(monitor: AntecipatedScenarioMonitor):
     return monitor.state_machine_engine._last_sat
 
@@ -95,11 +107,20 @@ def _log(writer: TraceWriter, msg: str) -> None:
     writer.write(msg + "\n")
 
 
+def _write_similarities(path: str, results: list, run_id: str, episode: int) -> None:
+    with open(path, "a", encoding="utf-8") as f:
+        for r in results:
+            f.write(json.dumps({"run_id": run_id, "episode": episode, **r}, default=str) + "\n")
+
+
 def main() -> None:
-    cfg        = load_config(DEJAVU_CONF_PATH)
-    ts         = datetime.now().strftime("%Y%m%d_%H%M%S")
-    traces_dir = str(PROJECT_ROOT / cfg.get("traces_folder", "output/arm/traces"))
-    writer     = TraceWriter(traces_dir, ts=ts)
+    cfg              = load_config(DEJAVU_CONF_PATH)
+    ts               = datetime.now().strftime("%Y%m%d_%H%M%S")
+    traces_dir       = str(PROJECT_ROOT / cfg.get("traces_folder", "output/arm/traces"))
+    similarities_dir = str(PROJECT_ROOT / cfg.get("similarities_folder", "output/arm/similarities"))
+    os.makedirs(similarities_dir, exist_ok=True)
+    similarities_path = os.path.join(similarities_dir, f"similarities_{ts}.jsonl")
+    writer           = TraceWriter(traces_dir, ts=ts)
     atexit.register(writer.close)
 
     dataset_dir = str(PROJECT_ROOT / cfg.get("antecipated_scenario_dataset_folder", "output/arm/antecipated_scenario_dataset"))
@@ -118,10 +139,15 @@ def main() -> None:
 
     monitor    = AntecipatedScenarioMonitor(_SM_INITIAL.copy())
     identifier = UnanticipatedScenarioIdentifier()
+    diagnoser  = UnanticipatedScenarioDiagnoser()
+    adapter    = SimilarityBasedAdapter()
 
-    prev_subtask:  str | None  = None
-    identified:    dict | None = None
-    prev_episode:  int | None  = None
+    prev_subtask:  str | None   = None
+    identified:    dict | None  = None
+    diagnosed:     dict | None  = None
+    similarities:  list | None  = None
+    adaptation:    dict | None  = None
+    prev_episode:  int | None   = None
 
     _log(writer, "[DejaVu] Aguardando new_perception do Manager...")
 
@@ -138,6 +164,9 @@ def main() -> None:
         # Novo episódio → reseta estado do pipeline
         if episode != prev_episode:
             identified   = None
+            diagnosed    = None
+            similarities = None
+            adaptation   = None
             prev_subtask = None
             prev_episode = episode
 
@@ -146,11 +175,14 @@ def main() -> None:
         monitor.handle_runtime_data(sm_tick, skip_rewind=skip_rewind)
 
         active        = _active_state(monitor)
+        scenario      = _active_scenario(monitor)
         sat           = _last_sat(monitor)
         unanticipated = sat is False
 
         # ── Dataset ───────────────────────────────────────────────────────────
-        recorder.record(perception, active_state=active, sat=sat)
+        recorder.record(perception, active_state=active, sat=sat,
+                        active_scenario_name=scenario["name"],
+                        active_scenario_type=scenario["type"])
 
         sm_eng = monitor.state_machine_engine
 
@@ -171,24 +203,49 @@ def main() -> None:
         # ── Pipeline de diagnóstico (só na 1ª detecção por episódio) ──────────
         if unanticipated and identified is None:
             try:
-                identified = identifier.identifies(None)
+                ctx = {"anticipated_scenario": scenario["name"], **sm_tick}
+                unanticipated_df = pd.DataFrame([ctx, ctx])
+                identified = identifier.identifies(unanticipated_df)
                 _log(writer, format_pipeline_identify(identified))
+
+                diagnosed = diagnoser.diagnosis(identified)
+                _log(writer, format_pipeline_diagnose(diagnosed))
+
+                similarities = adapter.calculate_similarity(diagnosed)
+                similarities.sort(
+                    key=lambda s: s["similarity_result"],
+                    reverse=True,
+                )
+                _log(writer, format_pipeline_similarities(similarities))
+                _write_similarities(similarities_path, similarities, run_id=ts, episode=episode)
+
+                adaptation = adapter.recommend(similarities)
+                _log(writer, format_pipeline_adaptation(adaptation["do"] if adaptation else None))
             except Exception as e:
                 _log(writer, f"  [PIPELINE] Erro: {e}")
 
         # ── Responde ao Manager ───────────────────────────────────────────────
-        client.send_result({"status": "ok", "unanticipated": unanticipated})
+        client.send_result({
+            "status":       "ok",
+            "unanticipated": unanticipated,
+            "adaptation":   adaptation,
+        })
 
         # ── Pusha estado para o DejaVu Console ───────────────────────────────
         api.update_state({
-            "episode":         episode,
-            "step":            step,
-            "current_subtask": subtask,
-            "active_sm_state": active,
-            "sm_status":       "UNSAT" if unanticipated else "SAT",
-            "unanticipated":   unanticipated,
-            "new_perception":  perception,
-            "identified":      identified,
+            "episode":              episode,
+            "step":                 step,
+            "current_subtask":      subtask,
+            "active_sm_state":      active,
+            "active_scenario_name": scenario["name"],
+            "active_scenario_type": scenario["type"],
+            "sm_status":            "UNSAT" if unanticipated else "SAT",
+            "unanticipated":        unanticipated,
+            "new_perception":       perception,
+            "identified":           identified,
+            "diagnosed":            diagnosed,
+            "similarities":         similarities,
+            "adaptation":           adaptation,
         })
     finally:
         recorder.save()

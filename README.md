@@ -1,280 +1,252 @@
 # Self-Adaptive Arm Simulator
 
-> Franka Panda robotic arm simulation with a MAPE-K feedback loop for autonomous task adaptation — built on PyBullet and panda-gym, controlled through a REST API.
+> Research prototype of a self-adaptive system built around a Franka Panda robotic arm simulation. Implements a full MAPE-K feedback loop coupled with the **DejaVu** reference architecture for detecting, identifying, diagnosing, and adapting to unanticipated scenarios.
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![PyBullet](https://img.shields.io/badge/PyBullet-3.2.7-green)
 ![panda--gym](https://img.shields.io/badge/panda--gym-3.0.7-green)
-![FastAPI](https://img.shields.io/badge/FastAPI-REST-orange)
+![Streamlit](https://img.shields.io/badge/UI-Streamlit-red)
+![Sismic](https://img.shields.io/badge/StateMachine-Sismic-purple)
 
 ---
 
 ## Overview
 
-The simulator runs as two independent Python processes that communicate over HTTP:
+The system simulates a Franka Panda robot performing a pick-and-place task. Five processes cooperate at runtime: a physics simulator, a MAPE-K manager, a DejaVu monitor, and two Streamlit consoles.
 
 ```
-┌──────────────────────┐        GET /perception        ┌──────────────────────┐
-│      manager/        │  ─────────────────────────►  │      managing/        │
-│   MAPE-K loop        │                               │   PyBullet + panda-gym│
-│  Monitor→Analyze     │  ◄─────────────────────────  │   FastAPI on :8000    │
-│  →Plan→Execute       │        PUT /task              └──────────────────────┘
-└──────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│                          0-console  (Streamlit :8501)                │
+│              ASM Editor — design scenarios, start the system         │
+└──────────────────────────────────┬───────────────────────────────────┘
+                                   │ launches
+          ┌────────────────────────┼────────────────────────┐
+          ▼                        ▼                        │
+┌──────────────────┐    WebSocket  ┌──────────────────┐    │
+│   2-managing     │◄─────────────►│   1-manager      │    │
+│  PyBullet +      │   :8000/:8001 │  MAPE-K loop     │    │
+│  panda-gym       │               │  Monitor→Analyze │    │
+│  FastAPI :8000   │               │  →Plan→Execute   │    │
+└──────────────────┘               └────────┬─────────┘    │
+                                            │ WebSocket     │
+                                            ▼              │
+                                   ┌──────────────────┐    │
+                                   │   3-dejavu       │◄───┘
+                                   │  State Machine   │
+                                   │  Monitor +       │
+                                   │  Pipeline        │
+                                   │  Flask WS :8002  │
+                                   └────────┬─────────┘
+                                            │ WebSocket
+                                            ▼
+                              ┌──────────────────────────┐
+                              │  4-dejavu-console        │
+                              │  Streamlit :8502         │
+                              │  Live state + catalogue  │
+                              └──────────────────────────┘
 ```
-
-- **`managing/`** — owns the physics engine (PyBullet), executes robot tasks, and exposes perception via FastAPI.
-- **`manager/`** — reads live perception and issues adaptation commands when the situation changes.
 
 ---
 
-## MAPE-K Architecture
+## Components
 
-Each perception step flows through four stages. Situation classification and strategy mapping are defined entirely in YAML — no code changes needed to add new adaptive behaviors.
+| # | Folder | Role | Port |
+|---|--------|------|------|
+| 0 | `0-console/` | Streamlit app to design the ASM model and launch the system | 8501 |
+| 1 | `1-manager/` | MAPE-K manager — reads perception, evaluates ASM contracts, plans and sends adaptations | 8001 |
+| 2 | `2-managing/` | Physics simulator — PyBullet + panda-gym, exposes perception via FastAPI | 8000 |
+| 3 | `3-dejavu/` | DejaVu monitor — Sismic state machine, unanticipated scenario pipeline | 8002 |
+| 4 | `4-dejavu-console/` | Streamlit console for DejaVu live state, similarity results and catalogue | 8502 |
+| 5 | `5-experiments/` | Batch experiment builder and runner | — |
 
-| Stage | Responsibility | File |
-|---|---|---|
-| **Monitor** | Reads raw perception from the API and populates `SystemState` | `monitor.py` |
-| **Analyze** | Evaluates Python expressions from YAML to classify the current situation | `analyze.py` |
-| **Plan** | Maps the classified situation to a task strategy via `plan_options.yaml` | `plan.py` |
-| **Execute** | Issues a `PUT /task` command to the simulator when the strategy changes | `execute.py` |
+---
+
+## Architecture
+
+### MAPE-K Loop (1-manager)
+
+Each perception tick flows through four stages. Scenarios and their contracts are defined in `1-manager/configs/arm/asm.json` — no code changes needed to add new adaptive behaviors.
+
+| Stage | Responsibility |
+|-------|---------------|
+| **Monitor** | Reads raw perception from Managing and populates `SystemState` |
+| **Analyze** | Evaluates ASM scenario guards against current state |
+| **Plan** | Maps the current ASM scenario to a task strategy |
+| **Execute** | Sends `adapt` / `continue` / `transition` commands to Managing |
+
+### DejaVu Pipeline (3-dejavu)
+
+Runs on every tick from the Manager. When the state machine detects a contract violation, the full pipeline fires **once per episode**:
+
+```
+AntecipatedScenarioMonitor   (every tick — Sismic state machine)
+          │
+          │ first UNSAT in episode
+          ▼
+UnanticipatedScenarioIdentifier   (negates violated then-clauses → new given)
+          ▼
+UnanticipatedScenarioDiagnoser    (decision tree on historical CSVs → causal conditions)
+          ▼
+SimilarityBasedAdapter            (ranks catalogue candidates by DejaVu similarity)  ← pending wiring
+```
+
+### Blocking checkpoints
+
+Every tick is synchronous end-to-end:
+1. **Managing** publishes perception and blocks waiting for the Manager's command.
+2. **Manager** sends the perception to DejaVu and blocks waiting for its response before answering Managing.
+3. **DejaVu** processes the tick (and runs the pipeline on UNSAT) then replies synchronously.
 
 ---
 
 ## Installation
 
-### Prerequisites
-
-- Python 3.11+
-- Windows (the `run.sh` script uses `mintty`) — or start each process manually on any OS
-
-### Setup
+**Prerequisites:** Python 3.11+, Windows (the launcher uses `cmd`; processes can also be started manually on any OS).
 
 ```bash
-# Clone the repository
-git clone https://github.com/lucasvieira123/panda_gym_simulator.git
-cd panda_gym_simulator
+git clone <repo-url>
+cd self-adaptive-arm-simulator
 
-# Create a virtual environment
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-# source .venv/bin/activate   # Linux / macOS
+.venv\Scripts\activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Core simulator
+pip install pybullet panda-gym gymnasium fastapi uvicorn numpy scipy pyyaml
+
+# Manager + DejaVu
+pip install pandas scikit-learn sympy sismic wrapt pyparsing flask websockets
+
+# Consoles
+pip install streamlit streamlit-agraph graphviz
 ```
 
 ---
 
 ## Running
 
-### Quick start (Windows — mintty)
+### Option A — via ASM Console (recommended)
 
 ```bash
-bash run.sh
+# Terminal 1: ASM Editor console
+cd 0-console
+streamlit run app.py --server.port 8501
 ```
 
-Opens two terminal windows: one for the simulator (`managing/`) and one for the MAPE-K manager (`manager/`).
-
-### Manual start (any OS)
+Open `http://localhost:8501`, load the ARM sample model, then click **▶ Start System**. This launches Managing and Manager in separate terminal windows.
 
 ```bash
-# Terminal 1 — simulator
-cd managing
-python main.py
+# Terminal 2: DejaVu
+cd 3-dejavu
+python src/dejavu.py
+
+# Terminal 3: DejaVu Console (optional)
+cd 4-dejavu-console
+streamlit run app.py --server.port 8502
+```
+
+### Option B — manual
+
+```bash
+# Terminal 1 — physics simulator
+cd 2-managing
+python src/main.py
 
 # Terminal 2 — MAPE-K manager
-cd manager
-python main.py
+cd 1-manager
+python src/main.py
+
+# Terminal 3 — DejaVu
+cd 3-dejavu
+python src/dejavu.py
 ```
 
-> **Note:** The simulator exposes a REST API on `http://localhost:8000`. Start the simulator before the manager.
+> **Start order:** Managing → Manager → DejaVu. Managing must be up before Manager connects.
 
 ---
 
 ## Configuration
 
-All behavior is driven by YAML. **Restart the simulator after any change.**
+### Simulator (`2-managing/configs/`)
 
-| File | Location | Controls |
-|---|---|---|
-| `simulation.yaml` | `managing/configs/` | Episodes, seed, step delay, task parameters (grasp height, approach height, friction offsets) |
-| `environment*.yaml` | `managing/configs/environments/` | Robot, table, objects and obstacles — size, mass, position, friction, color |
-| `target_goal.yaml` | `managing/configs/` | Goal positions and sequence mode |
-| `scripts.yaml` | `managing/configs/` | Waypoint sequences for `SCRIPTED_TASK` strategies |
-| `adaptation_options.yaml` | `manager/configs/` | Named situations defined as Python expressions evaluated each step |
-| `plan_options.yaml` | `manager/configs/` | Maps each situation name → task strategy |
+| File | Controls |
+|------|---------|
+| `simulation.yaml` | Episodes, seed, step delay, render mode, task parameters |
+| `environment.yaml` | Robot, table, objects, obstacles — size, mass, friction, color |
+| `target_goal.yaml` | Goal positions and sequence mode |
+| `scripts.yaml` | Waypoint sequences for `SCRIPTED_TASK` strategies |
 
-### Defining situations
+### Manager (`1-manager/configs/arm/`)
 
-Situations are pure Python expressions evaluated against live state fields:
+| File | Controls |
+|------|---------|
+| `asm.json` | Anticipated Scenario Model — Given/When/Do/Then contracts for each task phase |
 
-```yaml
-# manager/configs/adaptation_options.yaml
-one_obstacle_situation:  "obstacle_count_in_path == 1"
-two_obstacles_situation: "obstacle_count_in_path >= 2"
-```
+### DejaVu (`3-dejavu/configs/`)
 
-Available fields: `ee_x/y/z`, `cube_x/y/z`, `cube_roll/pitch/yaw`, `cube_vx/vy/vz`, `dist_ee_to_cube`, `dist_cube_to_target`, `fingers_width`, `obstacle_in_path`, `obstacle_count_in_path`, `reward`, `is_success`, `j0`–`j6`, `step`, `episode`.
+| File | Controls |
+|------|---------|
+| `dejavu_conf.yaml` | Central config — all paths resolved from here |
+| `arm/scenario_state_machine.yaml` | Sismic state machine for the pick-and-place task |
+| `arm/scenario_catalogue.json` | Candidate lift scenarios for similarity ranking; includes `monitored_parameters` |
+| `weights_config.yaml` | Similarity weights: Tversky α/β, per-clause weights (given/when/then) |
 
-### Mapping situations to strategies
-
-```yaml
-# manager/configs/plan_options.yaml
-one_obstacle_situation:  "PICK_AND_PLACE"
-two_obstacles_situation: "SCRIPTED_TASK.left_right"
-```
-
----
-
-## Execution Modes
-
-The simulator supports two execution modes. **The entry point determines the mode** — no flags or extra setup required.
-
-### Normal mode
-
-Reads configuration from `managing/configs/`. Used for interactive development and manual testing.
-
-AQUI EXECUTA COMO A GENTE JA CONHECE PEGANGO AS CONFIGURACOES PADROES JA ESTABELECIDAS NA PASTA CONFIG
-```bash
-cd managing
-python main.py
-```
-
-### Experiment mode
-
-Reads configuration from a folder inside `experiments/results/`. Used for running automated batches with different parameters. Each experiment gets its own isolated process — PyBullet is fully restarted between runs, guaranteeing no state contamination.
-
-AQUI EXECUTA AS CONFIG DENTRO DA experiments/ AQUI É IMPORTANTE PQ NOS PERMITE EXECUTAR VARIAS VEZES A SIMULACAO COM DIVERSAS CONFIGURACOES SEM SEGUIDA (BATCH)
-
-```bash
-cd experiments
-python runner.py
-```
-
-The runner iterates over the experiments defined in `experiments/batch.yaml`, launches `managing/main.py` as a subprocess for each one, and saves the trace alongside the exact config used.
-
-```
-experiments/
-├── runner.py
-├── batch.yaml
-└── results/
-    ├── slip-lateral-0.124/
-    │   ├── simulation.yaml      ← exact config used
-    │   ├── environment.yaml
-    │   └── trace.log
-    └── slip-vertical-0.10/
-        ├── simulation.yaml
-        ├── environment.yaml
-        └── trace.log
-```
-
-**How it works:** the runner sets the environment variable `MANAGING_CONFIG_DIR` pointing to the experiment's folder before launching the subprocess. `config_loader.py` reads this variable — if present, loads from that path; if absent, loads from the default `managing/configs/`.
-
-```
-MANAGING_CONFIG_DIR not set  →  normal mode   →  reads from managing/configs/
-MANAGING_CONFIG_DIR set      →  experiment mode →  reads from the given path
-```
-
-### batch.yaml — defining experiments
-
-Only specify what differs from the defaults. The runner deep-merges with the original configs.
-
-```yaml
-experiments:
-  - name: "slip-lateral-0.124"
-    simulation:
-      render_mode: "direct"   # headless — no GUI
-      step_delay: 0
-    environment:
-      objects:
-        - name: "object_1"
-          lateral_friction: 0.124
-
-  - name: "slip-vertical-0.10"
-    simulation:
-      render_mode: "direct"
-      step_delay: 0
-    environment:
-      objects:
-        - name: "object_1"
-          lateral_friction: 0.10
-```
-
----
-
-## Task Strategies
+### Task strategies
 
 | Strategy | Description |
-|---|---|
-| `PICK_AND_PLACE` | 6-phase autonomous pick-and-place: approach, grasp, lift, move, place, release |
-| `PUSH` | Approaches the object from behind and pushes it toward the target |
-| `REACH` | Moves the end-effector to a target position without manipulating any object |
-| `HOLD` | Keeps the end-effector stationary at its current position |
-| `SCRIPTED_TASK.<name>` | Executes a waypoint sequence from `scripts.yaml` (e.g. `SCRIPTED_TASK.left_right`) |
-| `API_TASK` | Receives waypoints via `PUT /waypoints` at runtime for externally driven control |
-| `MANUAL` | Interactive keyboard control for manual exploration |
+|----------|-------------|
+| `PICK_AND_PLACE` | 6-phase autonomous pick-and-place |
+| `OBJECT_DELIVERY` | Full delivery sequence (approach → grasp → lift → transport → place) |
+| `PUSH` | Pushes the object toward the target |
+| `REACH` | Moves end-effector to a position |
+| `HOLD` | Keeps end-effector stationary |
+| `RETRY_GRASP` | Reopens gripper and retries grasp |
+| `SAFE_ABORT` | Aborts the grasp and opens gripper safely |
+| `SCRIPTED_TASK.<name>` | Executes a named waypoint sequence from `scripts.yaml` |
+| `API_TASK` | Receives waypoints via `PUT /waypoints` at runtime |
+| `MANUAL` | Interactive keyboard control |
 
 ---
 
-## REST API
+## Batch Experiments (`5-experiments/`)
+
+```bash
+# 1. Define and build simulation configs
+cd 5-experiments
+python build_simulations.py
+# Creates experiments/simulations/ with one folder per parameter set
+
+# 2. Run all simulations sequentially
+python execute_simulations.py
+```
+
+`build_simulations.py` generates self-contained config folders (one per experiment). `execute_simulations.py` launches `2-managing` once per folder, blocking until completion.
+
+### Friction tuning reference
+
+PyBullet computes effective friction as the **product** of the two contacting bodies. Keep table friction high (`lateral_friction: 3.0`) and tune the object:
+
+| Object `lateral_friction` | Behavior |
+|--------------------------|---------|
+| ≥ 0.126 | Firm grip — no slip |
+| 0.124 – 0.125 | Partial lateral slip (~16 mm) |
+| ≤ 0.120 | Vertical slip during lift |
+| ≤ 0.10 | Object falls from gripper |
+
+---
+
+## Managing REST API
 
 The simulator exposes a FastAPI server on `http://localhost:8000`.
 
 | Endpoint | Method | Description |
-|---|---|---|
-| `/perception` | GET | Full state snapshot: EE position/velocity, cube pose, distances, reward, joints, rotation |
+|----------|--------|-------------|
+| `/perception` | GET | Full state snapshot: EE pose/velocity, cube pose, distances, joints |
 | `/environment/obstacles` | GET | Obstacles with config and current position |
 | `/environment/objects` | GET | Manipulable objects with config and current position |
 | `/task` | PUT | Switch task strategy |
 | `/waypoints` | PUT | Push a waypoint list for `API_TASK` |
-| `/environment` | PUT | Mutate the scene: `move_obstacle`, `add_obstacle`, `remove_obstacle`, `move_object`, `move_robot_base` |
+| `/environment` | PUT | Mutate scene: `move_obstacle`, `add_obstacle`, `remove_obstacle`, `move_object` |
 | `/goal` | PUT | Reposition a target or change goal mode at runtime |
-
-### Examples
-
-```bash
-# Switch to pick-and-place
-curl -X PUT http://localhost:8000/task \
-  -H "Content-Type: application/json" \
-  -d '{"strategy": "PICK_AND_PLACE"}'
-
-# Move an obstacle
-curl -X PUT http://localhost:8000/environment \
-  -H "Content-Type: application/json" \
-  -d '{"action": "move_obstacle", "name": "obstacle_1", "position": [0.12, 0.0, 0.04]}'
-
-# Read live perception
-curl http://localhost:8000/perception
-```
-
----
-
-## Friction Tuning
-
-PyBullet computes effective friction as the **product** of the two bodies in contact. To simulate grip slip while keeping the object stable on the table, set a high table friction (`lateral_friction: 3.0`) and tune the object's `lateral_friction` in the environment YAML.
-
-| `lateral_friction` (object) | Behavior |
-|---|---|
-| ≥ 0.126 | Object stays firmly in gripper — no slip |
-| 0.124 – 0.125 | Partial lateral slip (~16 mm) — object carried but not rigidly held |
-| ≤ 0.120 | Vertical slip within gripper — cube descends relative to EE during lift |
-| ≤ 0.10 | Object falls from gripper |
-
-> **Warning:** Config changes require a simulator restart. All YAML is loaded once at startup via `config_loader.py`.
-
----
-
-## API Tests
-
-Jupyter notebooks in `api_test/` demonstrate each API endpoint interactively. Run with the simulator already started.
-
-| Notebook | Covers |
-|---|---|
-| `01_perception.ipynb` | Reading live perception state |
-| `02_task.ipynb` | Switching task strategies |
-| `03_waypoints.ipynb` | Sending custom waypoints |
-| `04_environment.ipynb` | Mutating the scene at runtime |
-| `05_goal.ipynb` | Repositioning targets |
 
 ---
 
@@ -282,51 +254,96 @@ Jupyter notebooks in `api_test/` demonstrate each API endpoint interactively. Ru
 
 ```
 self-adaptive-arm-simulator/
-├── managing/                  # simulator process
-│   ├── main.py                # entry point
-│   ├── api.py                 # FastAPI server (:8000)
-│   ├── environment_manager.py
-│   ├── config_loader.py
-│   ├── tasks/                 # PUSH, PICK_AND_PLACE, REACH, HOLD, MANUAL …
-│   ├── sensors/               # perception pipeline
-│   ├── configs/
-│   │   ├── simulation.yaml
-│   │   ├── scripts.yaml
-│   │   ├── target_goal.yaml
-│   │   └── environments/      # environment*.yaml
-│   └── traces/                # step-level log files
 │
-├── manager/                   # MAPE-K manager process
-│   ├── main.py
-│   ├── monitor.py
-│   ├── analyze.py
-│   ├── plan.py
-│   ├── execute.py
-│   ├── knowledge.py
+├── 0-console/                      # ASM Editor + System Launcher (Streamlit)
+│   ├── app.py                      # Main Streamlit app
+│   └── system_launcher.py          # Launches managing + manager as subprocesses
+│
+├── 1-manager/                      # MAPE-K Manager
+│   ├── src/
+│   │   ├── main.py                 # Entry point
+│   │   ├── monitor_arm.py          # Monitor stage
+│   │   ├── analyze.py              # Analyze stage (ASM evaluation)
+│   │   ├── plan.py                 # Plan stage
+│   │   ├── execute.py              # Execute stage
+│   │   ├── knowledge.py            # SystemState dataclass
+│   │   └── api.py                  # WebSocket API (:8001) + DejaVu bridge
+│   └── configs/arm/
+│       └── asm.json                # Anticipated Scenario Model
+│
+├── 2-managing/                     # Physics Simulator
+│   ├── src/
+│   │   ├── main.py                 # Entry point
+│   │   ├── api.py                  # FastAPI server (:8000)
+│   │   ├── environment_manager.py  # Scene setup (robot, objects, obstacles)
+│   │   ├── config_loader.py        # YAML config loader (supports --config-dir)
+│   │   └── tasks/                  # Task implementations (PICK_AND_PLACE, PUSH, …)
 │   └── configs/
-│       ├── adaptation_options.yaml
-│       └── plan_options.yaml
+│       ├── simulation.yaml
+│       ├── environment.yaml
+│       ├── target_goal.yaml
+│       └── scripts.yaml
 │
-├── experiments/               # batch experiment runner
-│   ├── runner.py              # orchestrator
-│   ├── batch.yaml             # list of experiments to run
-│   └── results/               # one folder per experiment (config + trace)
+├── 3-dejavu/                       # DejaVu Monitor
+│   ├── src/
+│   │   ├── dejavu.py               # Entry point + main loop
+│   │   ├── api.py                  # Flask WebSocket API (:8002)
+│   │   ├── antecipated_scenario_monitor.py       # Sismic state machine runner
+│   │   ├── antecipated_scenario_dataset_recorder.py  # CSV dataset writer
+│   │   ├── unanticipated_scenario_identifier.py  # Negates violated then-clauses
+│   │   ├── unanticipated_scenario_diagnoser.py   # Decision tree diagnosis
+│   │   ├── similarity_based_adapter.py           # Catalogue similarity ranking
+│   │   ├── trace_printer.py        # Structured trace formatting
+│   │   ├── scenario/               # Scenario data classes
+│   │   ├── expression/             # Conditional expression model
+│   │   └── similarity/             # DejaVu similarity metric (Jaccard + Tversky)
+│   ├── configs/
+│   │   ├── dejavu_conf.yaml
+│   │   ├── weights_config.yaml
+│   │   └── arm/
+│   │       ├── scenario_state_machine.yaml
+│   │       └── scenario_catalogue.json
+│   └── output/arm/
+│       ├── traces/                 # Per-run trace logs
+│       └── antecipated_scenario_dataset/   # CSV files used by the diagnoser
 │
-├── api_test/                  # Jupyter notebooks for API testing
-├── requirements.txt
-└── run.sh                     # launches both processes (Windows/mintty)
+├── 4-dejavu-console/               # DejaVu Console (Streamlit)
+│   ├── app.py                      # Main Streamlit app
+│   ├── views/                      # catalogue, similarities, state_machine, checked
+│   └── sidebar/                    # Catalogue editor and SM setup panels
+│
+└── 5-experiments/                  # Batch Experiment Runner
+    ├── build_simulations.py        # Defines and creates experiment config folders
+    └── execute_simulations.py      # Runs managing once per experiment folder
 ```
 
 ---
 
-## Dependencies
+## Not Implemented
 
-| Package | Version | Role |
-|---|---|---|
-| pybullet | 3.2.7 | Physics engine |
-| panda-gym | 3.0.7 | Franka Panda robot model and environment |
-| gymnasium | 1.3.0 | RL environment interface |
-| fastapi + uvicorn | — | REST API server in the simulator |
-| numpy | 2.4.6 | Numerical computation |
-| PyYAML | 6.0.3 | YAML config loading |
-| scipy | 1.17.1 | Scientific utilities |
+| Component | Status |
+|-----------|--------|
+| `SimilarityBasedAdapter` wiring in `dejavu.py` | Implemented but not yet called in the main loop |
+| Adaptation Evaluation | Not implemented — requires simulating adaptation effects |
+| Evolutionary Adaptation Enactor | Not implemented — executes the chosen adaptation in the running system |
+
+Once a viable adaptation is confirmed, the adapted scenario should be merged back into the Anticipated Scenario Model, becoming a newly anticipated scenario for future monitoring.
+
+---
+
+## DejaVu Similarity — quick reference
+
+The similarity between a diagnosed scenario and a catalogue candidate is computed as a weighted average of three block similarities (Given, When, Then):
+
+```
+score = (given_sim × w_given + when_sim × w_when + then_sim × w_then)
+        / (w_given + w_when + w_then)
+```
+
+Each block similarity uses **parameter Jaccard** (numeric interval overlap per shared variable) minus a **Tversky structural penalty** (α=0.9 penalizes missing parameters; β=0.1 tolerates extra ones). Weights are configured in `3-dejavu/configs/weights_config.yaml`. The `monitored_parameters` schema (with `min_value`/`max_value` keys) lives in `scenario_catalogue.json`.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.

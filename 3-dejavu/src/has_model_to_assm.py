@@ -27,6 +27,11 @@ def negate_expr(expr: str) -> str:
 
 # ── Core transformation ───────────────────────────────────────────────────────
 
+def _on_entry(scenario_name: str, scenario_type: str | None) -> str:
+    type_val = f'"{scenario_type}"' if scenario_type is not None else "None"
+    return f'active_scenario = {{"name": "{scenario_name}", "type": {type_val}}}'
+
+
 def has_to_assm(has_model: dict) -> dict:
     """
     Transform a hAS model dict into a Sismic statechart dict.
@@ -67,13 +72,15 @@ def has_to_assm(has_model: dict) -> dict:
         next((sid for sid in scenario_ids if not has_incoming[sid]), scenario_ids[0])
     )
 
-    states     = []
-    err_states = set()
+    states          = []
+    err_states      = set()
+    err_to_scenario = {}   # ERR_n → (scenario_name, scenario_type)
 
     # ── INIT ──────────────────────────────────────────────────────────────────
     first_when = normalize_expr(scenarios[first_scenario]["when"])
     states.append({
         "name":       "INIT",
+        "on entry":   _on_entry("INIT", None),
         "contract":   [{"always": "True"}],
         "transitions": [
             {"target": f"PHI_{state_nums[first_scenario]}", "guard": first_when}
@@ -88,10 +95,13 @@ def has_to_assm(has_model: dict) -> dict:
         then_expr  = normalize_expr(s["then"])
         do_action  = s["do"]
         name       = s["name"]
+        s_type     = "A" if s.get("type") == "adaptive" else "D"
+        on_entry   = _on_entry(name, s_type)
 
         # PHI_n — checks Given
         states.append({
             "name":     f"PHI_{n}",
+            "on entry": on_entry,
             "contract": [{"always": "True"}],
             "transitions": [
                 {"target": f"S{n+1}",    "guard": given},
@@ -99,10 +109,12 @@ def has_to_assm(has_model: dict) -> dict:
             ],
         })
         err_states.add(f"ERR_{n}")
+        err_to_scenario[f"ERR_{n}"] = (name, s_type)
 
         # S_(n+1) — waits for Do event; no invariant because Do may modify Given
         states.append({
             "name":     f"S{n+1}",
+            "on entry": on_entry,
             "contract": [{"always": "True"}],
             "transitions": [
                 {"target": f"PHI_{n+2}", "event": f"{do_action} ({name})"}
@@ -112,6 +124,7 @@ def has_to_assm(has_model: dict) -> dict:
         # PHI_(n+2) — checks Then
         states.append({
             "name":     f"PHI_{n+2}",
+            "on entry": on_entry,
             "contract": [{"always": "True"}],
             "transitions": [
                 {"target": f"S{n+3}",      "guard": then_expr},
@@ -119,6 +132,7 @@ def has_to_assm(has_model: dict) -> dict:
             ],
         })
         err_states.add(f"ERR_{n+2}")
+        err_to_scenario[f"ERR_{n+2}"] = (name, s_type)
 
         # S_(n+3) — contract Then, routes to next scenarios via their When
         next_transitions = [
@@ -136,16 +150,21 @@ def has_to_assm(has_model: dict) -> dict:
 
         states.append({
             "name":     f"S{n+3}",
+            "on entry": on_entry,
             "contract": [{"always": then_expr}],
             "transitions": next_transitions,
         })
 
     # ── ERR states (terminal) ─────────────────────────────────────────────────
     for err in sorted(err_states):
-        states.append({"name": err})
+        err_name, err_type = err_to_scenario[err]
+        states.append({
+            "name":     err,
+            "on entry": _on_entry(err_name, err_type),
+        })
 
     # ── FINAL ─────────────────────────────────────────────────────────────────
-    states.append({"name": "FINAL", "type": "final"})
+    states.append({"name": "FINAL", "type": "final", "on entry": _on_entry("FINAL", None)})
 
     return {
         "statechart": {

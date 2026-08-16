@@ -5,45 +5,36 @@ import yaml
 from scenario.candidate_scenario import CandidateScenario
 from similarity.dejavu_similarity import calculate_scenario_similarity
 from scenario.diagnosed_scenario import DiagnosedScenario
+from constants import DEJAVU_CONF_PATH, PROJECT_ROOT
+from utils import load_config
 
 
 class SimilarityBasedAdapter:
+
     def __init__(self):
-        self.shared_scenarios_list = self.get_shared_scenarios()
-        # self.scenarios_pipeline_dict = self.get_scenarios_pipeline()
-        self.weight_configs_dict = self.get_weight_config()
-        self.monitored_parameters_dict = self.get_monitored_parameters()        
+        self.cfg = load_config(DEJAVU_CONF_PATH)
 
-    def get_weight_config(self):
-        with open("unexpected_scenario_handling_system/res/weights_config.yaml", "r") as file:
-            settings = yaml.safe_load(file)
-        return settings
+        catalogue_path = PROJECT_ROOT / self.cfg["scenario_catalogue_path"]
+        weights_path   = PROJECT_ROOT / self.cfg["weights_config_path"]
 
-    # def get_scenarios_pipeline(self):
-    #     with open("unexpected_scenario_handling_system/res/scenarios_pipeline.json", "r") as file:
-    #         scenarios_pipeline = json.load(file)
-    #         return scenarios_pipeline
+        with open(catalogue_path, "r") as f:
+            catalogue = json.load(f)
 
-    def get_monitored_parameters(self):
-        with open("unexpected_scenario_handling_system/res/monitored_parameters.json", "r") as file:
-            monitored_parameters_dict = json.load(file)
-            return monitored_parameters_dict
+        with open(weights_path, "r") as f:
+            self.weight_configs_dict = yaml.safe_load(f)
 
-    def get_shared_scenarios(self):
-        with open("unexpected_scenario_handling_system/res/shared_scenarios.json", "r") as file:
-            shared_scenerios = json.load(file)
-            return shared_scenerios
+        # Extrai monitored_parameters e lista de cenários candidatos do catálogo
+        self.monitored_parameters_dict = catalogue.get("monitored_parameters", {})
+        scenarios_dict = catalogue.get("scenarios", {})
+        self.candidates = list(scenarios_dict.values())
 
-    def calculate_similarity(self, diagnosed_unanticipatd_scenario_dict):
-        # diagnosed_data = self.scenarios_pipeline_dict["diagnosed"]
-        diagnosed_data = diagnosed_unanticipatd_scenario_dict
-        diagnosed_scenario = DiagnosedScenario(data=diagnosed_data)
-        current_config = self.weight_configs_dict
-        kargs = current_config.copy()
+    def calculate_similarity(self, diagnosed_unanticipated_scenario_dict: dict) -> list:
+        diagnosed_scenario = DiagnosedScenario(data=diagnosed_unanticipated_scenario_dict)
+        kargs = self.weight_configs_dict.copy()
         kargs["monitored_parameters"] = self.monitored_parameters_dict
 
-        similarity_result_list = []
-        for candidate_data in self.shared_scenarios_list:
+        results = []
+        for candidate_data in self.candidates:
             candidate_scenario = CandidateScenario(data=candidate_data)
 
             start_time = time.perf_counter()
@@ -52,15 +43,25 @@ class SimilarityBasedAdapter:
                 candidate_scenario,
                 **kargs
             )
-            end_time = time.perf_counter()
-            elapsed_time = end_time - start_time
+            elapsed_time = time.perf_counter() - start_time
 
-            similarity_result_list.append({
+            results.append({
                 "similarity_result": similarity_result,
-                "elapsed_time": elapsed_time,
-                "diagnosed": diagnosed_scenario.to_dict(),    # Supondo que existe
-                "candidate": candidate_scenario.to_dict(),    # Supondo que existe
-                "config": current_config,
-        })
+                "elapsed_time":      elapsed_time,
+                "diagnosed":         diagnosed_scenario.to_dict(),
+                "candidate":         candidate_scenario.to_dict(),
+                "config":            self.weight_configs_dict,
+            })
 
-        return similarity_result_list
+        return results
+
+    def recommend(self, sorted_results: list) -> dict | None:
+        if not sorted_results:
+            return None
+        top = sorted_results[0]
+        candidate = top.get("candidate", {})
+        return {
+            "candidate_name": candidate.get("name"),
+            "do":             candidate.get("do"),
+            "score":          top.get("similarity_result"),
+        }

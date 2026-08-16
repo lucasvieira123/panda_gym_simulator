@@ -80,4 +80,7 @@ class MonitorARM(MonitorAbs):
         self._prev_grasp_completed = state.grasp_completed
         state.grasp_attempts = self._grasp_attempts
 
+        obj1 = state.objects.get("object_1", {})
+        state.lateral_friction = float(obj1.get("lateral_friction", 0.0))
+
         return state

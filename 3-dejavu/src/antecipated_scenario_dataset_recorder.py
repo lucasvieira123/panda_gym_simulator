@@ -32,10 +32,13 @@ class AntecipatedScenarioDatasetRecorder:
     def path(self) -> str:
         return str(self._path)
 
-    def record(self, perception: dict, active_state: str = "", sat=None) -> None:
+    def record(self, perception: dict, active_state: str = "", sat=None,
+               active_scenario_name: str = "", active_scenario_type=None) -> None:
         row = _flatten(perception)
-        row["active_state"] = active_state
-        row["sat"]          = sat
+        row["active_state"]         = active_state
+        row["active_scenario_name"] = active_scenario_name
+        row["active_scenario_type"] = active_scenario_type
+        row["sat"]                  = sat
         if self._writer is None:
             self._dir.mkdir(parents=True, exist_ok=True)
             self._file = open(self._path, "w", newline="", encoding="utf-8")
