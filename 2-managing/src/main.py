@@ -11,7 +11,7 @@ from environment_manager import EnvironmentManager
 from tasks.factory import (
     create_api_task, create_hold, create_manual, create_object_delivery,
     create_pick_and_place, create_push, create_reach, create_retry_grasp,
-    create_safe_abort, create_scripted, create_terminal,
+    create_safe_abort, create_scripted, create_terminal, create_vacuum_assist,
 )
 from utils import build_perception_msg, SimHUD, StepLogger, ts, set_step
 
@@ -25,8 +25,9 @@ def _make_task(strategy: str, sim, robot, configs):
     if strategy == "MANUAL":            return create_manual(sim, robot, configs)
     if strategy == "API_TASK":          return create_api_task(sim, robot, configs)
     if strategy == "OBJECT_DELIVERY":   return create_object_delivery(sim, robot, configs)
-    if strategy == "RETRY_GRASP":       return create_retry_grasp(sim, robot, configs)
-    if strategy == "SAFE_ABORT":        return create_safe_abort(sim, robot, configs)
+    if strategy == "RETRY_GRASP":          return create_retry_grasp(sim, robot, configs)
+    if strategy == "SAFE_ABORT":           return create_safe_abort(sim, robot, configs)
+    if strategy == "APPLY_VACUUM_ASSIST":  return create_vacuum_assist(sim, robot, configs)
     if strategy.startswith("SCRIPTED_TASK."):
         script_name = strategy.split(".", 1)[1]
         return create_scripted(sim, robot, configs, script_name=script_name)
@@ -41,10 +42,16 @@ def _handle_command(cmd: dict | None, gym_env, sequence, sim, robot, configs) ->
     action = cmd.get("action", "continue")
 
     if action == "continue":
-        pass  # managing follows its own sequence flow
+        # Se uma task adaptativa terminou, restaura a sequência no estado indicado pela task
+        if gym_env.task is not sequence and getattr(gym_env.task, "done", False):
+            return_to = getattr(gym_env.task, "return_to", None)
+            if return_to:
+                sequence.force_state(return_to)
+                gym_env.task = sequence
+                print(f"[{ts()}][Managing] Task adaptativa concluída → retomando {return_to}")
 
     elif action == "adapt":
-        scenario = cmd.get("to", "")
+        scenario = cmd.get("to", "").replace("()", "").upper().strip()
         adaptive_task = _make_task(scenario, sim, robot, configs)
         if adaptive_task:
             adaptive_task.reset()

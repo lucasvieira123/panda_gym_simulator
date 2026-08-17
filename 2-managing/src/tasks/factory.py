@@ -12,6 +12,7 @@ from .terminal_task import TerminalTask
 from .object_delivery import (
     ApproachObjectTask, GraspObjectTask, LiftObjectTask,
     TransportObjectTask, PlaceObjectTask, RetryGraspTask, AbortTask,
+    VacuumAssistTask,
 )
 
 
@@ -128,6 +129,19 @@ def create_safe_abort(sim: PyBullet, robot: Panda, configs: dict, object_name: s
     obj_cfg = _get_object_cfg(configs, object_name)
     return AbortTask(
         sim=sim,
+        get_ee_position=robot.get_ee_position,
+        get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
+        target_goal_cfg=configs["target_goal"],
+        object_cfg=obj_cfg,
+        task_cfg=configs.get("simulation"),
+    )
+
+
+def create_vacuum_assist(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> VacuumAssistTask:
+    obj_cfg = _get_object_cfg(configs, object_name)
+    return VacuumAssistTask(
+        sim=sim,
+        fingers_indices=robot.fingers_indices,
         get_ee_position=robot.get_ee_position,
         get_object_position=lambda: sim.get_base_position(obj_cfg["name"]),
         target_goal_cfg=configs["target_goal"],

@@ -97,12 +97,12 @@ def main() -> None:
             print(f"[{ts()}][Manager][DejaVu] Adaptação: {dj_adaptation['candidate_name']} (score={dj_adaptation['score']:.3f}) → {dj_adaptation['do']}")
 
         elif _post_adaptation and state.goal_status == "not_applicable" and pending_domain:
-            # Pós-adaptação bloqueada: o managing completou a tarefa adaptativa mas aguarda
-            # um transition para retomar o fluxo de domínio. O ASM já validou as condições
-            # (pending_domain); enviamos o transition agora para desbloquear.
-            executor.send_transition(pending_domain)
+            # O ASM validou uma transição pendente (ex: transport→place a 5cm).
+            # Não forçamos: deixamos o managing avançar naturalmente via advance_if_done()
+            # quando a task atingir o seu próprio threshold (5mm). Assim o transporte
+            # completa corretamente em vez de ser cortado pelo threshold do ASM (5cm).
+            executor.send_continue()
             _post_adaptation = False
-            print(f"[{ts()}][Manager] Pós-adaptação → transition para {pending_domain}")
 
         elif state.goal_status == "not_applicable":
             executor.send_continue()
