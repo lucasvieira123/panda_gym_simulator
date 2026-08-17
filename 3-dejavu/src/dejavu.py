@@ -15,6 +15,8 @@ from antecipated_scenario_monitor import AntecipatedScenarioMonitor
 from unanticipated_scenario_identifier import UnanticipatedScenarioIdentifier
 from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
 from similarity_based_adapter import SimilarityBasedAdapter
+from adaptation_evaluator import AdaptationEvaluator
+from asm_evolver import AsmEvolver
 from trace import TraceWriter
 from trace_printer import (
     format_tick,
@@ -22,6 +24,8 @@ from trace_printer import (
     format_pipeline_diagnose,
     format_pipeline_similarities,
     format_pipeline_adaptation,
+    format_pipeline_evaluation,
+    format_asm_evolution,
 )
 
 # Contexto inicial da state machine ARM — valores neutros/seguros
@@ -137,16 +141,23 @@ def main() -> None:
     # Aguarda console em paralelo (opcional — DejaVu funciona sem ela)
     api.wait_for_console(timeout=30.0)
 
+    asm_path = str(PROJECT_ROOT / cfg["anticipated_scenarios_path"])
+
     monitor    = AntecipatedScenarioMonitor(_SM_INITIAL.copy())
     identifier = UnanticipatedScenarioIdentifier()
     diagnoser  = UnanticipatedScenarioDiagnoser()
     adapter    = SimilarityBasedAdapter()
+    evaluator  = AdaptationEvaluator(max_eval_ticks=30)
+    evolver    = AsmEvolver(asm_path)
 
     prev_subtask:  str | None   = None
     identified:    dict | None  = None
     diagnosed:     dict | None  = None
     similarities:  list | None  = None
     adaptation:    dict | None  = None
+    evaluation:    dict | None  = None
+    asm_evolution: dict | None  = None
+    evolved:       bool         = False
     prev_episode:  int | None   = None
 
     _log(writer, "[DejaVu] Aguardando new_perception do Manager...")
@@ -167,12 +178,22 @@ def main() -> None:
             diagnosed    = None
             similarities = None
             adaptation   = None
+            evaluation   = None
+            asm_evolution = None
+            evolved      = False
             prev_subtask = None
             prev_episode = episode
+            evaluator.reset()
 
         # ── State machine ─────────────────────────────────────────────────────
         sm_tick, prev_subtask, skip_rewind = _sm_params(perception, prev_subtask)
         monitor.handle_runtime_data(sm_tick, skip_rewind=skip_rewind)
+
+        # ── Avaliação pós-adaptação ────────────────────────────────────────────
+        # Chamado antes do pipeline para usar os parâmetros deste tick.
+        # start() só é chamado dentro do pipeline (1ª detecção), portanto
+        # evaluate() vê sempre o tick corrente — sem confusão de timing.
+        evaluation = evaluator.evaluate(sm_tick)
 
         active        = _active_state(monitor)
         scenario      = _active_scenario(monitor)
@@ -221,14 +242,33 @@ def main() -> None:
 
                 adaptation = adapter.recommend(similarities)
                 _log(writer, format_pipeline_adaptation(adaptation["do"] if adaptation else None))
+
+                if adaptation:
+                    evaluator.start(diagnosed, adaptation)
             except Exception as e:
                 _log(writer, f"  [PIPELINE] Erro: {e}")
 
+        # ── Log da avaliação (só quando activa) ──────────────────────────────
+        if evaluation:
+            _log(writer, format_pipeline_evaluation(evaluation))
+
+        # ── Evolução do ASM (uma vez por episódio, quando avaliação confirma sucesso) ──
+        if (evaluation and evaluation.get("status") == "success"
+                and not evolved and identified and diagnosed and adaptation):
+            try:
+                asm_evolution = evolver.evolve(identified, diagnosed, adaptation)
+                _log(writer, format_asm_evolution(asm_evolution))
+            except Exception as e:
+                _log(writer, f"  [ASM_EVOLVE] Erro: {e}")
+            finally:
+                evolved = True
+
         # ── Responde ao Manager ───────────────────────────────────────────────
         client.send_result({
-            "status":       "ok",
+            "status":        "ok",
             "unanticipated": unanticipated,
-            "adaptation":   adaptation,
+            "adaptation":    adaptation,
+            "evaluation":    evaluation,
         })
 
         # ── Pusha estado para o DejaVu Console ───────────────────────────────
@@ -246,6 +286,8 @@ def main() -> None:
             "diagnosed":            diagnosed,
             "similarities":         similarities,
             "adaptation":           adaptation,
+            "evaluation":           evaluation,
+            "asm_evolution":        asm_evolution,
         })
     finally:
         recorder.save()

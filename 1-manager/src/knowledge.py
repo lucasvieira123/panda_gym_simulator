@@ -167,6 +167,7 @@ class SystemState:
             "object_lift_height_cm":  int(self.object_lift_height_cm),
             "distance_object_goal_cm":int(self.distance_object_goal_cm),
             "task_aborted":           int(self.task_aborted),
+            # TODO: add lateral_friction here so evolutionary scenario conditions can be evaluated after Manager restart
         }
 
 

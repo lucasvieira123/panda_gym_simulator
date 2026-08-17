@@ -8,7 +8,7 @@ from typing import Dict, List
 class AsmScenario:
     key:   str
     name:  str
-    type:  str   # "domain" | "adaptive"
+    type:  str   # "domain" | "adaptive" | "evolutionary"
     given: str
     when:  str
     do:    str

@@ -105,7 +105,8 @@ def make_label(s: dict) -> str:
     when  = _fmt_condition(s["when"]  or "*")
     do    = s["do"]    or "-"
     then  = _fmt_condition(s["then"]  or "*")
-    prefix = "[A] " if s.get("type", "domain") == "adaptive" else "[D] "
+    stype  = s.get("type", "domain")
+    prefix = {"adaptive": "[A] ", "evolutionary": "[E] "}.get(stype, "[D] ")
     return (
         f"{prefix}{s['name']}\n"
         f"─────────────────\n"
@@ -288,7 +289,7 @@ with st.sidebar:
     if st.session_state.scenarios:
         for sid, s in list(st.session_state.scenarios.items()):
             col_name, col_btn = st.columns([3, 1])
-            badge = "`adaptive`" if s.get("type", "domain") == "adaptive" else "`domain`"
+            badge = {"adaptive": "`adaptive`", "evolutionary": "`evolutionary`"}.get(s.get("type", "domain"), "`domain`")
             col_name.markdown(f"**{s['name']}** {badge}")
             if col_btn.button("🗑", key=f"del_{sid}", help="Delete scenario"):
                 del st.session_state.scenarios[sid]
@@ -546,10 +547,11 @@ def _asm_to_svg() -> str | None:
              style="filled", fillcolor="#FFFFFF", fontcolor="black", width="0.4")
 
     for sid, s in st.session_state.scenarios.items():
-        stype = s.get("type", "domain")
-        fill  = "#1E3A5F" if stype == "domain" else "#3D3000"
-        border = "#4C9BE8" if stype == "domain" else "#FFD700"
-        prefix = "[A]" if stype == "adaptive" else "[D]"
+        stype  = s.get("type", "domain")
+        fill, border, prefix = {
+            "adaptive":     ("#3D3000", "#FFD700", "[A]"),
+            "evolutionary": ("#0D3320", "#00C97A", "[E]"),
+        }.get(stype, ("#1E3A5F", "#4C9BE8", "[D]"))
 
         def _fmt(expr):
             if not expr or expr == "*":
@@ -593,6 +595,10 @@ with st.container(border=True):
         "adaptive": {
             "background": "#3D3000", "border": "#FFD700",
             "highlight":  {"background": "#5C4800", "border": "#FFE84D"},
+        },
+        "evolutionary": {
+            "background": "#0D3320", "border": "#00C97A",
+            "highlight":  {"background": "#1A5233", "border": "#33E09B"},
         },
     }
 
@@ -641,7 +647,7 @@ with st.container(border=True):
                 shape="box",
                 x=col * SPACING_X,
                 y=row * SPACING_Y,
-                color=_COLORS[stype],
+                color=_COLORS.get(stype, _COLORS["domain"]),
                 font={"size": 13, "color": "#FFFFFF", "face": "monospace", "align": "left"},
             )
         )
@@ -680,7 +686,9 @@ with st.container(border=True):
         '<span style="display:inline-block;width:14px;height:14px;background:#1E3A5F;border:2px solid #4C9BE8;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
         '<span style="vertical-align:middle;margin-right:16px">Domain</span>'
         '<span style="display:inline-block;width:14px;height:14px;background:#3D3000;border:2px solid #FFD700;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
-        '<span style="vertical-align:middle">Adaptive</span>',
+        '<span style="vertical-align:middle;margin-right:16px">Adaptive</span>'
+        '<span style="display:inline-block;width:14px;height:14px;background:#0D3320;border:2px solid #00C97A;border-radius:3px;vertical-align:middle;margin-right:5px"></span>'
+        '<span style="vertical-align:middle">Evolutionary</span>',
         unsafe_allow_html=True,
     )
 

@@ -17,10 +17,10 @@ class SimilarityBasedAdapter:
         catalogue_path = PROJECT_ROOT / self.cfg["scenario_catalogue_path"]
         weights_path   = PROJECT_ROOT / self.cfg["weights_config_path"]
 
-        with open(catalogue_path, "r") as f:
+        with open(catalogue_path, "r", encoding="utf-8") as f:
             catalogue = json.load(f)
 
-        with open(weights_path, "r") as f:
+        with open(weights_path, "r", encoding="utf-8") as f:
             self.weight_configs_dict = yaml.safe_load(f)
 
         # Extrai monitored_parameters e lista de cenários candidatos do catálogo

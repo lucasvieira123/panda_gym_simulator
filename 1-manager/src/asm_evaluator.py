@@ -90,13 +90,13 @@ class AsmEvaluator:
             # if _eval(scenario.given, context) and _eval(scenario.when, context):
             #     prev = self._current_node
             #     self._current_node = candidate_key
-            #     tag = "[ADAPT]" if scenario.type == "adaptive" else "[OK]"
+            #     tag = {"adaptive": "[A]", "evolutionary": "[E]"}.get(scenario.type, "[D]")
             #     print(f"[{ts()}][ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
             #     return scenario
             # ──────────────────────────────────────────────────────────────────
 
             should_advance = False
-            if scenario.type == "adaptive":
+            if scenario.type in ("adaptive", "evolutionary"):
                 # Trigger por condições — manager precisa detectar para agir
                 should_advance = _eval(scenario.given, context) and _eval(scenario.when, context)
             else:
@@ -126,7 +126,7 @@ class AsmEvaluator:
             if should_advance:
                 prev = self._current_node
                 self._current_node = candidate_key
-                tag = "[ADAPT]" if scenario.type == "adaptive" else "[OK]"
+                tag = {"adaptive": "[A]", "evolutionary": "[E]"}.get(scenario.type, "[D]")
                 print(f"[{ts()}][ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
                 return scenario
 

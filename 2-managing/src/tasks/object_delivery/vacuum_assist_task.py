@@ -46,7 +46,10 @@ class VacuumAssistTask(_ObjectTask):
 
     def reset(self) -> None:
         self.reset_phase()
-        super().reset()
+        super().reset()  # inicializa self.goal (exigido pelo panda_gym)
+
+    def _reset_object(self) -> None:
+        pass  # VacuumAssist usa posição live do objeto — nunca teleporta para initial_position
 
     def reset_phase(self) -> None:
         self._phase  = _PHASE_BOOST

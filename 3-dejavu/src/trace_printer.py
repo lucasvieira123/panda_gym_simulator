@@ -223,3 +223,53 @@ def format_pipeline_adaptation(adaptation: str | None) -> str:
         f"  └{'─' * 69}",
     ]
     return "\n".join(lines)
+
+
+def format_asm_evolution(result: dict | None) -> str:
+    if not result:
+        return ""
+    new_sc = result.get("new_scenario", {})
+    lines = [
+        f"  ┌─ ASM EVOLUTION {'─' * len(_BOX)}",
+        f"  │  Cenário violado",
+        f"  │    key           : {result.get('violated_key', '?')}",
+        f"  │    given (novo)  : {result.get('updated_given', '?')}",
+        f"  │",
+        f"  │  Novo cenário",
+        f"  │    key           : {result.get('new_scenario_key', '?')}",
+        f"  │    given         : {new_sc.get('given', '?')}",
+        f"  │    when          : {new_sc.get('when', '?')}",
+        f"  │    do            : {new_sc.get('do', '?')}",
+        f"  │    then          : {new_sc.get('then', '?')}",
+        f"  └{'─' * 69}",
+    ]
+    return "\n".join(lines)
+
+
+def format_pipeline_evaluation(evaluation: dict | None) -> str:
+    if not evaluation:
+        return ""
+    status    = evaluation.get("status", "?")
+    candidate = evaluation.get("candidate", "?")
+    ticks     = evaluation.get("ticks", "?")
+    reason    = evaluation.get("reason")
+    then_expr = evaluation.get("then", "")
+
+    _STATUS_ICON = {
+        "waiting":   "⏳",
+        "evaluating": "🔍",
+        "success":   "✅",
+        "failure":   "❌",
+    }
+    icon = _STATUS_ICON.get(status, "?")
+
+    lines = [f"  ┌─ EVALUATION {'─' * len(_BOX)}"]
+    lines.append(f"  │  Candidato : {candidate}")
+    lines.append(f"  │  Status    : {icon} {status.upper()}" +
+                 (f"  (razão: {reason})" if reason else ""))
+    if ticks != "?":
+        lines.append(f"  │  Ticks     : {ticks}")
+    if then_expr and status in ("evaluating", "success", "failure"):
+        lines.append(f"  │  Then      : {then_expr}")
+    lines.append(f"  └{'─' * 69}")
+    return "\n".join(lines)

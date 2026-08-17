@@ -23,12 +23,15 @@ class UnanticipatedScenarioIdentifier:
        
 
     def get_scenario_by_name(self, name: str) -> dict:
+        _, sc = self._get_scenario_with_key(name)
+        return sc
+
+    def _get_scenario_with_key(self, name: str) -> tuple[str, dict]:
         name_key = name.casefold().strip()
         scenarios = self.modelling_anticipated_scenarios.get("scenarios", {})
-        items = scenarios.items() if isinstance(scenarios, dict) else ((s.get("name", ""), s) for s in scenarios)
-        for key, sc in items:
+        for key, sc in scenarios.items():
             if sc.get("name", key).casefold().strip() == name_key:
-                return sc
+                return key, sc
         raise KeyError(f"Cenário com name='{name}' não encontrado")
     
     def false_clauses(self, cond: str, context_row: pd.Series) -> list[str]:
@@ -73,23 +76,22 @@ class UnanticipatedScenarioIdentifier:
         postcontext_df = unanticipated_scenarios_df.loc[unanticipated_scenarios_df.index[1], cols].to_frame().T
         violated_scenario_name = unanticipated_scenarios_df["anticipated_scenario"].iloc[0]
 
-        violated_scenario = self.get_scenario_by_name(violated_scenario_name)
-        id = violated_scenario.get("id", violated_scenario_name)
+        violated_key, violated_scenario = self._get_scenario_with_key(violated_scenario_name)
         given = violated_scenario.get("given", {})
         when = violated_scenario.get("when", {})
         do = violated_scenario.get("do", {})
         then = violated_scenario.get("then", {})
 
         violated_conditions = self.false_clauses(then, postcontext_df)
-        unanticipated_conditions = [self.negate_clause(violeted_condition) for violeted_condition in violated_conditions] 
-        
-        #TODO TENHO QUE ADICIONAR NO GIVEN AS UNANTICIPATED CONDITIONS E VERIFICAR INCOSISTENCIAS ENTRE AS CLAULAS
+        unanticipated_conditions = [self.negate_clause(violeted_condition) for violeted_condition in violated_conditions]
+
         new_given = self.join_conditions_and(unanticipated_conditions)
 
-        return {"name": violated_scenario_name+"_unanticipated",
-         "anticipated_id": id,
-         "given": new_given,
-         "when": when,
-         "do": do,
-         "then": then
+        return {
+            "name":           violated_scenario_name + "_unanticipated",
+            "anticipated_id": violated_key,
+            "given":          new_given,
+            "when":           when,
+            "do":             do,
+            "then":           then,
         }

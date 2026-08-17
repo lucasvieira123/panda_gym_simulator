@@ -121,6 +121,7 @@ class UnanticipatedScenarioDiagnoser:
         diagnosed.update({
             "name": "diagnosed_" + diagnosed["name"],
             "given": diagnosed["given"] + " AND " + unanticipated_conditions_str,
+            "diagnostic_conditions": unanticipated_conditions_str,
             "do": "TBD",
         })
 
