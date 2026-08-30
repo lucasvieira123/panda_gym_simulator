@@ -18,8 +18,7 @@ class UnanticipatedScenarioDiagnoser:
 
     def __init__(self) -> None:
         self.cfg = load_config(DEJAVU_CONF_PATH)
-        dataset_folder = str(PROJECT_ROOT / self.cfg["antecipated_scenario_dataset_folder"])
-        self.all_scenarios_df = self._load_dataset(dataset_folder)
+        self._dataset_folder = str(PROJECT_ROOT / self.cfg["antecipated_scenario_dataset_folder"])
         self.classifier = DecisionTreeClassifier(random_state=42, max_depth=3)
 
     def _load_dataset(self, folder: str) -> pd.DataFrame:
@@ -66,7 +65,7 @@ class UnanticipatedScenarioDiagnoser:
     def diagnosis(self, identified_unanticipated_scenario: dict) -> dict:
         scenario_name = identified_unanticipated_scenario["name"].replace("_unanticipated", "")
 
-        df = self.all_scenarios_df
+        df = self._load_dataset(self._dataset_folder)
         scenario_rows = df[df["active_scenario_name"] == scenario_name].copy()
 
         if scenario_rows.empty:
