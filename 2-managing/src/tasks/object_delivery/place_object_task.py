@@ -30,7 +30,7 @@ class PlaceObjectTask(_ObjectTask):
         super().__init__(sim, get_ee_position, get_object_position, target_goal_cfg, object_cfg, task_cfg)
         _cfg = task_cfg or {}
         self.place_offset      = _cfg.get("place_offset",      0.0)          # EE desce até goal_z (cubo repousa na mesa)
-        self.threshold         = _cfg.get("threshold",         0.005)         # tolerância em Z para acionar RELEASE (5 mm)
+        self.threshold         = _cfg.get("threshold",         0.015)         # tolerância em Z para acionar RELEASE (15 mm)
         self.slow_zone         = _cfg.get("slow_zone",         0.20)          # 20 cm: zona de desaceleração proporcional
         self.max_descent_speed = _cfg.get("max_descent_speed", 0.15)          # 15 %: cap de velocidade para não acumular inércia
         self.release_steps     = _cfg.get("release_steps",     5)

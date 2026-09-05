@@ -20,7 +20,8 @@
     "ambient_temperature":     { "type": "float", "min_value": 0.0,  "max_value": 60.0  },
     "object_secured":          { "type": "int",   "min_value": 0,    "max_value": 1    },
     "joint_torque":            { "type": "float", "min_value": 0.0,  "max_value": 20.0  },
-    "motor_temperature":       { "type": "float", "min_value": 0.0,  "max_value": 100.0 }
+    "motor_temperature":       { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "objects_object_1_mass":   { "type": "float", "min_value": 0.0,  "max_value": 20.0  }
   },
   "scenarios": {
 
@@ -70,6 +71,14 @@
       "when":  "grasp_completed == 1",
       "do":    "reduce_lift_speed()",
       "then":  "object_lift_height_cm >= 10 AND joint_torque < 5"
+    },
+
+    "cobot_incremental_heavy_transport": {
+      "name": "Cobot Industrial — Incremental Heavy Part Transfer",
+      "given": "objects_object_1_mass > 3 AND finger_contacts < 2 AND object_lift_height_cm < 10 AND joint_torque > 8",
+      "when":  "grasp_completed == 1",
+      "do":    "heavy_lift()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2 AND distance_object_goal_cm <= 10"
     }
 
   }

@@ -12,3 +12,9 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Traces e outputs de runtime
+1-manager/traces/
+2-managing/traces/
+3-dejavu/output/arm/similarities/
+3-dejavu/output/arm/traces/

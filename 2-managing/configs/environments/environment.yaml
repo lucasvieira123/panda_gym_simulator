@@ -17,7 +17,7 @@ objects:
     type: "box"
     size: [0.04, 0.04, 0.04]
     # size: [0.045, 0.030, 0.020]
-    mass: 1.0
+    mass: 1.0 #8.3
     initial_position: [-0.25, 0.0, 0.02]
     color: [0.1, 0.2, 0.9, 1.0]
     lateral_friction: 0.5  # 0.130 (escorrega no lift) 0.155 (escorrega no place)  0.5 (normal)
@@ -35,7 +35,7 @@ objects:
 # obstacles:
 #   - name: "parede_1"
 #     type: "box"
-#     size: [0.02, 0.30, 0.08]   # fina em X, larga em Y, alta o suficiente para bloquear
+#     size: [0.02, 0.30, 0.30]   # fina em X, larga em Y, alta o suficiente para bloquear
 #     position: [0.09, 0.0, 0.04] # ponto médio entre object_1 e target
 #     color: [0.8, 0.2, 0.2, 0.9]
 #     mass: 0.0

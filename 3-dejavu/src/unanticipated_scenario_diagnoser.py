@@ -41,8 +41,9 @@ class UnanticipatedScenarioDiagnoser:
             if feat_id != _tree.TREE_UNDEFINED:
                 feat = feature_names[feat_id]
                 thr = round(float(tree.threshold[node]), 4)
-                recurse(tree.children_left[node],  conditions + [f"{feat} <= {thr}"])
-                recurse(tree.children_right[node], conditions + [f"{feat} > {thr}"])
+                feat_clean = feat.replace(".", "_")
+                recurse(tree.children_left[node],  conditions + [f"{feat_clean} <= {thr}"])
+                recurse(tree.children_right[node], conditions + [f"{feat_clean} > {thr}"])
                 return
             value = tree.value[node][0]
             total = float(value.sum())
