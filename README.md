@@ -1,3 +1,10 @@
+EU QUERO FALAR SOBRE O ASM USADO AQUI
+A MAQUINA DE ESTADO TBM
+O CATALOGO USADO
+OS PARAMETROS ASSIM COMO U MIN E MAN DE CADA
+TBM QUERO DEIXAR UMA BRANCH COM O EXPERIMENT
+
+
 # Self-Adaptive Arm Simulator
 
 > Research prototype of a self-adaptive system built around a Franka Panda robotic arm simulation. Implements a full MAPE-K feedback loop coupled with the **DejaVu** reference architecture for detecting, identifying, diagnosing, and adapting to unanticipated scenarios.
