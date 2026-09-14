@@ -18,3 +18,6 @@ Thumbs.db
 2-managing/traces/
 3-dejavu/output/arm/similarities/
 3-dejavu/output/arm/traces/
+
+# Experimentos — conteúdo de execução (inputs/outputs por run), não versionado
+5-experiments/**/results/
