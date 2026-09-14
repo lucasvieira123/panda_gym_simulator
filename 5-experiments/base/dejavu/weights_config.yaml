@@ -1,0 +1,12 @@
+parameter_weights:
+  parameter_1: 1.0
+  parameter_n: 1.0
+
+tversky_weights:
+  alpha: 0.9
+  beta: 0.1
+
+conditional_weights:
+  given: 1.0
+  when: 1.0
+  then: 1.0

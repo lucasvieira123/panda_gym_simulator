@@ -1,0 +1,37 @@
+{
+  "name": "Friction Sweep",
+  "description": "Varredura sistemática de lateral_friction do objeto — de condições normais até limite do DejaVu.",
+  "experiments": [
+
+    { "name": "01_0_80",  "description": "lateral_friction=0.80",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.80  } } } },
+    { "name": "02_0_70",  "description": "lateral_friction=0.70",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.70  } } } },
+    { "name": "03_0_60",  "description": "lateral_friction=0.60",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.60  } } } },
+    { "name": "04_0_50",  "description": "lateral_friction=0.50 — nominal",                            "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.50  } } } },
+
+    { "name": "05_0_40",  "description": "lateral_friction=0.40",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.40  } } } },
+    { "name": "06_0_30",  "description": "lateral_friction=0.30",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.30  } } } },
+    { "name": "07_0_25",  "description": "lateral_friction=0.25",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.25  } } } },
+    { "name": "08_0_20",  "description": "lateral_friction=0.20",                                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.20  } } } },
+
+    { "name": "09_0_18",  "description": "lateral_friction=0.18 — pré-fronteira",                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.18  } } } },
+    { "name": "10_0_17",  "description": "lateral_friction=0.17 — pré-fronteira",                      "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.17  } } } },
+    { "name": "11_0_16",  "description": "lateral_friction=0.16 — região crítica",                     "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.16  } } } },
+    { "name": "12_0_155", "description": "lateral_friction=0.155 — comportamento interessante",         "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.155 } } } },
+    { "name": "13_0_150", "description": "lateral_friction=0.150 — região crítica",                    "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.150 } } } },
+    { "name": "14_0_145", "description": "lateral_friction=0.145 — região crítica",                    "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.145 } } } },
+    { "name": "15_0_140", "description": "lateral_friction=0.140 — condição não antecipada conhecida", "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.140 } } } },
+    { "name": "16_0_135", "description": "lateral_friction=0.135 — condição mais severa",              "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.135 } } } },
+    { "name": "17_0_130", "description": "lateral_friction=0.130 — condição não antecipada conhecida", "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.130 } } } },
+
+    { "name": "18_0_120", "description": "lateral_friction=0.120 — extensão da capacidade",            "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.120 } } } },
+    { "name": "19_0_110", "description": "lateral_friction=0.110",                                     "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.110 } } } },
+    { "name": "20_0_100", "description": "lateral_friction=0.100 — limite do DejaVu",                  "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.100 } } } },
+    { "name": "21_0_080", "description": "lateral_friction=0.080",                                     "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.080 } } } },
+    { "name": "22_0_060", "description": "lateral_friction=0.060",                                     "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.060 } } } },
+
+    { "name": "23_0_040", "description": "lateral_friction=0.040 — teste limite vacuum",               "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.040 } } } },
+    { "name": "24_0_020", "description": "lateral_friction=0.020 — teste limite vacuum",               "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.020 } } } },
+    { "name": "25_0_010", "description": "lateral_friction=0.010 — teste limite vacuum (extremo)",     "patches": { "managing": { "environment.yaml": { "objects.0.lateral_friction": 0.010 } } } }
+
+  ]
+}
