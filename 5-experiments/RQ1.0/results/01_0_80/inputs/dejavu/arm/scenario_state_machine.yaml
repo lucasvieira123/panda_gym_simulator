@@ -1,0 +1,280 @@
+statechart:
+  name: ScenarioStateMachine
+  description: 'Generated from hAS model: arm_SAS'
+  root state:
+    name: root
+    initial: INIT
+    states:
+    - name: INIT
+      on entry: 'active_scenario = {"name": "INIT", "type": None}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_1
+        guard: task_started == 1
+    - name: PHI_1
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S2
+        guard: object_available >= 1 and gripper_width_cm >= 6
+      - target: ERR_1
+        guard: not (object_available >= 1 and gripper_width_cm >= 6)
+    - name: S2
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_3
+        event: approach_object() (APPROACH_OBJECT)
+    - name: PHI_3
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S4
+        guard: distance_ee_object_cm <= 2
+      - target: ERR_3
+        guard: not (distance_ee_object_cm <= 2)
+    - name: S4
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+      contract:
+      - always: distance_ee_object_cm <= 2
+      transitions:
+      - target: PHI_5
+        guard: gripper_width_cm >= 6 and distance_ee_object_cm <= 2
+    - name: PHI_5
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S6
+        guard: gripper_width_cm >= 6
+      - target: ERR_5
+        guard: not (gripper_width_cm >= 6)
+    - name: S6
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_7
+        event: close_gripper() (GRASP_OBJECT)
+    - name: PHI_7
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S8
+        guard: grasp_completed == 1
+      - target: ERR_7
+        guard: not (grasp_completed == 1)
+    - name: S8
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+      contract:
+      - always: grasp_completed == 1
+      transitions:
+      - target: PHI_17
+        guard: finger_contacts >= 2 and grasp_completed == 1
+      - target: PHI_9
+        guard: finger_contacts < 2 and grasp_attempts < 3 and grasp_completed == 1
+    - name: PHI_9
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S10
+        guard: finger_contacts < 2 and grasp_attempts < 3
+      - target: ERR_9
+        guard: not (finger_contacts < 2 and grasp_attempts < 3)
+    - name: S10
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_11
+        event: retry_grasp() (RETRY_GRASP)
+    - name: PHI_11
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S12
+        guard: grasp_completed == 1
+      - target: ERR_11
+        guard: not (grasp_completed == 1)
+    - name: S12
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+      contract:
+      - always: grasp_completed == 1
+      transitions:
+      - target: PHI_13
+        guard: finger_contacts < 2 and grasp_attempts >= 3 and grasp_completed ==
+          1
+      - target: PHI_9
+        guard: finger_contacts < 2 and grasp_attempts < 3 and grasp_completed == 1
+      - target: PHI_17
+        guard: finger_contacts >= 2 and grasp_completed == 1
+    - name: PHI_13
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S14
+        guard: finger_contacts < 2 and grasp_attempts >= 3
+      - target: ERR_13
+        guard: not (finger_contacts < 2 and grasp_attempts >= 3)
+    - name: S14
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_15
+        event: abort_grasp() (SAFE_ABORT)
+    - name: PHI_15
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S16
+        guard: task_aborted == 1
+      - target: ERR_15
+        guard: not (task_aborted == 1)
+    - name: S16
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+      contract:
+      - always: task_aborted == 1
+      transitions:
+      - target: FINAL
+        guard: 'True'
+    - name: PHI_17
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S18
+        guard: finger_contacts >= 2
+      - target: ERR_17
+        guard: not (finger_contacts >= 2)
+    - name: S18
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_19
+        event: lift_object() (LIFT_OBJECT)
+    - name: PHI_19
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S20
+        guard: object_lift_height_cm >= 10 and finger_contacts >= 2
+      - target: ERR_19
+        guard: not (object_lift_height_cm >= 10 and finger_contacts >= 2)
+    - name: S20
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+      contract:
+      - always: object_lift_height_cm >= 10 and finger_contacts >= 2
+      transitions:
+      - target: PHI_21
+        guard: finger_contacts >= 2 and object_lift_height_cm >= 10
+    - name: PHI_21
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S22
+        guard: finger_contacts >= 2
+      - target: ERR_21
+        guard: not (finger_contacts >= 2)
+    - name: S22
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_23
+        event: transport_to_goal() (TRANSPORT_OBJECT)
+    - name: PHI_23
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S24
+        guard: distance_object_goal_cm <= 5 and object_lift_height_cm >= 10 and finger_contacts
+          >= 2
+      - target: ERR_23
+        guard: not (distance_object_goal_cm <= 5 and object_lift_height_cm >= 10 and
+          finger_contacts >= 2)
+    - name: S24
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+      contract:
+      - always: distance_object_goal_cm <= 5 and object_lift_height_cm >= 10 and finger_contacts
+          >= 2
+      transitions:
+      - target: PHI_25
+        guard: object_lift_height_cm >= 10 and finger_contacts >= 2 and distance_object_goal_cm
+          <= 5
+    - name: PHI_25
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S26
+        guard: object_lift_height_cm >= 10 and finger_contacts >= 2
+      - target: ERR_25
+        guard: not (object_lift_height_cm >= 10 and finger_contacts >= 2)
+    - name: S26
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: PHI_27
+        event: place_object() (PLACE_OBJECT)
+    - name: PHI_27
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+      contract:
+      - always: 'True'
+      transitions:
+      - target: S28
+        guard: distance_object_goal_cm <= 5 and gripper_width_cm >= 6
+      - target: ERR_27
+        guard: not (distance_object_goal_cm <= 5 and gripper_width_cm >= 6)
+    - name: S28
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+      contract:
+      - always: distance_object_goal_cm <= 5 and gripper_width_cm >= 6
+      transitions:
+      - target: FINAL
+        guard: 'True'
+    - name: ERR_1
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+    - name: ERR_11
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+    - name: ERR_13
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+    - name: ERR_15
+      on entry: 'active_scenario = {"name": "SAFE_ABORT", "type": "A"}'
+    - name: ERR_17
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+    - name: ERR_19
+      on entry: 'active_scenario = {"name": "LIFT_OBJECT", "type": "D"}'
+    - name: ERR_21
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+    - name: ERR_23
+      on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
+    - name: ERR_25
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+    - name: ERR_27
+      on entry: 'active_scenario = {"name": "PLACE_OBJECT", "type": "D"}'
+    - name: ERR_3
+      on entry: 'active_scenario = {"name": "APPROACH_OBJECT", "type": "D"}'
+    - name: ERR_5
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+    - name: ERR_7
+      on entry: 'active_scenario = {"name": "GRASP_OBJECT", "type": "D"}'
+    - name: ERR_9
+      on entry: 'active_scenario = {"name": "RETRY_GRASP", "type": "A"}'
+    - name: FINAL
+      type: final
+      on entry: 'active_scenario = {"name": "FINAL", "type": None}'

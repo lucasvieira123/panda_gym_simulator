@@ -1,171 +1,178 @@
 """
-build_simulations.py — define e cria as simulações em batch.
+build_simulations.py
+====================
+Loads an experiment config from experiment_configs/<name>.json and generates
+complete input configuration files inside results/<name>/inputs/.
 
-Execute:
-    python experiments/build_simulations.py
+Usage:
+    python 5-experiments/build_simulations.py --config friction_sweep
 
-Isso limpa e recria experiments/simulations/ com uma subpasta por cenário.
-Cada subpasta é completamente auto-suficiente: contém os 4 arquivos de
-configuração que o managing precisa. O execute_simulations.py lê essas
-pastas e executa o managing uma vez por simulação.
+Each experiment in the JSON declares only what changes relative to the base
+snapshot. Everything else is inherited unchanged from base/.
+
+Patch operations (inside a file's patch dict):
+  "some.dot.key": value         → set a value (supports list indices)
+  "$add_scenario":   {...}      → add/replace an entry in "scenarios"
+  "$add_transition": {...}      → append a transition to "transitions"
+  "$remove_scenario": "key"     → remove a scenario by key
 """
 
-import os
+import argparse
+import copy
+import json
 import shutil
+from pathlib import Path
+from typing import Any
+
 import yaml
 
-_EXPERIMENTS_DIR = os.path.dirname(os.path.abspath(__file__))
-_SIMULATIONS_DIR = os.path.join(_EXPERIMENTS_DIR, "simulations")
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+
+EXPERIMENTS_DIR  = Path(__file__).parent
+BASE_DIR         = EXPERIMENTS_DIR / "base"
+RESULTS_DIR      = EXPERIMENTS_DIR / "results"
+CONFIGS_DIR      = EXPERIMENTS_DIR / "experiment_configs"
+
+# ---------------------------------------------------------------------------
+# Core utilities
+# ---------------------------------------------------------------------------
 
 
-# ── configurações base ───────────────────────────────────────────────────────
+def _load(path: Path) -> Any:
+    if path.suffix == ".json":
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    with open(path, encoding="utf-8") as f:
+        return yaml.safe_load(f)
 
-BASE_SIMULATION = {
-    "seed": 42,
-    "episodes": 1,
-    "max_steps": 1000,
-    "render_mode": "human",  # "rgb_array": headless — sem GUI
-    "step_delay": 0,
-    "verbose": True,
-    "environment_config": "environment.yaml",
-    "target_goal_config": "target_goal.yaml",
-    "scripts_file":       "scripts.yaml",
-    "traces_dir": None,        # preenchido por create_experiment()
-    "distance_threshold":   0.05,
-    "grasp_height_offset":  0.0,
-    "approach_height":      0.1,
-    "phase_threshold":      0.02,
-    "approach_offset":      0.05,
-    "push_speed":           0.3,
-    "move_speed":           0.5,
-}
 
-BASE_ENVIRONMENT = {
-    "robot": {
-        "control_type": "ee",
-        "block_gripper": False,
-        "base_position": [-0.6, 0.0, 0.0],
-    },
-    "scene": {
-        "table": {
-            "length":           1.1,
-            "width":            0.7,
-            "height":           0.4,
-            "x_offset":        -0.3,
-            "lateral_friction": 3.0,
-            "spinning_friction": 0.001,
-        }
-    },
-    "objects": [
-        {
-            "name":              "object_1",
-            "type":              "box",
-            "size":              [0.04, 0.04, 0.04],
-            "mass":              1.0,
-            "initial_position":  [0.03, 0.0, 0.02],
-            "color":             [0.1, 0.2, 0.9, 1.0],
-            "lateral_friction":  0.124,
-            "spinning_friction": 0.001,
-        }
+def _save(data: Any, path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.suffix == ".json":
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+    else:
+        with open(path, "w", encoding="utf-8") as f:
+            yaml.dump(data, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+
+
+def _set_dotpath(obj: Any, dotpath: str, value: Any) -> None:
+    parts = dotpath.split(".")
+    for part in parts[:-1]:
+        obj = obj[int(part)] if isinstance(obj, list) else obj[part]
+    last = parts[-1]
+    if isinstance(obj, list):
+        obj[int(last)] = value
+    else:
+        obj[last] = value
+
+
+def _apply_patch(data: Any, patch: dict) -> Any:
+    result = copy.deepcopy(data)
+    for key, value in patch.items():
+        if key == "$add_scenario":
+            result.setdefault("scenarios", {})[value["key"]] = value["data"]
+        elif key == "$add_transition":
+            result.setdefault("transitions", []).append(value)
+        elif key == "$remove_scenario":
+            result.get("scenarios", {}).pop(value, None)
+        else:
+            _set_dotpath(result, key, value)
+    return result
+
+
+# ---------------------------------------------------------------------------
+# Build
+# ---------------------------------------------------------------------------
+
+COMPONENT_FILES = {
+    "managing": [
+        "environment.yaml",
+        "simulation.yaml",
+        "target_goal.yaml",
+        "scripts.yaml",
     ],
-    "obstacles": [
-        {
-            "name":     "obstacle_1",
-            "type":     "box",
-            "size":     [0.02, 0.30, 0.02],
-            "position": [0.09, 0.0, 0.04],
-            "color":    [0.8, 0.2, 0.2, 0.9],
-            "mass":     0.0,
-        }
+    "manager": [
+        "arm/asm.json",
+    ],
+    "dejavu": [
+        "arm/scenario_catalogue.json",
+        "arm/scenario_state_machine.yaml",
+        "dejavu_conf.yaml",
+        "weights_config.yaml",
     ],
 }
 
-BASE_TARGET_GOAL = {
-    "mode": "goal_sequence",
-    "targets": [
-        {"name": "target",   "position": [0.15,   0.0,  0.02]},
-        {"name": "target_1", "position": [0.15,   0.10, 0.02]},
-        {"name": "target_2", "position": [-0.10,  0.0,  0.02]},
-        {"name": "target_3", "position": [-0.10,  0.1,  0.02]},
-    ],
-}
 
-BASE_SCRIPTS = {
-    "script_1": {
-        "waypoints": [
-            [0.03,  0.0,  0.12,  1.0],
-            [0.03,  0.0,  0.02,  1.0],
-            [0.03,  0.0,  0.02, -1.0],
-            [0.03,  0.0,  0.12, -1.0],
-            [0.15,  0.0,  0.12, -1.0],
-            [0.15,  0.0,  0.02, -1.0],
-            [0.15,  0.0,  0.02,  1.0],
-        ]
-    },
-    "reach_only": {
-        "waypoints": [
-            [0.15,  0.0,  0.12,  1.0],
-            [0.15,  0.0,  0.02,  1.0],
-        ]
-    },
-    "left_right": {
-        "waypoints": [
-            [0.05,  0.00, 0.25,  1.0],
-            [0.05, -0.20, 0.25,  1.0],
-            [0.05,  0.20, 0.25,  1.0],
-            [0.05,  0.00, 0.25,  1.0],
-        ]
-    },
-}
+def build_experiment(experiment: dict) -> None:
+    name    = experiment["name"]
+    patches = experiment.get("patches", {})
 
+    inputs_dir = RESULTS_DIR / name / "inputs"
+    print(f"  Building '{name}' → {inputs_dir}")
 
-# ── função de criação ────────────────────────────────────────────────────────
+    for component, files in COMPONENT_FILES.items():
+        for filename in files:
+            src  = BASE_DIR / component / filename
+            dest = inputs_dir / component / filename
 
-def create_simulation(name, sim_cfg, env_cfg, tgt_cfg, scripts_cfg):
-    """Cria a pasta experiments/simulations/<name>/ com os 4 YAMLs completos."""
-    folder = os.path.join(_SIMULATIONS_DIR, name)
-    os.makedirs(folder, exist_ok=True)
+            data = _load(src)
 
-    sim = {**sim_cfg, "traces_dir": folder}
+            file_patches = patches.get(component, {}).get(filename, {})
+            if file_patches:
+                data = _apply_patch(data, file_patches)
 
-    _save(folder, "simulation.yaml",          sim)
-    _save(folder, sim["environment_config"],   env_cfg)
-    _save(folder, sim["target_goal_config"],   tgt_cfg)
-    _save(folder, sim["scripts_file"],         scripts_cfg)
+            _save(data, dest)
+
+    src_dataset  = BASE_DIR / "dejavu" / "antecipated_scenario_dataset"
+    dest_dataset = inputs_dir / "dejavu" / "antecipated_scenario_dataset"
+    if src_dataset.exists():
+        if dest_dataset.exists():
+            shutil.rmtree(dest_dataset)
+        shutil.copytree(src_dataset, dest_dataset)
+
+    meta_path = RESULTS_DIR / name / "experiment.json"
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "name":        name,
+            "description": experiment.get("description", ""),
+            "patches":     patches,
+        }, f, indent=2, ensure_ascii=False)
+
+    print(f"    ✓ {sum(len(v) for v in COMPONENT_FILES.values())} config files generated")
 
 
-def _save(folder, filename, data):
-    path = os.path.join(folder, filename)
-    with open(path, "w", encoding="utf-8") as f:
-        yaml.dump(data, f, allow_unicode=True, sort_keys=False)
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Build experiment inputs from a config JSON."
+    )
+    parser.add_argument(
+        "--config",
+        required=True,
+        help="Name of the experiment config (without .json), e.g. friction_sweep",
+    )
+    args = parser.parse_args()
 
+    config_path = CONFIGS_DIR / f"{args.config}.json"
+    if not config_path.exists():
+        print(f"Config not found: {config_path}")
+        raise SystemExit(1)
 
-# ── simulações ───────────────────────────────────────────────────────────────
-# Varie os parâmetros aqui. Cada entrada vira uma subpasta em simulations/.
+    with open(config_path, encoding="utf-8") as f:
+        config = json.load(f)
 
-FRICTION_VALUES = [0.10, 0.120, 0.124, 0.125, 0.126]
+    experiments = config["experiments"]
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    print(f"Config: {config['name']}")
+    print(f"Building {len(experiments)} experiment(s)...\n")
+    for exp in experiments:
+        build_experiment(exp)
+
+    print(f"\nDone. Results in: {RESULTS_DIR}")
+
 
 if __name__ == "__main__":
-    if os.path.exists(_SIMULATIONS_DIR):
-        shutil.rmtree(_SIMULATIONS_DIR)
-
-    for friction in FRICTION_VALUES:
-        name = f"lateral_friction_{friction:.3f}"
-
-        env = {
-            **BASE_ENVIRONMENT,
-            "objects": [
-                {**BASE_ENVIRONMENT["objects"][0], "lateral_friction": friction}
-            ],
-        }
-
-        create_simulation(
-            name        = name,
-            sim_cfg     = BASE_SIMULATION,
-            env_cfg     = env,
-            tgt_cfg     = BASE_TARGET_GOAL,
-            scripts_cfg = BASE_SCRIPTS,
-        )
-        print(f"[build] criado: {name}")
-
-    print(f"\n{len(FRICTION_VALUES)} experimentos em {_SIMULATIONS_DIR}")
+    main()

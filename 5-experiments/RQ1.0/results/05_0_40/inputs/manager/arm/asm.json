@@ -1,0 +1,176 @@
+{
+  "metadata": {
+    "name": "arm_SAS"
+  },
+  "nodes": {
+    "__init__": {
+      "name": "INIT",
+      "type": "init"
+    },
+    "__end__": {
+      "name": "END",
+      "type": "end"
+    }
+  },
+  "monitored_parameters": {
+    "object_available": {
+      "type": "int",
+      "min": 0,
+      "max": 10
+    },
+    "task_started": {
+      "type": "int",
+      "min": 0,
+      "max": 1
+    },
+    "gripper_width_cm": {
+      "type": "int",
+      "min": 0,
+      "max": 100
+    },
+    "distance_ee_object_cm": {
+      "type": "int",
+      "min": 0,
+      "max": 100
+    },
+    "grasp_completed": {
+      "type": "int",
+      "min": 0,
+      "max": 1
+    },
+    "finger_contacts": {
+      "type": "int",
+      "min": 0,
+      "max": 5
+    },
+    "grasp_attempts": {
+      "type": "int",
+      "min": 0,
+      "max": 5
+    },
+    "object_lift_height_cm": {
+      "type": "int",
+      "min": 0,
+      "max": 100
+    },
+    "distance_object_goal_cm": {
+      "type": "int",
+      "min": 0,
+      "max": 100
+    },
+    "task_aborted": {
+      "type": "int",
+      "min": 0,
+      "max": 1
+    },
+    "teste": {
+      "type": "int",
+      "min": 0,
+      "max": 100
+    }
+  },
+  "scenarios": {
+    "approach_object": {
+      "name": "APPROACH_OBJECT",
+      "type": "domain",
+      "given": "object_available >= 1 AND gripper_width_cm >= 6",
+      "when": "task_started == 1",
+      "do": "approach_object()",
+      "then": "distance_ee_object_cm <= 2"
+    },
+    "grasp_object": {
+      "name": "GRASP_OBJECT",
+      "type": "domain",
+      "given": "gripper_width_cm >= 6",
+      "when": "distance_ee_object_cm <= 2",
+      "do": "close_gripper()",
+      "then": "grasp_completed == 1"
+    },
+    "retry_grasp": {
+      "name": "RETRY_GRASP",
+      "type": "adaptive",
+      "given": "finger_contacts < 2 AND grasp_attempts < 3",
+      "when": "grasp_completed == 1",
+      "do": "retry_grasp()",
+      "then": "grasp_completed == 1"
+    },
+    "safe_abort": {
+      "name": "SAFE_ABORT",
+      "type": "adaptive",
+      "given": "finger_contacts < 2 AND grasp_attempts >= 3",
+      "when": "grasp_completed == 1",
+      "do": "abort_grasp()",
+      "then": "task_aborted == 1"
+    },
+    "lift_object": {
+      "name": "LIFT_OBJECT",
+      "type": "domain",
+      "given": "finger_contacts >= 2",
+      "when": "grasp_completed == 1",
+      "do": "lift_object()",
+      "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+    "transport_object": {
+      "name": "TRANSPORT_OBJECT",
+      "type": "domain",
+      "given": "finger_contacts >= 2",
+      "when": "object_lift_height_cm >= 10",
+      "do": "transport_to_goal()",
+      "then": "distance_object_goal_cm <= 5 AND object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+    "place_object": {
+      "name": "PLACE_OBJECT",
+      "type": "domain",
+      "given": "object_lift_height_cm >= 10 AND finger_contacts >= 2",
+      "when": "distance_object_goal_cm <= 5",
+      "do": "place_object()",
+      "then": "distance_object_goal_cm <= 5 AND gripper_width_cm >= 6"
+    }
+  },
+  "transitions": [
+    {
+      "from": "__init__",
+      "to": "approach_object"
+    },
+    {
+      "from": "approach_object",
+      "to": "grasp_object"
+    },
+    {
+      "from": "grasp_object",
+      "to": "lift_object"
+    },
+    {
+      "from": "grasp_object",
+      "to": "retry_grasp"
+    },
+    {
+      "from": "retry_grasp",
+      "to": "safe_abort"
+    },
+    {
+      "from": "retry_grasp",
+      "to": "retry_grasp"
+    },
+    {
+      "from": "retry_grasp",
+      "to": "lift_object"
+    },
+    {
+      "from": "lift_object",
+      "to": "transport_object"
+    },
+    {
+      "from": "transport_object",
+      "to": "place_object"
+    },
+    {
+      "from": "place_object",
+      "to": "__end__"
+    },
+    {
+      "from": "safe_abort",
+      "to": "__end__"
+    }
+  ]
+}

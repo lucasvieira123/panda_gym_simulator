@@ -533,7 +533,7 @@ def _asm_to_svg() -> str | None:
     dot = graphviz.Digraph(
         name="ASM",
         graph_attr={
-            "rankdir": "TB", "splines": "ortho",
+            "rankdir": "LR", "splines": "ortho",
             "nodesep": "0.7", "ranksep": "1.0",
             "bgcolor": "white",
         },

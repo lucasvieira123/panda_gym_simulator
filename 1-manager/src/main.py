@@ -1,3 +1,4 @@
+import argparse
 import atexit
 import sys
 from pathlib import Path
@@ -20,6 +21,11 @@ _ASM_PATH = Path(__file__).parent.parent / "configs" / "arm" / "asm.json"
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--experiment", action="store_true",
+                        help="Skip wait_for_dashboard (used by automated experiment runs)")
+    args = parser.parse_args()
+
     _writer      = TraceWriter()
     _real_stdout = sys.stdout
 
@@ -43,7 +49,8 @@ def main() -> None:
     asm_evaluator = AsmEvaluator(asm)
 
     api.start(port=8001)
-    api.wait_for_dashboard()
+    if not args.experiment:
+        api.wait_for_dashboard()
 
     import time
     time.sleep(1.5)
