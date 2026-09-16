@@ -1,0 +1,7 @@
+{
+  "name": "diagnosed_LIFT_OBJECT_unanticipated",
+  "given": "(object_lift_height_cm < 10) AND (finger_contacts < 2) AND lateral_friction <= 0.32",
+  "when": "grasp_completed == 1",
+  "do": "TBD",
+  "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+}
