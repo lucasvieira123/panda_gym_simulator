@@ -1,0 +1,135 @@
+{
+  "reference_given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.315",
+  "total_R_configs_in_desired_scenario_json": 897,
+  "total_classified": 897,
+  "missing_from_rq2_summary_csv": [],
+  "expected_full_factorial_size": 900,
+  "actual_grid_size": 897,
+  "grid_size_gap": 3,
+  "grid_size_gap_note": "A grade fatorial completa (9 H x 10 C x 10 F) teria 900 pontos; apenas 897 existem em configs/desired_scenario.json. Nenhuma configuracao foi gerada artificialmente para completar os 900.",
+  "categories": {
+    "Baseline": {
+      "total": 0,
+      "cstar_unique_top1": 0,
+      "other_unique_top1": 0,
+      "tie_at_top": 0,
+      "margin_min": null,
+      "margin_max": null,
+      "note": "Nenhuma configuracao desta categoria existe na grade -- nao foi gerada artificialmente."
+    },
+    "Threshold-only": {
+      "total": 207,
+      "cstar_unique_top1": 207,
+      "other_unique_top1": 0,
+      "tie_at_top": 0,
+      "margin_min": 0.02011494252873558,
+      "margin_max": 0.1798371647509578
+    },
+    "Operator-only": {
+      "total": 7,
+      "cstar_unique_top1": 6,
+      "other_unique_top1": 1,
+      "tie_at_top": 0,
+      "margin_min": -0.002940613026820027,
+      "margin_max": 0.13539272030651328
+    },
+    "Combined": {
+      "total": 683,
+      "cstar_unique_top1": 641,
+      "other_unique_top1": 6,
+      "tie_at_top": 36,
+      "margin_min": -0.00766283524904221,
+      "margin_max": 0.16666666666666674
+    }
+  },
+  "direction_reconciliation": {
+    "direction_preserving_total": 207,
+    "direction_changing_total": 690,
+    "direction_changing_strict_flips": 7,
+    "direction_changing_ties": 36,
+    "matches_previously_reported_210_690": false,
+    "note": "Nenhum arquivo no repositorio contem os numeros '210 direction-preserving' / '690 direction-changing' citados no pedido -- nao ha registro anterior para confirmar contra. Os valores acima sao calculados agora, pela primeira vez nesta base de codigo, a partir dos 897 pontos reais da grade."
+  },
+  "reconciliation_900": {
+    "method": "As 3 combinacoes ausentes de R_* sao semanticamente identicas (mesmo Given) a configuracoes ja existentes em outros grupos -- reaproveitadas aqui SEM duplicar objetos no desired_scenario.json e SEM recalcular similaridade.",
+    "reconciled_points": [
+      {
+        "hcf": "H03xC02xF02",
+        "reused_from_id": "C11",
+        "reused_from_name": "diagnosed_LIFT_OBJECT_unanticipated__RQ2_C11_friction_0p300",
+        "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.300",
+        "category": "Threshold-only",
+        "top1_candidate_name": "Lift Slip — Low Friction Surface",
+        "top1_is_reference": true,
+        "is_exact_tie_at_top": false,
+        "margin_signed": 0.07567049808429116
+      },
+      {
+        "hcf": "H03xC02xF03",
+        "reused_from_id": "A0",
+        "reused_from_name": "diagnosed_LIFT_OBJECT_unanticipated__RQ2_A0_baseline_full_context",
+        "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.315",
+        "category": "Baseline",
+        "top1_candidate_name": "Lift Slip — Low Friction Surface",
+        "top1_is_reference": true,
+        "is_exact_tie_at_top": false,
+        "margin_signed": 0.07983716475095781
+      },
+      {
+        "hcf": "H03xC02xF04",
+        "reused_from_id": "C03",
+        "reused_from_name": "diagnosed_LIFT_OBJECT_unanticipated__RQ2_C03_friction_0p330",
+        "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.330",
+        "category": "Threshold-only",
+        "top1_candidate_name": "Lift Slip — Low Friction Surface",
+        "top1_is_reference": true,
+        "is_exact_tie_at_top": false,
+        "margin_signed": 0.08400383141762457
+      }
+    ],
+    "categories_900": {
+      "Baseline": {
+        "total": 1,
+        "cstar_unique_top1": 1,
+        "other_unique_top1": 0,
+        "tie_at_top": 0,
+        "margin_min": 0.07983716475095781,
+        "margin_max": 0.07983716475095781,
+        "reused_from_other_groups": 1
+      },
+      "Threshold-only": {
+        "total": 209,
+        "cstar_unique_top1": 209,
+        "other_unique_top1": 0,
+        "tie_at_top": 0,
+        "margin_min": 0.02011494252873558,
+        "margin_max": 0.1798371647509578,
+        "reused_from_other_groups": 2
+      },
+      "Operator-only": {
+        "total": 7,
+        "cstar_unique_top1": 6,
+        "other_unique_top1": 1,
+        "tie_at_top": 0,
+        "margin_min": -0.002940613026820027,
+        "margin_max": 0.13539272030651328,
+        "reused_from_other_groups": 0
+      },
+      "Combined": {
+        "total": 683,
+        "cstar_unique_top1": 641,
+        "other_unique_top1": 6,
+        "tie_at_top": 36,
+        "margin_min": -0.00766283524904221,
+        "margin_max": 0.16666666666666674,
+        "reused_from_other_groups": 0
+      }
+    },
+    "total_900": 900,
+    "direction_preserving_900": 210,
+    "direction_changing_900": 690,
+    "strict_top1_flips_900": 7,
+    "ties_900": 36,
+    "matches_article_210_690_7_36": true
+  }
+}

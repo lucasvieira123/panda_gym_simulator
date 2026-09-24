@@ -113,7 +113,7 @@
     "transport_object": {
       "name": "TRANSPORT_OBJECT",
       "type": "domain",
-      "given": "finger_contacts >= 2",
+      "given": "finger_contacts >= 2 AND (lateral_friction > 0.28) AND (lateral_friction <= 0.34)",
       "when": "object_lift_height_cm >= 10",
       "do": "transport_to_goal()",
       "then": "distance_object_goal_cm <= 5 AND object_lift_height_cm >= 10 AND finger_contacts >= 2"
@@ -125,6 +125,14 @@
       "when": "distance_object_goal_cm <= 5",
       "do": "place_object()",
       "then": "distance_object_goal_cm <= 5 AND gripper_width_cm >= 6"
+    },
+    "transport_object_heavy_lift": {
+      "name": "TRANSPORT_OBJECT_HEAVY_LIFT",
+      "type": "evolutionary",
+      "given": "finger_contacts >= 2 AND lateral_friction <= 0.28 AND lateral_friction > 0.340",
+      "when": "object_lift_height_cm >= 10",
+      "do": "heavy_lift()",
+      "then": "distance_object_goal_cm <= 5 AND object_lift_height_cm >= 10 AND finger_contacts >= 2"
     }
   },
   "transitions": [
@@ -171,6 +179,14 @@
     {
       "from": "safe_abort",
       "to": "__end__"
+    },
+    {
+      "from": "lift_object",
+      "to": "transport_object_heavy_lift"
+    },
+    {
+      "from": "transport_object_heavy_lift",
+      "to": "place_object"
     }
   ]
 }

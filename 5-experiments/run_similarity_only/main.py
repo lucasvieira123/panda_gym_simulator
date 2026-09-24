@@ -14,10 +14,16 @@ O codigo-fonte (classes de Scenario/Expression, metrica de similaridade,
 formatacao de trace) NAO e duplicado aqui: e importado direto de
 3-dejavu/src via sys.path.
 
+O arquivo de --input aceita tanto um unico cenario desejado (objeto JSON)
+quanto uma lista de varios cenarios (array JSON) -- nesse caso o ranking e
+calculado uma vez para cada item da lista, e todos os resultados vao para
+o mesmo .jsonl de saida, com o campo "desired_key" identificando de qual
+cenario da lista veio cada linha.
+
 Uso:
     python main.py
     python main.py --input configs/outro_cenario.json
-    python main.py --input configs/desired_scenario.json --top 3
+    python main.py --input configs/varios_cenarios.json --top 3
 """
 import argparse
 import json
@@ -84,12 +90,12 @@ def calculate_similarity(desired_dict: dict, catalogue: dict, weight_configs: di
     return results
 
 
-def write_similarities(results: list) -> Path:
+def write_similarities(all_results: list) -> Path:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
     out_path = OUTPUT_DIR / f"similarities_{ts}.jsonl"
     with open(out_path, "a", encoding="utf-8") as f:
-        for r in results:
+        for r in all_results:
             f.write(json.dumps({"run_id": ts, **r}, default=str) + "\n")
     return out_path
 
@@ -97,22 +103,34 @@ def write_similarities(results: list) -> Path:
 def main() -> None:
     args = parse_args()
 
-    desired_dict = load_json(Path(args.input))
+    desired_data = load_json(Path(args.input))
     catalogue = load_json(CONFIGS_DIR / "scenario_catalogue.json")
     weight_configs = load_yaml(CONFIGS_DIR / "weights_config.yaml")
 
-    results = calculate_similarity(desired_dict, catalogue, weight_configs)
-    results.sort(key=lambda s: s["similarity_result"], reverse=True)
+    desired_list = desired_data if isinstance(desired_data, list) else [desired_data]
 
-    print(format_pipeline_similarities(results[: args.top] if args.top else results))
+    all_results = []
+    for desired_dict in desired_list:
+        results = calculate_similarity(desired_dict, catalogue, weight_configs)
+        results.sort(key=lambda s: s["similarity_result"], reverse=True)
 
-    top = results[0]
-    print(
-        f"\n>> Melhor candidato: {top['candidate']['name']} "
-        f"(score={top['similarity_result']:.5f}) -> do: {top['candidate']['do']}"
-    )
+        desired_key = desired_dict.get("name", "desired")
+        if len(desired_list) > 1:
+            print(f"\n{'#' * 90}\n# Desired: {desired_key}\n{'#' * 90}")
 
-    out_path = write_similarities(results)
+        print(format_pipeline_similarities(results[: args.top] if args.top else results))
+
+        top = results[0]
+        print(
+            f"\n>> Melhor candidato: {top['candidate']['name']} "
+            f"(score={top['similarity_result']:.5f}) -> do: {top['candidate']['do']}"
+        )
+
+        for r in results:
+            r["desired_key"] = desired_key
+        all_results.extend(results)
+
+    out_path = write_similarities(all_results)
     print(f"\nResultados completos gravados em: {out_path}")
 
 
