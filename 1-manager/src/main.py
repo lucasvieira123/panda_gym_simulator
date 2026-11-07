@@ -65,7 +65,7 @@ def main() -> None:
     print(f"[{ts()}][Manager] Aguardando percepcoes do managing...\n")
 
     _post_adaptation     = False       # True após enviar "adapt", até próximo "ok" do ASM
-    _dj_adapted_episode: int | None = None  # episódio em que já agimos na rec. DejaVu
+    _dj_dispatched: set = set()             # tentativas do DejaVu já enviadas: (episódio, tentativa)
     _dj_reported: set = set()               # resultados do DejaVu já registrados: (episódio, tipo)
 
     while client.alive:
@@ -89,10 +89,11 @@ def main() -> None:
         dj_unanticipated = bool(dj.get("unanticipated")) if dj else False
         dj_adaptation    = dj.get("adaptation")          if dj else None
 
-        # Só registro: o resultado ainda não muda a decisão do Manager.
+        # O DejaVu decide o próximo candidato ou o fail-safe; o Manager executa.
         dj_evaluation = dj.get("evaluation") if dj else None
-        if dj_evaluation and dj_evaluation.get("reason") and (episode, "evaluation") not in _dj_reported:
-            _dj_reported.add((episode, "evaluation"))
+        if (dj_evaluation and dj_evaluation.get("reason")
+                and (episode, "evaluation", dj_evaluation.get("attempt")) not in _dj_reported):
+            _dj_reported.add((episode, "evaluation", dj_evaluation.get("attempt")))
             print(f"[{ts()}][Manager][DejaVu] Resultado da adaptação: {dj_evaluation['status']} "
                   f"(razão: {dj_evaluation['reason']}, candidato: {dj_evaluation.get('candidate')})")
         dj_error = dj.get("pipeline_error") if dj else None
@@ -101,20 +102,35 @@ def main() -> None:
             print(f"[{ts()}][Manager][DejaVu] Sem recomendação: falha em {dj_error['stage']} "
                   f"({dj_error['type']}: {dj_error['message']})")
 
+        dj_fail_safe = dj.get("fail_safe") if dj else None
+        if dj_fail_safe:
+            if (episode, "fail_safe") not in _dj_reported:
+                _dj_reported.add((episode, "fail_safe"))
+                executor.send_fail_safe(dj_fail_safe["reason"])
+                print(f"[{ts()}][Manager][DejaVu] FAIL-SAFE: {dj_fail_safe['reason']} — operador notificado")
+                api.update_state({
+                    "perception": msg, "step": msg.get("step"), "episode": msg.get("episode"),
+                    "current_asm_scenario": state.current_asm_scenario,
+                    "goal_status": state.goal_status, "fail_safe": dj_fail_safe,
+                })
+            continue
+
         # E — prioridade: DejaVu age apenas quando o ASM interno não reconhece a violação.
         # Se goal_status == "violated", o ASM interno já sabe tratar → planner interno ganha.
         pending_domain = asm_evaluator.pending_scenario_key
 
-        if (dj_unanticipated and dj_adaptation
+        dj_attempt = dj_adaptation.get("attempt", 1) if dj_adaptation else 1
+
+        if (dj_adaptation and (dj_unanticipated or dj_attempt > 1)
                 and state.goal_status != "violated"
-                and _dj_adapted_episode != episode
-                and not _post_adaptation):
+                and (episode, dj_attempt) not in _dj_dispatched
+                and (not _post_adaptation or dj_attempt > 1)):
             # DejaVu detectou algo que o ASM interno não capturou.
             # Tratamos como cenário adaptativo: send_adapt com o "do" do candidato top-1.
             executor.send_adapt(dj_adaptation["do"])
             _post_adaptation    = True
-            _dj_adapted_episode = episode
-            print(f"[{ts()}][Manager][DejaVu] Adaptação: {dj_adaptation['candidate_name']} (score={dj_adaptation['score']:.3f}) → {dj_adaptation['do']}")
+            _dj_dispatched.add((episode, dj_attempt))
+            print(f"[{ts()}][Manager][DejaVu] Adaptação {dj_attempt}: {dj_adaptation['candidate_name']} (score={dj_adaptation['score']:.3f}) → {dj_adaptation['do']}")
 
         elif _post_adaptation and state.goal_status == "not_applicable" and pending_domain:
             # O ASM validou uma transição pendente (ex: transport→place a 5cm).

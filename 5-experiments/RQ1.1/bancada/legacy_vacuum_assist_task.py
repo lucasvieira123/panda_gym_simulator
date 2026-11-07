@@ -1,8 +1,10 @@
+# Cópia do apply_vacuum_assist() anterior à correção da pegada, usada só pela bancada
+# para comparar com os runs reais das Etapas 0 e 1.
 from typing import Callable
 
 import numpy as np
 
-from .._object_task import _ObjectTask
+from tasks._object_task import _ObjectTask
 from utils import ts
 
 # DejaVu adaptation — APPLY_VACUUM_ASSIST

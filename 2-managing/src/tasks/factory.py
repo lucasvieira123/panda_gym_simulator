@@ -12,7 +12,7 @@ from .terminal_task import TerminalTask
 from .object_delivery import (
     ApproachObjectTask, GraspObjectTask, LiftObjectTask,
     TransportObjectTask, PlaceObjectTask, RetryGraspTask, AbortTask,
-    VacuumAssistTask, HeavyLiftTask,
+    VacuumAssistTask, AdjustGripForceTask, IncreaseGripPressureTask, HeavyLiftTask,
 )
 
 
@@ -153,8 +153,20 @@ def create_heavy_lift(sim: PyBullet, robot: Panda, configs: dict, object_name: s
 
 
 def create_vacuum_assist(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> VacuumAssistTask:
+    return _create_grip_recovery(VacuumAssistTask, sim, robot, configs, object_name)
+
+
+def create_adjust_grip_force(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> AdjustGripForceTask:
+    return _create_grip_recovery(AdjustGripForceTask, sim, robot, configs, object_name)
+
+
+def create_increase_grip_pressure(sim: PyBullet, robot: Panda, configs: dict, object_name: str = "object_1") -> IncreaseGripPressureTask:
+    return _create_grip_recovery(IncreaseGripPressureTask, sim, robot, configs, object_name)
+
+
+def _create_grip_recovery(task_class, sim: PyBullet, robot: Panda, configs: dict, object_name: str):
     obj_cfg = _get_object_cfg(configs, object_name)
-    return VacuumAssistTask(
+    return task_class(
         sim=sim,
         fingers_indices=robot.fingers_indices,
         get_ee_position=robot.get_ee_position,

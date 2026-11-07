@@ -213,6 +213,23 @@ def _adaptation_result(events: list[dict], run: dict) -> dict:
     return {"status": "execution_error", "reason": "run_ended_without_result"}
 
 
+def _scenario(outcome: dict) -> str:
+    """A: sem violação. B e C: objetivo atingido na tentativa 1 ou 2. D: fail-safe. E: falha não detectada."""
+    goal = outcome["physical"].get("global_goal_achieved")
+    if not outcome["violation"]:
+        return "A" if goal else "no_violation_without_goal"
+    if outcome["fail_safe"]:
+        return "D"
+    attempts = outcome["attempts"]
+    if not attempts:
+        return "no_adaptation"
+    if attempts[-1]["status"] != "success":
+        return "inconclusive"
+    if not goal:
+        return "E"
+    return "B" if attempts[-1]["attempt"] == 1 else "C"
+
+
 def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> dict:
     ticks  = _read_jsonl(outputs_dir / "managing_traces", "ticks_*.jsonl")
     events = _read_jsonl(outputs_dir / "dejavu_traces", "events_*.jsonl")
@@ -238,6 +255,15 @@ def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> di
         "ranking": first("ranking"),
         "adaptation_selected": selected["adaptation"] if selected else None,
         "adaptation_result": _adaptation_result(events, run),
+        "attempts": [
+            {key: e.get(key) for key in ("attempt", "candidate", "status", "reason", "ticks", "run_ticks", "step")}
+            for e in events if e["event"] == "evaluation" and e.get("reason")
+        ],
+        "retry_decisions": [
+            {key: e.get(key) for key in ("attempt", "action", "reason", "step")}
+            for e in events if e["event"] == "retry_decision"
+        ],
+        "fail_safe": (episode_end or {}).get("detail") if (episode_end or {}).get("reason") == "fail_safe" else None,
         "asm_evolved": first("asm_evolution") is not None,
         "physical": {
             **(last_tick.get("physical_outcome") or {}),
@@ -248,6 +274,7 @@ def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> di
             "cube_rotation": last_tick.get("cube_rotation"),
         },
     }
+    outcome["scenario"] = _scenario(outcome)
     with open(exp_dir / "outcome.json", "w", encoding="utf-8") as f:
         json.dump(outcome, f, indent=2, ensure_ascii=False)
     return outcome
@@ -371,7 +398,8 @@ def run_experiment(name: str, managing_timeout_s: int) -> None:
 
     outcome = _write_outcome(name, exp_dir, outputs_dir, run)
     result  = outcome["adaptation_result"]
-    print(f"  [outcome]  adaptation={result['status']} ({result['reason']})  "
+    print(f"  [outcome]  scenario={outcome['scenario']}  fail_safe={outcome['fail_safe']}  "
+          f"adaptation={result['status']} ({result['reason']})  "
           f"sequence_completed={outcome['sequence']['completed']}  "
           f"global_goal={outcome['physical'].get('global_goal_achieved')}  "
           f"timed_out={run['timed_out']}")

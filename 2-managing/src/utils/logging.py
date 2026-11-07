@@ -52,8 +52,8 @@ class StepLogger:
         if self._hud is not None:
             self._hud.render(msg)
 
-    def log_episode_end(self, episode: int, step: int, reason: str) -> None:
-        self._write_tick({"event": "episode_end", "episode": episode, "step": step, "reason": reason})
+    def log_episode_end(self, episode: int, step: int, reason: str, detail: str | None = None) -> None:
+        self._write_tick({"event": "episode_end", "episode": episode, "step": step, "reason": reason, "detail": detail})
 
     def _write_tick(self, record: dict) -> None:
         self._ticks.write(json.dumps(record) + "\n")

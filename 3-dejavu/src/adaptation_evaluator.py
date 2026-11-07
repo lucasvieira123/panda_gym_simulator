@@ -1,5 +1,7 @@
 import re
 
+_OBJECT_SECURED = "finger_contacts >= 2 AND object_lift_height_cm >= 10"
+
 
 class AdaptationEvaluator:
     """
@@ -11,12 +13,13 @@ class AdaptationEvaluator:
 
     dispatched : the adaptive subtask has not been observed yet
     running    : the adaptive subtask is executing
-    evaluating : the adaptive subtask ended; the diagnosed Then is checked every tick
+    evaluating : the adaptive subtask ended; an object that is not secured fails at once,
+                 otherwise the diagnosed Then is checked every tick
 
     Terminal results
     ----------------
     success         then_satisfied
-    failure         postconditions_not_met | sequence_ended | safe_abort
+    failure         object_not_secured | postconditions_not_met | sequence_ended | safe_abort
     timeout         adaptive_task_not_finished
     execution_error adaptation_not_started | postcondition_not_observable
 
@@ -43,6 +46,7 @@ class AdaptationEvaluator:
         self._adaptive_subtask = _do_to_subtask(adaptation.get("do", ""))
         self._candidate_name   = adaptation.get("candidate_name")
         self._candidate_then   = adaptation.get("then")
+        self._attempt          = adaptation.get("attempt", 1)
         self._status           = "dispatched"
         self._start_ticks      = 0
         self._run_ticks        = 0
@@ -56,6 +60,7 @@ class AdaptationEvaluator:
         self._adaptive_subtask: str | None = None
         self._candidate_name: str | None   = None
         self._candidate_then: str | None   = None
+        self._attempt          = 1
         self._start_ticks      = 0
         self._run_ticks        = 0
         self._eval_ticks       = 0
@@ -98,6 +103,8 @@ class AdaptationEvaluator:
         clauses = _check_clauses(self._then_expr, sm_tick)
         if any(c["state"] == "not_observed" for c in clauses):
             return self._finalise("execution_error", "postcondition_not_observable", sm_tick)
+        if self._eval_ticks == 1 and not all(c["state"] == "satisfied" for c in _check_clauses(_OBJECT_SECURED, sm_tick)):
+            return self._finalise("failure", "object_not_secured", sm_tick)
         if self._eval_ticks >= self._max_eval_ticks:
             return self._finalise("failure", "postconditions_not_met", sm_tick)
         if clauses and all(c["state"] == "satisfied" for c in clauses):
@@ -120,6 +127,7 @@ class AdaptationEvaluator:
     def _progress(self, status: str) -> dict:
         return {
             "status":           status,
+            "attempt":          self._attempt,
             "candidate":        self._candidate_name,
             "adaptive_subtask": self._adaptive_subtask,
             "ticks":            self._eval_ticks,
@@ -132,6 +140,7 @@ class AdaptationEvaluator:
         self._result = {
             "status":           status,
             "reason":           reason,
+            "attempt":          self._attempt,
             "candidate":        self._candidate_name,
             "adaptive_subtask": self._adaptive_subtask,
             "ticks":            self._eval_ticks,

@@ -70,6 +70,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 | `src/adaptation_evaluator.py` | Ends each adaptation in `success`, `failure`, `timeout` or `execution_error` |
 | `src/asm_evolver.py` | Adds a validated adaptation to the ASM |
 | `src/run_events.py` | Writes the run's pipeline events (`events_*.jsonl`) |
+| `src/retry_policy.py` | After a failed attempt, chooses the next ranked candidate or the fail-safe (at most 2 attempts) |
 | `src/constants.py` | `PROJECT_ROOT` resolution; `DEJAVU_CONF_PATH` |
 | `src/utils.py` | `load_config()` helper |
 
@@ -79,7 +80,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 |------|---------|
 | `configs/dejavu_conf.yaml` | Central config — all paths resolved from here via `PROJECT_ROOT` |
 | `configs/arm/scenario_state_machine.yaml` | Sismic state machine for the ARM pick-and-place task |
-| `configs/arm/scenario_catalogue.json` | Candidates C1–C5 (lift) and C6–C8 (transport), with `monitored_parameters` (uses `min_value`/`max_value`). Only `apply_vacuum_assist()` has a physical implementation |
+| `configs/arm/scenario_catalogue.json` | Candidates C1–C5 (lift) and C6–C8 (transport), with `monitored_parameters` (uses `min_value`/`max_value`). `apply_vacuum_assist()`, `adjust_grip_force()` and `increase_grip_pressure()` have a physical implementation |
 | `configs/weights_config.yaml` | Similarity weights: Tversky α/β, per-clause weights (`given`, `when`, `then`) |
 
 Anticipated scenarios (ASM) live in `1-manager/configs/arm/asm.json` — DejaVu reads them via `anticipated_scenarios_path` in `dejavu_conf.yaml`.
@@ -118,9 +119,14 @@ Three independent levels, reported in `outcome.json`:
 - **Adaptation result**: based on the diagnosed Then, which needs only one tick to succeed
 - **Global goal**: object within 5 cm of the target and gripper open; this is the result that counts
 
+## Retry and fail-safe — design notes
+
+- DejaVu decides and the Manager executes, keeping the priority of the internal ASM
+- The candidates' recovery tasks are in `2-managing/src/tasks/object_delivery/grip_recovery_tasks.py`: same grasp routine, different simulated finger friction
+- The fail-safe holds the arm and gripper still (it does not open the gripper), records the reason, notifies the console and ends the run; `SAFE_ABORT` is a different, anticipated scenario
+
 ## Not Implemented
 
-- **Retry of candidates** and **Fallback/Fail-Safe Behaviour**
-- **C2, C7 and other candidates' physical actions**: only `apply_vacuum_assist()` executes
+- **Physical actions of C3, C4, C5 and C8**: they only take part in the ranking
 
 Decisions for the RQ1.1 evaluation are in `5-experiments/RQ1.1/decisions.md`.

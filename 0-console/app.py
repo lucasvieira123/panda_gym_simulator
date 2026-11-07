@@ -441,6 +441,8 @@ def live_panel():
         if live_state is None:
             st.info("Manager não conectado. Aguardando ws://localhost:8001...")
         else:
+            if live_state.get("fail_safe"):
+                st.error(f"FAIL-SAFE acionado: {live_state['fail_safe']['reason']}. Movimentos interrompidos.")
             col_a, col_b, col_c = st.columns(3)
             col_a.metric("Episode", live_state.get("episode", "—"))
             col_b.metric("Step",    live_state.get("step",    "—"))

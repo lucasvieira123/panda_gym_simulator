@@ -152,6 +152,8 @@ Três níveis independentes:
 | Adaptação | `adaptation_result` | `success`, `failure`, `timeout` ou `execution_error`, com a razão |
 | Objetivo global | `physical.global_goal_achieved` | Cubo a até 5 cm do alvo e garra aberta |
 
+O campo `scenario` resume o run: `A` sem violação, `B` e `C` com objetivo atingido na tentativa 1 ou 2, `D` com fail-safe e `E` com adaptação bem-sucedida sem objetivo global. `attempts`, `retry_decisions` e `fail_safe` detalham o caminho.
+
 O `is_success` só indica o fim da sequência e não prova a entrega do objeto. As decisões da RQ1.1 estão em [`RQ1.1/decisions.md`](RQ1.1/decisions.md).
 
 ---

@@ -14,6 +14,10 @@ from utils import ts
 _PHASE_MOVE = 0   # translada XY até acima do goal
 _PHASE_DONE = 1   # postcondição satisfeita
 
+# Abaixo desta distância a velocidade é proporcional (m). Com velocidade máxima até o fim,
+# cada passo (~4 cm) passa da tolerância de 5 mm e o braço pode oscilar sobre o alvo.
+_SLOWDOWN_RANGE = 0.05
+
 
 class TransportObjectTask(_ObjectTask):
 
@@ -63,7 +67,7 @@ class TransportObjectTask(_ObjectTask):
         direction = target - ee_pos
         dist      = np.linalg.norm(direction)
         if dist > 0:
-            direction = direction / dist
+            direction = direction / dist * min(dist / _SLOWDOWN_RANGE, 1.0)
 
         return np.array([direction[0], direction[1], direction[2], gripper], dtype=np.float32)
 

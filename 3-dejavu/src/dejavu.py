@@ -28,8 +28,10 @@ from trace_printer import (
     format_pipeline_adaptation,
     format_pipeline_evaluation,
     format_pipeline_error,
+    format_retry_decision,
     format_asm_evolution,
 )
+from retry_policy import decide_after_attempt
 from run_events import RunEventLog
 
 # Contexto inicial da state machine ARM — valores neutros/seguros
@@ -181,6 +183,7 @@ def main() -> None:
     evolved:       bool         = False
     prev_episode:  int | None   = None
     pipeline_error: dict | None = None
+    fail_safe:      dict | None = None
     prev_evaluation_status: str | None = None
 
     _log(writer, "[DejaVu] Aguardando new_perception do Manager...")
@@ -207,6 +210,7 @@ def main() -> None:
             prev_subtask = None
             prev_episode = episode
             pipeline_error = None
+            fail_safe = None
             prev_evaluation_status = None
             evaluator.reset()
 
@@ -223,6 +227,20 @@ def main() -> None:
             prev_evaluation_status = evaluation["status"]
             events.write("evaluation", episode=episode, step=step, **evaluation,
                          observed=_physical_snapshot(perception, sm_tick))
+            if evaluation.get("reason"):
+                observed = _physical_snapshot(perception, sm_tick)
+                attempt  = adaptation["attempt"]
+                decision = decide_after_attempt(evaluation, attempt, len(similarities), observed)
+                if decision:
+                    _log(writer, format_retry_decision(decision, attempt))
+                    events.write("retry_decision", episode=episode, step=step, attempt=attempt, **decision, observed=observed)
+                if decision and decision["action"] == "retry":
+                    adaptation = {**adapter.recommend(similarities[attempt:]), "attempt": attempt + 1}
+                    events.write("adaptation_selected", episode=episode, step=step, adaptation=adaptation)
+                    evaluator.start(diagnosed, adaptation)
+                    prev_evaluation_status = None
+                elif decision:
+                    fail_safe = {"reason": decision["reason"], "attempt": attempt}
 
         active        = _active_state(monitor)
         scenario      = _active_scenario(monitor)
@@ -282,6 +300,8 @@ def main() -> None:
                 ])
 
                 adaptation = adapter.recommend(similarities)
+                if adaptation:
+                    adaptation["attempt"] = 1
                 _log(writer, format_pipeline_adaptation(adaptation["do"] if adaptation else None))
                 events.write("adaptation_selected", **where, adaptation=adaptation)
 
@@ -322,6 +342,7 @@ def main() -> None:
             "adaptation":    adaptation,
             "evaluation":    evaluation,
             "pipeline_error": pipeline_error,
+            "fail_safe":     fail_safe,
         })
 
         # ── Pusha estado para o DejaVu Console ───────────────────────────────
@@ -341,6 +362,7 @@ def main() -> None:
             "adaptation":           adaptation,
             "evaluation":           evaluation,
             "asm_evolution":        asm_evolution,
+            "fail_safe":            fail_safe,
         })
     finally:
         recorder.save()

@@ -298,6 +298,18 @@ def format_pipeline_evaluation(evaluation: dict | None) -> str:
     return "\n".join(lines)
 
 
+def format_retry_decision(decision: dict | None, attempt: int) -> str:
+    if not decision:
+        return ""
+    label = "NOVA TENTATIVA" if decision["action"] == "retry" else "FAIL-SAFE"
+    lines = [
+        f"  ┌─ {label} {'─' * len(_BOX)}",
+        f"  │  Após a tentativa {attempt}: {decision['reason']}",
+        f"  └{'─' * 69}",
+    ]
+    return "\n".join(lines)
+
+
 def format_pipeline_error(error: dict | None) -> str:
     if not error:
         return ""

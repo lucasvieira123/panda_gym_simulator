@@ -10,6 +10,9 @@ class Executor:
         managing_task = asm_scenario_name.upper()
         self._client.send_command({"action": "adapt", "to": managing_task})
 
+    def send_fail_safe(self, reason: str) -> None:
+        self._client.send_command({"action": "fail_safe", "reason": reason})
+
     def send_transition(self, asm_scenario_name: str) -> None:
         # traduz cenário ASM para estado managing: "lift_object" → "LIFT_OBJECT"
         managing_state = asm_scenario_name.upper()

@@ -1,0 +1,127 @@
+{
+  "name": "RQ1.1 Etapa 1",
+  "description": "Linha de base: 9 casos de falha e 2 controles, só com o primeiro candidato. Uso exclusivo para classificar causas, sem ajustar parâmetros.",
+  "experiments": [
+    {
+      "name": "e1_0_155",
+      "description": "lateral_friction=0.155 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.155
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_145",
+      "description": "lateral_friction=0.145 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.145
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_14",
+      "description": "lateral_friction=0.14 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.14
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_135",
+      "description": "lateral_friction=0.135 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.135
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_10",
+      "description": "lateral_friction=0.10 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.1
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_06",
+      "description": "lateral_friction=0.06 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.06
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_04",
+      "description": "lateral_friction=0.04 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.04
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_02",
+      "description": "lateral_friction=0.02 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.02
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_13",
+      "description": "lateral_friction=0.13 — controle",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.13
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_16",
+      "description": "lateral_friction=0.16 — controle",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.16
+          }
+        }
+      }
+    },
+    {
+      "name": "e1_0_01",
+      "description": "lateral_friction=0.01 — falha",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.01
+          }
+        }
+      }
+    }
+  ]
+}

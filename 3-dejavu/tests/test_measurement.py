@@ -18,10 +18,13 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from adaptation_evaluator import AdaptationEvaluator
 from dejavu import _adaptation_awaiting_evolution
+from retry_policy import decide_after_attempt
 from similarity.dejavu_similarity import _calculate_jaccard_similarity, _get_relational_expression_region
 from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
 
 LIFT_THEN = "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+TRANSPORT_THEN = "distance_object_goal_cm <= 5 AND " + LIFT_THEN
+CARRIED = {"object_lift_height_cm": 12, "finger_contacts": 2, "distance_object_goal_cm": 30}
 OK   = {"object_lift_height_cm": 12, "finger_contacts": 2}
 BAD  = {"object_lift_height_cm": 1, "finger_contacts": 0}
 ADAPTATION = {"do": "apply_vacuum_assist()", "candidate_name": "C1", "then": LIFT_THEN + " AND object_secured == 1"}
@@ -75,19 +78,27 @@ class Evaluator(unittest.TestCase):
         states = {c["clause"]: c["state"] for c in result["candidate_then"]}
         self.assertEqual(states["object_secured == 1"], "not_observed")
 
+    def test_object_not_secured_fails_at_once(self):
+        evaluator = self.started()
+        evaluator.evaluate(tick("APPLY_VACUUM_ASSIST"))
+        result = evaluator.evaluate(tick("TRANSPORT_OBJECT"))
+        self.assertEqual((result["status"], result["reason"], result["ticks"]), ("failure", "object_not_secured", 1))
+
     def test_postconditions_not_met_within_window(self):
-        evaluator = self.started(max_eval_ticks=3)
+        evaluator = AdaptationEvaluator(max_eval_ticks=3)
+        evaluator.start({"then": TRANSPORT_THEN}, ADAPTATION)
         evaluator.evaluate(tick("APPLY_VACUUM_ASSIST"))
         for _ in range(2):
-            self.assertEqual(evaluator.evaluate(tick("TRANSPORT_OBJECT"))["status"], "evaluating")
-        result = evaluator.evaluate(tick("TRANSPORT_OBJECT"))
+            self.assertEqual(evaluator.evaluate(tick("TRANSPORT_OBJECT", CARRIED))["status"], "evaluating")
+        result = evaluator.evaluate(tick("TRANSPORT_OBJECT", CARRIED))
         self.assertEqual((result["status"], result["reason"]), ("failure", "postconditions_not_met"))
         self.assertEqual(result["then_clauses"][0]["state"], "unsatisfied")
 
     def test_sequence_ended_without_postconditions(self):
-        evaluator = self.started()
+        evaluator = AdaptationEvaluator()
+        evaluator.start({"then": TRANSPORT_THEN}, ADAPTATION)
         evaluator.evaluate(tick("APPLY_VACUUM_ASSIST"))
-        result = evaluator.evaluate(tick("PLACE_OBJECT"), sequence_done=True)
+        result = evaluator.evaluate(tick("PLACE_OBJECT", CARRIED), sequence_done=True)
         self.assertEqual((result["status"], result["reason"]), ("failure", "sequence_ended"))
 
     def test_safe_abort(self):
@@ -118,6 +129,33 @@ class Evaluator(unittest.TestCase):
         evaluator = self.started(max_run_ticks=1)
         first = evaluator.evaluate(tick("APPLY_VACUUM_ASSIST"))
         self.assertIs(evaluator.evaluate(tick("TRANSPORT_OBJECT", OK)), first)
+
+
+class RetryPolicy(unittest.TestCase):
+    FAILED = {"status": "failure", "reason": "object_not_secured"}
+    LOOSE  = {"finger_contacts": 0, "cube_z": 0.02, "is_success": False}
+
+    def test_success_needs_no_decision(self):
+        self.assertIsNone(decide_after_attempt({"status": "success", "reason": "then_satisfied"}, 1, 5, self.LOOSE))
+
+    def test_first_failure_with_recoverable_object_retries(self):
+        self.assertEqual(decide_after_attempt(self.FAILED, 1, 5, self.LOOSE)["action"], "retry")
+
+    def test_timeout_with_recoverable_object_retries(self):
+        timeout = {"status": "timeout", "reason": "adaptive_task_not_finished"}
+        self.assertEqual(decide_after_attempt(timeout, 1, 5, self.LOOSE)["action"], "retry")
+
+    def test_fail_safe_reasons(self):
+        cases = [
+            (2, 5, self.LOOSE, "attempts_exhausted"),
+            (1, 1, self.LOOSE, "no_candidate_left"),
+            (1, 5, {**self.LOOSE, "is_success": True}, "sequence_ended"),
+            (1, 5, {**self.LOOSE, "cube_z": -0.38}, "object_off_table"),
+            (1, 5, {**self.LOOSE, "finger_contacts": 2}, "object_held_but_postconditions_failed"),
+        ]
+        for attempts, available, observed, reason in cases:
+            decision = decide_after_attempt(self.FAILED, attempts, available, observed)
+            self.assertEqual((decision["action"], decision["reason"]), ("fail_safe", reason))
 
 
 class EvolutionTiming(unittest.TestCase):
