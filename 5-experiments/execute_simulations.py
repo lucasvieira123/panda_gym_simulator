@@ -169,6 +169,10 @@ def _collect_outputs(outputs_dir: Path) -> None:
     _copy_dir(DEJAVU_SIMILAR_SRC,  outputs_dir / "similarities")
     _copy_dir(DATASET_REAL,        outputs_dir / "dataset")
 
+    # The Managing window recording (record_video) sits next to the run's outcome
+    for video in sorted((outputs_dir / "managing_traces").glob("video_*.mp4")):
+        shutil.move(str(video), str(outputs_dir / "video.mp4"))
+
     # DejaVu may have evolved the ASM during the run; base/ restores it right after this.
     asm_after_run = COMPONENT_DEST["manager"]["arm/asm.json"]
     outputs_dir.mkdir(parents=True, exist_ok=True)

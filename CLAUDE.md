@@ -125,6 +125,12 @@ Three independent levels, reported in `outcome.json`:
 - The candidates' recovery tasks are in `2-managing/src/tasks/object_delivery/grip_recovery_tasks.py`: same grasp routine, different simulated finger friction
 - The fail-safe holds the arm and gripper still (it does not open the gripper), records the reason, notifies the console and ends the run; `SAFE_ABORT` is a different, anticipated scenario
 
+## Managing window recording — design notes
+
+- `record_video: true` in the Managing `simulation.yaml` records the PyBullet window with `2-managing/src/utils/video_recorder.py`; the runner moves it to `outputs/video.mp4`
+- PyBullet pipes frames to an `ffmpeg` found by name on PATH; on Windows it opens that pipe in text mode, which corrupts frames, so the `ffmpeg` exposed on PATH is a wrapper that undoes the `\r\n` conversion
+- Timestamps are rescaled at the end so the video plays at the speed of the screen
+
 ## Not Implemented
 
 - **Physical actions of C3, C4, C5 and C8**: they only take part in the ranking

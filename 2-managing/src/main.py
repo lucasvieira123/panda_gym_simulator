@@ -1,4 +1,5 @@
 import argparse
+import re
 import time
 
 import numpy as np
@@ -16,7 +17,7 @@ from tasks.factory import (
     create_safe_abort, create_scripted, create_terminal, create_vacuum_assist,
     create_heavy_lift, create_adjust_grip_force, create_increase_grip_pressure,
 )
-from utils import build_perception_msg, SimHUD, StepLogger, ts, set_step
+from utils import build_perception_msg, SimHUD, StepLogger, VideoRecorder, ts, set_step
 from utils.physical_outcome import physical_outcome
 
 _FAIL_SAFE_HOLD_TICKS = 10  # mantém a pose parada por estes ticks antes de encerrar o run
@@ -126,70 +127,78 @@ def main():
 
     api.wait_for_client()
 
-    for episode in range(configs["simulation"]["episodes"]):
-        observation, info = gym_env.reset(seed=configs["simulation"]["seed"])
-        episode_end = "max_steps"
+    # Grava a janela tal como aparece na tela, a partir do início da simulação
+    video = VideoRecorder(
+        simulation.physics_client,
+        re.sub(r"trace_(.+)\.log$", r"video_\1.mp4", logger.trace_path),
+        configs["simulation"].get("record_video", False),
+        configs["simulation"]["render_mode"],
+    )
+    try:
+        for episode in range(configs["simulation"]["episodes"]):
+            observation, info = gym_env.reset(seed=configs["simulation"]["seed"])
+            episode_end = "max_steps"
 
-        for step in range(configs["simulation"]["max_steps"]):
-            set_step(step + 1)
-            env_cmd = api.get_environment_changes()
-            if env_cmd:
-                env.apply_environment_command(env_cmd)
-                api.update_obstacles(env.get_obstacles())
-                api.update_objects(env.get_objects())
+            for step in range(configs["simulation"]["max_steps"]):
+                set_step(step + 1)
+                env_cmd = api.get_environment_changes()
+                if env_cmd:
+                    env.apply_environment_command(env_cmd)
+                    api.update_obstacles(env.get_obstacles())
+                    api.update_objects(env.get_objects())
 
-            goal_cmd = api.get_goal_changes()
-            if goal_cmd:
-                if goal_cmd.get("action") == "set_goal_mode":
-                    current_goal_mode = goal_cmd["mode"]
-                    gym_env.task.set_goal_mode(current_goal_mode)
-                else:
-                    env.apply_goal_command(goal_cmd)
-                    gym_env.task.refresh_goal()
+                goal_cmd = api.get_goal_changes()
+                if goal_cmd:
+                    if goal_cmd.get("action") == "set_goal_mode":
+                        current_goal_mode = goal_cmd["mode"]
+                        gym_env.task.set_goal_mode(current_goal_mode)
+                    else:
+                        env.apply_goal_command(goal_cmd)
+                        gym_env.task.refresh_goal()
 
-            action = gym_env.task.compute_action()
-            observation, reward, terminated, truncated, info = gym_env.step(action)
-            env.refresh_object_labels()
+                action = gym_env.task.compute_action()
+                observation, reward, terminated, truncated, info = gym_env.step(action)
+                env.refresh_object_labels()
 
-            perception = pipeline.sense(simulation, robot, gym_env, observation)
+                perception = pipeline.sense(simulation, robot, gym_env, observation)
 
-            perception_msg = build_perception_msg(
-                episode + 1, step + 1, observation, reward, info, perception,
-                robot=robot, sim=simulation,
-                task=gym_env.task, action=action,
-            )
-            perception_msg["physical_outcome"] = physical_outcome(
-                perception_msg, configs["simulation"]["distance_threshold"]
-            )
+                perception_msg = build_perception_msg(
+                    episode + 1, step + 1, observation, reward, info, perception,
+                    robot=robot, sim=simulation,
+                    task=gym_env.task, action=action,
+                )
+                perception_msg["physical_outcome"] = physical_outcome(
+                    perception_msg, configs["simulation"]["distance_threshold"]
+                )
 
-            api.update_perception(perception_msg)
-            # bridge.send_perception(perception_msg)  # TCP bridge (desativado)
-            logger.log(perception_msg)
+                api.update_perception(perception_msg)
+                # bridge.send_perception(perception_msg)  # TCP bridge (desativado)
+                logger.log(perception_msg)
 
-            # ── checkpoint: bloqueia até manager responder ────────────────────
-            cmd = api.wait_for_command(timeout=5.0)
-            if cmd and cmd.get("action") == "fail_safe":
-                _run_fail_safe(cmd.get("reason"), gym_env, simulation, robot, pipeline, logger, configs, episode + 1, step + 1)
-                gym_env.close()
-                return
-            _handle_command(cmd, gym_env, sequence, simulation, robot, configs)
+                # ── checkpoint: bloqueia até manager responder ────────────────────
+                cmd = api.wait_for_command(timeout=5.0)
+                if cmd and cmd.get("action") == "fail_safe":
+                    _run_fail_safe(cmd.get("reason"), gym_env, simulation, robot, pipeline, logger, configs, episode + 1, step + 1)
+                    return
+                _handle_command(cmd, gym_env, sequence, simulation, robot, configs)
 
-            # ── ROLLBACK ──────────────────────────────────────────────────────
-            # Comportamento original: a transição acontecia dentro de
-            # compute_action() — apaga as 2 linhas abaixo para reverter.
-            if gym_env.task is sequence:
-                sequence.advance_if_done()
-            # ──────────────────────────────────────────────────────────────────
+                # ── ROLLBACK ──────────────────────────────────────────────────────
+                # Comportamento original: a transição acontecia dentro de
+                # compute_action() — apaga as 2 linhas abaixo para reverter.
+                if gym_env.task is sequence:
+                    sequence.advance_if_done()
+                # ──────────────────────────────────────────────────────────────────
 
-            time.sleep(configs["simulation"]["step_delay"])
+                time.sleep(configs["simulation"]["step_delay"])
 
-            if terminated or truncated:
-                episode_end = "terminated" if terminated else "truncated"
-                break
+                if terminated or truncated:
+                    episode_end = "terminated" if terminated else "truncated"
+                    break
 
-        logger.log_episode_end(episode + 1, step + 1, episode_end)
-
-    gym_env.close()
+            logger.log_episode_end(episode + 1, step + 1, episode_end)
+    finally:
+        video.stop()  # antes de fechar a janela, para o ffmpeg fechar o arquivo
+        gym_env.close()
 
 
 if __name__ == "__main__":

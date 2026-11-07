@@ -54,7 +54,8 @@ python 5-experiments/execute_simulations.py 04_0_50 12_0_155
 │           ├── dejavu_traces/
 │           ├── similarities/
 │           ├── dataset/           ← inclui o CSV do run
-│           └── asm_after_run.json ← ASM ao fim do run
+│           ├── asm_after_run.json ← ASM ao fim do run
+│           └── video.mp4          ← janela do PyBullet gravada (record_video no simulation.yaml)
 ├── build_simulations.py
 └── execute_simulations.py
 ```
@@ -81,6 +82,8 @@ Para cada experimento, o script:
 4. Aguarda o Managing terminar (ele auto-encerra após os episódios).
 5. Para Manager e DejaVu, coleta os outputs e restaura as configs do base.
 6. Escreve `outcome.json`.
+
+Com `record_video: true` no `simulation.yaml` do Managing (ligado no `base/`), cada run grava a janela do PyBullet tal como aparece na tela, na velocidade da tela, em `outputs/video.mp4`. A gravação acrescenta cerca de 0,3 s por tick e não altera a física; o caminho de 0,035 com e sem gravação foi idêntico. Um run cortado por timeout pode deixar o vídeo incompleto.
 
 Se a pasta `outputs/` já existir, ela é renomeada para `outputs_previous_<data>`. O limite de tempo padrão de cada run é de 600 s (`--managing-timeout`), e um corte fica registrado no `outcome.json`.
 

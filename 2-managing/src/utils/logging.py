@@ -41,6 +41,7 @@ class StepLogger:
         import atexit
         self._writer = TraceWriter(traces_dir) if traces_dir else TraceWriter()
         self._hud    = hud
+        self.trace_path = self._writer.path
         ticks_path   = re.sub(r"trace_(.+)\.log$", r"ticks_\1.jsonl", self._writer.path)
         self._ticks  = open(ticks_path, "w", encoding="utf-8")
         atexit.register(self._writer.close)

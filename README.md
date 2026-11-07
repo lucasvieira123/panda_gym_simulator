@@ -118,7 +118,7 @@ python -m venv .venv
 .venv\Scripts\activate
 
 # Core simulator
-pip install pybullet panda-gym gymnasium fastapi uvicorn numpy scipy pyyaml
+pip install pybullet panda-gym gymnasium fastapi uvicorn numpy scipy pyyaml imageio-ffmpeg
 
 # Manager + DejaVu
 pip install pandas scikit-learn sympy sismic wrapt pyparsing flask websockets

@@ -9,6 +9,7 @@ environment_config: "environment.yaml" #"environment_with_two_obstacles.yaml" # 
 target_goal_config: "target_goal.yaml"
 scripts_file: "scripts.yaml"
 traces_dir: "traces" # pasta relativa ao managing/ onde os traces são salvos
+record_video: true # grava a janela do PyBullet em traces/video_<timestamp>.mp4 (exige render_mode "human")
 
 distance_threshold: 0.05 #Distância mínima para considerar que a box chegou no goal (5cm)
 grasp_height_offset: 0.0 #Offset vertical somado ao centro da box: EE fica 1cm acima do centro (dentro da metade superior da box)
