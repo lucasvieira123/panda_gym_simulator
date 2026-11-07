@@ -161,8 +161,16 @@
       "to": "transport_object"
     },
     {
+      "from": "lift_object",
+      "to": "safe_abort"
+    },
+    {
       "from": "transport_object",
       "to": "place_object"
+    },
+    {
+      "from": "transport_object",
+      "to": "__end__"
     },
     {
       "from": "place_object",

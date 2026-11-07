@@ -72,9 +72,8 @@ class AsmEvaluator:
 
         for candidate_key in candidates:
 
-            # structural sentinel nodes handled explicitly
+            # __end__ is resolved after the loop: reachable scenarios take priority
             if candidate_key == "__end__":
-                self._advance_to_end(context)
                 continue
             if candidate_key not in self._asm.scenarios:
                 continue
@@ -129,6 +128,11 @@ class AsmEvaluator:
                 tag = {"adaptive": "[A]", "evolutionary": "[E]"}.get(scenario.type, "[D]")
                 print(f"[{ts()}][ASM] {tag} {prev} → {candidate_key}  (type={scenario.type})")
                 return scenario
+
+        # Ex.: ao fim de TRANSPORT_OBJECT, PLACE_OBJECT e __end__ ficam habilitados
+        # ao mesmo tempo; um cenário já validado (pending) impede o encerramento.
+        if "__end__" in candidates and self._pending_transition not in candidates:
+            self._advance_to_end(context)
 
         return None
 

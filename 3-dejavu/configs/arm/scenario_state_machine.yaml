@@ -179,6 +179,9 @@ statechart:
       transitions:
       - target: PHI_21
         guard: finger_contacts >= 2 and object_lift_height_cm >= 10
+      - target: PHI_13
+        guard: finger_contacts < 2 and grasp_attempts >= 3 and grasp_completed ==
+          1
     - name: PHI_21
       on entry: 'active_scenario = {"name": "TRANSPORT_OBJECT", "type": "D"}'
       contract:
