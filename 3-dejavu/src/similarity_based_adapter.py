@@ -4,6 +4,7 @@ import yaml
 
 from scenario.candidate_scenario import CandidateScenario
 from similarity.dejavu_similarity import calculate_scenario_similarity
+from similarity.when_filter import filter_candidates_by_when
 from scenario.diagnosed_scenario import DiagnosedScenario
 from constants import DEJAVU_CONF_PATH, PROJECT_ROOT
 from utils import load_config
@@ -27,14 +28,24 @@ class SimilarityBasedAdapter:
         self.monitored_parameters_dict = catalogue.get("monitored_parameters", {})
         scenarios_dict = catalogue.get("scenarios", {})
         self.candidates = list(scenarios_dict.values())
+        self.last_when_filter: dict | None = None
 
     def calculate_similarity(self, diagnosed_unanticipated_scenario_dict: dict) -> list:
         diagnosed_scenario = DiagnosedScenario(data=diagnosed_unanticipated_scenario_dict)
         kargs = self.weight_configs_dict.copy()
         kargs["monitored_parameters"] = self.monitored_parameters_dict
 
+        diagnosed_when = diagnosed_unanticipated_scenario_dict.get("when")
+        applicable, excluded = filter_candidates_by_when(diagnosed_when, self.candidates)
+        self.last_when_filter = {
+            "when":       diagnosed_when,
+            "total":      len(self.candidates),
+            "applicable": [c.get("name") for c in applicable],
+            "excluded":   [c.get("name") for c in excluded],
+        }
+
         results = []
-        for candidate_data in self.candidates:
+        for candidate_data in applicable:
             candidate_scenario = CandidateScenario(data=candidate_data)
 
             start_time = time.perf_counter()

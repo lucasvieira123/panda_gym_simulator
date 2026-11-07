@@ -200,6 +200,22 @@ def format_pipeline_diagnose(diagnosed: dict | None) -> str:
     return "\n".join(lines)
 
 
+def format_pipeline_when_filter(when_filter: dict | None) -> str:
+    if not when_filter:
+        return ""
+    applicable = when_filter["applicable"]
+    lines = [
+        f"  ┌─ WHEN FILTER {'─' * len(_BOX)}",
+        f"  │  When       : {when_filter['when']}",
+        f"  │  Aplicáveis : {len(applicable)} de {when_filter['total']}",
+        f"  │  Descartados: {', '.join(when_filter['excluded']) or '—'}",
+    ]
+    if not applicable:
+        lines.append("  │  Nenhum candidato aplicável — sem recomendação")
+    lines.append(f"  └{'─' * 69}")
+    return "\n".join(lines)
+
+
 def format_pipeline_similarities(similarities: list | None) -> str:
     if not similarities:
         return ""

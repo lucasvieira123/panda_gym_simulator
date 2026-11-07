@@ -22,6 +22,7 @@ from trace_printer import (
     format_tick,
     format_pipeline_identify,
     format_pipeline_diagnose,
+    format_pipeline_when_filter,
     format_pipeline_similarities,
     format_pipeline_adaptation,
     format_pipeline_evaluation,
@@ -233,6 +234,7 @@ def main() -> None:
                 _log(writer, format_pipeline_diagnose(diagnosed))
 
                 similarities = adapter.calculate_similarity(diagnosed)
+                _log(writer, format_pipeline_when_filter(adapter.last_when_filter))
                 similarities.sort(
                     key=lambda s: s["similarity_result"],
                     reverse=True,
