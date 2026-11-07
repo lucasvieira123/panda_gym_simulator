@@ -91,11 +91,13 @@ class UnanticipatedScenarioDiagnoser:
         X_all  = X_num.loc[:, X_num.nunique() > 1]
         y_exec = exec_ds[label_name]
 
-        # ── 4. Features estáticas (std == 0 dentro de cada execução) ─────────
+        # ── 4. Features estáticas (std == 0 na execução inteira) ─────────────
+        # Avaliar só as linhas do cenário faria um efeito dinâmico parecer causa:
+        # finger_contacts é constante dentro de TRANSPORT_OBJECT, mas varia na execução.
         static_cols = [
             col for col in X_all.columns
-            if col in scenario_rows.columns
-            and (scenario_rows.groupby("execution")[col].std(ddof=0).fillna(0) == 0).all()
+            if col in df.columns
+            and (df.groupby("execution")[col].std(ddof=0).fillna(0) == 0).all()
         ]
 
         if not static_cols:
@@ -115,6 +117,13 @@ class UnanticipatedScenarioDiagnoser:
         false_rules = [r for r in rules if r["then"] == "True"]
         all_conditions = [cond for r in false_rules for cond in r["if"]]
         unanticipated_conditions_str = " AND ".join(all_conditions)
+
+        if not unanticipated_conditions_str:
+            raise ValueError(
+                f"Diagnóstico sem condições para '{scenario_name}': a árvore não separou execuções "
+                f"com e sem violação (features: {list(X_static.columns)}; "
+                f"violações: {int(y_exec.sum())} de {len(y_exec)} execuções)."
+            )
 
         # ── 6. Enriquece o cenário identificado ──────────────────────────────
         diagnosed = identified_unanticipated_scenario.copy()

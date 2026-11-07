@@ -74,5 +74,6 @@ class SimilarityBasedAdapter:
         return {
             "candidate_name": candidate.get("name"),
             "do":             candidate.get("do"),
+            "then":           candidate.get("then"),
             "score":          top.get("similarity_result"),
         }

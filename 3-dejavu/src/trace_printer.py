@@ -276,6 +276,8 @@ def format_pipeline_evaluation(evaluation: dict | None) -> str:
         "evaluating": "🔍",
         "success":   "✅",
         "failure":   "❌",
+        "timeout":   "⌛",
+        "execution_error": "⚠️",
     }
     icon = _STATUS_ICON.get(status, "?")
 
@@ -285,7 +287,25 @@ def format_pipeline_evaluation(evaluation: dict | None) -> str:
                  (f"  (razão: {reason})" if reason else ""))
     if ticks != "?":
         lines.append(f"  │  Ticks     : {ticks}")
-    if then_expr and status in ("evaluating", "success", "failure"):
+    if evaluation.get("run_ticks") is not None:
+        lines.append(f"  │  Ticks task: {evaluation['run_ticks']}")
+    if then_expr and status != "waiting":
         lines.append(f"  │  Then      : {then_expr}")
+    for label, key in (("Then diagn.", "then_clauses"), ("Then cand. ", "candidate_then")):
+        for clause in evaluation.get(key) or []:
+            lines.append(f"  │  {label}: [{clause['state']}] {clause['clause']}  (valor: {clause['value']})")
     lines.append(f"  └{'─' * 69}")
+    return "\n".join(lines)
+
+
+def format_pipeline_error(error: dict | None) -> str:
+    if not error:
+        return ""
+    lines = [
+        f"  ┌─ PIPELINE ERROR {'─' * len(_BOX)}",
+        f"  │  Etapa : {error['stage']}",
+        f"  │  Erro  : {error['type']}: {error['message']}",
+        "  │  Efeito: sem recomendação neste episódio",
+        f"  └{'─' * 69}",
+    ]
     return "\n".join(lines)

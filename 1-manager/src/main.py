@@ -66,6 +66,7 @@ def main() -> None:
 
     _post_adaptation     = False       # True após enviar "adapt", até próximo "ok" do ASM
     _dj_adapted_episode: int | None = None  # episódio em que já agimos na rec. DejaVu
+    _dj_reported: set = set()               # resultados do DejaVu já registrados: (episódio, tipo)
 
     while client.alive:
         msg = client.get_perception()
@@ -87,6 +88,18 @@ def main() -> None:
 
         dj_unanticipated = bool(dj.get("unanticipated")) if dj else False
         dj_adaptation    = dj.get("adaptation")          if dj else None
+
+        # Só registro: o resultado ainda não muda a decisão do Manager.
+        dj_evaluation = dj.get("evaluation") if dj else None
+        if dj_evaluation and dj_evaluation.get("reason") and (episode, "evaluation") not in _dj_reported:
+            _dj_reported.add((episode, "evaluation"))
+            print(f"[{ts()}][Manager][DejaVu] Resultado da adaptação: {dj_evaluation['status']} "
+                  f"(razão: {dj_evaluation['reason']}, candidato: {dj_evaluation.get('candidate')})")
+        dj_error = dj.get("pipeline_error") if dj else None
+        if dj_error and (episode, "error") not in _dj_reported:
+            _dj_reported.add((episode, "error"))
+            print(f"[{ts()}][Manager][DejaVu] Sem recomendação: falha em {dj_error['stage']} "
+                  f"({dj_error['type']}: {dj_error['message']})")
 
         # E — prioridade: DejaVu age apenas quando o ASM interno não reconhece a violação.
         # Se goal_status == "violated", o ASM interno já sabe tratar → planner interno ganha.

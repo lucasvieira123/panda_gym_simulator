@@ -2,6 +2,7 @@ import atexit
 import json
 import os
 import sys
+import traceback
 from datetime import datetime
 
 import pandas as pd
@@ -26,8 +27,10 @@ from trace_printer import (
     format_pipeline_similarities,
     format_pipeline_adaptation,
     format_pipeline_evaluation,
+    format_pipeline_error,
     format_asm_evolution,
 )
+from run_events import RunEventLog
 
 # Contexto inicial da state machine ARM — valores neutros/seguros
 _SM_INITIAL = {
@@ -112,6 +115,16 @@ def _log(writer: TraceWriter, msg: str) -> None:
     writer.write(msg + "\n")
 
 
+def _physical_snapshot(perception: dict, sm_tick: dict) -> dict:
+    """Relevant sensor values at this tick, for the run's event log."""
+    snapshot = {k: v for k, v in sm_tick.items() if k != "action"}
+    for key in ("lateral_friction", "fingers_width", "dist_cube_to_target", "is_success",
+                "cube_x", "cube_y", "cube_z", "cube_roll", "cube_pitch", "cube_yaw",
+                "ee_x", "ee_y", "ee_z"):
+        snapshot[key] = perception.get(key)
+    return snapshot
+
+
 def _write_similarities(path: str, results: list, run_id: str, episode: int) -> None:
     with open(path, "a", encoding="utf-8") as f:
         for r in results:
@@ -127,6 +140,8 @@ def main() -> None:
     similarities_path = os.path.join(similarities_dir, f"similarities_{ts}.jsonl")
     writer           = TraceWriter(traces_dir, ts=ts)
     atexit.register(writer.close)
+    events = RunEventLog(os.path.join(traces_dir, f"events_{ts}.jsonl"))
+    atexit.register(events.close)
 
     dataset_dir = str(PROJECT_ROOT / cfg.get("antecipated_scenario_dataset_folder", "output/arm/antecipated_scenario_dataset"))
     recorder    = AntecipatedScenarioDatasetRecorder(dataset_dir, ts=ts)
@@ -160,6 +175,8 @@ def main() -> None:
     asm_evolution: dict | None  = None
     evolved:       bool         = False
     prev_episode:  int | None   = None
+    pipeline_error: dict | None = None
+    prev_evaluation_status: str | None = None
 
     _log(writer, "[DejaVu] Aguardando new_perception do Manager...")
 
@@ -184,6 +201,8 @@ def main() -> None:
             evolved      = False
             prev_subtask = None
             prev_episode = episode
+            pipeline_error = None
+            prev_evaluation_status = None
             evaluator.reset()
 
         # ── State machine ─────────────────────────────────────────────────────
@@ -194,7 +213,11 @@ def main() -> None:
         # Chamado antes do pipeline para usar os parâmetros deste tick.
         # start() só é chamado dentro do pipeline (1ª detecção), portanto
         # evaluate() vê sempre o tick corrente — sem confusão de timing.
-        evaluation = evaluator.evaluate(sm_tick)
+        evaluation = evaluator.evaluate(sm_tick, sequence_done=bool(perception.get("is_success")))
+        if evaluation and evaluation["status"] != prev_evaluation_status:
+            prev_evaluation_status = evaluation["status"]
+            events.write("evaluation", episode=episode, step=step, **evaluation,
+                         observed=_physical_snapshot(perception, sm_tick))
 
         active        = _active_state(monitor)
         scenario      = _active_scenario(monitor)
@@ -224,15 +247,22 @@ def main() -> None:
 
         # ── Pipeline de diagnóstico (só na 1ª detecção por episódio) ──────────
         if unanticipated and identified is None:
+            stage = "IDENTIFY"
+            where = {"episode": episode, "step": step, "active_scenario": scenario["name"], "active_state": active}
+            events.write("violation", **where, observed=_physical_snapshot(perception, sm_tick))
             try:
                 ctx = {"anticipated_scenario": scenario["name"], **sm_tick}
                 unanticipated_df = pd.DataFrame([ctx, ctx])
                 identified = identifier.identifies(unanticipated_df)
                 _log(writer, format_pipeline_identify(identified))
 
+                stage = "DIAGNOSE"
                 diagnosed = diagnoser.diagnosis(identified)
                 _log(writer, format_pipeline_diagnose(diagnosed))
+                events.write("diagnosis", **where, given=diagnosed["given"], when=diagnosed["when"],
+                             then=diagnosed["then"], diagnostic_conditions=diagnosed["diagnostic_conditions"])
 
+                stage = "RETRIEVE"
                 similarities = adapter.calculate_similarity(diagnosed)
                 _log(writer, format_pipeline_when_filter(adapter.last_when_filter))
                 similarities.sort(
@@ -241,14 +271,23 @@ def main() -> None:
                 )
                 _log(writer, format_pipeline_similarities(similarities))
                 _write_similarities(similarities_path, similarities, run_id=ts, episode=episode)
+                events.write("ranking", **where, when_filter=adapter.last_when_filter, ranking=[
+                    {"candidate": s["candidate"]["name"], "do": s["candidate"]["do"], "score": s["similarity_result"]}
+                    for s in similarities
+                ])
 
                 adaptation = adapter.recommend(similarities)
                 _log(writer, format_pipeline_adaptation(adaptation["do"] if adaptation else None))
+                events.write("adaptation_selected", **where, adaptation=adaptation)
 
                 if adaptation:
                     evaluator.start(diagnosed, adaptation)
             except Exception as e:
-                _log(writer, f"  [PIPELINE] Erro: {e}")
+                pipeline_error = {"stage": stage, "type": type(e).__name__, "message": str(e)}
+                _log(writer, format_pipeline_error(pipeline_error))
+                events.write("pipeline_error", **where, **pipeline_error, traceback=traceback.format_exc())
+                # identified guards the pipeline: it runs only once per episode, even after an error
+                identified = identified or {"name": scenario["name"], "error": pipeline_error}
 
         # ── Log da avaliação (só quando activa) ──────────────────────────────
         if evaluation:
@@ -260,8 +299,10 @@ def main() -> None:
             try:
                 asm_evolution = evolver.evolve(identified, diagnosed, adaptation)
                 _log(writer, format_asm_evolution(asm_evolution))
+                events.write("asm_evolution", episode=episode, step=step, **asm_evolution)
             except Exception as e:
                 _log(writer, f"  [ASM_EVOLVE] Erro: {e}")
+                events.write("asm_evolution_error", episode=episode, step=step, type=type(e).__name__, message=str(e))
             finally:
                 evolved = True
 
@@ -271,6 +312,7 @@ def main() -> None:
             "unanticipated": unanticipated,
             "adaptation":    adaptation,
             "evaluation":    evaluation,
+            "pipeline_error": pipeline_error,
         })
 
         # ── Pusha estado para o DejaVu Console ───────────────────────────────

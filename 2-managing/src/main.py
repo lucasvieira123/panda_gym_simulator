@@ -15,6 +15,7 @@ from tasks.factory import (
     create_heavy_lift,
 )
 from utils import build_perception_msg, SimHUD, StepLogger, ts, set_step
+from utils.physical_outcome import physical_outcome
 
 
 
@@ -103,6 +104,7 @@ def main():
 
     for episode in range(configs["simulation"]["episodes"]):
         observation, info = gym_env.reset(seed=configs["simulation"]["seed"])
+        episode_end = "max_steps"
 
         for step in range(configs["simulation"]["max_steps"]):
             set_step(step + 1)
@@ -132,6 +134,9 @@ def main():
                 robot=robot, sim=simulation,
                 task=gym_env.task, action=action,
             )
+            perception_msg["physical_outcome"] = physical_outcome(
+                perception_msg, configs["simulation"]["distance_threshold"]
+            )
 
             api.update_perception(perception_msg)
             # bridge.send_perception(perception_msg)  # TCP bridge (desativado)
@@ -151,7 +156,10 @@ def main():
             time.sleep(configs["simulation"]["step_delay"])
 
             if terminated or truncated:
+                episode_end = "terminated" if terminated else "truncated"
                 break
+
+        logger.log_episode_end(episode + 1, step + 1, episode_end)
 
     gym_env.close()
 

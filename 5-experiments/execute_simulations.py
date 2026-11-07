@@ -8,6 +8,7 @@ For each built experiment (results/<name>/inputs/ must exist), this script:
   3. Waits for Managing to finish (it terminates after all episodes).
   4. Collects all outputs into results/<name>/outputs/.
   5. Restores every component config from base/.
+  6. Writes results/<name>/outcome.json with the run's explicit result.
 
 Usage:
     python 5-experiments/execute_simulations.py [experiment_name ...]
@@ -20,6 +21,7 @@ Usage:
 """
 
 import argparse
+import json
 import os
 import shutil
 import signal
@@ -167,7 +169,88 @@ def _collect_outputs(outputs_dir: Path) -> None:
     _copy_dir(DEJAVU_SIMILAR_SRC,  outputs_dir / "similarities")
     _copy_dir(DATASET_REAL,        outputs_dir / "dataset")
 
+    # DejaVu may have evolved the ASM during the run; base/ restores it right after this.
+    asm_after_run = COMPONENT_DEST["manager"]["arm/asm.json"]
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(asm_after_run, outputs_dir / "asm_after_run.json")
+
     print(f"  [collect] Outputs saved to {outputs_dir}")
+
+
+# ---------------------------------------------------------------------------
+# Run outcome
+# ---------------------------------------------------------------------------
+
+def _read_jsonl(folder: Path, pattern: str) -> list[dict]:
+    records = []
+    for path in sorted(folder.glob(pattern)):
+        with open(path, encoding="utf-8") as f:
+            records.extend(json.loads(line) for line in f if line.strip())
+    return records
+
+
+def _adaptation_result(events: list[dict], run: dict) -> dict:
+    """Every adaptive action ends with success, failure, timeout or execution_error."""
+    if not any(e["event"] == "violation" for e in events):
+        return {"status": "not_applicable", "reason": "no_violation"}
+
+    pipeline_error = next((e for e in events if e["event"] == "pipeline_error"), None)
+    if pipeline_error:
+        return {"status": "execution_error", "reason": f"pipeline_{pipeline_error['stage'].lower()}",
+                "message": pipeline_error["message"]}
+
+    selected = next((e for e in events if e["event"] == "adaptation_selected"), None)
+    if selected is None or selected["adaptation"] is None:
+        return {"status": "not_applicable", "reason": "no_applicable_candidate"}
+
+    terminal = next((e for e in reversed(events) if e["event"] == "evaluation" and e.get("reason")), None)
+    if terminal:
+        return {"status": terminal["status"], "reason": terminal["reason"], "ticks": terminal["ticks"],
+                "run_ticks": terminal["run_ticks"], "then_clauses": terminal["then_clauses"],
+                "candidate_then": terminal["candidate_then"]}
+    if run["timed_out"]:
+        return {"status": "timeout", "reason": "runner_timeout"}
+    return {"status": "execution_error", "reason": "run_ended_without_result"}
+
+
+def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> dict:
+    ticks  = _read_jsonl(outputs_dir / "managing_traces", "ticks_*.jsonl")
+    events = _read_jsonl(outputs_dir / "dejavu_traces", "events_*.jsonl")
+
+    last_tick   = next((t for t in reversed(ticks) if t["event"] == "tick"), {})
+    episode_end = next((t for t in reversed(ticks) if t["event"] == "episode_end"), None)
+    first = lambda kind: next((e for e in events if e["event"] == kind), None)
+    selected = first("adaptation_selected")
+
+    outcome = {
+        "experiment": name,
+        "lateral_friction": last_tick.get("object_lateral_friction"),
+        "run": run,
+        "sequence": {
+            "completed": bool(last_tick.get("is_success")),
+            "episode_end": episode_end["reason"] if episode_end else "not_reached",
+            "last_step": last_tick.get("step"),
+            "last_subtask": last_tick.get("current_subtask"),
+            "last_phase": last_tick.get("task_phase"),
+        },
+        "violation": first("violation"),
+        "diagnosis": first("diagnosis"),
+        "ranking": first("ranking"),
+        "adaptation_selected": selected["adaptation"] if selected else None,
+        "adaptation_result": _adaptation_result(events, run),
+        "asm_evolved": first("asm_evolution") is not None,
+        "physical": {
+            **(last_tick.get("physical_outcome") or {}),
+            "dist_cube_to_target_m": last_tick.get("dist_cube_to_target"),
+            "fingers_width_m": last_tick.get("fingers_width"),
+            "finger_contacts": last_tick.get("finger_contacts"),
+            "cube_position": last_tick.get("cube_position"),
+            "cube_rotation": last_tick.get("cube_rotation"),
+        },
+    }
+    with open(exp_dir / "outcome.json", "w", encoding="utf-8") as f:
+        json.dump(outcome, f, indent=2, ensure_ascii=False)
+    return outcome
 
 
 # ---------------------------------------------------------------------------
@@ -203,19 +286,28 @@ def _start_manager() -> subprocess.Popen:
     return proc
 
 
-def _run_managing(timeout_s: int = 600) -> int:
-    """Run Managing synchronously; returns exit code."""
+def _run_managing(timeout_s: int) -> dict:
+    """Run Managing synchronously; returns how the run ended."""
     cmd = [_python(), "src/main.py"]
     print(f"  [managing] running (timeout={timeout_s}s)...")
+    started = time.monotonic()
     proc = subprocess.Popen(cmd, cwd=MANAGING_DIR, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=_env())
     threading.Thread(target=_stream, args=(proc.stdout, "managing"), daemon=True).start()
     threading.Thread(target=_stream, args=(proc.stderr, "managing"), daemon=True).start()
+    timed_out = False
     try:
         proc.wait(timeout=timeout_s)
     except subprocess.TimeoutExpired:
         print("  [managing] TIMEOUT — killing")
+        timed_out = True
         proc.kill()
-    return proc.returncode or 0
+        proc.wait()
+    return {
+        "timeout_s": timeout_s,
+        "timed_out": timed_out,
+        "managing_exit_code": proc.returncode,
+        "duration_s": round(time.monotonic() - started, 1),
+    }
 
 
 def _stop(proc: subprocess.Popen, label: str) -> None:
@@ -232,7 +324,7 @@ def _stop(proc: subprocess.Popen, label: str) -> None:
 # Run one experiment
 # ---------------------------------------------------------------------------
 
-def run_experiment(name: str) -> None:
+def run_experiment(name: str, managing_timeout_s: int) -> None:
     exp_dir    = RESULTS_DIR / name
     inputs_dir = exp_dir / "inputs"
     outputs_dir = exp_dir / "outputs"
@@ -245,8 +337,15 @@ def run_experiment(name: str) -> None:
     print(f"  Experiment: {name}")
     print(f"{'='*60}")
 
+    # A rerun must not mix its outputs with the previous run's.
+    if outputs_dir.exists():
+        previous = exp_dir / f"outputs_previous_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        outputs_dir.rename(previous)
+        print(f"  [keep]     Previous outputs moved to {previous.name}")
+
     dejavu_proc  = None
     manager_proc = None
+    run: dict    = {"timeout_s": managing_timeout_s, "timed_out": False, "managing_exit_code": None, "duration_s": None}
 
     try:
         _clear_output_sources()
@@ -256,17 +355,26 @@ def run_experiment(name: str) -> None:
         dejavu_proc  = _start_dejavu()
         manager_proc = _start_manager()
 
-        _run_managing()
+        run = _run_managing(managing_timeout_s)
+        run["dejavu_alive_at_end"]  = dejavu_proc.poll() is None
+        run["manager_alive_at_end"] = manager_proc.poll() is None
 
     finally:
         if manager_proc:
             _stop(manager_proc, "manager")
         if dejavu_proc:
             _stop(dejavu_proc, "dejavu")
+        # Collect before restoring: _restore_base() replaces the dataset with base/ and
+        # would discard the CSV recorded in this run.
+        _collect_outputs(outputs_dir)
         _restore_base()
 
-    _collect_outputs(outputs_dir)
-
+    outcome = _write_outcome(name, exp_dir, outputs_dir, run)
+    result  = outcome["adaptation_result"]
+    print(f"  [outcome]  adaptation={result['status']} ({result['reason']})  "
+          f"sequence_completed={outcome['sequence']['completed']}  "
+          f"global_goal={outcome['physical'].get('global_goal_achieved')}  "
+          f"timed_out={run['timed_out']}")
     print(f"  [done]     '{name}' complete.\n")
 
 
@@ -292,6 +400,12 @@ def main() -> None:
         nargs="*",
         help="Experiment names to run. Omit to run all built experiments.",
     )
+    parser.add_argument(
+        "--managing-timeout",
+        type=int,
+        default=600,
+        help="Seconds before a run is stopped; recorded in outcome.json (default: 600).",
+    )
     args = parser.parse_args()
 
     targets = args.experiments or _list_built()
@@ -302,7 +416,7 @@ def main() -> None:
 
     print(f"Experiments to run: {targets}")
     for name in targets:
-        run_experiment(name)
+        run_experiment(name, args.managing_timeout)
 
     print("All done.")
 

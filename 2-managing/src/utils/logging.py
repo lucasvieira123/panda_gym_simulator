@@ -1,4 +1,6 @@
+import json
 import re
+import sys
 import numpy as np
 
 from .formatter import format_step
@@ -11,6 +13,19 @@ def _task_label(task) -> str:
         return f"SCRIPTED_TASK.{script}"
     name = type(task).__name__.replace("Task", "")
     return re.sub(r'(?<=[a-z])(?=[A-Z])', '_', name).upper()
+
+
+def _task_phase(task) -> str | None:
+    """Nome da fase interna da subtask ativa, a partir das constantes _PHASE_* do módulo dela."""
+    active = getattr(task, "_active", task)
+    phase  = getattr(active, "_phase", None)
+    if phase is None:
+        return None
+    module = sys.modules.get(type(active).__module__)
+    for name, value in vars(module).items():
+        if name.startswith("_PHASE_") and value == phase:
+            return name[len("_PHASE_"):]
+    return str(phase)
 
 
 class StepLogger:
@@ -26,12 +41,41 @@ class StepLogger:
         import atexit
         self._writer = TraceWriter(traces_dir) if traces_dir else TraceWriter()
         self._hud    = hud
+        ticks_path   = re.sub(r"trace_(.+)\.log$", r"ticks_\1.jsonl", self._writer.path)
+        self._ticks  = open(ticks_path, "w", encoding="utf-8")
         atexit.register(self._writer.close)
+        atexit.register(self._ticks.close)
 
     def log(self, msg: dict) -> None:
         log_step(msg, writer=self._writer)
+        self._write_tick(_tick_record(msg))
         if self._hud is not None:
             self._hud.render(msg)
+
+    def log_episode_end(self, episode: int, step: int, reason: str) -> None:
+        self._write_tick({"event": "episode_end", "episode": episode, "step": step, "reason": reason})
+
+    def _write_tick(self, record: dict) -> None:
+        self._ticks.write(json.dumps(record) + "\n")
+        self._ticks.flush()
+
+
+def _tick_record(msg: dict) -> dict:
+    """Valores de um tick para reconstruir por que uma adaptação falhou."""
+    keys = (
+        "episode", "step", "current_task", "current_subtask", "task_phase", "action",
+        "ee_position", "ee_velocity", "fingers_width", "finger_contacts", "finger_normal_forces",
+        "finger_lateral_friction", "gripper_force_limits", "cube_position", "cube_rotation",
+        "cube_linear_velocity", "target_position", "dist_ee_to_cube", "dist_cube_to_target",
+        "is_success", "physical_outcome",
+    )
+    objects = msg.get("objects") or {}
+    obj     = next(iter(objects.values()), {})
+    return {
+        "event": "tick",
+        **{key: msg.get(key) for key in keys},
+        "object_lateral_friction": obj.get("lateral_friction"),
+    }
 
 
 def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
@@ -55,6 +99,8 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
         "dist_ee_to_cube":        float(np.linalg.norm(ee_pos - cube_pos)),
         "dist_cube_to_target":    float(np.linalg.norm(cube_pos - target_pos)),
         "finger_contacts":        int(perception.get("finger_contacts", 0)),
+        "finger_normal_forces":   perception.get("finger_normal_forces", []),
+        "finger_lateral_friction": perception.get("finger_lateral_friction", []),
         "reward":                 float(reward),
         "is_success":             bool(info.get("is_success", False)),
         "obstacle_in_path":       bool(perception.get("obstacle_in_path", False)),
@@ -69,6 +115,7 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
 
     if task is not None:
         msg["current_task"] = _task_label(task)
+        msg["task_phase"]   = _task_phase(task)
         if hasattr(task, "current_subtask"):
             msg["current_subtask"] = task.current_subtask
         if hasattr(task, "active_goal_name"):
@@ -82,6 +129,7 @@ def build_perception_msg(episode: int, step: int, obs: dict, reward: float,
     if robot is not None:
         msg["joint_angles"]     = [float(robot.get_joint_angle(i))    for i in range(7)]
         msg["joint_velocities"] = [float(robot.get_joint_velocity(i)) for i in range(7)]
+        msg["gripper_force_limits"] = [float(f) for f in robot.joint_forces[7:9]]
 
     if sim is not None:
         msg["cube_rotation"]        = [float(x) for x in sim.get_base_rotation("object_1", type="euler")]

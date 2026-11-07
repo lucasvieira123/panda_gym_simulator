@@ -26,6 +26,7 @@ def format_step(msg: dict) -> str:
 
     if "current_task" in msg:
         lines.append(f"  Task            : {msg['current_task']}")
+        lines.append(f"  Subtask / fase  : {msg.get('current_subtask', '—')} / {msg.get('task_phase', '—')}")
 
     if "action" in msg:
         a = msg["action"]
@@ -40,8 +41,18 @@ def format_step(msg: dict) -> str:
         f"  Dist EE→Cubo    : {msg['dist_ee_to_cube']:.4f} m",
         f"  Dist Cubo→{msg.get('active_target_name', 'target')}: {msg['dist_cube_to_target']:.4f} m",
         f"  Reward          : {msg['reward']:+.4f}",
-        f"  Sucesso         : {msg['is_success']}",
+        f"  Seq. concluída  : {msg['is_success']}",
     ]
+
+    outcome = msg.get("physical_outcome")
+    if outcome:
+        lines.append(f"  Objetivo global : {outcome['global_goal_achieved']}  "
+                     f"(objeto no limite={outcome['object_within_threshold']}  garra aberta={outcome['gripper_open']})")
+
+    if msg.get("finger_normal_forces"):
+        lines.append(f"  Dedos           : força normal={[round(f, 1) for f in msg['finger_normal_forces']]} N  "
+                     f"atrito={[round(f, 3) for f in msg.get('finger_lateral_friction', [])]}  "
+                     f"limite={msg.get('gripper_force_limits')} N")
 
     lines.append(f"  Obstáculo caminho: {'SIM' if msg['obstacle_in_path'] else 'nao'}  (count: {msg['obstacle_count_in_path']})")
 

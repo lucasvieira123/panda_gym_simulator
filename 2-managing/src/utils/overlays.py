@@ -41,7 +41,7 @@ class SimHUD:
             (f"Goal mode : {goal_mode}",                                                            _W),
             (f"Target ({tgt_name}): [{tgt_pos[0]:+.3f}, {tgt_pos[1]:+.3f}, {tgt_pos[2]:+.3f}]", _W),
             (f"Reward    : {msg['reward']:+.4f}",                                                   _W),
-            (f"Sucesso   : {success}",                                                              _W),
+            (f"Seq. fim  : {success}",                                                              _W),
             (f"Garra     : {fingers:.3f} m  ({gripper})",                                          _COLOR_GRIPPER[gripper]),
             (f"EE pos    : [{ee_pos[0]:+.3f}, {ee_pos[1]:+.3f}, {ee_pos[2]:+.3f}]",              _W),
             (f"Cubo      : [{cube_pos[0]:+.3f}, {cube_pos[1]:+.3f}, {cube_pos[2]:+.3f}]",        _W),

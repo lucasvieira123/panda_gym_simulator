@@ -2,6 +2,7 @@
 from typing_extensions import Literal
 from pyparsing import Dict, ParseResults, Word, alphas, nums, oneOf, infixNotation, opAssoc, ParserElement
 from typing import List, Optional, Union, Tuple, Dict
+import math
 import re
 
 from sympy import  sympify, to_dnf
@@ -610,14 +611,25 @@ def _get_relational_expression_region(
     - The function assumes all values are within [min_val, max_val].
     """
     
-    if type_val == 'int':
-        value = int(value)
-        offset = 1
-    elif type_val == 'float':
-        value = float(value)
-        offset = 1e-9
+    numeric_value = float(value)  # accepts "1", "1.0" and "1e0"; raises ValueError otherwise
 
-    
+    if type_val == 'int':
+        offset = 1
+        if numeric_value.is_integer():
+            value = int(numeric_value)
+        elif operator == '==':
+            return (numeric_value, numeric_value)  # no integer satisfies it
+        elif operator == '!=':
+            return (min_val, max_val)              # every integer satisfies it
+        elif operator in ('>=', '<'):
+            value = math.ceil(numeric_value)       # x >= 1.5 is x >= 2; x < 1.5 is x < 2
+        else:
+            value = math.floor(numeric_value)      # x <= 1.5 is x <= 1; x > 1.5 is x > 1
+    elif type_val == 'float':
+        value = numeric_value
+        offset = 1e-9
+    else:
+        raise ValueError(f"Unsupported parameter type '{type_val}' for '{var_name}'")
 
     if operator == '>=':
         return (value, max_val)

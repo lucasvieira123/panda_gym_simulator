@@ -1,6 +1,8 @@
 from ._sensor import _Sensor
 
 _FINGER_JOINT_NAMES = {b"panda_finger_joint1", b"panda_finger_joint2"}
+_NORMAL_FORCE       = 9  # índice em getContactPoints
+_LATERAL_FRICTION   = 1  # índice em getDynamicsInfo
 
 
 class FingerContactSensor(_Sensor):
@@ -10,6 +12,10 @@ class FingerContactSensor(_Sensor):
 
     Retorna:
         finger_contacts: 0, 1 ou 2
+        finger_normal_forces: força normal total (N) em cada dedo
+        finger_lateral_friction: atrito lateral atual de cada dedo
+
+    Só lê o estado da simulação, sem alterar a dinâmica.
     """
 
     def __init__(self, configs: dict, sim, object_name: str = "object_1") -> None:
@@ -33,13 +39,14 @@ class FingerContactSensor(_Sensor):
         if obj_id is None or not self._finger_links:
             return {"finger_contacts": 0}
 
-        pc    = simulation.physics_client
-        count = sum(
-            1 for link in self._finger_links
-            if pc.getContactPoints(
-                bodyA=self._panda_id,
-                bodyB=obj_id,
-                linkIndexA=link,
-            )
-        )
-        return {"finger_contacts": count}
+        pc       = simulation.physics_client
+        contacts = [
+            pc.getContactPoints(bodyA=self._panda_id, bodyB=obj_id, linkIndexA=link)
+            for link in self._finger_links
+        ]
+        return {
+            "finger_contacts":         sum(1 for points in contacts if points),
+            "finger_normal_forces":    [float(sum(p[_NORMAL_FORCE] for p in points)) for points in contacts],
+            "finger_lateral_friction": [float(pc.getDynamicsInfo(self._panda_id, link)[_LATERAL_FRICTION])
+                                        for link in self._finger_links],
+        }
