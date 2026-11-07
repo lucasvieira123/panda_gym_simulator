@@ -15,7 +15,7 @@ Decisões tomadas na revisão da Etapa 0 (novembro de 2026). Referência para a 
 | 6. Fail-safe | Implementado e testado com poucos runs |
 | 7. Integração | Quatro caminhos vistos em 7 runs fora dos 25; evidências em `quatro_caminhos/results/` |
 | 7b. Correção do transporte (F5) | Implementada; bancada e 3 runs reais fora dos 25 (0,19 A; 0,1575 B; 0,035 C); evidências em `f5_transporte/results/` |
-| 8. Bateria RQ1.1 (25 atritos) | Pendente |
+| 8. Bateria RQ1.1 (25 atritos) | Concluída na versão `37fda0d`, válida pela R6 (sem erro nem timeout); resultado no fim deste registro, evidências em `bateria/results/` (ignorada pelo git) |
 
 ## Resultado de cada execução
 
@@ -51,8 +51,8 @@ Decisões tomadas na revisão da Etapa 0 (novembro de 2026). Referência para a 
 |---|---|
 | A1 | Toda calibração usa atritos fora dos 25, como 0,157, 0,142, 0,105 e 0,065. |
 | A2 | Os 9 casos de falha podem ser rodados na etapa 1 só para classificar a causa, sem ajustar parâmetros. O artigo declara que os 25 valores já eram conhecidos. |
-| A3 | Os 25 runs nominais são o resultado principal. Sensibilidade pré-declarada: posição inicial ±2 mm nos 17 atritos com violação (34 runs). |
-| A4 | Os 8 atritos sem violação ficam de fora da sensibilidade. |
+| A3 | **Revista após a bateria (2026-11-07).** Os 25 runs nominais são o resultado da RQ1.1. A sensibilidade à posição inicial (±2 mm, antes prevista para 17 atritos e 34 runs) não é realizada. Motivo: ela mede a robustez do exemplar (o atrito dos candidatos simulados e o escorregamento no transporte), não a do framework, e o artigo avalia se o framework trata corretamente cada caminho, o que a bateria já mostra nos 25 runs. Em consequência, o artigo afirma que os quatro caminhos ocorrem e são tratados corretamente, não apresenta taxas de recuperação por candidato como evidência de eficácia e declara, em ameaças à validade, que cada atrito foi executado uma vez em posição fixa e que a distribuição entre caminhos depende dos parâmetros físicos do exemplar. A bancada (`bancada/results/transport.csv`) mostra que essa distribuição muda com ±2 mm em parte dos atritos de 0,1575 a 0,025. |
+| A4 | Removida junto com a sensibilidade da A3. |
 | A5 | A execução é tratada como determinística: um run por atrito, sem repetições. A física é determinística (4 repetições idênticas tick a tick na bancada); a única variação conhecida é a adaptação começar um tick mais tarde (ver o fim deste registro). Causa suspeita, não confirmada: o Managing espera o Manager por no máximo 5 s por tick, enquanto o Manager espera o DejaVu sem limite durante o diagnóstico. Fica como limitação conhecida; se um run da bateria divergir do esperado, é a primeira hipótese a verificar. |
 
 ## Candidatos
@@ -99,3 +99,24 @@ Uso exclusivo para classificar causas. Nenhum parâmetro foi ajustado.
 | 0,13 / 0,16 (controles) | Lift / Transporte | B | Alinhado, sem deslizar, objetivo global atingido |
 
 Variação entre execuções: em 2 dos 11 runs (0,13 e 0,04), o vacuum começou um tick mais tarde que nos runs anteriores, mudando a distância final (1,5 para 2,1 cm; 45,0 para 34,4 cm), sem mudar a categoria. O resultado não é estritamente determinístico. Causa ainda não confirmada.
+
+## Resultado da bateria (versão `37fda0d`, 2026-11-07)
+
+25 runs, posição nominal, um run por atrito (A5). Nenhum `execution_error`, `runner_timeout` ou run cortado; todos com vídeo. Duração de 120 a 207 s por run.
+
+| Caminho | Atritos | Fase violada | O que aconteceu |
+|---|---|---|---|
+| A (10) | 0,80 a 0,18 e 0,155 | — | Sem violação; cubo a 0,7–3,5 cm do alvo |
+| B (12) | 0,17; 0,16; 0,15; 0,145; 0,135 | Transporte, step 41 | C6 recuperou na 1ª tentativa; 0,5–1,9 cm |
+| | 0,14 a 0,06 (7 atritos) | Lift, step 22–23 | C1 recuperou na 1ª tentativa; 1,4–2,0 cm |
+| C (1) | 0,04 | Lift, step 23 | C1 falhou (`object_not_secured`, step 48); C2 recuperou (step 76); 1,5 cm |
+| D (2) | 0,02 | Lift, step 23 | C1 e C2 falharam (`object_not_secured`); fail-safe `attempts_exhausted` no step 75; cubo na mesa a 33 cm do alvo |
+| | 0,01 | Lift, step 23 | C1 não terminou: o cubo saiu da mesa e a task adaptativa estourou os 60 ticks (F4); fail-safe `object_off_table` no step 83, sem 2ª tentativa (P2) |
+| E (0) | — | — | Nenhuma falha não detectada; 0,135 deixou de ser E |
+
+- Objetivo global em 23 dos 25 (10 A, 12 B, 1 C). O ASM evoluiu nos 13 runs B e C e em nenhum D.
+- C7 não foi acionado: o C6 recuperou todas as violações de transporte (K6).
+- O limiar diagnosticado vai de `lateral_friction <= 0,335` (0,17) a `<= 0,255` (0,01), ponto médio entre 0,5 e o atrito do run (D1).
+- **0,155 sem violação**, entre vizinhos com violação no transporte. É efeito da F5: a bancada, com o controlador atual, também dá A em 0,155; com o controlador antigo (sem desaceleração), dá violação no transporte no step 41, como na Etapa 1. A física é determinística; o cubo está no limite de deslizar e a parada mais suave do F5 o mantém. O artigo pode relatar a fronteira como não monotônica perto de 0,15.
+- **Bancada × runs reais** (bancada nos mesmos 25, posição nominal, scripts em `bateria/bancada25/`): 23 de 25 iguais em caminho, step de violação, step final e distância. 0,04 termina um tick depois na bancada, mesmo caminho C (atraso de A5). 0,02 dá E na bancada e D no real: a bancada não confere `object_secured` ao fim da task, e o Evaluator real marca a falha do C2. 0,01 é o watchdog da bancada, que vira o fail-safe `object_off_table` no real.
+- A A4 contava 8 atritos sem violação; com 0,18 e 0,155, são 10. A sensibilidade da A3 não é realizada (ver A3).
