@@ -17,6 +17,7 @@ os.chdir(ROOT)
 sys.path.insert(0, str(ROOT / "src"))
 
 from adaptation_evaluator import AdaptationEvaluator
+from dejavu import _adaptation_awaiting_evolution
 from similarity.dejavu_similarity import _calculate_jaccard_similarity, _get_relational_expression_region
 from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
 
@@ -117,6 +118,17 @@ class Evaluator(unittest.TestCase):
         evaluator = self.started(max_run_ticks=1)
         first = evaluator.evaluate(tick("APPLY_VACUUM_ASSIST"))
         self.assertIs(evaluator.evaluate(tick("TRANSPORT_OBJECT", OK)), first)
+
+
+class EvolutionTiming(unittest.TestCase):
+    def test_success_waits_for_the_end_of_the_sequence(self):
+        success = {"status": "success"}
+        self.assertFalse(_adaptation_awaiting_evolution(success, {"is_success": False}))
+        self.assertTrue(_adaptation_awaiting_evolution(success, {"is_success": True}))
+
+    def test_other_results_never_evolve(self):
+        for evaluation in ({"status": "failure"}, {"status": "timeout"}, {"status": "execution_error"}, None):
+            self.assertFalse(_adaptation_awaiting_evolution(evaluation, {"is_success": True}))
 
 
 class DiagnoserFeatures(unittest.TestCase):

@@ -118,11 +118,16 @@ def _log(writer: TraceWriter, msg: str) -> None:
 def _physical_snapshot(perception: dict, sm_tick: dict) -> dict:
     """Relevant sensor values at this tick, for the run's event log."""
     snapshot = {k: v for k, v in sm_tick.items() if k != "action"}
-    for key in ("lateral_friction", "fingers_width", "dist_cube_to_target", "is_success",
+    for key in ("lateral_friction", "fingers_width", "dist_cube_to_target", "is_success", "global_goal_achieved",
                 "cube_x", "cube_y", "cube_z", "cube_roll", "cube_pitch", "cube_yaw",
                 "ee_x", "ee_y", "ee_z"):
         snapshot[key] = perception.get(key)
     return snapshot
+
+
+def _adaptation_awaiting_evolution(evaluation: dict | None, perception: dict) -> bool:
+    """A successful adaptation is only judged for evolution when the action sequence ends."""
+    return bool(evaluation and evaluation.get("status") == "success" and perception.get("is_success"))
 
 
 def _write_similarities(path: str, results: list, run_id: str, episode: int) -> None:
@@ -293,18 +298,22 @@ def main() -> None:
         if evaluation:
             _log(writer, format_pipeline_evaluation(evaluation))
 
-        # ── Evolução do ASM (uma vez por episódio, quando avaliação confirma sucesso) ──
-        if (evaluation and evaluation.get("status") == "success"
+        # ── Evolução do ASM (no fim do episódio, só com recuperação validada de ponta a ponta) ──
+        if (_adaptation_awaiting_evolution(evaluation, perception)
                 and not evolved and identified and diagnosed and adaptation):
-            try:
-                asm_evolution = evolver.evolve(identified, diagnosed, adaptation)
-                _log(writer, format_asm_evolution(asm_evolution))
-                events.write("asm_evolution", episode=episode, step=step, **asm_evolution)
-            except Exception as e:
-                _log(writer, f"  [ASM_EVOLVE] Erro: {e}")
-                events.write("asm_evolution_error", episode=episode, step=step, type=type(e).__name__, message=str(e))
-            finally:
-                evolved = True
+            evolved = True
+            if perception.get("global_goal_achieved"):
+                try:
+                    asm_evolution = evolver.evolve(identified, diagnosed, adaptation)
+                    _log(writer, format_asm_evolution(asm_evolution))
+                    events.write("asm_evolution", episode=episode, step=step, **asm_evolution)
+                except Exception as e:
+                    _log(writer, f"  [ASM_EVOLVE] Erro: {e}")
+                    events.write("asm_evolution_error", episode=episode, step=step, type=type(e).__name__, message=str(e))
+            else:
+                _log(writer, "  [ASM_EVOLVE] Não evoluído: objetivo global não atingido")
+                events.write("asm_evolution_skipped", episode=episode, step=step, reason="global_goal_not_achieved",
+                             observed=_physical_snapshot(perception, sm_tick))
 
         # ── Responde ao Manager ───────────────────────────────────────────────
         client.send_result({

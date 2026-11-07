@@ -11,6 +11,7 @@ _DROP_COLS = {
     "sat", "execution", "episode", "step", "exec",
     "active_state", "active_scenario_name", "active_scenario_type",
     "current_subtask", "current_task", "active_target_name", "tipo",
+    "global_goal_achieved",
 }
 
 

@@ -46,13 +46,15 @@ python 5-experiments/execute_simulations.py 04_0_50 12_0_155
 ├── results/                       ← gerado automaticamente (ignorado pelo git)
 │   └── <nome_experimento>/
 │       ├── experiment.json        ← metadados e patches usados
+│       ├── outcome.json           ← resultado explícito do run
 │       ├── inputs/                ← configs completas geradas pelo build
 │       └── outputs/               ← coletados após a execução
 │           ├── manager_traces/
 │           ├── managing_traces/
 │           ├── dejavu_traces/
 │           ├── similarities/
-│           └── dataset/
+│           ├── dataset/           ← inclui o CSV do run
+│           └── asm_after_run.json ← ASM ao fim do run
 ├── build_simulations.py
 └── execute_simulations.py
 ```
@@ -77,7 +79,10 @@ Para cada experimento, o script:
 2. Sobrescreve as configs reais com os inputs gerados.
 3. Inicia DejaVu, Manager (com `--experiment`) e Managing como subprocessos.
 4. Aguarda o Managing terminar (ele auto-encerra após os episódios).
-5. Para Manager e DejaVu, restaura as configs do base, coleta os outputs.
+5. Para Manager e DejaVu, coleta os outputs e restaura as configs do base.
+6. Escreve `outcome.json`.
+
+Se a pasta `outputs/` já existir, ela é renomeada para `outputs_previous_<data>`. O limite de tempo padrão de cada run é de 600 s (`--managing-timeout`), e um corte fica registrado no `outcome.json`.
 
 Logs de cada componente são prefixados em tempo real:
 
@@ -134,6 +139,20 @@ Crie um arquivo `.json` em `experiment_configs/` seguindo o formato abaixo. Cada
 | `"$add_scenario"` | Adiciona ou substitui um cenário em `scenarios`. | `{"key": "...", "data": {...}}` |
 | `"$add_transition"` | Acrescenta uma transição em `transitions`. | `{"from": "...", "to": "..."}` |
 | `"$remove_scenario"` | Remove um cenário de `scenarios` pela chave. | `"nome_do_cenario"` |
+
+---
+
+## Resultado do Run (`outcome.json`)
+
+Três níveis independentes:
+
+| Nível | Campo | Critério |
+|---|---|---|
+| Sequência de ações | `sequence.completed` | A sequência terminou, mesmo sem o objeto |
+| Adaptação | `adaptation_result` | `success`, `failure`, `timeout` ou `execution_error`, com a razão |
+| Objetivo global | `physical.global_goal_achieved` | Cubo a até 5 cm do alvo e garra aberta |
+
+O `is_success` só indica o fim da sequência e não prova a entrega do objeto. As decisões da RQ1.1 estão em [`RQ1.1/decisions.md`](RQ1.1/decisions.md).
 
 ---
 

@@ -21,7 +21,11 @@ No build step required. Install dependencies manually:
 pip install pandas pyyaml scikit-learn sympy sismic wrapt pyparsing numpy flask
 ```
 
-There are no automated tests.
+Tests for the measurement infrastructure, from `3-dejavu/`:
+
+```bash
+python -m unittest discover -s tests
+```
 
 ## Architecture
 
@@ -36,13 +40,17 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
                                          ↓
                               UnanticipatedScenarioDiagnoser    (decision tree on historical CSVs)
                                          ↓
-                              SimilarityBasedAdapter            (ranks catalogue candidates)
+                              SimilarityBasedAdapter            (filters by When, ranks by similarity)
+                                         ↓
+                              AdaptationEvaluator               (explicit result of the adaptation)
 ```
 
 **Trigger rules:**
 - `AntecipatedScenarioMonitor` — runs on every tick
 - `UnanticipatedScenarioIdentifier` + `UnanticipatedScenarioDiagnoser` — run once per episode, on the first UNSAT tick
-- `SimilarityBasedAdapter` — runs once per episode, after diagnosis (pending wiring in `dejavu.py`)
+- `SimilarityBasedAdapter` — runs once per episode, after diagnosis; recommends the Top-1 candidate
+- `AdaptationEvaluator` — runs on every tick once an adaptation starts
+- `AsmEvolver` — runs at the end of the episode, only if the adaptation succeeded and the global goal was achieved
 
 ## Key Components
 
@@ -58,6 +66,10 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 | `src/scenario/` | Data classes: `Scenario`, `AntecipatedScenario`, `DiagnosedScenario`, `CandidateScenario` |
 | `src/expression/` | BDD clause model: `Expression`, `ConditionalExpression`, `ActionExpression` |
 | `src/similarity/dejavu_similarity.py` | Core similarity metric: parameter Jaccard (weighted) + conditional Tversky penalty |
+| `src/similarity/when_filter.py` | Applicability filter: only candidates with a matching When reach the similarity calculation |
+| `src/adaptation_evaluator.py` | Ends each adaptation in `success`, `failure`, `timeout` or `execution_error` |
+| `src/asm_evolver.py` | Adds a validated adaptation to the ASM |
+| `src/run_events.py` | Writes the run's pipeline events (`events_*.jsonl`) |
 | `src/constants.py` | `PROJECT_ROOT` resolution; `DEJAVU_CONF_PATH` |
 | `src/utils.py` | `load_config()` helper |
 
@@ -67,7 +79,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 |------|---------|
 | `configs/dejavu_conf.yaml` | Central config — all paths resolved from here via `PROJECT_ROOT` |
 | `configs/arm/scenario_state_machine.yaml` | Sismic state machine for the ARM pick-and-place task |
-| `configs/arm/scenario_catalogue.json` | Lift scenarios catalogue with `monitored_parameters` (uses `min_value`/`max_value`) and 3 candidates (HIGH/MEDIUM/LOW similarity) |
+| `configs/arm/scenario_catalogue.json` | Candidates C1–C5 (lift) and C6–C8 (transport), with `monitored_parameters` (uses `min_value`/`max_value`). Only `apply_vacuum_assist()` has a physical implementation |
 | `configs/weights_config.yaml` | Similarity weights: Tversky α/β, per-clause weights (`given`, `when`, `then`) |
 
 Anticipated scenarios (ASM) live in `1-manager/configs/arm/asm.json` — DejaVu reads them via `anticipated_scenarios_path` in `dejavu_conf.yaml`.
@@ -78,14 +90,14 @@ All paths in `dejavu_conf.yaml` are relative to `PROJECT_ROOT` (resolved in `src
 
 | Path | Content |
 |------|---------|
-| `output/arm/traces/` | Per-run trace logs with full tick + pipeline detail |
+| `output/arm/traces/` | Per-run trace logs with full tick + pipeline detail, and `events_*.jsonl` |
 | `output/arm/antecipated_scenario_dataset/` | CSV files written by the monitor; one file per scenario execution; used by the diagnoser for training |
-| `output/arm/similarities.jsonl` | Ranked similarity results (written by adapter) |
+| `output/arm/similarities/` | Ranked similarity results per run |
 
 ## Diagnoser — design notes
 
 - **Execution-level**: 1 row per execution (first tick snapshot), label = `any(sat==False)` in that execution
-- **Static features only**: columns whose `std==0` within each execution — world properties set before the episode starts (e.g., `lateral_friction`)
+- **Static features only**: columns whose `std==0` across each whole execution, not only within the scenario's rows — world properties set before the episode starts (e.g., `lateral_friction`)
 - **Dynamic features excluded**: vary tick-to-tick; represent effects, not causes
 - **Label name pattern**: `f"{scenario_name}_unanticipated"` — generic, works for any scenario
 
@@ -93,12 +105,22 @@ All paths in `dejavu_conf.yaml` are relative to `PROJECT_ROOT` (resolved in `src
 
 - `monitored_parameters` come from `scenario_catalogue.json` (not a separate file)
 - Format must use `min_value`/`max_value` keys (not `min`/`max`) — the algorithm reads these directly
-- `when` weight = 1.0 (same as `given` and `then`) — with all catalogue candidates sharing the same `when`, it contributes a fixed 1/3 to every score
+- Candidates are filtered by When before the calculation (`when_filter.py`): lift compares with C1–C5, transport with C6–C8, and other scenarios have no candidates
+- `when` weight = 1.0 (same as `given` and `then`) — after the filter, it contributes a fixed 1/3 to every score
 - Minimum possible score = 0.33 (when `given_sim` and `then_sim` are both 0)
 - Tversky α=0.9, β=0.1: penalizes missing parameters in the candidate heavily; tolerates extra parameters lightly
 
+## Adaptation results — design notes
+
+Three independent levels, reported in `outcome.json`:
+
+- **Sequence completed** (`is_success`): the action sequence ended, even without the object
+- **Adaptation result**: based on the diagnosed Then, which needs only one tick to succeed
+- **Global goal**: object within 5 cm of the target and gripper open; this is the result that counts
+
 ## Not Implemented
 
-- **SimilarityBasedAdapter wiring** — adapter is implemented but not yet called in `dejavu.py` main loop
-- **Adaptation Evaluation** — evaluating whether the adapted behavior meets requirements
-- **Evolutionary Adaptation Enactor** — executing the chosen adaptation in the running system
+- **Retry of candidates** and **Fallback/Fail-Safe Behaviour**
+- **C2, C7 and other candidates' physical actions**: only `apply_vacuum_assist()` executes
+
+Decisions for the RQ1.1 evaluation are in `5-experiments/RQ1.1/decisions.md`.

@@ -82,5 +82,6 @@ class MonitorARM(MonitorAbs):
 
         obj1 = state.objects.get("object_1", {})
         state.lateral_friction = float(obj1.get("lateral_friction", 0.0))
+        state.global_goal_achieved = bool((msg.get("physical_outcome") or {}).get("global_goal_achieved", False))
 
         return state

@@ -41,6 +41,7 @@ class SystemState:
     distance_object_goal_cm: int   = 0
     task_aborted:            int   = 0
     lateral_friction:        float = 0.0
+    global_goal_achieved:    bool  = False
     # managing perception — unmapped fields from perception msg
     current_subtask:    str  = ""
     current_task:       str  = ""
@@ -84,6 +85,7 @@ class SystemState:
             "distance_object_goal_cm": int(self.distance_object_goal_cm),
             "task_aborted":            int(self.task_aborted),
             "lateral_friction":        float(self.lateral_friction),
+            "global_goal_achieved":    bool(self.global_goal_achieved),
             # raw sensor scalars (observed)
             "fingers_width":           float(self.fingers_width),
             "dist_ee_to_cube":         float(self.dist_ee_to_cube),
