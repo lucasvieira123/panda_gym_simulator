@@ -15,7 +15,7 @@ A RQ1.2 executa uma sequência de atritos decrescentes, de μ = 0,170 a μ = 0,0
 | 4. Regressão da RQ1.1 (0,17, 0,14 e 0,04) | Concluída (2026-11-08): iguais à bateria; seção "Etapa 4" |
 | 5. Modo sequencial do runner (P0) | Concluída (2026-11-08), sem commit; verificada na etapa 6 |
 | 6. Sequência curta 0,17 → 0,16 → 0,14 → 0,13 | Concluída (2026-11-08); seção "Etapa 6" |
-| 7. Sequência completa 0,170 → 0,010 | Não iniciada |
+| 7. Sequência 0,170 → 0,060 (escopo S1) | Concluída (2026-11-08); resultado da RQ1.2 na seção "Etapa 7" |
 
 ## Achados com o código atual (versão `77d013c`)
 
@@ -249,3 +249,51 @@ Evidências em `testes/results/` (ignorada pelo git). Configuração: `../experi
 - **Verificação:**
   - um teste isolado de salvar e restaurar;
   - nos testes 1 e 2, os arquivos locais ficaram idênticos (md5) ao estado anterior.
+
+## Escopo da RQ1.2 (decidido em 2026-11-08)
+
+| # | Decisão |
+|---|---|
+| S1 | **A RQ1.2 é uma sequência de 0,170 a 0,060**, com o conhecimento preservado, nos 13 valores da RQ1.1 dessa faixa. **Motivo:** a RQ1.2 pergunta se o conhecimento incorporado é reaproveitado, e isso só pode ser testado onde a adaptação incorporada funciona. A RQ1.1 mostrou que a sucção (C1) recupera o lift até 0,060 e não recupera em 0,040, 0,020 e 0,010. O corte vem do resultado da RQ1.1, definido antes de rodar a RQ1.2, e o artigo declara isso. |
+| S2 | **Mensagem da RQ1.2:** depois que o DejaVú incorpora uma adaptação validada, as ocorrências seguintes na região incorporada são tratadas pelo ASM como comportamento previsto (adaptação interna do Manager), sem violação e sem acionar o DejaVú. |
+| S3 | **O que relatar:** (1) as incorporações, com o GWDT e os limiares; (2) por atrito, RQ1.1 × RQ1.2, se precisou do DejaVú ou se foi tratado pelo conhecimento incorporado; (3) a divisão do espaço comportamental por faixa de μ e por fase (cenário original ou incorporado). |
+| S4 | **Limitações a declarar:** sequência única, determinística e numa só ordem (os limiares dependem do que foi visto antes); região aprendida a partir de poucas amostras e mais larga que o validado (ex.: 0,155 passa a usar a sucção de forma preventiva, Q4); abaixo de 0,1425, as duas fases usam conhecimento incorporado e a segunda aplicação é fisicamente redundante (o ASM organiza o conhecimento por fase); refinar o conhecimento incorporado quando ele não basta (μ < 0,060) é trabalho futuro. |
+| S5 | **Fora do escopo:** a Q6 (fail-safe quando o diagnóstico falha) e a E3 (o cenário criado em 0,040 nos testes) não são necessárias para a RQ1.2. A Q6 fica registrada como melhoria futura. |
+| S6 | As correções feitas para a RQ1.2 (P1–P4, P6) são descritas no artigo como parte do mecanismo (o Manager avalia cenários evoluídos com parâmetros contextuais; o ASM-SM é gerado do ASM evoluído), não como defeitos. A regressão (etapa 4) mostra que a RQ1.1 não muda. |
+
+## Etapa 7 — Resultado da RQ1.2 (sequência 0,170 → 0,060, 2026-11-08)
+
+`execute_simulations.py --preserve-knowledge` com os 13 valores da RQ1.1 de 0,170 a 0,060, versão `20dd3bb`.
+- **Configuração:** `../experiment_configs/rq1_2_sequencia.json`.
+- **Evidências:** `sequencia/results/principal/`, ignorada pelo git.
+- **Tabelas:** geradas por `sequencia/comparar_rq1_1.py` e `sequencia/analisar.py`.
+- **ASM final:** `asm_evoluido_rq1_2.json`, versionado, para a figura `arm_asm_evoluida.pdf`.
+- **Execução:**
+  - nenhum timeout, erro de pipeline ou condição não avaliada no Manager;
+  - em cada run, o ASM de entrada é o de saída do anterior;
+  - os arquivos locais ficaram idênticos (md5) ao estado anterior.
+
+| μ | RQ1.1 (conhecimento reiniciado) | RQ1.2 (conhecimento preservado) | Incorporado |
+|---|---|---|---|
+| 0,170 | violação TRANSPORT; DejaVú, C6 | violação TRANSPORT; DejaVú, C6 | **E1** TRANSPORT_OBJECT_VACUUM_ASSIST, `lateral_friction <= 0.335` |
+| 0,160 | violação TRANSPORT; DejaVú, C6 | E1 ativada (step 20); sem violação | — |
+| 0,155 | sem violação | E1 ativada (step 20); sem violação | — |
+| 0,150 | violação TRANSPORT; DejaVú, C6 | E1 ativada (step 20); sem violação | — |
+| 0,145 | violação TRANSPORT; DejaVú, C6 | E1 ativada (step 20); sem violação | — |
+| 0,140 | violação LIFT; DejaVú, C1 | violação LIFT; DejaVú, C1 | **E2** LIFT_OBJECT_VACUUM_ASSIST, `lateral_friction <= 0.1425` |
+| 0,135 | violação TRANSPORT; DejaVú, C6 | E2 (step 15) e E1 (step 19); sem violação | — |
+| 0,130 a 0,060 (6 valores) | violação LIFT; DejaVú, C1 | E2 (step 15) e E1 (steps 19–20); sem violação | — |
+
+Resumo:
+- **DejaVú acionado:** em 12 das 13 configurações na RQ1.1 e em 2 na RQ1.2 (as incorporações).
+- **Reutilização:** 11 configurações foram tratadas pelo conhecimento incorporado, como adaptação interna do Manager, sem violação. Dez delas violavam na RQ1.1; a outra é 0,155, ativação preventiva (Q4).
+- **Objetivo:** 13 de 13 nas duas. Distância final na RQ1.2 de 1,3 a 1,9 cm.
+- **Duração da tarefa:** com reutilização, 64 steps em todos os 11 runs, praticamente o nominal (65 em 0,155 na RQ1.1). Na RQ1.1, os 10 que violavam levavam de 89 a 120 steps, porque a recuperação vinha depois do escorregamento.
+- **Limiar do lift:** 0,1425, como previsto pela reprodução. Ele é o ponto médio entre 0,145 (o último run sem violação no lift) e 0,140, porque o dataset preservado inclui os runs anteriores da sequência. Na RQ1.1, isolado, era 0,32.
+- **Espaço comportamental resultante** (cenário usado em cada fase):
+
+| Faixa de μ | Lift | Transporte |
+|---|---|---|
+| μ > 0,335 | LIFT_OBJECT (original) | TRANSPORT_OBJECT (original) |
+| 0,1425 < μ ≤ 0,335 | LIFT_OBJECT (original) | E1 (incorporado, C6) |
+| μ ≤ 0,1425 | E2 (incorporado, C1) | E1 (incorporado, C6) |

@@ -1,0 +1,149 @@
+{
+  "name": "RQ1.2 sequência com conhecimento preservado",
+  "description": "Etapa 7 da RQ1.2 (escopo S1): 0,170 -> 0,060 com --preserve-knowledge, nos valores da RQ1.1.",
+  "experiments": [
+    {
+      "name": "10_0_17",
+      "description": "lateral_friction=0.17 — pré-fronteira",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.17
+          }
+        }
+      }
+    },
+    {
+      "name": "11_0_16",
+      "description": "lateral_friction=0.16 — região crítica",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.16
+          }
+        }
+      }
+    },
+    {
+      "name": "12_0_155",
+      "description": "lateral_friction=0.155 — comportamento interessante",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.155
+          }
+        }
+      }
+    },
+    {
+      "name": "13_0_150",
+      "description": "lateral_friction=0.150 — região crítica",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.15
+          }
+        }
+      }
+    },
+    {
+      "name": "14_0_145",
+      "description": "lateral_friction=0.145 — região crítica",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.145
+          }
+        }
+      }
+    },
+    {
+      "name": "15_0_140",
+      "description": "lateral_friction=0.140 — condição não antecipada conhecida",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.14
+          }
+        }
+      }
+    },
+    {
+      "name": "16_0_135",
+      "description": "lateral_friction=0.135 — condição mais severa",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.135
+          }
+        }
+      }
+    },
+    {
+      "name": "17_0_130",
+      "description": "lateral_friction=0.130 — condição não antecipada conhecida",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.13
+          }
+        }
+      }
+    },
+    {
+      "name": "18_0_120",
+      "description": "lateral_friction=0.120 — extensão da capacidade",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.12
+          }
+        }
+      }
+    },
+    {
+      "name": "19_0_110",
+      "description": "lateral_friction=0.110",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.11
+          }
+        }
+      }
+    },
+    {
+      "name": "20_0_100",
+      "description": "lateral_friction=0.100 — limite do DejaVu",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.1
+          }
+        }
+      }
+    },
+    {
+      "name": "21_0_080",
+      "description": "lateral_friction=0.080",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.08
+          }
+        }
+      }
+    },
+    {
+      "name": "22_0_060",
+      "description": "lateral_friction=0.060",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.06
+          }
+        }
+      }
+    }
+  ]
+}
