@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import traceback
+from pathlib import Path
 from datetime import datetime
 
 import pandas as pd
@@ -17,7 +18,7 @@ from unanticipated_scenario_identifier import UnanticipatedScenarioIdentifier
 from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
 from similarity_based_adapter import SimilarityBasedAdapter
 from adaptation_evaluator import AdaptationEvaluator
-from asm_evolver import AsmEvolver
+from asm_evolver import AsmEvolver, EvolutionRejected
 from trace import TraceWriter
 from trace_printer import (
     format_tick,
@@ -280,7 +281,7 @@ def main() -> None:
                 _log(writer, format_pipeline_identify(identified))
 
                 stage = "DIAGNOSE"
-                diagnosed = diagnoser.diagnosis(identified)
+                diagnosed = diagnoser.diagnosis(identified, current_execution=Path(recorder.path).stem)
                 _log(writer, format_pipeline_diagnose(diagnosed))
                 events.write("diagnosis", **where, given=diagnosed["given"], when=diagnosed["when"],
                              then=diagnosed["then"], diagnostic_conditions=diagnosed["diagnostic_conditions"])
@@ -324,9 +325,12 @@ def main() -> None:
             evolved = True
             if perception.get("global_goal_achieved"):
                 try:
-                    asm_evolution = evolver.evolve(identified, diagnosed, adaptation)
+                    asm_evolution = evolver.evolve(identified, diagnosed, adaptation, context=perception)
                     _log(writer, format_asm_evolution(asm_evolution))
                     events.write("asm_evolution", episode=episode, step=step, **asm_evolution)
+                except EvolutionRejected as e:
+                    _log(writer, f"  [ASM_EVOLVE] Evolução recusada: {e}")
+                    events.write("evolution_rejected", episode=episode, step=step, reason=e.reason, detail=e.detail)
                 except Exception as e:
                     _log(writer, f"  [ASM_EVOLVE] Erro: {e}")
                     events.write("asm_evolution_error", episode=episode, step=step, type=type(e).__name__, message=str(e))

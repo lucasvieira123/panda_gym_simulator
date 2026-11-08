@@ -64,7 +64,46 @@ class UnanticipatedScenarioDiagnoser:
         recurse(0, [])
         return rules
 
-    def diagnosis(self, identified_unanticipated_scenario: dict) -> dict:
+    def path_conditions(self, clf, X_row: pd.DataFrame) -> tuple[str, bool]:
+        """Conditions on the tree path of one execution, simplified per feature, and the leaf prediction.
+
+        Joining every positive leaf with AND gives contradictory conditions when the tree has more than
+        one positive leaf (e.g. "x <= 0.1325 AND x > 0.1325"); the path of the current execution is a
+        consistent conjunction that covers the situation being diagnosed.
+        """
+        tree = clf.tree_
+        feature_names = list(X_row.columns)
+        lower: dict[str, float] = {}   # feature > value  (keeps the largest)
+        upper: dict[str, float] = {}   # feature <= value (keeps the smallest)
+        order: list[str] = []
+        for node in clf.decision_path(X_row).indices:
+            feat_id = tree.feature[node]
+            if feat_id == _tree.TREE_UNDEFINED:
+                continue
+            feat = feature_names[feat_id]
+            thr = round(float(tree.threshold[node]), 4)
+            if feat not in order:
+                order.append(feat)
+            if X_row.iloc[0, feat_id] <= tree.threshold[node]:
+                upper[feat] = min(upper.get(feat, thr), thr)
+            else:
+                lower[feat] = max(lower.get(feat, thr), thr)
+        conditions = []
+        for feat in order:
+            clean = feat.replace(".", "_")
+            if feat in lower:
+                conditions.append(f"{clean} > {lower[feat]}")
+            if feat in upper:
+                conditions.append(f"{clean} <= {upper[feat]}")
+        predicted = str(clf.predict(X_row)[0]) in ("1", "1.0", "True", "true")
+        return " AND ".join(conditions), predicted
+
+    def diagnosis(self, identified_unanticipated_scenario: dict, current_execution: str | None = None) -> dict:
+        """
+        current_execution: stem of the current run's CSV. When given, the diagnostic conditions are the
+        tree path of that execution; otherwise, the conditions of the positive leaves (only one is
+        expected when the dataset holds the nominal runs and the current one).
+        """
         scenario_name = identified_unanticipated_scenario["name"].replace("_unanticipated", "")
 
         df = self._load_dataset(self._dataset_folder)
@@ -116,8 +155,24 @@ class UnanticipatedScenarioDiagnoser:
             r["then"] = "True" if str(r["then"]) in ("1", "1.0", "True", "true") else "False"
 
         false_rules = [r for r in rules if r["then"] == "True"]
-        all_conditions = [cond for r in false_rules for cond in r["if"]]
-        unanticipated_conditions_str = " AND ".join(all_conditions)
+
+        if current_execution is not None:
+            if current_execution not in X_static.index:
+                raise ValueError(f"Execução atual '{current_execution}' sem linhas de '{scenario_name}' no dataset.")
+            unanticipated_conditions_str, predicted = self.path_conditions(
+                self.classifier, X_static.loc[[current_execution]])
+            if not predicted:
+                raise ValueError(
+                    f"Diagnóstico não cobre a execução atual: a árvore classifica '{current_execution}' "
+                    f"sem violação de '{scenario_name}' (condições do caminho: {unanticipated_conditions_str})."
+                )
+        elif len(false_rules) > 1:
+            raise ValueError(
+                f"A árvore tem {len(false_rules)} folhas com violação de '{scenario_name}'; "
+                "informe a execução atual para diagnosticar pelo seu caminho."
+            )
+        else:
+            unanticipated_conditions_str = " AND ".join(cond for r in false_rules for cond in r["if"])
 
         if not unanticipated_conditions_str:
             raise ValueError(
