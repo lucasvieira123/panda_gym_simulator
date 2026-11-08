@@ -1,0 +1,50 @@
+{
+  "name": "RQ1.2 sequência curta",
+  "description": "Etapa 6 da RQ1.2: 0,17 -> 0,16 -> 0,14 -> 0,13 com --preserve-knowledge.",
+  "experiments": [
+    {
+      "name": "10_0_17",
+      "description": "lateral_friction=0.17 — pré-fronteira",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.17
+          }
+        }
+      }
+    },
+    {
+      "name": "11_0_16",
+      "description": "lateral_friction=0.16 — região crítica",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.16
+          }
+        }
+      }
+    },
+    {
+      "name": "15_0_140",
+      "description": "lateral_friction=0.140 — condição não antecipada conhecida",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.14
+          }
+        }
+      }
+    },
+    {
+      "name": "17_0_130",
+      "description": "lateral_friction=0.130 — condição não antecipada conhecida",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.13
+          }
+        }
+      }
+    }
+  ]
+}

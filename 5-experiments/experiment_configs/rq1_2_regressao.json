@@ -1,0 +1,39 @@
+{
+  "name": "RQ1.2 regressão da RQ1.1",
+  "description": "Etapa 4 da RQ1.2: 0,17, 0,14 e 0,04 com as correções das etapas 1-3, para comparar com a bateria da RQ1.1 (37fda0d).",
+  "experiments": [
+    {
+      "name": "10_0_17",
+      "description": "lateral_friction=0.17 — pré-fronteira",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.17
+          }
+        }
+      }
+    },
+    {
+      "name": "15_0_140",
+      "description": "lateral_friction=0.140 — condição não antecipada conhecida",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.14
+          }
+        }
+      }
+    },
+    {
+      "name": "23_0_040",
+      "description": "lateral_friction=0.040 — teste limite vacuum",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.04
+          }
+        }
+      }
+    }
+  ]
+}

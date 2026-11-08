@@ -23,6 +23,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import shutil
 import signal
 import subprocess
@@ -217,6 +218,20 @@ def _adaptation_result(events: list[dict], run: dict) -> dict:
     return {"status": "execution_error", "reason": "run_ended_without_result"}
 
 
+_EVOLVED_MATCH = re.compile(r"\[step=\s*(\d+)[^\]]*\]\[ASM\] \[E\] (\S+) → (\S+)")
+
+
+def _evolved_activations(outputs_dir: Path) -> list[dict]:
+    """Evolved scenarios the Manager's ASM matched (lines tagged [E] in its trace)."""
+    activations = []
+    for path in sorted((outputs_dir / "manager_traces").glob("*.log")):
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            match = _EVOLVED_MATCH.search(line)
+            if match:
+                activations.append({"step": int(match.group(1)), "from": match.group(2), "scenario": match.group(3)})
+    return activations
+
+
 def _scenario(outcome: dict) -> str:
     """A: sem violação. B e C: objetivo atingido na tentativa 1 ou 2. D: fail-safe. E: falha não detectada."""
     goal = outcome["physical"].get("global_goal_achieved")
@@ -234,7 +249,7 @@ def _scenario(outcome: dict) -> str:
     return "B" if attempts[-1]["attempt"] == 1 else "C"
 
 
-def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> dict:
+def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict, carried_from: str | None = None) -> dict:
     ticks  = _read_jsonl(outputs_dir / "managing_traces", "ticks_*.jsonl")
     events = _read_jsonl(outputs_dir / "dejavu_traces", "events_*.jsonl")
 
@@ -269,6 +284,11 @@ def _write_outcome(name: str, exp_dir: Path, outputs_dir: Path, run: dict) -> di
         ],
         "fail_safe": (episode_end or {}).get("detail") if (episode_end or {}).get("reason") == "fail_safe" else None,
         "asm_evolved": first("asm_evolution") is not None,
+        "asm_evolution_rejected": [{key: e.get(key) for key in ("reason", "detail", "step")}
+                                   for e in events if e["event"] == "evolution_rejected"],
+        # Knowledge preserved between runs (--preserve-knowledge): ASM and dataset of the previous run
+        "knowledge": {"preserved": carried_from is not None, "carried_from": carried_from},
+        "evolved_scenarios_activated": _evolved_activations(outputs_dir),
         "physical": {
             **(last_tick.get("physical_outcome") or {}),
             "dist_cube_to_target_m": last_tick.get("dist_cube_to_target"),
@@ -355,14 +375,16 @@ def _stop(proc: subprocess.Popen, label: str) -> None:
 # Run one experiment
 # ---------------------------------------------------------------------------
 
-def run_experiment(name: str, managing_timeout_s: int) -> None:
+def run_experiment(name: str, managing_timeout_s: int, carried: dict | None = None) -> dict | None:
+    """Runs one experiment. With `carried` (the previous run's knowledge), the run starts from that
+    run's ASM and dataset instead of the experiment's inputs. Returns this run's knowledge."""
     exp_dir    = RESULTS_DIR / name
     inputs_dir = exp_dir / "inputs"
     outputs_dir = exp_dir / "outputs"
 
     if not inputs_dir.exists():
         print(f"[SKIP] '{name}' — inputs not found. Run build_simulations.py first.")
-        return
+        return carried
 
     print(f"\n{'='*60}")
     print(f"  Experiment: {name}")
@@ -382,6 +404,14 @@ def run_experiment(name: str, managing_timeout_s: int) -> None:
         _clear_output_sources()
         _apply_inputs(inputs_dir)
         print("  [config]   Inputs applied to component configs.")
+        if carried:
+            shutil.copy2(carried["asm"], COMPONENT_DEST["manager"]["arm/asm.json"])
+            if DATASET_REAL.exists():
+                shutil.rmtree(DATASET_REAL)
+            shutil.copytree(carried["dataset"], DATASET_REAL)
+            print(f"  [knowledge] ASM and dataset carried from '{carried['from']}'.")
+        outputs_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(COMPONENT_DEST["manager"]["arm/asm.json"], outputs_dir / "asm_before_run.json")
 
         dejavu_proc  = _start_dejavu()
         manager_proc = _start_manager()
@@ -400,14 +430,16 @@ def run_experiment(name: str, managing_timeout_s: int) -> None:
         _collect_outputs(outputs_dir)
         _restore_base()
 
-    outcome = _write_outcome(name, exp_dir, outputs_dir, run)
+    outcome = _write_outcome(name, exp_dir, outputs_dir, run, carried_from=carried["from"] if carried else None)
     result  = outcome["adaptation_result"]
     print(f"  [outcome]  scenario={outcome['scenario']}  fail_safe={outcome['fail_safe']}  "
           f"adaptation={result['status']} ({result['reason']})  "
           f"sequence_completed={outcome['sequence']['completed']}  "
           f"global_goal={outcome['physical'].get('global_goal_achieved')}  "
+          f"evolved_activated={[a['scenario'] for a in outcome['evolved_scenarios_activated']]}  "
           f"timed_out={run['timed_out']}")
     print(f"  [done]     '{name}' complete.\n")
+    return {"from": name, "asm": outputs_dir / "asm_after_run.json", "dataset": outputs_dir / "dataset"}
 
 
 # ---------------------------------------------------------------------------
@@ -438,6 +470,12 @@ def main() -> None:
         default=600,
         help="Seconds before a run is stopped; recorded in outcome.json (default: 600).",
     )
+    parser.add_argument(
+        "--preserve-knowledge",
+        action="store_true",
+        help="Run the experiments as a sequence, in the order given: each one starts from the ASM and "
+             "the diagnoser dataset left by the previous one (RQ1.2). The first one starts from its inputs.",
+    )
     args = parser.parse_args()
 
     targets = args.experiments or _list_built()
@@ -446,9 +484,11 @@ def main() -> None:
         print("No built experiments found. Run build_simulations.py first.")
         sys.exit(1)
 
-    print(f"Experiments to run: {targets}")
+    print(f"Experiments to run: {targets}" + ("  (knowledge preserved between runs)" if args.preserve_knowledge else ""))
+    carried = None
     for name in targets:
-        run_experiment(name, args.managing_timeout)
+        knowledge = run_experiment(name, args.managing_timeout, carried)
+        carried = knowledge if args.preserve_knowledge else None
 
     print("All done.")
 

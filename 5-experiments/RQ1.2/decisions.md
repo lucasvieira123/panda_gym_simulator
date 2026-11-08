@@ -12,9 +12,9 @@ A RQ1.2 executa uma sequência de atritos decrescentes, de μ = 0,170 a μ = 0,0
 | 1. Correções P2 e P3 (AsmEvolver e Diagnoser), com testes unitários | Concluída (2026-11-08), sem commit; seção "Etapa 1" |
 | 2. Correção P4 (ASM-SM gerado do ASM) | Concluída (2026-11-08), sem commit; seção "Etapa 2" |
 | 3. Correções P1, P6 e Q1 (Manager e Managing) | Concluída (2026-11-08), sem commit; seção "Etapa 3" |
-| 4. Regressão da RQ1.1 (0,17, 0,14 e 0,04) | Não iniciada |
-| 5. Modo sequencial do runner (P0) | Não iniciada |
-| 6. Sequência curta 0,17 → 0,16 → 0,14 → 0,13 | Não iniciada |
+| 4. Regressão da RQ1.1 (0,17, 0,14 e 0,04) | Concluída (2026-11-08): iguais à bateria; seção "Etapa 4" |
+| 5. Modo sequencial do runner (P0) | Concluída (2026-11-08), sem commit; verificada na etapa 6 |
+| 6. Sequência curta 0,17 → 0,16 → 0,14 → 0,13 | Concluída (2026-11-08); seção "Etapa 6" |
 | 7. Sequência completa 0,170 → 0,010 | Não iniciada |
 
 ## Achados com o código atual (versão `77d013c`)
@@ -166,3 +166,42 @@ Leitura:
 - **Reutilização prevista:** depois das duas incorporações, a bancada prevê que os cenários evoluídos evitam a violação em 11 configurações (0,160 a 0,145 e 0,135 a 0,060). Em 0,040, 0,020 e 0,010, a sucção aplicada antes do escorregamento não basta, como o C1 na RQ1.1. Na sequência real, a violação seria do LIFT_OBJECT_VACUUM_ASSIST, e o DejaVu trataria a situação a partir dele.
 - **Q4:** 0,155 (sem violação na RQ1.1) passa a ativar o cenário de transporte; 0,135 (violação de transporte na RQ1.1) passa a ativar os dois.
 - **Limite:** isso é bancada. Só a sequência real (etapas 6 e 7) mostra o comportamento com Manager, DejaVu e ASM-SM.
+
+## Etapa 4 — Regressão da RQ1.1 com o sistema completo (2026-11-08)
+
+Os runs de 0,17, 0,14 e 0,04 foram refeitos pelo runner, com as correções das etapas 1 a 3 (até `b42fcbd`), as mesmas entradas da bateria (`diff -rq` sem diferenças) e o conhecimento reiniciado.
+
+- **Configuração:** `../experiment_configs/rq1_2_regressao.json`. **Evidências:** `regressao/results/`, ignorada pelo git.
+- **Comparação** (`regressao/comparar.py`): **0 diferenças** com a bateria nos três runs. Caminho (B, B, C), objetivo, distância final (1,6, 1,6 e 1,5 cm), último step, violação, diagnóstico, ranking com os scores, tentativas, resultados, decisões de retry e cenários evoluídos são iguais.
+- **Diferença esperada e não contada:** o campo `evolved_from` no cenário evoluído.
+- **Conclusão:** as correções não alteram a RQ1.1.
+
+## Etapa 5 — Modo sequencial do runner (P0)
+
+Mudanças em `../execute_simulations.py`:
+- **Opção `--preserve-knowledge`:** os runs seguem a ordem da linha de comando, e cada um começa com o ASM (`asm_after_run.json`) e o dataset (`outputs/dataset/`) do run anterior. O primeiro começa das suas entradas.
+- **Por run:** grava `outputs/asm_before_run.json`.
+- **No `outcome.json`**, novos campos:
+  - `knowledge` (se o conhecimento foi preservado e de qual run veio);
+  - `evolved_scenarios_activated` (linhas `[E]` do trace do Manager, com o step);
+  - `asm_evolution_rejected`.
+
+## Etapa 6 — Sequência curta com conhecimento preservado (2026-11-08)
+
+`execute_simulations.py --preserve-knowledge 10_0_17 11_0_16 15_0_140 17_0_130`.
+- **Configuração:** `../experiment_configs/rq1_2_sequencia_curta.json`.
+- **Evidências:** `sequencia/curta/`, ignorada pelo git. A tabela foi gerada por `sequencia/analisar.py`.
+- **Execução:** nenhum timeout ou erro. Em cada run, o ASM de entrada é o ASM de saída do anterior.
+
+| μ | Cenários evoluídos no ASM de entrada | Ativados pelo Manager | Violação | Adaptação | Caminho | Distância | Incorporado |
+|---|---|---|---|---|---|---|---|
+| 0,17 | — | — | TRANSPORT_OBJECT, step 41 | C6, sucesso | B | 1,6 cm | TRANSPORT_OBJECT_VACUUM_ASSIST, `lateral_friction <= 0.335` |
+| 0,16 | transporte | transporte, step 20 | — | — | A | 1,5 cm | — |
+| 0,14 | transporte | — | LIFT_OBJECT, step 23 | C1, sucesso | B | 1,6 cm | LIFT_OBJECT_VACUUM_ASSIST, `lateral_friction <= 0.15` |
+| 0,13 | transporte, lift | lift, step 15; transporte, step 19 | — | — | A | 1,4 cm | — |
+
+Leitura:
+- **Primeira reutilização observada.** Em 0,16 (que violou no transporte na RQ1.1) e em 0,13 (que violou no lift na RQ1.1), os cenários incorporados foram ativados pelo Manager antes do escorregamento. Não houve violação e o objetivo foi atingido. O Manager executou a sucção como adaptação interna (`APPLY_VACUUM_ASSIST`), sem o DejaVu.
+- **Limiar do lift.** Nesta sequência curta é 0,15, o ponto médio entre 0,16 (o run anterior mais próximo sem violação no lift) e 0,14, porque os runs de 0,155 a 0,145 não fazem parte dela. Na sequência completa, a reprodução prevê 0,1425.
+- **Score do C1 em 0,14:** 0,915 (0,962 na RQ1.1). O limiar diagnosticado mudou, e o C1 continuou em primeiro.
+- **Traces do Manager:** nenhuma condição não avaliada. O único `[WARN]` em 0,17 e 0,14 é o mesmo dos runs da bateria: a transição de domínio depois de uma adaptação.
