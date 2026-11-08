@@ -21,3 +21,6 @@ Thumbs.db
 
 # Experimentos — conteúdo de execução (inputs/outputs por run), não versionado
 5-experiments/**/results/
+
+# Figuras interativas (HTML com o Plotly embutido, ~4,6 MB cada); o script de cada figura as recria
+5-experiments/**/figures/**/*.html
