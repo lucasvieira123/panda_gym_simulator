@@ -7,7 +7,7 @@ For each built experiment (results/<name>/inputs/ must exist), this script:
   2. Launches DejaVu (Flask), Manager, and Managing as subprocesses.
   3. Waits for Managing to finish (it terminates after all episodes).
   4. Collects all outputs into results/<name>/outputs/.
-  5. Restores every component config from base/.
+  5. Restores the local component configs and dataset saved before the first run.
   6. Writes results/<name>/outcome.json with the run's explicit result.
 
 Usage:
@@ -115,20 +115,43 @@ def _apply_inputs(inputs_dir: Path) -> None:
     shutil.copytree(src_dataset, DATASET_REAL)
 
 
-def _restore_base() -> None:
-    """Restore all real component configs and dataset from the base snapshot."""
-    for component, files in COMPONENT_DEST.items():
-        for rel_path, dest in files.items():
-            src = BASE_DIR / component / rel_path
-            if src.exists():
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(src, dest)
+# Local component configs and dataset as they were before the first run. Each run applies its own
+# inputs over them, so restoring this state (and not base/) leaves the developer's files untouched.
+# Kept under results/ so that it survives an interrupted batch.
+LOCAL_STATE_DIR = RESULTS_DIR / "_local_state_before_runs"
 
+
+def _local_files() -> list[tuple[Path, Path]]:
+    return [(dest, LOCAL_STATE_DIR / component / rel_path)
+            for component, files in COMPONENT_DEST.items() for rel_path, dest in files.items()]
+
+
+def _save_local_state() -> None:
+    if LOCAL_STATE_DIR.exists():
+        # Left by an interrupted batch: it holds the original state, so it is kept
+        print(f"  [local]    Keeping the state saved by an interrupted batch: {LOCAL_STATE_DIR}")
+        return
+    for real, saved in _local_files():
+        if real.exists():
+            saved.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(real, saved)
+    if DATASET_REAL.exists():
+        shutil.copytree(DATASET_REAL, LOCAL_STATE_DIR / "dataset")
+    print(f"  [local]    Local configs and dataset saved to {LOCAL_STATE_DIR}")
+
+
+def _restore_local_state() -> None:
+    """Put back the local component configs and dataset saved before the first run."""
+    for real, saved in _local_files():
+        if saved.exists():
+            shutil.copy2(saved, real)
+        elif real.exists():
+            real.unlink()   # did not exist before the runs
     if DATASET_REAL.exists():
         shutil.rmtree(DATASET_REAL)
-    shutil.copytree(DATASET_BASE, DATASET_REAL)
-
-    print("  [restore] Base configs and dataset restored.")
+    if (LOCAL_STATE_DIR / "dataset").exists():
+        shutil.copytree(LOCAL_STATE_DIR / "dataset", DATASET_REAL)
+    print("  [restore] Local configs and dataset restored.")
 
 
 def _clear_output_sources() -> None:
@@ -425,10 +448,10 @@ def run_experiment(name: str, managing_timeout_s: int, carried: dict | None = No
             _stop(manager_proc, "manager")
         if dejavu_proc:
             _stop(dejavu_proc, "dejavu")
-        # Collect before restoring: _restore_base() replaces the dataset with base/ and
+        # Collect before restoring: the restore replaces the dataset folder and
         # would discard the CSV recorded in this run.
         _collect_outputs(outputs_dir)
-        _restore_base()
+        _restore_local_state()
 
     outcome = _write_outcome(name, exp_dir, outputs_dir, run, carried_from=carried["from"] if carried else None)
     result  = outcome["adaptation_result"]
@@ -485,10 +508,12 @@ def main() -> None:
         sys.exit(1)
 
     print(f"Experiments to run: {targets}" + ("  (knowledge preserved between runs)" if args.preserve_knowledge else ""))
+    _save_local_state()
     carried = None
     for name in targets:
         knowledge = run_experiment(name, args.managing_timeout, carried)
         carried = knowledge if args.preserve_knowledge else None
+    shutil.rmtree(LOCAL_STATE_DIR)   # every run already restored it
 
     print("All done.")
 

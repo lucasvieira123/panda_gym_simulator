@@ -190,7 +190,7 @@ Mudanças em `../execute_simulations.py`:
 
 `execute_simulations.py --preserve-knowledge 10_0_17 11_0_16 15_0_140 17_0_130`.
 - **Configuração:** `../experiment_configs/rq1_2_sequencia_curta.json`.
-- **Evidências:** `sequencia/curta/`, ignorada pelo git. A tabela foi gerada por `sequencia/analisar.py`.
+- **Evidências:** `sequencia/results/curta/`, ignorada pelo git. A tabela foi gerada por `sequencia/analisar.py`.
 - **Execução:** nenhum timeout ou erro. Em cada run, o ASM de entrada é o ASM de saída do anterior.
 
 | μ | Cenários evoluídos no ASM de entrada | Ativados pelo Manager | Violação | Adaptação | Caminho | Distância | Incorporado |
@@ -205,3 +205,47 @@ Leitura:
 - **Limiar do lift.** Nesta sequência curta é 0,15, o ponto médio entre 0,16 (o run anterior mais próximo sem violação no lift) e 0,14, porque os runs de 0,155 a 0,145 não fazem parte dela. Na sequência completa, a reprodução prevê 0,1425.
 - **Score do C1 em 0,14:** 0,915 (0,962 na RQ1.1). O limiar diagnosticado mudou, e o C1 continuou em primeiro.
 - **Traces do Manager:** nenhuma condição não avaliada. O único `[WARN]` em 0,17 e 0,14 é o mesmo dos runs da bateria: a transição de domínio depois de uma adaptação.
+
+## Testes do passo 3 (bloqueio do DejaVu depois de uma adaptação interna) — 2026-11-08
+
+Evidências em `testes/results/` (ignorada pelo git). Configuração: `../experiment_configs/rq1_2_teste_bloqueio.json`.
+
+**Teste 1 — 0,14 → 0,04, com `--preserve-knowledge`.**
+- **0,14:** caminho B. Incorpora o LIFT_OBJECT_VACUUM_ASSIST (`<= 0.15`).
+- **0,04, o que aconteceu:**
+  - o Manager ativou o cenário evoluído no step 15, e a sucção não segurou o cubo;
+  - o monitor detectou a violação do LIFT_OBJECT_VACUUM_ASSIST no step 23;
+  - o diagnóstico falhou: `Nenhuma feature estática encontrada para 'LIFT_OBJECT_VACUUM_ASSIST'`.
+- **Causa:** o Diagnoser só usa as execuções em que o cenário violado esteve ativo. Neste teste, só o próprio run de 0,04, então não havia com o que comparar. Na sequência completa, o cenário fica ativo e satisfeito de 0,135 a 0,060 antes de 0,04, o que dá histórico.
+- **Correção da P0b confirmada:** depois dos runs, os arquivos locais (22 CSVs e `environment.yaml`) ficaram idênticos ao estado anterior.
+
+**P8 — Pipeline do DejaVu falha e o run segue sem fail-safe** (decisão pendente, Q6).
+- No teste 1, sem recomendação, o Manager seguiu a sequência nominal com a garra vazia. O run "completou" com o cubo a 37,4 cm do alvo, sem adaptação e sem fail-safe. A falha foi detectada (evento `violation`), mas não foi tratada.
+- Na RQ1.1 isso nunca ocorreu, e a R6 tornava qualquer `execution_error` motivo para invalidar a bateria.
+- Para a sequência completa, não é esperado, pelo histórico descrito acima. Se ocorrer, é relatado como limitação.
+- **Q6:** um erro no pipeline (sem recomendação possível) deve acionar o fail-safe, com o motivo registrado? Recomendação: sim. A mudança só age quando há erro no pipeline, o que não aconteceu em nenhum run da RQ1.1.
+
+**Teste 2 — 0,14 → 0,06 → 0,04, com `--preserve-knowledge`.** Sem timeout ou erro, e o conhecimento passou corretamente entre os runs.
+
+| μ | Ativados pelo Manager | Violação | Diagnóstico | Adaptação | Caminho | Incorporado |
+|---|---|---|---|---|---|---|
+| 0,14 | — | LIFT_OBJECT, step 23 | `<= 0.32` | C1, sucesso | B | LIFT_OBJECT_VACUUM_ASSIST |
+| 0,06 | lift evoluído, step 15 | — | — | — | A | — |
+| 0,04 | lift evoluído, step 15 | LIFT_OBJECT_VACUUM_ASSIST, step 23 | `<= 0.05` | C2, sucesso | B | LIFT_OBJECT_VACUUM_ASSIST_ADJUST_GRIP_FORCE, Given `finger_contacts >= 2 AND lateral_friction <= 0.32 AND lateral_friction <= 0.05` |
+
+- **O bloqueio (P7) não ocorre neste caso, e o `main.py` não muda.**
+  - A tarefa de sucção termina e devolve o Managing ao TRANSPORT_OBJECT.
+  - O ASM do Manager avança para esse cenário de domínio pela troca de subtarefa (step 23), e isso desliga `_post_adaptation`. No step 24, a primeira tentativa do DejaVu foi enviada.
+  - O comportamento é determinístico, porque a tarefa sempre retoma o transporte. Uma falha do cenário evoluído de transporte não foi observada: na bancada, ele não falha em nenhum μ da sequência.
+- **O ranking mudou em 0,04: C2 (0,897) ficou à frente do C1 (0,887).**
+  - O limiar diagnosticado (`<= 0.05`) é estreito, e a sobreposição com o `lateral_friction <= 0.4` do Given do C1 diminui. Na RQ1.1 (`<= 0.27`), o C1 vencia.
+  - É efeito da métrica sobre uma região mais estreita, não um aprendizado de que a sucção falhou. O texto não deve sugerir isso.
+- **O cenário incorporado a partir de um cenário evoluído** herda o Given restringido da origem (`<= 0.32`), mais o diagnóstico (`<= 0.05`). A cláusula redundante é correta e pode ser simplificada na figura.
+
+**P0b — O runner alterava o ambiente local** (corrigido em 2026-11-08).
+- **O problema:** ao fim de cada run, `_restore_base()` copiava o `base/` sobre as configurações reais e a pasta de dataset. Com isso, apagava os 22 CSVs versionados em `3-dejavu/output/arm/antecipated_scenario_dataset/` e trocava o `environment.yaml` local.
+- **A correção:** o runner guarda o estado local antes do primeiro run (em `results/_local_state_before_runs`, que sobrevive a uma interrupção) e o restaura depois de cada run.
+- **Por que os experimentos não mudam:** o build gera os 9 arquivos de configuração e o dataset de cada experimento, e o runner aplica tudo antes do run.
+- **Verificação:**
+  - um teste isolado de salvar e restaurar;
+  - nos testes 1 e 2, os arquivos locais ficaram idênticos (md5) ao estado anterior.
