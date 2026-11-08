@@ -16,10 +16,18 @@ def _normalise(expr: str) -> str:
     )
 
 
+_reported_errors: set[str] = set()
+
+
 def _eval(expr: str, context: dict) -> bool:
     try:
         return bool(eval(_normalise(expr), {"__builtins__": {}}, context))
-    except Exception:
+    except Exception as e:
+        # A missing variable used to make a scenario silently inapplicable; report it once per message
+        message = f"{type(e).__name__}: {e}"
+        if message not in _reported_errors:
+            _reported_errors.add(message)
+            print(f"[{ts()}][ASM] [ERRO] condição '{expr}' não avaliada ({message}); tratada como falsa")
         return False
 
 

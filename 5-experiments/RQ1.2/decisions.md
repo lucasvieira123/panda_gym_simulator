@@ -10,8 +10,8 @@ A RQ1.2 executa uma sequência de atritos decrescentes, de μ = 0,170 a μ = 0,0
 |---|---|
 | 0. Investigação com o código atual | Concluída (2026-11-08); seção "Achados" e scripts em `reproducao/` |
 | 1. Correções P2 e P3 (AsmEvolver e Diagnoser), com testes unitários | Concluída (2026-11-08), sem commit; seção "Etapa 1" |
-| 2. Correção P4 (ASM-SM gerado do ASM) | Não iniciada; começa pela comparação do YAML |
-| 3. Correções P1, P6 e Q1 (Manager e Managing) | Não iniciada |
+| 2. Correção P4 (ASM-SM gerado do ASM) | Concluída (2026-11-08), sem commit; seção "Etapa 2" |
+| 3. Correções P1, P6 e Q1 (Manager e Managing) | Concluída (2026-11-08), sem commit; seção "Etapa 3" |
 | 4. Regressão da RQ1.1 (0,17, 0,14 e 0,04) | Não iniciada |
 | 5. Modo sequencial do runner (P0) | Não iniciada |
 | 6. Sequência curta 0,17 → 0,16 → 0,14 → 0,13 | Não iniciada |
@@ -103,6 +103,31 @@ Verificação com dados reais, sem simulador:
   - As ocorrências repetidas são recusadas por chave existente, e 0,040 (C2) por não cobrir a situação.
   - Essa reprodução ainda supõe que as ocorrências se repetem, como com o código antigo. Com P1, P4 e P6 corrigidos, elas devem ser tratadas pelos cenários evoluídos, o que só a sequência real mostra.
 
+## Etapa 2 — ASM-SM gerado do ASM (2026-11-08)
+
+Antes de mudar: o YAML do ASM-SM em `3-dejavu/configs/arm/` é idêntico, estado a estado, ao que `has_model_to_assm.py` gera a partir do `asm.json` inicial. Gerar o ASM-SM na inicialização, portanto, não muda nada com o ASM inicial.
+
+Mudanças:
+- **Monitor** (`antecipated_scenario_monitor.py`): gera o ASM-SM do `asm.json` na inicialização, em vez de ler o YAML.
+- **Conversor** (`has_model_to_assm.py`): cenários evolutivos recebem o tipo `E`, e `NOT` é traduzido.
+- **AsmEvolver**: grava `evolved_from` (a chave do cenário de origem) no cenário novo. O Manager ignora o campo.
+- **Mapeador de eventos** (`subtask_events.py`, novo): traduz mudanças de subtarefa em eventos do ASM-SM.
+  - Cenários de domínio e adaptativos: mapa fixo, igual ao anterior.
+  - Cenários evoluídos: o evento só dispara quando o Managing sai da fase, isto é, das subtarefas do Do e do cenário de origem. **Motivo:** o Do de um cenário evoluído é só a ação do candidato (ex.: `apply_vacuum_assist()`), e a tarefa de origem (ex.: o transporte) retoma depois. O Then, herdado da origem, só vale ao fim das duas; checado no fim da sucção, o TRANSPORT_OBJECT_VACUUM_ASSIST acusaria uma violação falsa (objeto ainda a 30 cm do alvo).
+- **Contexto do ASM-SM** (`dejavu.py`): recebe da percepção as variáveis do ASM que não estão no contexto fixo, como `lateral_friction`. Com o ASM inicial, não há nenhuma.
+- **Documentação:** CLAUDE.md atualizado.
+
+Verificação:
+- **Testes:** `3-dejavu/tests/test_evolved_monitor.py` (8 testes; 39 no total, todos passando).
+  - O ASM-SM gerado do ASM inicial é igual ao YAML commitado, e os eventos de domínio não mudam.
+  - Com o ASM das duas incorporações:
+    - 0,5 segue os cenários de domínio;
+    - 0,16 passa por TRANSPORT_OBJECT_VACUUM_ASSIST até FINAL, sem violação;
+    - 0,13 passa pelos dois cenários evoluídos até FINAL;
+    - 0,04 viola LIFT_OBJECT_VACUUM_ASSIST, e a nova incorporação parte dele.
+  - Com a regra de fase desligada, os três testes de cenários evoluídos falham.
+- **`reproducao/regressao_monitor_rq1_1.py`:** as percepções gravadas nos CSVs dos 25 runs da RQ1.1, passadas pelo monitor novo, dão o mesmo estado do ASM-SM e o mesmo `sat` em todos os ticks (0 diferenças). Contraprova: sem o evento de LIFT, o run nominal diverge em 44 ticks.
+
 ## Regras para o manuscrito
 
 | # | Regra |
@@ -111,3 +136,33 @@ Verificação com dados reais, sem simulador:
 | M2 | O limiar 0,1425 só é apresentado como resultado depois da sequência real. Antes disso, é reprodução a partir da RQ1.1, e o texto diz isso. |
 | M3 | A análise antiga (`../RQ1.0/RESULTS_RQ1.2.md`), que classificava 0,135 como LIFT_OBJECT com limiar estimado 0,3175, não é usada. Na bateria atual, 0,135 violou no transporte, com limiar 0,3175 em log. |
 | M4 | As correções P1–P4 e P6 são do framework e do exemplar, não do experimento. O artigo as descreve como parte da implementação usada na RQ1.2, e a regressão da etapa 4 mostra que não alteram a RQ1.1. |
+
+## Etapa 3 — Manager e Managing (2026-11-08)
+
+Mudanças:
+- **P1** (`1-manager/src/knowledge.py`): `lateral_friction` entra no contexto do ASM. Em `asm_evaluator.py`, uma condição que não pode ser avaliada é registrada uma vez no trace do Manager, em vez de virar falsa em silêncio.
+- **P6** (`1-manager/src/plan.py`): para um cenário `evolutionary`, o Manager envia o `do` (`apply_vacuum_assist()` vira `APPLY_VACUUM_ASSIST`). Para os adaptativos, continua enviando a chave (RETRY_GRASP, SAFE_ABORT).
+- **Q1** (`2-managing/src/tasks/object_delivery/grip_recovery_tasks.py`): se a tarefa de recuperação começa com os dois dedos em contato com o objeto, aplica o atrito e sobe até a altura de lift a partir da posição de repouso, sem reabrir a garra. Com 0 contatos, a rotina é a mesma da RQ1.1.
+- **Tempo de ativação**, conferido nos CSVs da bateria: `grasp_completed` vira 1 ainda em GRASP_OBJECT (2 ticks antes do LIFT_OBJECT), e a altura passa de 10 cm ainda em LIFT_OBJECT. Os cenários evoluídos são avaliados antes de o cenário de domínio avançar pela troca de subtarefa.
+
+Verificação:
+- **`1-manager/tests/test_evolved_asm.py`** (novo, 6 testes):
+  - o contexto tem `lateral_friction`;
+  - com o ASM das duas incorporações, o cenário de transporte evoluído casa em 0,16, e em 0,5 o Manager segue o TRANSPORT_OBJECT;
+  - o cenário de lift evoluído casa em 0,13 ao completar a pegada, e não em 0,16;
+  - o Planner envia `APPLY_VACUUM_ASSIST`, `RETRY_GRASP` e `SAFE_ABORT`;
+  - uma variável ausente é registrada.
+- **`bancada/bench_evolved.py`** (física, não o sistema completo): a sequência com a `VacuumAssistTask` de produção, o Manager imitado e o ASM crescendo como na sequência (transporte depois de 0,170; lift depois de 0,140). Resultado em `bancada/results/bench_evolved.csv`:
+
+| μ | ASM | Cenários evoluídos ativados | Violação | Objetivo |
+|---|---|---|---|---|
+| 0,170 | inicial | — | TRANSPORT, step 41 | não (sem DejaVu na bancada) |
+| 0,160; 0,155; 0,150; 0,145 | + transporte | transporte, step 21 | — | sim |
+| 0,140 | + transporte | — | LIFT, step 23 | não (sem DejaVu na bancada) |
+| 0,135 a 0,060 (7 valores) | + transporte + lift | lift, step 15; transporte, step 19–20 | — | sim |
+| 0,040; 0,020; 0,010 | + transporte + lift | lift, step 15 | LIFT, step 21 | não |
+
+Leitura:
+- **Reutilização prevista:** depois das duas incorporações, a bancada prevê que os cenários evoluídos evitam a violação em 11 configurações (0,160 a 0,145 e 0,135 a 0,060). Em 0,040, 0,020 e 0,010, a sucção aplicada antes do escorregamento não basta, como o C1 na RQ1.1. Na sequência real, a violação seria do LIFT_OBJECT_VACUUM_ASSIST, e o DejaVu trataria a situação a partir dele.
+- **Q4:** 0,155 (sem violação na RQ1.1) passa a ativar o cenário de transporte; 0,135 (violação de transporte na RQ1.1) passa a ativar os dois.
+- **Limite:** isso é bancada. Só a sequência real (etapas 6 e 7) mostra o comportamento com Manager, DejaVu e ASM-SM.

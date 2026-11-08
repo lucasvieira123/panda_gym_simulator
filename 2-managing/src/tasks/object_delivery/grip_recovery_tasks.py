@@ -11,6 +11,8 @@ from utils import ts
 #   adjust_grip_force()      → ajuste de força da garra, durante o lift
 #   increase_grip_pressure() → aumento de pressão da garra, durante o transporte
 # Depois de terminar, a sequência é retomada em TRANSPORT_OBJECT.
+# Quando a tarefa começa com o objeto seguro (cenário evoluído aplicado antes do escorregamento),
+# ela só ajusta o atrito e sobe até a altura de lift, sem nova pegada.
 
 _HOVER_HEIGHT    = 0.12   # altura de alinhamento acima do centro do cubo (m)
 _POSITION_TOL    = 0.005  # tolerância para fechar sobre o cubo (m)
@@ -47,6 +49,8 @@ class _GripRecoveryTask(_ObjectTask):
     ) -> None:
         super().__init__(sim, get_ee_position, get_object_position, target_goal_cfg, object_cfg, task_cfg)
         self._fingers_indices = fingers_indices
+        self._object_name     = object_cfg["name"]
+        self._rest_z          = float(object_cfg.get("initial_position", [0.0, 0.0, 0.0])[2])
         self.reset_phase()
 
     def reset(self) -> None:
@@ -69,7 +73,14 @@ class _GripRecoveryTask(_ObjectTask):
             for link in self._fingers_indices:
                 self.sim.set_lateral_friction("panda", int(link), self.grip_friction)
             print(f"[{ts()}][{self.current_subtask}] lateralFriction → {self.grip_friction} ✓")
-            self._phase = _PHASE_RISE
+            if self._object_held():
+                # Aplicada antes de o objeto escorregar (cenário evoluído do ASM): não reabre a garra,
+                # só sobe até a altura de lift a partir da posição de repouso (Q1, RQ1.2/decisions.md)
+                print(f"[{ts()}][{self.current_subtask}] Objeto já seguro — sem nova pegada")
+                self._base_z = self._rest_z
+                self._phase  = _PHASE_LIFT
+            else:
+                self._phase = _PHASE_RISE
 
         if self._phase == _PHASE_RISE:
             target = np.array([ee_pos[0], ee_pos[1], obj_pos[2] + _HOVER_HEIGHT])
@@ -103,6 +114,16 @@ class _GripRecoveryTask(_ObjectTask):
             return self._move_toward(ee_pos, target, gripper=-1.0)
 
         return np.array([0.0, 0.0, 0.0, -1.0], dtype=np.float32)
+
+    def _object_held(self) -> bool:
+        """Both fingers in contact with the object (same criterion as the finger contact sensor)."""
+        panda_id = self.sim._bodies_idx.get("panda")
+        obj_id   = self.sim._bodies_idx.get(self._object_name)
+        if panda_id is None or obj_id is None:
+            return False
+        pc = self.sim.physics_client
+        return all(pc.getContactPoints(bodyA=panda_id, bodyB=obj_id, linkIndexA=int(link))
+                   for link in self._fingers_indices)
 
     @staticmethod
     def _move_toward(ee_pos: np.ndarray, target: np.ndarray, gripper: float, speed: float = 1.0) -> np.ndarray:
