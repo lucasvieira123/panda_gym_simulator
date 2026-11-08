@@ -16,6 +16,7 @@ def normalize_expr(expr: str) -> str:
         return "True"
     expr = re.sub(r'\bAND\b', 'and', expr)
     expr = re.sub(r'\bOR\b',  'or',  expr)
+    expr = re.sub(r'\bNOT\b', 'not', expr)
     expr = re.sub(r'\btrue\b',  'True',  expr)
     expr = re.sub(r'\bfalse\b', 'False', expr)
     return expr
@@ -95,7 +96,7 @@ def has_to_assm(has_model: dict) -> dict:
         then_expr  = normalize_expr(s["then"])
         do_action  = s["do"]
         name       = s["name"]
-        s_type     = "A" if s.get("type") == "adaptive" else "D"
+        s_type     = {"adaptive": "A", "evolutionary": "E"}.get(s.get("type"), "D")
         on_entry   = _on_entry(name, s_type)
 
         # PHI_n — checks Given
@@ -210,6 +211,12 @@ def to_yaml(assm: dict) -> str:
         default_flow_style=False,
         sort_keys=False,
     )
+
+
+def assm_yaml_from_asm_file(asm_path: str | Path) -> str:
+    """ASM-SM (Sismic YAML) generated from an ASM file, so the monitor follows the evolved ASM."""
+    with open(asm_path, encoding="utf-8") as f:
+        return to_yaml(has_to_assm(json.load(f)))
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

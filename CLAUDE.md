@@ -58,9 +58,11 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 |------|------|
 | `src/dejavu.py` | Main orchestrator and Flask API server |
 | `src/api.py` | API endpoints — receives ticks from Manager, returns DejaVu state |
-| `src/antecipated_scenario_monitor.py` | Runs Sismic state machine against each tick; writes dataset CSVs to `output/arm/antecipated_scenario_dataset/` |
+| `src/antecipated_scenario_monitor.py` | Runs the Sismic state machine (ASM-SM) against each tick. The ASM-SM is generated at startup from the ASM (`asm.json`), so evolved scenarios are monitored |
+| `src/has_model_to_assm.py` | ASM → ASM-SM transformation (Sismic YAML) |
+| `src/subtask_events.py` | Maps the managed system's subtask changes to ASM-SM events; an evolved scenario's event fires when the managed system leaves its phase (its Do plus the origin scenario's task) |
 | `src/unanticipated_scenario_identifier.py` | Finds which anticipated scenario was violated; negates its violated `then` clauses to build the new `given` |
-| `src/unanticipated_scenario_diagnoser.py` | Trains a decision tree (execution-level, static features only) on historical CSV data; extracts `false_rules` as causal conditions |
+| `src/unanticipated_scenario_diagnoser.py` | Trains a decision tree (execution-level, static features only) on historical CSV data; the causal conditions are the tree path of the current run |
 | `src/similarity_based_adapter.py` | Loads `scenario_catalogue.json`; ranks candidates by DejaVu similarity against the diagnosed scenario |
 | `src/trace_printer.py` | Formats trace logs (tick, pipeline stages: DETECT → IDENTIFY → DIAGNOSE → SIMILARITIES) |
 | `src/scenario/` | Data classes: `Scenario`, `AntecipatedScenario`, `DiagnosedScenario`, `CandidateScenario` |
@@ -68,7 +70,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 | `src/similarity/dejavu_similarity.py` | Core similarity metric: parameter Jaccard (weighted) + conditional Tversky penalty |
 | `src/similarity/when_filter.py` | Applicability filter: only candidates with a matching When reach the similarity calculation |
 | `src/adaptation_evaluator.py` | Ends each adaptation in `success`, `failure`, `timeout` or `execution_error` |
-| `src/asm_evolver.py` | Adds a validated adaptation to the ASM |
+| `src/asm_evolver.py` | Adds a validated adaptation to the ASM; rejects it (`evolution_rejected`) when the key exists or the new Given does not cover the observed situation |
 | `src/run_events.py` | Writes the run's pipeline events (`events_*.jsonl`) |
 | `src/retry_policy.py` | After a failed attempt, chooses the next ranked candidate or the fail-safe (at most 2 attempts) |
 | `src/constants.py` | `PROJECT_ROOT` resolution; `DEJAVU_CONF_PATH` |
@@ -79,7 +81,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 | File | Purpose |
 |------|---------|
 | `configs/dejavu_conf.yaml` | Central config — all paths resolved from here via `PROJECT_ROOT` |
-| `configs/arm/scenario_state_machine.yaml` | Sismic state machine for the ARM pick-and-place task |
+| `configs/arm/scenario_state_machine.yaml` | ASM-SM of the initial ASM, kept as reference (the monitor generates it from `asm.json`; a test checks they match) |
 | `configs/arm/scenario_catalogue.json` | Candidates C1–C5 (lift) and C6–C8 (transport), with `monitored_parameters` (uses `min_value`/`max_value`). `apply_vacuum_assist()`, `adjust_grip_force()` and `increase_grip_pressure()` have a physical implementation |
 | `configs/weights_config.yaml` | Similarity weights: Tversky α/β, per-clause weights (`given`, `when`, `then`) |
 

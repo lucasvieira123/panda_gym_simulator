@@ -4,7 +4,8 @@ from sismic.io import import_from_yaml
 from sismic.interpreter import Interpreter
 import re
 
-from constants import DEJAVU_CONF_PATH
+from constants import DEJAVU_CONF_PATH, PROJECT_ROOT
+from has_model_to_assm import assm_yaml_from_asm_file
 from utils import load_config
 
 PATTERN = re.compile(r"^\s*(?P<action>.*?)\s*\(\s*(?P<scenario>.*?)\s*\)\s*$")
@@ -14,10 +15,13 @@ RESET = "\033[0m"
 
 
 class StateMachineEngine:
-    def __init__(self, _initial_context: dict) -> None:
+    def __init__(self, _initial_context: dict, asm_path=None) -> None:
         self.cfg = load_config(DEJAVU_CONF_PATH)
 
-        self.state_machine = import_from_yaml(filepath=self.cfg["scenario_state_machine_yaml"])
+        # The ASM-SM is generated from the current ASM, so scenarios added by the AsmEvolver are
+        # monitored in later runs. For the initial ASM it equals configs/arm/scenario_state_machine.yaml.
+        asm_path = asm_path or PROJECT_ROOT / self.cfg["anticipated_scenarios_path"]
+        self.state_machine = import_from_yaml(text=assm_yaml_from_asm_file(asm_path))
         self.itp = Interpreter(self.state_machine, initial_context=_initial_context)
 
         self._last_sat: bool | None = None
@@ -53,6 +57,12 @@ class StateMachineEngine:
 
         # print("MACROSTEP:", ms)
         # print("CURRENT STATE:", self.state_infos())
+
+    def awaited_events(self) -> set[str]:
+        """Events that fire a transition from the current configuration."""
+        sc = self.itp.statechart
+        return {t.event for name in self.itp.configuration if name != "root"
+                for t in sc.transitions_from(name) if t.event}
 
     def update_context(self, runtime_data_tick: dict):
         self.itp.context.update(runtime_data_tick)

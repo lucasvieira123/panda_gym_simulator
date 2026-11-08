@@ -166,6 +166,9 @@ class AsmEvolver:
             "when":  original["when"],
             "do":    new_do,
             "then":  original["then"],
+            # The monitor checks Then when the managed system leaves the phase made of this Do and
+            # the origin's task (e.g. transport resumes after the assist), not when the Do ends.
+            "evolved_from": violated_key,
         }
         asm["scenarios"][new_key] = new_scenario
 

@@ -34,6 +34,7 @@ from trace_printer import (
 )
 from retry_policy import decide_after_attempt
 from run_events import RunEventLog
+from subtask_events import SubtaskEventMapper
 
 # Contexto inicial da state machine ARM — valores neutros/seguros
 _SM_INITIAL = {
@@ -51,37 +52,25 @@ _SM_INITIAL = {
     "current_subtask":         "",   # "" = modo adaptativo; non-empty = domínio
 }
 
-# current_subtask (uppercase) → evento Sismic da state machine ARM
-_SUBTASK_TO_ACTION = {
-    "APPROACH_OBJECT": "approach_object() (APPROACH_OBJECT)",
-    "GRASP_OBJECT":    "close_gripper() (GRASP_OBJECT)",
-    "RETRY_GRASP":     "retry_grasp() (RETRY_GRASP)",
-    "SAFE_ABORT":      "abort_grasp() (SAFE_ABORT)",
-    "LIFT_OBJECT":     "lift_object() (LIFT_OBJECT)",
-    "TRANSPORT_OBJECT":"transport_to_goal() (TRANSPORT_OBJECT)",
-    "PLACE_OBJECT":    "place_object() (PLACE_OBJECT)",
-}
-
-
-def _sm_params(perception: dict, prev_subtask: str | None) -> tuple[dict, str | None, bool]:
+def _sm_params(perception: dict, prev_subtask: str | None, mapper: SubtaskEventMapper,
+               awaited_events: set[str]) -> tuple[dict, str | None, bool]:
     subtask = (perception.get("current_subtask") or "").upper()
 
-    # ── ROLLBACK ──────────────────────────────────────────────────────────────
-    # Comportamento original: dispara a ação apenas quando current_subtask muda.
-    # Problema: quando is_success=True o episódio encerra sem nova mudança de
-    # subtask, então place_object() nunca dispara e o SM nunca alcança FINAL.
-    # Para reverter: descomenta a linha abaixo e apaga o bloco novo.
-    # action = _SUBTASK_TO_ACTION.get(prev_subtask) if (subtask != (prev_subtask or "") and prev_subtask) else None
-    # ──────────────────────────────────────────────────────────────────────────
-
+    # Dispara a ação quando current_subtask muda ou quando is_success encerra o episódio sem
+    # nova mudança (senão place_object() nunca dispara e o SM nunca alcança FINAL). O evento de
+    # um cenário evoluído só dispara ao sair da sua fase (ver subtask_events.py).
     subtask_changed = subtask != (prev_subtask or "") and prev_subtask
-    task_complete   = perception.get("is_success", False) and prev_subtask and not subtask_changed
-    action = _SUBTASK_TO_ACTION.get(prev_subtask) if (subtask_changed or task_complete) else None
+    task_complete   = bool(perception.get("is_success", False) and prev_subtask and not subtask_changed)
+    action = mapper.action(prev_subtask, subtask, task_complete, awaited_events)
     # Quando a ação é disparada por task_complete (is_success), o contexto atual já
     # reflete o estado pós-ação — não rebobinar para _prev_tick, pois os guards de
     # pós-condição (ex: PHI_27: gripper_width_cm >= 6) precisam do tick atual.
-    skip_rewind = bool(task_complete)
+    skip_rewind = task_complete
+    # Variáveis do ASM fora do contexto fixo (ex.: lateral_friction no Given de um cenário evoluído)
+    asm_variables = {v: perception[v] for v in mapper.variables
+                     if v not in _SM_INITIAL and perception.get(v) is not None}
     return {
+        **asm_variables,
         "task_started":            perception.get("task_started",            0),
         "object_available":        perception.get("object_available",        0),
         "gripper_width_cm":        perception.get("gripper_width_cm",        0),
@@ -173,6 +162,8 @@ def main() -> None:
     adapter    = SimilarityBasedAdapter()
     evaluator  = AdaptationEvaluator(max_eval_ticks=30)
     evolver    = AsmEvolver(asm_path)
+    with open(asm_path, encoding="utf-8") as f:
+        subtask_events = SubtaskEventMapper(json.load(f))  # ASM do início do run, o mesmo do monitor
 
     prev_subtask:  str | None   = None
     identified:    dict | None  = None
@@ -216,7 +207,8 @@ def main() -> None:
             evaluator.reset()
 
         # ── State machine ─────────────────────────────────────────────────────
-        sm_tick, prev_subtask, skip_rewind = _sm_params(perception, prev_subtask)
+        sm_tick, prev_subtask, skip_rewind = _sm_params(
+            perception, prev_subtask, subtask_events, monitor.state_machine_engine.awaited_events())
         monitor.handle_runtime_data(sm_tick, skip_rewind=skip_rewind)
 
         # ── Avaliação pós-adaptação ────────────────────────────────────────────
