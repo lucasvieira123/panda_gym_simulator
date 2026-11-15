@@ -1,0 +1,12 @@
+# Versions used to produce the RQ2 results and figures (Python 3.13.5, Windows 11)
+# Retriever (3-dejavu/src/similarity) and run_rq2.py
+sympy==1.14.0
+pyparsing==3.3.2
+wrapt==2.4.0
+PyYAML==6.0.3
+typing_extensions==4.16.0
+mpmath==1.3.0          # required by sympy
+# Figures (plot_rq2.py, generate_rq2_plotly.py); Kaleido 1.x needs Chrome or Chromium installed
+plotly==6.3.0
+narwhals==2.25.0       # required by plotly
+kaleido==1.0.0

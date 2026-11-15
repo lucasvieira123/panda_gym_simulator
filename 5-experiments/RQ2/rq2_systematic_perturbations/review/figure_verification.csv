@@ -1,0 +1,101 @@
+figure_label,configuration,candidate,given,csv_score,recomputed_score,csv_rank,recomputed_rank,score_read_from_marker,marker_offset_px,number_drawn,number_expected,number_attached_by,digits_to_own_marker_px,digits_to_nearest_other_marker_px,ok
+D0,B0,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.9125992063,0.9125992063,1,1,0.9126,+0.004,.913,.913,nearest marker,3.6,13.7,True
+D0,B0,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8965517241,0.8965517241,2,2,0.8966,-0.004,.897,.897,leader,8.1,14.7,True
+D0,B0,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,2.1,39.9,True
+D0,B0,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,39.7,True
+D0,B0,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.9,39.3,True
+D1,B1,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND object_shape_irregular == 1,0.8356761294,0.8356761294,3,3,0.8357,+0.001,.836,.836,nearest marker,3.5,7.6,True
+D1,B1,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND object_shape_irregular == 1,0.8421052632,0.8421052632,2,2,0.8421,+0.005,.842,.842,leader,6.1,2.1,True
+D1,B1,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND object_shape_irregular == 1,0.8768880952,0.8768880952,1,1,0.8769,-0.005,.877,.877,nearest marker,2.2,17.4,True
+D1,B1,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND object_shape_irregular == 1,0.7425933333,0.7425933333,4,4,0.7426,-0.003,.743,.743,nearest marker,1.6,35.6,True
+D1,B1,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND object_shape_irregular == 1,0.5419100000,0.5419100000,5,5,0.5419,+0.001,.542,.542,nearest marker,2.6,17.6,True
+D2,B2,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1,0.8356761294,0.8356761294,3,3,0.8357,+0.001,.836,.836,nearest marker,3.5,7.6,True
+D2,B2,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1,0.8421052632,0.8421052632,2,2,0.8421,+0.005,.842,.842,leader,19.6,9.8,True
+D2,B2,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1,0.8768880952,0.8768880952,1,1,0.8769,-0.005,.877,.877,nearest marker,2.2,17.1,True
+D2,B2,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1,0.6592600000,0.6592600000,4,4,0.6593,+0.002,.659,.659,nearest marker,1.9,33.5,True
+D2,B2,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1,0.5419100000,0.5419100000,5,5,0.5419,+0.001,.542,.542,nearest marker,1.9,29.2,True
+D3,B3,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2,0.8356761294,0.8356761294,2,2,0.8357,+0.001,.836,.836,nearest marker,3.5,7.6,True
+D3,B3,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2,0.8421052632,0.8421052632,1,1,0.8421,+0.005,.842,.842,nearest marker,3.2,7.3,True
+D3,B3,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2,0.7834536508,0.7834536508,3,3,0.7835,-0.001,.783,.783,nearest marker,1.5,16.5,True
+D3,B3,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2,0.6592600000,0.6592600000,4,4,0.6593,+0.002,.659,.659,nearest marker,2.2,5.3,True
+D3,B3,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2,0.6544833333,0.6544833333,5,5,0.6545,+0.005,.654,.654,leader,12.2,10.9,True
+D4,B4,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND objects_object_1_mass > 0.5,0.8356761294,0.8356761294,2,2,0.8357,+0.001,.836,.836,nearest marker,3.5,7.6,True
+D4,B4,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND objects_object_1_mass > 0.5,0.8421052632,0.8421052632,1,1,0.8421,+0.005,.842,.842,leader,8.2,12.3,True
+D4,B4,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND objects_object_1_mass > 0.5,0.7834536508,0.7834536508,3,3,0.7835,-0.001,.783,.783,nearest marker,1.5,16.6,True
+D4,B4,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND objects_object_1_mass > 0.5,0.6592600000,0.6592600000,4,4,0.6593,+0.002,.659,.659,nearest marker,2.9,16.2,True
+D4,B4,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND objects_object_1_mass > 0.5,0.5419100000,0.5419100000,5,5,0.5419,+0.001,.542,.542,nearest marker,1.7,52.7,True
+D5,B5,C1,object_lift_height_cm < 10 AND finger_contacts < 2,0.9682539683,0.9682539683,2,2,0.9683,+0.001,.968,.968,nearest marker,4.9,13.3,True
+D5,B5,C2,object_lift_height_cm < 10 AND finger_contacts < 2,1.0000000000,1.0000000000,1,1,1.0000,-0.002,1.000,1.000,nearest marker,2.6,13.7,True
+D5,B5,C3,object_lift_height_cm < 10 AND finger_contacts < 2,0.9198172872,0.9198172872,3,3,0.9198,-0.002,.920,.920,leader,10.5,20.6,True
+D5,B5,C4,object_lift_height_cm < 10 AND finger_contacts < 2,0.7956236364,0.7956236364,4,4,0.7956,+0.001,.796,.796,nearest marker,2.8,18.6,True
+D5,B5,C5,object_lift_height_cm < 10 AND finger_contacts < 2,0.6782736364,0.6782736364,5,5,0.6783,-0.000,.678,.678,nearest marker,2.2,23.8,True
+D6,B6,C1,object_lift_height_cm < 10 AND lateral_friction <= 0.1425,0.8609623016,0.8609623016,1,1,0.8610,+0.004,.861,.861,leader,13.3,20.8,True
+D6,B6,C2,object_lift_height_cm < 10 AND lateral_friction <= 0.1425,0.8333333333,0.8333333333,2,2,0.8333,-0.004,.833,.833,nearest marker,3.1,16.2,True
+D6,B6,C3,object_lift_height_cm < 10 AND lateral_friction <= 0.1425,0.7379988023,0.7379988023,3,3,0.7380,-0.004,.738,.738,nearest marker,1.2,28.3,True
+D6,B6,C4,object_lift_height_cm < 10 AND lateral_friction <= 0.1425,0.6441084848,0.6441084848,4,4,0.6441,+0.000,.644,.644,nearest marker,2.3,15.3,True
+D6,B6,C5,object_lift_height_cm < 10 AND lateral_friction <= 0.1425,0.4629633333,0.4629633333,5,5,0.4630,-0.005,.463,.463,nearest marker,1.4,78.2,True
+D7,B7,C1,finger_contacts < 2 AND lateral_friction <= 0.1425,0.8609623016,0.8609623016,1,1,0.8610,+0.004,.861,.861,nearest marker,3.3,13.5,True
+D7,B7,C2,finger_contacts < 2 AND lateral_friction <= 0.1425,0.8333333333,0.8333333333,2,2,0.8333,-0.004,.833,.833,leader,20.3,10.0,True
+D7,B7,C3,finger_contacts < 2 AND lateral_friction <= 0.1425,0.7986054690,0.7986054690,3,3,0.7986,+0.000,.799,.799,nearest marker,1.6,14.5,True
+D7,B7,C4,finger_contacts < 2 AND lateral_friction <= 0.1425,0.6441084848,0.6441084848,4,4,0.6441,+0.000,.644,.644,nearest marker,1.7,10.6,True
+D7,B7,C5,finger_contacts < 2 AND lateral_friction <= 0.1425,0.6144784848,0.6144784848,5,5,0.6145,-0.005,.614,.614,nearest marker,1.7,8.5,True
+D8,B8,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction < 0.1425,0.9125992063,0.9125992063,1,1,0.9126,+0.004,.913,.913,nearest marker,3.6,13.7,True
+D8,B8,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction < 0.1425,0.8965517241,0.8965517241,2,2,0.8966,-0.004,.897,.897,nearest marker,5.1,11.7,True
+D8,B8,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction < 0.1425,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,1.7,16.8,True
+D8,B8,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction < 0.1425,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,17.2,True
+D8,B8,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction < 0.1425,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.2,17.0,True
+D9,B9,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction > 0.1425,0.8873214286,0.8873214286,2,2,0.8873,-0.003,.887,.887,nearest marker,3.3,9.1,True
+D9,B9,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction > 0.1425,0.8965517241,0.8965517241,1,1,0.8966,-0.004,.897,.897,nearest marker,3.7,9.6,True
+D9,B9,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction > 0.1425,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,2.1,16.6,True
+D9,B9,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction > 0.1425,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,16.9,True
+D9,B9,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction > 0.1425,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.9,17.0,True
+D10,B10,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1069,0.9027103175,0.9027103175,1,1,0.9027,-0.002,.903,.903,nearest marker,3.8,7.7,True
+D10,B10,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1069,0.8965517241,0.8965517241,2,2,0.8966,-0.004,.897,.897,nearest marker,3.1,7.0,True
+D10,B10,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1069,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,1.7,16.8,True
+D10,B10,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1069,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,17.2,True
+D10,B10,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1069,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.9,17.3,True
+D11,B11,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.0356,0.8829047619,0.8829047619,2,2,0.8829,-0.002,.883,.883,nearest marker,3.5,10.7,True
+D11,B11,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.0356,0.8965517241,0.8965517241,1,1,0.8966,-0.004,.897,.897,nearest marker,3.7,12.4,True
+D11,B11,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.0356,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,2.1,16.8,True
+D11,B11,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.0356,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,17.1,True
+D11,B11,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.0356,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.9,17.2,True
+D12,B12,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19,0.9257936508,0.9257936508,1,1,0.9258,+0.005,.926,.926,nearest marker,3.2,19.9,True
+D12,B12,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19,0.8965517241,0.8965517241,2,2,0.8966,-0.004,.897,.897,nearest marker,3.1,17.0,True
+D12,B12,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,2.1,16.7,True
+D12,B12,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,2.6,16.9,True
+D12,B12,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,2.9,17.1,True
+D13,B13,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.57,0.9509880952,0.9509880952,1,1,0.9510,+0.000,.951,.951,nearest marker,2.2,27.4,True
+D13,B13,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.57,0.8965517241,0.8965517241,2,2,0.8966,-0.004,.897,.897,nearest marker,3.7,14.6,True
+D13,B13,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.57,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,1.7,16.8,True
+D13,B13,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.57,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,1.8,29.9,True
+D13,B13,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.57,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,1.8,14.6,True
+D14,B14,C1,object_lift_height_cm < 6 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8632169841,0.8632169841,1,1,0.8632,+0.002,.863,.863,nearest marker,3.3,8.3,True
+D14,B14,C2,object_lift_height_cm < 6 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8224783908,0.8224783908,2,2,0.8225,-0.002,.822,.822,nearest marker,3.2,11.1,True
+D14,B14,C3,object_lift_height_cm < 6 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.7712357476,0.7712357476,3,3,0.7712,-0.003,.771,.771,nearest marker,1.7,26.7,True
+D14,B14,C4,object_lift_height_cm < 6 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.6335737634,0.6335737634,4,4,0.6336,-0.005,.634,.634,nearest marker,2.6,15.5,True
+D14,B14,C5,object_lift_height_cm < 6 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.5552104301,0.5552104301,5,5,0.5552,-0.001,.555,.555,nearest marker,2.2,33.9,True
+D15,B15,C1,object_lift_height_cm < 19 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8570436508,0.8570436508,1,1,0.8570,+0.001,.857,.857,nearest marker,2.4,20.5,True
+D15,B15,C2,object_lift_height_cm < 19 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.8132183908,0.8132183908,2,2,0.8132,-0.000,.813,.813,nearest marker,3.5,8.1,True
+D15,B15,C3,object_lift_height_cm < 19 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.7973290809,0.7973290809,3,3,0.7973,+0.001,.797,.797,nearest marker,2.2,14.3,True
+D15,B15,C4,object_lift_height_cm < 19 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.6243137634,0.6243137634,5,5,0.6243,-0.003,.624,.624,nearest marker,1.6,19.5,True
+D15,B15,C5,object_lift_height_cm < 19 AND finger_contacts < 2 AND lateral_friction <= 0.1425,0.6692454301,0.6692454301,4,4,0.6692,-0.001,.669,.669,nearest marker,1.6,19.6,True
+D16,B16,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1 AND planned_lift_acceleration_m_s2 > 2,0.7875992063,0.7875992063,3,3,0.7876,-0.004,.788,.788,nearest marker,3.1,16.3,True
+D16,B16,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1 AND planned_lift_acceleration_m_s2 > 2,0.8085106383,0.8085106383,2,2,0.8085,-0.003,.809,.809,leader,7.4,9.9,True
+D16,B16,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1 AND planned_lift_acceleration_m_s2 > 2,0.8309697279,0.8309697279,1,1,0.8310,-0.002,.831,.831,nearest marker,2.3,18.5,True
+D16,B16,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1 AND planned_lift_acceleration_m_s2 > 2,0.6286477551,0.6286477551,4,4,0.6286,+0.004,.629,.629,nearest marker,1.5,6.1,True
+D16,B16,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.1425 AND grasp_alignment_error_cm > 1 AND planned_lift_acceleration_m_s2 > 2,0.6085649660,0.6085649660,5,5,0.6086,-0.002,.609,.609,nearest marker,1.5,5.5,True
+D17,B17,C1,object_lift_height_cm < 10,0.9285714286,0.9285714286,2,2,0.9286,+0.006,.929,.929,nearest marker,7.8,20.7,True
+D17,B17,C2,object_lift_height_cm < 10,0.9696969697,0.9696969697,1,1,0.9697,+0.005,.970,.970,nearest marker,2.8,19.6,True
+D17,B17,C3,object_lift_height_cm < 10,0.8428939072,0.8428939072,3,3,0.8429,+0.004,.843,.843,nearest marker,2.1,15.4,True
+D17,B17,C4,object_lift_height_cm < 10,0.7490035897,0.7490035897,4,4,0.7490,-0.001,.749,.749,nearest marker,2.0,16.4,True
+D17,B17,C5,object_lift_height_cm < 10,0.5439335897,0.5439335897,5,5,0.5439,+0.003,.544,.544,nearest marker,2.0,31.0,True
+D18,B18,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND objects_object_1_mass > 0.5,0.8730158730,0.8730158730,2,2,0.8730,+0.002,.873,.873,nearest marker,2.5,9.1,True
+D18,B18,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND objects_object_1_mass > 0.5,0.8965517241,0.8965517241,1,1,0.8966,-0.004,.897,.897,nearest marker,3.2,13.7,True
+D18,B18,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND objects_object_1_mass > 0.5,0.8318407476,0.8318407476,3,3,0.8318,+0.000,.832,.832,nearest marker,2.1,20.6,True
+D18,B18,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND objects_object_1_mass > 0.5,0.7076470968,0.7076470968,4,4,0.7076,+0.003,.708,.708,nearest marker,1.6,18.1,True
+D18,B18,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND objects_object_1_mass > 0.5,0.5902970968,0.5902970968,5,5,0.5903,+0.002,.590,.590,nearest marker,1.6,19.7,True
+D19,B19,C1,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19 AND object_shape_irregular == 1,0.8488705739,0.8488705739,2,2,0.8489,+0.002,.849,.849,leader,5.7,6.3,True
+D19,B19,C2,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19 AND object_shape_irregular == 1,0.8421052632,0.8421052632,3,3,0.8421,+0.005,.842,.842,nearest marker,3.6,7.9,True
+D19,B19,C3,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19 AND object_shape_irregular == 1,0.8768880952,0.8768880952,1,1,0.8769,-0.005,.877,.877,nearest marker,2.2,17.1,True
+D19,B19,C4,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19 AND object_shape_irregular == 1,0.7425933333,0.7425933333,4,4,0.7426,-0.003,.743,.743,nearest marker,1.3,14.1,True
+D19,B19,C5,object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.19 AND object_shape_irregular == 1,0.5419100000,0.5419100000,5,5,0.5419,+0.001,.542,.542,nearest marker,1.3,20.6,True

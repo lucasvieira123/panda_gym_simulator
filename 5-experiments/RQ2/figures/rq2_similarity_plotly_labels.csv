@@ -1,0 +1,21 @@
+paper_label,battery_id,block,group,modifications,description,top1,top3
+D11,D8,isolated,,M11,Add object_mass > 0.5,C2,C1 C2 C3
+D10,D10,isolated,,M10,Set object_lift_height_cm < 20,C1,C1 C2 C3
+D9,D9,isolated,,M9,Set object_lift_height_cm < 12,C1,C1 C2 C3
+D8,D7,isolated,,M8,Add payload_swing_risk == 1,C2,C1 C2 C3
+D7,D6,isolated,,M7,Add planned_lift_acceleration_m_s2 > 2,C2,C1 C2 C3
+D6,D5,isolated,,M6,Add grasp_alignment_error_cm > 1,C3,C1 C2 C3
+D5,D4,isolated,,M5,Add object_shape_irregular == 1,C3,C1 C2 C3
+D4,D11,isolated,,M4,Omit finger_contacts,C1,C1 C2 C3
+D3,D3,isolated,,M3,Omit lateral_friction,C2,C1 C2 C3
+D2,D2,isolated,,M2,Set lateral_friction >= 0.1425,C2,C1 C2 C3
+D1,D1,isolated,,M1,Set lateral_friction <= 0.25,C1,C1 C2 C3
+D0,D0,reference,,,Reference,C1,C1 C2 C3
+D12,D12,combined,,M5 + M6,Add object_shape_irregular == 1; Add grasp_alignment_error_cm > 1,C3,C1 C2 C3
+D13,D13,combined,,M3 + M5 + M6,Omit lateral_friction; Add object_shape_irregular == 1; Add grasp_alignment_error_cm > 1,C3,C1 C2 C3
+D14,D18,combined,,M9 + M5 + M6,Set object_lift_height_cm < 12; Add object_shape_irregular == 1; Add grasp_alignment_error_cm > 1,C3,C1 C2 C3
+D15,D19,combined,,M3 + M9 + M5 + M6,Omit lateral_friction; Set object_lift_height_cm < 12; Add object_shape_irregular == 1; Add grasp_alignment_error_cm > 1,C3,C1 C2 C3
+D16,D14,combined,,M7 + M8,Add planned_lift_acceleration_m_s2 > 2; Add payload_swing_risk == 1,C2,C1 C2 C3
+D17,D15,combined,,M3 + M7 + M8,Omit lateral_friction; Add planned_lift_acceleration_m_s2 > 2; Add payload_swing_risk == 1,C2,C1 C2 C3
+D18,D16,combined,,M10 + M7 + M8,Set object_lift_height_cm < 20; Add planned_lift_acceleration_m_s2 > 2; Add payload_swing_risk == 1,C5,C1 C2 C5
+D19,D17,combined,,M3 + M10 + M7 + M8,Omit lateral_friction; Set object_lift_height_cm < 20; Add planned_lift_acceleration_m_s2 > 2; Add payload_swing_risk == 1,C5,C2 C3 C5

@@ -1,0 +1,101 @@
+configuration,label,candidate,text,placement,side,gap_or_leader_px,own_marker_px,nearest_other_marker,nearest_other_px,clear,leader_crossings,reading_order_ok
+B15,D15,C1,.857,next to the marker,left,2.0,2.0,D15/C2,19.6,True,,True
+B15,D15,C2,.813,next to the marker,above,2.0,2.0,D15/C1,6.9,True,,True
+B15,D15,C3,.797,next to the marker,below,2.0,2.0,D15/C2,12.7,True,,True
+B15,D15,C4,.624,next to the marker,left,2.0,2.0,D15/C5,19.6,True,,True
+B15,D15,C5,.669,next to the marker,left,2.0,2.0,D15/C4,19.6,True,,True
+B14,D14,C1,.863,next to the marker,above-left,2.0,2.0,D15/C1,6.4,True,,True
+B14,D14,C2,.822,next to the marker,below,2.0,2.0,D14/C3,11.2,True,,True
+B14,D14,C3,.771,next to the marker,below,2.0,2.0,D13/C4,26.6,True,,True
+B14,D14,C4,.634,next to the marker,below,2.0,2.0,D15/C4,15.9,True,,True
+B14,D14,C5,.555,next to the marker,left,2.0,2.0,D15/C4,34.0,True,,True
+B13,D13,C1,.951,next to the marker,left,2.0,2.0,D13/C2,26.2,True,,True
+B13,D13,C2,.897,next to the marker,above,2.0,2.0,D13/C1,13.7,True,,True
+B13,D13,C3,.832,next to the marker,above,2.0,2.0,D14/C1,17.1,True,,True
+B13,D13,C4,.708,next to the marker,left,2.0,2.0,D14/C3,30.9,True,,True
+B13,D13,C5,.590,next to the marker,left,2.0,2.0,D14/C5,13.8,True,,True
+B12,D12,C1,.926,next to the marker,above,2.0,2.0,D13/C1,18.8,True,,True
+B12,D12,C2,.897,next to the marker,below,2.0,2.0,D11/C1,16.8,True,,True
+B12,D12,C3,.832,next to the marker,below,2.0,2.0,D13/C3,17.6,True,,True
+B12,D12,C4,.708,next to the marker,below,2.0,2.0,D13/C4,17.3,True,,True
+B12,D12,C5,.590,next to the marker,above,2.0,2.0,D13/C5,17.3,True,,True
+B11,D11,C1,.883,next to the marker,below,2.0,2.0,D11/C2,10.8,True,,True
+B11,D11,C2,.897,next to the marker,above,2.0,2.0,D11/C1,10.8,True,,True
+B11,D11,C3,.832,next to the marker,below,2.0,2.0,D10/C3,17.6,True,,True
+B11,D11,C4,.708,next to the marker,below,2.0,2.0,D10/C4,17.3,True,,True
+B11,D11,C5,.590,next to the marker,above,2.0,2.0,D10/C5,17.3,True,,True
+B10,D10,C1,.903,next to the marker,above,2.0,2.0,D10/C2,6.0,True,,True
+B10,D10,C2,.897,next to the marker,below,2.0,2.0,D10/C1,6.0,True,,True
+B10,D10,C3,.832,next to the marker,above,2.0,2.0,D11/C3,17.6,True,,True
+B10,D10,C4,.708,next to the marker,above,2.0,2.0,D11/C4,17.3,True,,True
+B10,D10,C5,.590,next to the marker,above,2.0,2.0,D11/C5,17.3,True,,True
+B9,D9,C1,.887,next to the marker,below,2.0,2.0,D9/C2,7.9,True,,True
+B9,D9,C2,.897,next to the marker,above,2.0,2.0,D9/C1,7.9,True,,True
+B9,D9,C3,.832,next to the marker,below,2.0,2.0,D10/C3,17.6,True,,True
+B9,D9,C4,.708,next to the marker,above,2.0,2.0,D10/C4,17.3,True,,True
+B9,D9,C5,.590,next to the marker,above,2.0,2.0,D10/C5,17.3,True,,True
+B8,D8,C1,.913,next to the marker,above,2.0,2.0,D8/C2,12.3,True,,True
+B8,D8,C2,.897,next to the marker,below,4.0,4.0,D9/C1,11.1,True,,True
+B8,D8,C3,.832,next to the marker,above,2.0,2.0,D7/C1,16.9,True,,True
+B8,D8,C4,.708,next to the marker,above,2.0,2.0,D9/C4,17.3,True,,True
+B8,D8,C5,.590,next to the marker,below,2.0,2.0,D9/C5,17.3,True,,True
+B7,D7,C1,.861,next to the marker,above,2.0,2.0,D6/C1,12.3,True,,True
+B7,D7,C2,.833,leader,leader,17.3,18.8,D7/C3,10.7,by leader,0,True
+B7,D7,C3,.799,next to the marker,left,2.0,2.0,D8/C3,14.8,True,,True
+B7,D7,C4,.644,next to the marker,left,2.0,2.0,D7/C5,10.5,True,,True
+B7,D7,C5,.614,next to the marker,left,2.0,2.0,D7/C4,8.0,True,,True
+B6,D6,C1,.861,leader,leader,10.9,12.4,D7/C1,19.9,by leader,0,True
+B6,D6,C2,.833,next to the marker,below,2.0,2.0,D7/C3,17.2,True,,True
+B6,D6,C3,.738,next to the marker,left,2.0,2.0,D7/C3,29.1,True,,True
+B6,D6,C4,.644,next to the marker,below,2.0,2.0,D7/C5,15.9,True,,True
+B6,D6,C5,.463,next to the marker,left,2.0,2.0,D4/C5,78.9,True,,True
+B5,D5,C1,.968,next to the marker,left,4.0,4.0,D5/C2,11.9,True,,True
+B5,D5,C2,1.000,next to the marker,left,2.0,2.0,D5/C1,12.3,True,,True
+B5,D5,C3,.920,leader,leader,9.5,11.0,D5/C1,19.6,by leader,2,True
+B5,D5,C4,.796,next to the marker,above,2.0,2.0,D6/C2,17.9,True,,True
+B5,D5,C5,.678,next to the marker,above,2.0,2.0,D4/C4,23.8,True,,True
+B4,D4,C1,.836,next to the marker,below,2.0,2.0,D4/C2,6.1,True,,True
+B4,D4,C2,.842,leader,leader,4.9,6.4,D4/C1,10.5,by leader,0,True
+B4,D4,C3,.783,next to the marker,below,2.0,2.0,D3/C3,17.6,True,,True
+B4,D4,C4,.659,next to the marker,below,2.0,2.0,D3/C5,16.4,True,,True
+B4,D4,C5,.542,next to the marker,left,2.0,2.0,D6/C5,52.3,True,,True
+B3,D3,C1,.836,next to the marker,below,2.0,2.0,D3/C2,6.1,True,,True
+B3,D3,C2,.842,next to the marker,above,2.0,2.0,D3/C1,6.1,True,,True
+B3,D3,C3,.783,next to the marker,below,2.0,2.0,D4/C3,17.6,True,,True
+B3,D3,C4,.659,next to the marker,above,2.0,2.0,D3/C5,5.1,True,,True
+B3,D3,C5,.654,leader,leader,10.6,12.1,D2/C4,10.5,by leader,0,True
+B2,D2,C1,.836,next to the marker,below,2.0,2.0,D2/C2,6.1,True,,True
+B2,D2,C2,.842,leader,leader,17.3,18.8,D2/C3,10.7,by leader,1,True
+B2,D2,C3,.877,next to the marker,above,2.0,2.0,D1/C3,17.6,True,,True
+B2,D2,C4,.659,next to the marker,right,2.0,2.0,D3/C4,33.6,True,,True
+B2,D2,C5,.542,next to the marker,left,2.0,2.0,D4/C5,29.6,True,,True
+B1,D1,C1,.836,next to the marker,below,2.0,2.0,D1/C2,6.1,True,,True
+B1,D1,C2,.842,leader,leader,3.2,4.7,D2/C3,2.7,by leader,0,True
+B1,D1,C3,.877,next to the marker,above,2.0,2.0,D2/C3,17.6,True,,True
+B1,D1,C4,.743,next to the marker,left,2.0,2.0,D3/C3,36.2,True,,True
+B1,D1,C5,.542,next to the marker,above,2.0,2.0,D2/C5,17.3,True,,True
+B0,D0,C1,.913,next to the marker,above,2.0,2.0,D0/C2,12.3,True,,True
+B0,D0,C2,.897,leader,leader,4.9,6.4,D0/C3,15.4,by leader,0,True
+B0,D0,C3,.832,next to the marker,below,2.0,2.0,D16/C2,40.5,True,,True
+B0,D0,C4,.708,next to the marker,above,2.0,2.0,D1/C4,39.9,True,,True
+B0,D0,C5,.590,next to the marker,above,2.0,2.0,D16/C5,39.5,True,,True
+B16,D16,C1,.788,next to the marker,below,2.0,2.0,D16/C2,15.4,True,,True
+B16,D16,C2,.809,leader,leader,5.7,7.2,D16/C1,9.0,by leader,0,True
+B16,D16,C3,.831,next to the marker,above,2.0,2.0,D16/C2,16.9,True,,True
+B16,D16,C4,.629,next to the marker,right,2.0,2.0,D16/C5,5.6,True,,True
+B16,D16,C5,.609,next to the marker,right,2.0,2.0,D16/C4,5.6,True,,True
+B17,D17,C1,.929,next to the marker,left,7.0,7.0,D17/C2,19.9,True,,True
+B17,D17,C2,.970,next to the marker,left,2.0,2.0,D17/C1,17.9,True,,True
+B17,D17,C3,.843,next to the marker,below,2.0,2.0,D16/C3,16.3,True,,True
+B17,D17,C4,.749,next to the marker,left,2.0,2.0,D16/C1,15.6,True,,True
+B17,D17,C5,.544,next to the marker,left,2.0,2.0,D16/C5,31.1,True,,True
+B18,D18,C1,.873,next to the marker,left,2.0,2.0,D18/C2,7.7,True,,True
+B18,D18,C2,.897,next to the marker,above-right,2.0,2.0,D19/C3,13.4,True,,True
+B18,D18,C3,.832,next to the marker,below,2.0,2.0,D17/C3,20.8,True,,True
+B18,D18,C4,.708,next to the marker,left,2.0,2.0,D17/C4,17.8,True,,True
+B18,D18,C5,.590,next to the marker,left,2.0,2.0,D17/C5,19.5,True,,True
+B19,D19,C1,.849,leader,leader,3.8,5.3,D19/C2,6.7,by leader,0,True
+B19,D19,C2,.842,next to the marker,below,2.0,2.0,D19/C1,6.3,True,,True
+B19,D19,C3,.877,next to the marker,above,2.0,2.0,D18/C2,16.8,True,,True
+B19,D19,C4,.743,next to the marker,left,2.0,2.0,D18/C4,13.8,True,,True
+B19,D19,C5,.542,next to the marker,left,2.0,2.0,D18/C5,20.8,True,,True

@@ -1,0 +1,107 @@
+{
+  "metadata": {
+    "name": "Lift Scenarios Catalogue — Multi-Application"
+  },
+  "monitored_parameters": {
+    "object_available":        { "type": "int",   "min_value": 0,    "max_value": 10   },
+    "task_started":            { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "gripper_width_cm":        { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "distance_ee_object_cm":   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "grasp_completed":         { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "finger_contacts":         { "type": "int",   "min_value": 0,    "max_value": 5    },
+    "grasp_attempts":          { "type": "int",   "min_value": 0,    "max_value": 5    },
+    "object_lift_height_cm":   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "distance_object_goal_cm": { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "task_aborted":            { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "teste":                   { "type": "int",   "min_value": 0,    "max_value": 100  },
+    "lateral_friction":        { "type": "float", "min_value": 0.0,  "max_value": 2.0  },
+    "grip_pressure":           { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "vacuum_level":            { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "ambient_temperature":     { "type": "float", "min_value": 0.0,  "max_value": 60.0  },
+    "object_secured":          { "type": "int",   "min_value": 0,    "max_value": 1    },
+    "joint_torque":            { "type": "float", "min_value": 0.0,  "max_value": 20.0  },
+    "motor_temperature":       { "type": "float", "min_value": 0.0,  "max_value": 100.0 },
+    "objects_object_1_mass":   { "type": "float", "min_value": 0.0,  "max_value": 20.0  },
+    "object_shape_irregular":          { "type": "int",   "min_value": 0,   "max_value": 1     },
+    "grasp_alignment_error_cm":        { "type": "float", "min_value": 0.0, "max_value": 100.0 },
+    "underwater_current_speed_cm_s":   { "type": "float", "min_value": 0.0, "max_value": 100.0 },
+    "planned_lift_acceleration_m_s2":  { "type": "float", "min_value": 0.0, "max_value": 20.0  },
+    "payload_swing_risk":              { "type": "int",   "min_value": 0,   "max_value": 1     },
+    "payload_oscillation_deg":         { "type": "float", "min_value": 0.0, "max_value": 90.0  }
+  },
+  "scenarios": {
+
+    "suction_assisted_lift_recovery": {
+      "name": "Suction-Assisted Lift Recovery",
+      "application": "Warehouse logistics",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND lateral_friction <= 0.4",
+      "when":  "grasp_completed == 1",
+      "do":    "apply_vacuum_assist()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2 AND object_secured == 1"
+    },
+
+    "tactile_grip_force_recovery": {
+      "name": "Tactile Grip-Force Recovery",
+      "application": "Precision manufacturing",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2",
+      "when":  "grasp_completed == 1",
+      "do":    "adjust_grip_force()",
+      "then":  "object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+
+    "shape_adaptive_grasp_recovery": {
+      "name": "Shape-Adaptive Grasp Recovery",
+      "application": "Agricultural harvesting",
+      "given": "object_lift_height_cm < 12 AND finger_contacts < 2 AND object_shape_irregular == 1 AND grasp_alignment_error_cm > 1",
+      "when":  "grasp_completed == 1",
+      "do":    "adapt_grasp_to_object_shape()",
+      "then":  "object_lift_height_cm >= 12 AND finger_contacts >= 2 AND object_secured == 1"
+    },
+
+    "conformal_grasp_stabilisation": {
+      "name": "Conformal Grasp Stabilisation",
+      "application": "Underwater retrieval",
+      "given": "object_lift_height_cm < 10 AND finger_contacts < 2 AND object_shape_irregular == 1 AND underwater_current_speed_cm_s > 15",
+      "when":  "grasp_completed == 1",
+      "do":    "engage_conformal_grip()",
+      "then":  "object_lift_height_cm >= 12 AND object_secured == 1"
+    },
+
+    "dynamic_load_lift_stabilisation": {
+      "name": "Dynamic-Load Lift Stabilisation",
+      "application": "Aerial manipulation",
+      "given": "object_lift_height_cm < 20 AND finger_contacts < 2 AND planned_lift_acceleration_m_s2 > 2 AND payload_swing_risk == 1",
+      "when":  "grasp_completed == 1",
+      "do":    "reduce_lift_acceleration()",
+      "then":  "object_lift_height_cm >= 20 AND payload_oscillation_deg <= 5"
+    },
+
+    "transport_slip_recovery": {
+      "name": "Transport Slip Recovery",
+      "application": "Warehouse logistics",
+      "given": "distance_object_goal_cm > 5 AND finger_contacts < 2 AND lateral_friction <= 0.4",
+      "when":  "object_lift_height_cm >= 10",
+      "do":    "apply_vacuum_assist()",
+      "then":  "distance_object_goal_cm <= 5 AND object_lift_height_cm >= 10 AND finger_contacts >= 2"
+    },
+
+    "transport_grip_pressure_recovery": {
+      "name": "Transport Grip Pressure Recovery",
+      "application": "Industrial object handling",
+      "given": "distance_object_goal_cm > 5 AND grip_pressure < 40",
+      "when":  "object_lift_height_cm >= 10",
+      "do":    "increase_grip_pressure()",
+      "then":  "distance_object_goal_cm <= 5 AND grip_pressure >= 40"
+    },
+
+    "motor_overload_transport_recovery": {
+      "name": "Motor Overload Transport Recovery",
+      "application": "Heavy-load manipulation",
+      "given": "joint_torque > 8 AND motor_temperature > 60",
+      "when":  "object_lift_height_cm >= 10",
+      "do":    "reduce_transport_speed()",
+      "then":  "joint_torque < 5 AND motor_temperature <= 45"
+    }
+
+  }
+}

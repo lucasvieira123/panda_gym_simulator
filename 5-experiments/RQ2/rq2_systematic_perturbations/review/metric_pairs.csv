@@ -1,0 +1,11 @@
+scope,pair_kind,pairs,flagged_pair
+Battery B (B0-B19),equality/equality,104,
+Battery B (B0-B19),interval/interval,366,
+scored exploration,equality/equality,672,
+scored exploration,equality/interval,10,
+scored exploration,interval/interval,2305,
+scored exploration,interval/interval,,finger_contacts < 1 | finger_contacts < 2 -> Jaccard 0.0
+scored exploration,equality/interval,,finger_contacts == 2 | finger_contacts < 2 -> Jaccard 0.0
+scored exploration,equality/interval,,object_lift_height_cm == 10 | object_lift_height_cm < 10 -> Jaccard 0.0
+scored exploration,equality/interval,,object_lift_height_cm == 10 | object_lift_height_cm < 12 -> Jaccard 0.09091
+scored exploration,equality/interval,,object_lift_height_cm == 10 | object_lift_height_cm < 20 -> Jaccard 0.05263

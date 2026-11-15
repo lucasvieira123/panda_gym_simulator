@@ -1,0 +1,13 @@
+parameter,in_diagnoses,in_candidates,repository,exploratory,differs
+finger_contacts,True,True,"int [0, 5]","int [0, 5]",False
+grasp_alignment_error_cm,True,True,"float [0, 100]","float [0, 10]",True
+grasp_completed,True,True,"int [0, 1]","int [0, 1]",False
+lateral_friction,True,True,"float [0, 2]","float [0, 2]",False
+object_lift_height_cm,True,True,"int [0, 100]","float [0, 100]",True
+object_mass,True,False,absent,"float [0, 20]",True
+object_secured,False,True,"int [0, 1]","int [0, 1]",False
+object_shape_irregular,True,True,"int [0, 1]","int [0, 1]",False
+payload_oscillation_deg,False,True,"float [0, 90]","float [0, 90]",False
+payload_swing_risk,True,True,"int [0, 1]","int [0, 1]",False
+planned_lift_acceleration_m_s2,True,True,"float [0, 20]","float [0, 10]",True
+underwater_current_speed_cm_s,False,True,"float [0, 100]","float [0, 100]",False

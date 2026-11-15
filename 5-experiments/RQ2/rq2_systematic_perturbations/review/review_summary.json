@@ -1,0 +1,103 @@
+{
+  "metric_pairs": {
+    "Battery B (B0-B19)": {
+      "pairs": {
+        "interval/interval": 366,
+        "equality/equality": 104
+      },
+      "flagged": []
+    },
+    "scored exploration": {
+      "pairs": {
+        "interval/interval": 2305,
+        "equality/equality": 672,
+        "equality/interval": 10
+      },
+      "flagged": [
+        [
+          "finger_contacts < 1",
+          "finger_contacts < 2",
+          0.0,
+          "interval/interval"
+        ],
+        [
+          "finger_contacts == 2",
+          "finger_contacts < 2",
+          0.0,
+          "equality/interval"
+        ],
+        [
+          "object_lift_height_cm == 10",
+          "object_lift_height_cm < 10",
+          0.0,
+          "equality/interval"
+        ],
+        [
+          "object_lift_height_cm == 10",
+          "object_lift_height_cm < 12",
+          0.09091,
+          "equality/interval"
+        ],
+        [
+          "object_lift_height_cm == 10",
+          "object_lift_height_cm < 20",
+          0.05263,
+          "equality/interval"
+        ]
+      ]
+    }
+  },
+  "integer_convention": {
+    "convention_alternative": "integers measured by cardinality of admissible values (|A n B| / |A u B|); real-valued parameters unchanged",
+    "configurations_with_a_different_ranking": [],
+    "configurations_with_a_different_top1": [],
+    "configurations_with_a_different_top3_set": [],
+    "max_abs_score_difference": {
+      "Battery B": 0.00918,
+      "Battery A": 0.00509
+    },
+    "height_threshold_intensity_battery_b": {
+      "B14": {
+        "predicate": "object_lift_height_cm < 6",
+        "implementation": 0.44444,
+        "discrete": 0.4
+      },
+      "B15": {
+        "predicate": "object_lift_height_cm < 19",
+        "implementation": 0.5,
+        "discrete": 0.47368
+      }
+    }
+  },
+  "order3": {
+    "combinations": 214,
+    "excluded_empty_given": [
+      "B5 + B6 + B7"
+    ],
+    "scope": "every combination of three individual perturbations of Battery B touching three different parameters; an existence check, not a frequency estimate",
+    "top3_changed": [
+      {
+        "components": "B3 + B6 + B15",
+        "given": "object_lift_height_cm < 19 AND lateral_friction <= 0.1425 AND planned_lift_acceleration_m_s2 > 2",
+        "ranking_implementation": "C1 > C5 > C2 > C3 > C4",
+        "top3_changed_implementation": true,
+        "gap_2nd_3rd_implementation": "0.002579",
+        "gap_3rd_4th_implementation": "0.019576",
+        "score_C1_implementation": "0.682391",
+        "score_C2_implementation": "0.666667",
+        "score_C3_implementation": "0.647090",
+        "score_C4_implementation": "0.492593",
+        "score_C5_implementation": "0.669245",
+        "ranking_discrete": "C1 > C5 > C2 > C3 > C4",
+        "top3_changed_discrete": true,
+        "gap_2nd_3rd_discrete": "0.003424",
+        "gap_3rd_4th_discrete": "0.019536",
+        "score_C1_discrete": "0.686778",
+        "score_C2_discrete": "0.666667",
+        "score_C3_discrete": "0.647130",
+        "score_C4_discrete": "0.492673",
+        "score_C5_discrete": "0.670090"
+      }
+    ]
+  }
+}

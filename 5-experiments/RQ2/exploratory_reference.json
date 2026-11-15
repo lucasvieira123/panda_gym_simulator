@@ -1,0 +1,49 @@
+{
+  "description": "Validation reference only, not results: values of an independent reproduction of the DejaVu equations, given in the RQ2 specification (2026-11-09), rounded to 4 decimals. The definitive values are those of the production Retriever in output/.",
+  "scores": {
+    "D0":  {"C1": 0.9126, "C2": 0.8966, "C3": 0.8344, "C4": 0.7076, "C5": 0.5947},
+    "D1":  {"C1": 0.9425, "C2": 0.8966, "C3": 0.8344, "C4": 0.7076, "C5": 0.5947},
+    "D2":  {"C1": 0.8873, "C2": 0.8966, "C3": 0.8344, "C4": 0.7076, "C5": 0.5947},
+    "D3":  {"C1": 0.9683, "C2": 1.0000, "C3": 0.9223, "C4": 0.7956, "C5": 0.6827},
+    "D4":  {"C1": 0.8357, "C2": 0.8421, "C3": 0.8786, "C4": 0.7426, "C5": 0.5463},
+    "D5":  {"C1": 0.8357, "C2": 0.8421, "C3": 0.8786, "C4": 0.6593, "C5": 0.5463},
+    "D6":  {"C1": 0.8357, "C2": 0.8421, "C3": 0.7860, "C4": 0.6593, "C5": 0.6574},
+    "D7":  {"C1": 0.8357, "C2": 0.8421, "C3": 0.7860, "C4": 0.6593, "C5": 0.6574},
+    "D8":  {"C1": 0.8357, "C2": 0.8421, "C3": 0.7860, "C4": 0.6593, "C5": 0.5463},
+    "D9":  {"C1": 0.8941, "C2": 0.8688, "C3": 0.8621, "C4": 0.6799, "C5": 0.6114},
+    "D10": {"C1": 0.8570, "C2": 0.8132, "C3": 0.7955, "C4": 0.6243, "C5": 0.6780},
+    "D11": {"C1": 0.8610, "C2": 0.8333, "C3": 0.7430, "C4": 0.6441, "C5": 0.4630},
+    "D12": {"C1": 0.7876, "C2": 0.8085, "C3": 0.9053, "C4": 0.6967, "C5": 0.5157},
+    "D13": {"C1": 0.8217, "C2": 0.8421, "C3": 0.9665, "C4": 0.7426, "C5": 0.5463},
+    "D14": {"C1": 0.7876, "C2": 0.8085, "C3": 0.7554, "C4": 0.6286, "C5": 0.6934},
+    "D15": {"C1": 0.8217, "C2": 0.8421, "C3": 0.7860, "C4": 0.6593, "C5": 0.7546},
+    "D16": {"C1": 0.7320, "C2": 0.7252, "C3": 0.7165, "C4": 0.5453, "C5": 0.7351},
+    "D17": {"C1": 0.7384, "C2": 0.7588, "C3": 0.7471, "C4": 0.5759, "C5": 0.7963},
+    "D18": {"C1": 0.7691, "C2": 0.7807, "C3": 0.9192, "C4": 0.6782, "C5": 0.5324},
+    "D19": {"C1": 0.7940, "C2": 0.8143, "C3": 0.9804, "C4": 0.7241, "C5": 0.5630}
+  },
+  "top3": {
+    "D0": ["C1", "C2", "C3"], "D1": ["C1", "C2", "C3"], "D2": ["C2", "C1", "C3"],
+    "D3": ["C2", "C1", "C3"], "D4": ["C3", "C2", "C1"], "D5": ["C3", "C2", "C1"],
+    "D6": ["C2", "C1", "C3"], "D7": ["C2", "C1", "C3"], "D8": ["C2", "C1", "C3"],
+    "D9": ["C1", "C2", "C3"], "D10": ["C1", "C2", "C3"], "D11": ["C1", "C2", "C3"],
+    "D12": ["C3", "C2", "C1"], "D13": ["C3", "C2", "C1"], "D14": ["C2", "C1", "C3"],
+    "D15": ["C2", "C1", "C3"], "D16": ["C5", "C1", "C2"], "D17": ["C5", "C2", "C3"],
+    "D18": ["C3", "C2", "C1"], "D19": ["C3", "C2", "C1"]
+  },
+  "summary": {"top1_changed": 15, "top3_order_changed": 15, "top3_set_changed": 2, "exact_ties": 0},
+  "domains": {
+    "object_lift_height_cm":          {"type": "float", "min_value": 0, "max_value": 100},
+    "finger_contacts":                {"type": "int",   "min_value": 0, "max_value": 5},
+    "lateral_friction":               {"type": "float", "min_value": 0, "max_value": 2},
+    "grasp_completed":                {"type": "int",   "min_value": 0, "max_value": 1},
+    "object_secured":                 {"type": "int",   "min_value": 0, "max_value": 1},
+    "object_shape_irregular":         {"type": "int",   "min_value": 0, "max_value": 1},
+    "grasp_alignment_error_cm":       {"type": "float", "min_value": 0, "max_value": 10},
+    "underwater_current_speed_cm_s":  {"type": "float", "min_value": 0, "max_value": 100},
+    "planned_lift_acceleration_m_s2": {"type": "float", "min_value": 0, "max_value": 10},
+    "payload_swing_risk":             {"type": "int",   "min_value": 0, "max_value": 1},
+    "payload_oscillation_deg":        {"type": "float", "min_value": 0, "max_value": 90},
+    "object_mass":                    {"type": "float", "min_value": 0, "max_value": 20}
+  }
+}

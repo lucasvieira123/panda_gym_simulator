@@ -1,0 +1,21 @@
+configuration,ranking,top1,top2,top3,top1_score,margin_top1_top2,top1_changed,top2_set_changed,top3_set_changed,rank_C1,kendall_tau_vs_B0,exact_ties,margin_below_0.01
+B0,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.9125992063,0.0160474822,False,False,False,1,1.0,,False
+B1,C3 > C2 > C1 > C4 > C5,C3,C3 C2,C3 C2 C1,0.8768880952,0.0347828321,True,True,False,3,0.4,,False
+B2,C3 > C2 > C1 > C4 > C5,C3,C3 C2,C3 C2 C1,0.8768880952,0.0347828321,True,True,False,3,0.4,,False
+B3,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.8421052632,0.0064291337,True,False,False,2,0.8,,True
+B4,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.8421052632,0.0064291337,True,False,False,2,0.8,,True
+B5,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,1.0000000000,0.0317460317,True,False,False,2,0.8,,False
+B6,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.8609623016,0.0276289683,False,False,False,1,1.0,,False
+B7,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.8609623016,0.0276289683,False,False,False,1,1.0,,False
+B8,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.9125992063,0.0160474822,False,False,False,1,1.0,,False
+B9,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.8965517241,0.0092302956,True,False,False,2,0.8,,True
+B10,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.9027103175,0.0061585933,False,False,False,1,1.0,,True
+B11,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.8965517241,0.0136469622,True,False,False,2,0.8,,False
+B12,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.9257936508,0.0292419267,False,False,False,1,1.0,,False
+B13,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.9509880952,0.0544363711,False,False,False,1,1.0,,False
+B14,C1 > C2 > C3 > C4 > C5,C1,C1 C2,C1 C2 C3,0.8632169841,0.0407385933,False,False,False,1,1.0,,False
+B15,C1 > C2 > C3 > C5 > C4,C1,C1 C2,C1 C2 C3,0.8570436508,0.0438252600,False,False,False,1,0.8,,False
+B16,C3 > C2 > C1 > C4 > C5,C3,C3 C2,C3 C2 C1,0.8309697279,0.0224590896,True,True,False,3,0.4,,False
+B17,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.9696969697,0.0411255411,True,False,False,2,0.8,,False
+B18,C2 > C1 > C3 > C4 > C5,C2,C2 C1,C2 C1 C3,0.8965517241,0.0235358511,True,False,False,2,0.8,,False
+B19,C3 > C1 > C2 > C4 > C5,C3,C3 C1,C3 C1 C2,0.8768880952,0.0280175214,True,True,False,2,0.6,,False
