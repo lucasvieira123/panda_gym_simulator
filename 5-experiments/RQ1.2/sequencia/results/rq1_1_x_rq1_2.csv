@@ -1,0 +1,17 @@
+mu,rq1_1_violacao,rq1_1_tratado_por,rq1_1_caminho,rq1_1_objetivo,rq1_2_ativados,rq1_2_violacao,rq1_2_tratado_por,rq1_2_caminho,rq1_2_objetivo,rq1_2_distancia_cm,rq1_2_incorporado,rq1_2_recusado
+0.17,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,—,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,1.6,transport_object_vacuum_assist: finger_contacts >= 2 AND lateral_friction <= 0.335,—
+0.16,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,transporte (C6),—,conhecimento incorporado,A,True,1.5,—,—
+0.155,—,ASM inicial,A,True,transporte (C6),—,conhecimento incorporado,A,True,1.7,—,—
+0.15,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,transporte (C6),—,conhecimento incorporado,A,True,1.7,—,—
+0.145,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,transporte (C6),—,conhecimento incorporado,A,True,1.6,—,—
+0.14,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,—,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,1.6,lift_object_vacuum_assist: finger_contacts >= 2 AND lateral_friction <= 0.1425,—
+0.135,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.5,—,—
+0.13,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.3,—,—
+0.12,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.6,—,—
+0.11,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.6,—,—
+0.1,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.7,—,—
+0.08,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.7,—,—
+0.06,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.9,—,—
+0.04,LIFT_OBJECT,"DejaVú: Suction-Assisted Lift Recovery (failure), Tactile Grip-Force Recovery (success)",C,True,lift (C1),LIFT_OBJECT_VACUUM_ASSIST,DejaVú: Tactile Grip-Force Recovery (success),B,True,1.8,lift_object_vacuum_assist_adjust_grip_force: finger_contacts >= 2 AND lateral_friction <= 0.1425 AND lateral_friction <= 0.05,—
+0.02,LIFT_OBJECT,"DejaVú: Suction-Assisted Lift Recovery (failure), Tactile Grip-Force Recovery (failure)",D,False,"lift_object_vacuum_assist_adjust_grip_force, transporte (C6)",TRANSPORT_OBJECT_VACUUM_ASSIST,"DejaVú: Transport Slip Recovery (failure), Transport Grip Pressure Recovery (failure)",D,False,33.9,—,—
+0.01,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (timeout),D,False,lift_object_vacuum_assist_adjust_grip_force,LIFT_OBJECT_VACUUM_ASSIST_ADJUST_GRIP_FORCE,"DejaVú: Tactile Grip-Force Recovery (failure), Suction-Assisted Lift Recovery (failure)",D,False,20.7,—,—

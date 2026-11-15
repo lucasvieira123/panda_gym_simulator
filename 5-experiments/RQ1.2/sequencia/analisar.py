@@ -4,7 +4,7 @@ Para cada run, na ordem da sequência (pelo campo knowledge.carried_from): cená
 entrada, cenários evoluídos ativados pelo Manager, violação, diagnóstico, tentativas, caminho, objetivo e
 o que foi incorporado (ou recusado). Confere também que o ASM de entrada de cada run é o ASM de saída do
 run anterior. Uso, a partir da raiz do projeto:
-    python 5-experiments/RQ1.2/sequencia/analisar.py <pasta de resultados>
+    python 5-experiments/RQ1.2/sequencia/analisar.py <pasta de resultados> [<pasta da continuação> ...]
 """
 import csv
 import glob
@@ -54,8 +54,10 @@ def order(rows: list[dict]) -> list[dict]:
 
 
 def main():
-    folder = Path(sys.argv[1])
-    rows = order([load(p) for p in sorted(folder.iterdir()) if (p / "outcome.json").exists()])
+    # Várias pastas: uma sequência continuada em outro lote (--carry-from); a tabela vai para a pasta-mãe
+    folders = [Path(arg) for arg in sys.argv[1:]]
+    folder = folders[0] if len(folders) == 1 else folders[0].parent
+    rows = order([load(p) for f in folders for p in sorted(f.iterdir()) if (p / "outcome.json").exists()])
     problems = []
     for prev, cur in zip(rows, rows[1:]):
         if cur["asm_in"] != prev["asm_out"]:

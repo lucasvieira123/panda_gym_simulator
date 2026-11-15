@@ -1,0 +1,11 @@
+{
+  "name": "23_0_040",
+  "description": "lateral_friction=0.040 — refinamento do cenário de lift incorporado",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.04
+      }
+    }
+  }
+}

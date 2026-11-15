@@ -138,11 +138,20 @@
     "lift_object_vacuum_assist": {
       "name": "LIFT_OBJECT_VACUUM_ASSIST",
       "type": "evolutionary",
-      "given": "finger_contacts >= 2 AND lateral_friction <= 0.1425",
+      "given": "finger_contacts >= 2 AND lateral_friction <= 0.1425 AND lateral_friction > 0.05",
       "when": "grasp_completed == 1",
       "do": "apply_vacuum_assist()",
       "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2",
       "evolved_from": "lift_object"
+    },
+    "lift_object_vacuum_assist_adjust_grip_force": {
+      "name": "LIFT_OBJECT_VACUUM_ASSIST_ADJUST_GRIP_FORCE",
+      "type": "evolutionary",
+      "given": "finger_contacts >= 2 AND lateral_friction <= 0.1425 AND lateral_friction <= 0.05",
+      "when": "grasp_completed == 1",
+      "do": "adjust_grip_force()",
+      "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2",
+      "evolved_from": "lift_object_vacuum_assist"
     }
   },
   "transitions": [
@@ -228,6 +237,26 @@
     },
     {
       "from": "lift_object_vacuum_assist",
+      "to": "transport_object_vacuum_assist"
+    },
+    {
+      "from": "grasp_object",
+      "to": "lift_object_vacuum_assist_adjust_grip_force"
+    },
+    {
+      "from": "retry_grasp",
+      "to": "lift_object_vacuum_assist_adjust_grip_force"
+    },
+    {
+      "from": "lift_object_vacuum_assist_adjust_grip_force",
+      "to": "transport_object"
+    },
+    {
+      "from": "lift_object_vacuum_assist_adjust_grip_force",
+      "to": "safe_abort"
+    },
+    {
+      "from": "lift_object_vacuum_assist_adjust_grip_force",
       "to": "transport_object_vacuum_assist"
     }
   ]

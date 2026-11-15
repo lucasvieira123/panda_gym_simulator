@@ -16,6 +16,7 @@ A RQ1.2 executa uma sequência de atritos decrescentes, de μ = 0,170 a μ = 0,0
 | 5. Modo sequencial do runner (P0) | Concluída (2026-11-08), sem commit; verificada na etapa 6 |
 | 6. Sequência curta 0,17 → 0,16 → 0,14 → 0,13 | Concluída (2026-11-08); seção "Etapa 6" |
 | 7. Sequência 0,170 → 0,060 (escopo S1) | Concluída (2026-11-08); resultado da RQ1.2 na seção "Etapa 7" |
+| 8. Q6 e extensão 0,040 → 0,010 (escopo S1 revisto) | Concluída (2026-11-09); seção "Etapa 8" |
 
 ## Achados com o código atual (versão `77d013c`)
 
@@ -261,6 +262,26 @@ Evidências em `testes/results/` (ignorada pelo git). Configuração: `../experi
 | S5 | **Fora do escopo:** a Q6 (fail-safe quando o diagnóstico falha) e a E3 (o cenário criado em 0,040 nos testes) não são necessárias para a RQ1.2. A Q6 fica registrada como melhoria futura. |
 | S6 | As correções feitas para a RQ1.2 (P1–P4, P6) são descritas no artigo como parte do mecanismo (o Manager avalia cenários evoluídos com parâmetros contextuais; o ASM-SM é gerado do ASM evoluído), não como defeitos. A regressão (etapa 4) mostra que a RQ1.1 não muda. |
 
+**Revisão do escopo (2026-11-09).** S1, S4 e S5 mudam, e entra a S7; S2, S3 e S6 continuam valendo.
+- **S1 revista:** a sequência vai de 0,170 a 0,010 (os 16 valores da RQ1.1 dessa faixa). O trecho de 0,040 a 0,010 roda como continuação do 0,060 da sequência principal (Etapa 8). **Motivo:** mostrar também o que acontece quando o conhecimento incorporado não basta: o refinamento de um cenário incorporado (0,040) e o limite do catálogo, com parada segura (0,020 e 0,010).
+- **S4 revista:** a afirmação de que a segunda aplicação é "fisicamente redundante" vale só onde os dois cenários incorporados usam a sucção (0,05 < μ ≤ 0,1425). Em μ ≤ 0,05, o cenário de transporte reduz a pegada reforçada pelo de lift (Etapa 8). O refinamento deixa de ser trabalho futuro.
+- **S5 revista:** a Q6 foi aceita e implementada, porque o pipeline do artigo prevê o fail-safe quando o diagnóstico não é possível. A E3 (agora o cenário criado em 0,040 na sequência) faz parte da RQ1.2.
+- **S7 (nova): uma falha sem recuperação não altera o ASM.** Em 0,020, a E1 foi violada, C6 e C7 falharam e o run terminou em fail-safe. A E1 não é restringida, e nada é incorporado. **Motivos:**
+  1. A abordagem só evolui o ASM com uma adaptação validada (candidato com sucesso e objetivo global atingido), que fornece o Do do novo cenário.
+  2. O diagnóstico (`lateral_friction <= 0.04`) não aponta a causa observada, que é a E1 reduzir o atrito definido pela E3. Restringir a E1 por atrito registraria uma causa falsa.
+  3. Sem alternativa validada, restringir a E1 deixaria o transporte em μ ≤ 0,04 sem cenário previsto, e a próxima ocorrência terminaria do mesmo jeito (DejaVú, candidatos, fail-safe).
+  4. Retirar ou invalidar conhecimento sem substituto é outro mecanismo, de revisão de conhecimento, que não está no pipeline do artigo.
+  
+  **No artigo, cada ponto em sua seção:**
+
+  | Ponto | Seção | Motivo |
+  |---|---|---|
+  | O ASM só cresce com adaptações validadas | Descrição da abordagem (AsmEvolver) e desenho da RQ1.2 | É uma escolha de projeto: impede incorporar conhecimento não validado. Não é apresentada como limitação |
+  | Cenário incorporado falha, nenhum candidato recupera: o conhecimento fica como está e o sistema termina em fail-safe | Resultados da RQ1.2 (0,020 e 0,010) | É o comportamento observado, e seguro |
+  | Não há revisão do conhecimento incorporado que falhou sem substituto: ele continua a ser aplicado, e a mesma falha pode se repetir | Limitações e trabalho futuro | Consequência do ponto anterior |
+  | Interferência entre cenários incorporados de fases diferentes (abordagem): o ASM organiza o conhecimento por fase e não considera o efeito de uma adaptação anterior | Limitações e trabalho futuro (composição de adaptações entre fases) | Observada em 0,020 |
+  | Intensidade da interferência (experimento): cada candidato fixa o atrito dos dedos num valor absoluto | Ameaças à validade | Simplificação do simulador |
+
 ## Etapa 7 — Resultado da RQ1.2 (sequência 0,170 → 0,060, 2026-11-08)
 
 `execute_simulations.py --preserve-knowledge` com os 13 valores da RQ1.1 de 0,170 a 0,060, versão `20dd3bb`.
@@ -297,3 +318,64 @@ Resumo:
 | μ > 0,335 | LIFT_OBJECT (original) | TRANSPORT_OBJECT (original) |
 | 0,1425 < μ ≤ 0,335 | LIFT_OBJECT (original) | E1 (incorporado, C6) |
 | μ ≤ 0,1425 | E2 (incorporado, C1) | E1 (incorporado, C6) |
+
+## Etapa 8 — Q6 e extensão 0,040 → 0,010 (2026-11-09)
+
+**Q6 implementada.** Um erro no pipeline do DejaVú (sem diagnóstico ou sem ranking) leva ao fail-safe, com o motivo `pipeline_<etapa>`.
+- `3-dejavu/src/retry_policy.py`: `decide_after_pipeline_error(stage)`.
+- `3-dejavu/src/dejavu.py`: no erro do pipeline, registra a decisão (`retry_decision`, tentativa 0) e envia o fail-safe ao Manager, que o executa pelo mesmo caminho do `attempts_exhausted`.
+- `3-dejavu/tests/test_measurement.py`: 1 teste novo. Os 40 testes do DejaVú e os 6 do Manager passam.
+- **Não muda resultados anteriores:** nenhum run da RQ1.1 nem da Etapa 7 tem evento `pipeline_error`. Na extensão também não houve, então a Q6 não foi exercitada.
+
+**Runner:** `execute_simulations.py --carry-from <run>` faz o primeiro run do lote começar do ASM e do dataset deixados por um run já executado.
+
+**Execução.** `execute_simulations.py --preserve-knowledge --carry-from RQ1.2/sequencia/results/principal/22_0_060 23_0_040 24_0_020 25_0_010`.
+- **Configuração:** `../experiment_configs/rq1_2_sequencia_extensao.json`.
+- **Evidências:** `sequencia/results/extensao/`, ignorada pelo git.
+- **Tabelas:** `sequencia/analisar.py` e `sequencia/comparar_rq1_1.py` com as duas pastas (`principal` e `extensao`), que formam uma só cadeia.
+- **Verificação:**
+  - o ASM de entrada de cada run é o de saída do anterior, inclusive de 0,060 para 0,040;
+  - nenhum timeout nem erro de pipeline;
+  - o DejaVu Console não se conectou, como na Etapa 7, então a espera inicial é a mesma.
+
+| μ | RQ1.1 | RQ1.2 | Incorporado |
+|---|---|---|---|
+| 0,040 | violação LIFT; C1 falha, C2 recupera (C) | E2 ativada (step 15), a sucção não segura; violação de E2 (step 23); diagnóstico `<= 0.05`; C2 em 1º (0,897 × C1 0,887), sucesso (B); objetivo a 1,8 cm | **E3** LIFT_OBJECT_VACUUM_ASSIST_ADJUST_GRIP_FORCE, `... AND lateral_friction <= 0.05`, `adjust_grip_force()`; E2 restringida a `> 0.05` |
+| 0,020 | violação LIFT; C1 e C2 falham; fail-safe (D) | E3 ativada (step 15), o lift segura; E1 ativada (step 20); violação de E1 no transporte (step 40); diagnóstico `<= 0.04`; C6 e C7 falham; fail-safe `attempts_exhausted` (D) | — |
+| 0,010 | violação LIFT; C1 não termina, cubo cai da mesa; fail-safe (D) | E3 ativada (step 15), não segura; violação de E3 (step 23); diagnóstico `<= 0.015`; C2 e C1 falham; fail-safe `attempts_exhausted` (D) | — |
+
+Análise:
+- **Refinamento (0,040).** O cenário incorporado E2 é tratado como qualquer cenário violado:
+  - o Given de E2 é restringido pela negação do diagnóstico;
+  - E3 nasce de E2 (`evolved_from`) e herda as transições de E2.
+  - Com o histórico de E2 (0,135 a 0,060), o limiar fica entre o último sucesso e a falha.
+  - O C2 em 1º lugar é efeito da métrica sobre um limiar estreito (Etapa 6, teste 2), não um aprendizado.
+- **0,020: os cenários incorporados de fases diferentes interferem.**
+  - A ordem dos eventos foi esta:
+    - E3 fixa o atrito dos dedos em 7,0 (`lateralFriction → 7.0`, step 16), e o lift segura;
+    - E1 aplica a sucção e fixa o atrito em 3,0 (step 21), reduzindo a pegada;
+    - o cubo escorrega no transporte.
+  - E1 foi aprendido quando o lift usava a pegada nominal ou o C1 (atrito ≤ 3,0). Cada tarefa de recuperação fixa um valor absoluto de atrito, uma simplificação do simulador.
+  - Não dá para afirmar que, sem essa redução, o 0,020 teria sucesso. Com 7,0, o atrito efetivo é 0,14, abaixo do que o transporte exigiu na RQ1.1 (violações até μ = 0,170), e o C7 (7,0) também falhou como recuperação.
+- **0,010: limite do catálogo.**
+  - A pegada de E3 não segura (atrito efetivo de 0,07).
+  - O diagnóstico de E3 foi possível porque E3 tinha histórico do 0,020, onde o lift deu certo. A P8 não ocorreu.
+  - O C2, mesmo Do de E3, foi tentado primeiro, porque o ranking não exclui o Do do cenário violado.
+- **Sem evolução em 0,020 e 0,010:** o objetivo não foi atingido, então nada é incorporado.
+
+Resumo da sequência completa (16 configurações, 0,170 → 0,010):
+- **DejaVú acionado:** 15 na RQ1.1, 5 na RQ1.2 (3 incorporações e 2 fail-safes).
+- **Reutilização sem violação:** 11, como na Etapa 7.
+- **Objetivo:** 14/16 nas duas.
+- **ASM:** de 7 para 10 cenários (E1, E2, E3) e de 13 para 26 transições. `asm_evoluido_rq1_2.json` foi atualizado com o ASM final (o de saída de 0,040, igual ao de 0,010).
+
+Espaço comportamental resultante:
+
+| Faixa de μ | Lift | Transporte |
+|---|---|---|
+| μ > 0,335 | LIFT_OBJECT (original) | TRANSPORT_OBJECT (original) |
+| 0,1425 < μ ≤ 0,335 | LIFT_OBJECT (original) | E1 (C6) |
+| 0,05 < μ ≤ 0,1425 | E2 (C1) | E1 (C6) |
+| μ ≤ 0,05 | E3 (C2) | E1 (C6) |
+
+Validação de cada região: E1 de 0,160 a 0,060 (em 0,040 não chegou a ser ativado); E2 de 0,135 a 0,060; E3 só no lift de 0,020. Em μ ≤ 0,05, a combinação E3 + E1 não atingiu o objetivo em nenhum run.

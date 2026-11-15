@@ -4,7 +4,7 @@ Para cada μ da sequência: na RQ1.1, se houve violação e quem tratou; na RQ1.
 Manager ativou, se houve violação (e o DejaVú foi acionado) e o que foi incorporado. Lê os outcome.json e os
 eventos do DejaVú; não altera nada. Grava `rq1_1_x_rq1_2.csv` na pasta da sequência.
 Uso, a partir da raiz do projeto:
-    python 5-experiments/RQ1.2/sequencia/comparar_rq1_1.py <pasta da sequência>
+    python 5-experiments/RQ1.2/sequencia/comparar_rq1_1.py <pasta da sequência> [<pasta da continuação> ...]
 """
 import csv
 import glob
@@ -14,7 +14,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 RQ11 = HERE.parents[1] / "RQ1.1" / "bateria" / "results"
-SHORT = {"transport_object_vacuum_assist": "transporte (C6)", "lift_object_vacuum_assist": "lift (C1)"}
+SHORT = {"transport_object_vacuum_assist": "transporte (C6)", "lift_object_vacuum_assist": "lift (C1)",
+         "lift_object_vacuum_assist_adjust_grip_force": "lift (C2)"}
 
 
 def events(run: Path) -> list[dict]:
@@ -54,8 +55,10 @@ def rq12(run: Path) -> dict:
 
 
 def main():
-    folder = Path(sys.argv[1])
-    runs = {p.name: rq12(p) for p in folder.iterdir() if (p / "outcome.json").exists()}
+    # Várias pastas: uma sequência continuada em outro lote (--carry-from); a tabela vai para a pasta-mãe
+    folders = [Path(arg) for arg in sys.argv[1:]]
+    folder = folders[0] if len(folders) == 1 else folders[0].parent
+    runs = {p.name: rq12(p) for f in folders for p in f.iterdir() if (p / "outcome.json").exists()}
     first = next(n for n, r in runs.items() if r["carried_from"] is None)
     ordered, current = [], first
     while current:
