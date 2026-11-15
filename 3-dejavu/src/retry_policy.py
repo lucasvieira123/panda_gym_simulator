@@ -25,5 +25,13 @@ def decide_after_attempt(evaluation: dict, attempts_used: int, candidates_availa
     return {"action": "retry", "reason": evaluation["reason"]}
 
 
+def decide_after_pipeline_error(stage: str) -> dict:
+    """
+    A violation whose pipeline failed (e.g. no diagnosis for a scenario without runtime history)
+    leaves no candidate to try, so the run ends in the fail-safe, with the failed stage as the reason.
+    """
+    return _fail_safe(f"pipeline_{stage.lower()}")
+
+
 def _fail_safe(reason: str) -> dict:
     return {"action": "fail_safe", "reason": reason}

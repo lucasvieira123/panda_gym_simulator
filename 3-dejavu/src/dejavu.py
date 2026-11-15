@@ -32,7 +32,7 @@ from trace_printer import (
     format_retry_decision,
     format_asm_evolution,
 )
-from retry_policy import decide_after_attempt
+from retry_policy import decide_after_attempt, decide_after_pipeline_error
 from run_events import RunEventLog
 from subtask_events import SubtaskEventMapper
 
@@ -306,6 +306,11 @@ def main() -> None:
                 events.write("pipeline_error", **where, **pipeline_error, traceback=traceback.format_exc())
                 # identified guards the pipeline: it runs only once per episode, even after an error
                 identified = identified or {"name": scenario["name"], "error": pipeline_error}
+                # Without a diagnosis or a ranking there is no candidate: the Manager runs the fail-safe
+                decision = decide_after_pipeline_error(stage)
+                _log(writer, format_retry_decision(decision, 0))
+                events.write("retry_decision", **where, attempt=0, **decision)
+                fail_safe = {"reason": decision["reason"], "attempt": 0}
 
         # ── Log da avaliação (só quando activa) ──────────────────────────────
         if evaluation:

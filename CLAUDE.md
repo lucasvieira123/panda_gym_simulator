@@ -72,7 +72,7 @@ Manager (every tick) → api.py → AntecipatedScenarioMonitor
 | `src/adaptation_evaluator.py` | Ends each adaptation in `success`, `failure`, `timeout` or `execution_error` |
 | `src/asm_evolver.py` | Adds a validated adaptation to the ASM; rejects it (`evolution_rejected`) when the key exists or the new Given does not cover the observed situation |
 | `src/run_events.py` | Writes the run's pipeline events (`events_*.jsonl`) |
-| `src/retry_policy.py` | After a failed attempt, chooses the next ranked candidate or the fail-safe (at most 2 attempts) |
+| `src/retry_policy.py` | After a failed attempt, chooses the next ranked candidate or the fail-safe (at most 2 attempts); a pipeline error (no diagnosis or ranking) also ends in the fail-safe |
 | `src/constants.py` | `PROJECT_ROOT` resolution; `DEJAVU_CONF_PATH` |
 | `src/utils.py` | `load_config()` helper |
 

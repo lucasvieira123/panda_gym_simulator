@@ -18,7 +18,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from adaptation_evaluator import AdaptationEvaluator
 from dejavu import _adaptation_awaiting_evolution
-from retry_policy import decide_after_attempt
+from retry_policy import decide_after_attempt, decide_after_pipeline_error
 from similarity.dejavu_similarity import _calculate_jaccard_similarity, _get_relational_expression_region
 from unanticipated_scenario_diagnoser import UnanticipatedScenarioDiagnoser
 
@@ -156,6 +156,10 @@ class RetryPolicy(unittest.TestCase):
         for attempts, available, observed, reason in cases:
             decision = decide_after_attempt(self.FAILED, attempts, available, observed)
             self.assertEqual((decision["action"], decision["reason"]), ("fail_safe", reason))
+
+    def test_pipeline_error_ends_in_fail_safe(self):
+        decision = decide_after_pipeline_error("DIAGNOSE")
+        self.assertEqual((decision["action"], decision["reason"]), ("fail_safe", "pipeline_diagnose"))
 
 
 class EvolutionTiming(unittest.TestCase):
