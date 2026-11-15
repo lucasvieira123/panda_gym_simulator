@@ -499,7 +499,16 @@ def main() -> None:
         help="Run the experiments as a sequence, in the order given: each one starts from the ASM and "
              "the diagnoser dataset left by the previous one (RQ1.2). The first one starts from its inputs.",
     )
+    parser.add_argument(
+        "--carry-from",
+        type=Path,
+        default=None,
+        help="With --preserve-knowledge: folder of an executed run; the first experiment starts from the ASM "
+             "and the dataset that run left (outputs/asm_after_run.json and outputs/dataset), continuing its sequence.",
+    )
     args = parser.parse_args()
+    if args.carry_from and not args.preserve_knowledge:
+        parser.error("--carry-from requires --preserve-knowledge")
 
     targets = args.experiments or _list_built()
 
@@ -508,8 +517,15 @@ def main() -> None:
         sys.exit(1)
 
     print(f"Experiments to run: {targets}" + ("  (knowledge preserved between runs)" if args.preserve_knowledge else ""))
-    _save_local_state()
     carried = None
+    if args.carry_from:
+        previous = args.carry_from.resolve() / "outputs"
+        carried = {"from": args.carry_from.name, "asm": previous / "asm_after_run.json", "dataset": previous / "dataset"}
+        if not carried["asm"].exists() or not carried["dataset"].is_dir():
+            print(f"No ASM or dataset to carry in {previous}")
+            sys.exit(1)
+        print(f"First experiment continues from '{carried['from']}' ({previous})")
+    _save_local_state()
     for name in targets:
         knowledge = run_experiment(name, args.managing_timeout, carried)
         carried = knowledge if args.preserve_knowledge else None

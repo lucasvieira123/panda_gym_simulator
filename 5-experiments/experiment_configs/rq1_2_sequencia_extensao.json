@@ -1,0 +1,39 @@
+{
+  "name": "RQ1.2 extensão da sequência com conhecimento preservado",
+  "description": "Etapa 8 da RQ1.2: 0,040 -> 0,010, continuando o 0,060 da sequência principal (--preserve-knowledge --carry-from).",
+  "experiments": [
+    {
+      "name": "23_0_040",
+      "description": "lateral_friction=0.040 — refinamento do cenário de lift incorporado",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.04
+          }
+        }
+      }
+    },
+    {
+      "name": "24_0_020",
+      "description": "lateral_friction=0.020 — limite",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.02
+          }
+        }
+      }
+    },
+    {
+      "name": "25_0_010",
+      "description": "lateral_friction=0.010 — limite (extremo)",
+      "patches": {
+        "managing": {
+          "environment.yaml": {
+            "objects.0.lateral_friction": 0.01
+          }
+        }
+      }
+    }
+  ]
+}
