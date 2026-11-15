@@ -1,0 +1,11 @@
+{
+  "name": "04_0_50",
+  "description": "lateral_friction=0.50 — nominal",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.5
+      }
+    }
+  }
+}

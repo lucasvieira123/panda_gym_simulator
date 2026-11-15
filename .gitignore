@@ -22,5 +22,15 @@ Thumbs.db
 # Experimentos — conteúdo de execução (inputs/outputs por run), não versionado
 5-experiments/**/results/
 
+# Exceção: as baterias finais da RQ1.1 e da RQ1.2 entram no pacote de replicação, sem vídeos e logs
+# (os dados que as análises leem: CSV, JSON, JSONL e YAML). A sequência curta (piloto da etapa 6) fica de fora.
+!5-experiments/RQ1.1/bateria/results/
+!5-experiments/RQ1.2/sequencia/results/
+5-experiments/RQ1.2/sequencia/results/curta/
+5-experiments/RQ1.1/bateria/results/**/*.mp4
+5-experiments/RQ1.1/bateria/results/**/*.log
+5-experiments/RQ1.2/sequencia/results/**/*.mp4
+5-experiments/RQ1.2/sequencia/results/**/*.log
+
 # Figuras interativas (HTML com o Plotly embutido, ~4,6 MB cada); o script de cada figura as recria
 5-experiments/**/figures/**/*.html

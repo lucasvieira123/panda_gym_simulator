@@ -1,0 +1,50 @@
+{
+  "experiment": "12_0_155",
+  "lateral_friction": 0.155,
+  "run": {
+    "timeout_s": 600,
+    "timed_out": false,
+    "managing_exit_code": 0,
+    "duration_s": 123.0,
+    "dejavu_alive_at_end": true,
+    "manager_alive_at_end": true
+  },
+  "sequence": {
+    "completed": true,
+    "episode_end": "terminated",
+    "last_step": 65,
+    "last_subtask": "PLACE_OBJECT",
+    "last_phase": "DONE"
+  },
+  "violation": null,
+  "diagnosis": null,
+  "ranking": null,
+  "adaptation_selected": null,
+  "adaptation_result": {
+    "status": "not_applicable",
+    "reason": "no_violation"
+  },
+  "attempts": [],
+  "retry_decisions": [],
+  "fail_safe": null,
+  "asm_evolved": false,
+  "physical": {
+    "object_within_threshold": true,
+    "gripper_open": true,
+    "global_goal_achieved": true,
+    "dist_cube_to_target_m": 0.03504173830151558,
+    "fingers_width_m": 0.07999914884567261,
+    "finger_contacts": 0,
+    "cube_position": [
+      0.11889579147100449,
+      -0.01613849587738514,
+      0.01998993754386902
+    ],
+    "cube_rotation": [
+      -1.2151214169529994e-12,
+      -3.1296831794873886e-06,
+      0.00904565257916793
+    ]
+  },
+  "scenario": "A"
+}
