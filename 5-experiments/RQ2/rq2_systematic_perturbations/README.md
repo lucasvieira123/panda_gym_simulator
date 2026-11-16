@@ -76,7 +76,7 @@ A checagem de ordem 3 mostra que uma mudança no Top-3 é possível com três mo
 | `figures/rq2_similarity.{pdf,svg,png,html}` | Figura (o PNG tem 3168 px de largura). Usa a notação do artigo: a configuração Bk dos CSVs aparece como Dk. Cada escore aparece em cinza, sem o zero inicial, posicionado para que fique claro de qual ponto é: o rótulo fica junto do próprio marcador, e qualquer outro marcador fica pelo menos 2,5 vezes mais longe. Nenhum rótulo toca uma linha, um marcador, a borda da faixa ou outro rótulo, e em cada coluna eles seguem a ordem dos escores. Onde não há posição clara junto ao marcador (marcadores quase sobrepostos num feixe de linhas, interior de picos), o número fica num espaço livre próximo, com um traço fino até o ponto. A análise de cada rótulo está em `rq2_similarity_value_labels.csv`. O gráfico é 60 px mais alto que o da Bateria A, para dar espaço aos rótulos. `plot_similarity.py --no-values` gera a figura sem eles |
 | `comparison.md` | Comparação crítica entre as Baterias A e B, com a recomendação |
 
-**Sobre a pasta de resultados:** os resultados estão em `output/`, e não em `results/` como sugeria a estrutura pedida. O `.gitignore` do projeto ignora `5-experiments/**/results/`, e esses arquivos precisam entrar no pacote de replicação. Pelo mesmo motivo, o HTML da figura fica fora do git (`5-experiments/**/figures/**/*.html`).
+**Sobre a pasta de resultados:** os resultados estão em `output/`, e não em `results/` como sugeria a estrutura pedida, porque o `.gitignore` do projeto ignorava `5-experiments/**/results/` quando a bateria foi criada.
 
 ## Bateria B
 
