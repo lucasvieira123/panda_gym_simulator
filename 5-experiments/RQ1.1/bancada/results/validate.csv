@@ -1,0 +1,7 @@
+cube_final,dist_cm,end_step,first,first_done,first_ok,first_start,force_mean,goal,held_ticks,ineligible,lift_max_cm,mu,second_done,second_start,status,transport_slide_mm,violation,violation_step,width_cm
+"[0.154, -0.014, 0.02]",1.5,75,vacuum,34,True,23,166.7,True,37,,16.3,0.13,,,ok,0.1,LIFT_OBJECT,23,8.0
+"[0.163, 0.015, 0.02]",2.0,100,vacuum,55,True,38,169.1,True,44,,17.2,0.16,,,ok,-1.8,TRANSPORT_OBJECT,38,8.0
+"[-0.321, -0.083, 0.02]",47.8,73,vacuum,32,False,23,169.5,False,0,,0.0,0.06,,,ok,,LIFT_OBJECT,23,8.0
+"[0.228, 0.045, 0.02]",9.0,93,vacuum,56,False,41,163.7,False,20,,14.3,0.155,,,ok,12.9,TRANSPORT_OBJECT,41,8.0
+"[0.211, -0.03, 0.02]",6.8,105,vacuum,58,True,38,154.3,False,28,,14.8,0.135,,,ok,7.0,TRANSPORT_OBJECT,38,8.0
+"[-0.262, -0.044, 0.02]",41.4,73,vacuum,32,False,23,167.6,False,3,,8.1,0.14,,,ok,,LIFT_OBJECT,23,8.0

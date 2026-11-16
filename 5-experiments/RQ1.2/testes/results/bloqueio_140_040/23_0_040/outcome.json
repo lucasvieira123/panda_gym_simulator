@@ -1,0 +1,97 @@
+{
+  "experiment": "23_0_040",
+  "lateral_friction": 0.04,
+  "run": {
+    "timeout_s": 600,
+    "timed_out": false,
+    "managing_exit_code": 0,
+    "duration_s": 116.0,
+    "dejavu_alive_at_end": true,
+    "manager_alive_at_end": true
+  },
+  "sequence": {
+    "completed": true,
+    "episode_end": "terminated",
+    "last_step": 67,
+    "last_subtask": "PLACE_OBJECT",
+    "last_phase": "DONE"
+  },
+  "violation": {
+    "time": "2026-11-08T16:14:44.470",
+    "event": "violation",
+    "episode": 1,
+    "step": 23,
+    "active_scenario": "LIFT_OBJECT_VACUUM_ASSIST",
+    "active_state": "ERR_31",
+    "observed": {
+      "lateral_friction": 0.04,
+      "task_started": 1,
+      "object_available": 1,
+      "gripper_width_cm": 0,
+      "distance_ee_object_cm": 12,
+      "grasp_completed": 1,
+      "finger_contacts": 0,
+      "grasp_attempts": 1,
+      "object_lift_height_cm": 0,
+      "distance_object_goal_cm": 38,
+      "task_aborted": 0,
+      "current_subtask": "TRANSPORT_OBJECT",
+      "fingers_width": 1.8474387388778268e-06,
+      "dist_cube_to_target": 0.38255348801612854,
+      "is_success": false,
+      "global_goal_achieved": false,
+      "cube_x": -0.23172757029533386,
+      "cube_y": -0.02512415684759617,
+      "cube_z": 0.01990661770105362,
+      "cube_roll": 1.5704383850097656,
+      "cube_pitch": 0.0034758399706333876,
+      "cube_yaw": -0.3124184310436249,
+      "ee_x": -0.22313687205314636,
+      "ee_y": 2.6521058316575363e-05,
+      "ee_z": 0.1681216061115265
+    }
+  },
+  "diagnosis": null,
+  "ranking": null,
+  "adaptation_selected": null,
+  "adaptation_result": {
+    "status": "execution_error",
+    "reason": "pipeline_diagnose",
+    "message": "Nenhuma feature estática encontrada para 'LIFT_OBJECT_VACUUM_ASSIST' — não é possível diagnosticar."
+  },
+  "attempts": [],
+  "retry_decisions": [],
+  "fail_safe": null,
+  "asm_evolved": false,
+  "asm_evolution_rejected": [],
+  "knowledge": {
+    "preserved": true,
+    "carried_from": "15_0_140"
+  },
+  "evolved_scenarios_activated": [
+    {
+      "step": 15,
+      "from": "grasp_object",
+      "scenario": "lift_object_vacuum_assist"
+    }
+  ],
+  "physical": {
+    "object_within_threshold": false,
+    "gripper_open": true,
+    "global_goal_achieved": false,
+    "dist_cube_to_target_m": 0.3744792938232422,
+    "fingers_width_m": 0.07999785989522934,
+    "finger_contacts": 0,
+    "cube_position": [
+      -0.22325922548770905,
+      -0.030203986912965775,
+      0.019988978281617165
+    ],
+    "cube_rotation": [
+      1.5708060989138213,
+      6.401544724985614e-05,
+      -0.3124542805996091
+    ]
+  },
+  "scenario": "no_adaptation"
+}

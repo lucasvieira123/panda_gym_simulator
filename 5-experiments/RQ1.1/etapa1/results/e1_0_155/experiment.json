@@ -1,0 +1,11 @@
+{
+  "name": "e1_0_155",
+  "description": "lateral_friction=0.155 — falha",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.155
+      }
+    }
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "experiment": "e0_0_130",
+  "lateral_friction": 0.13,
+  "run": {
+    "timeout_s": 600,
+    "timed_out": false,
+    "managing_exit_code": 0,
+    "duration_s": 112.5,
+    "dejavu_alive_at_end": true,
+    "manager_alive_at_end": true
+  },
+  "sequence": {
+    "completed": true,
+    "episode_end": "terminated",
+    "last_step": 75,
+    "last_subtask": "PLACE_OBJECT",
+    "last_phase": "DONE"
+  },
+  "violation": {
+    "time": "2026-11-07T01:38:26.951",
+    "event": "violation",
+    "episode": 1,
+    "step": 23,
+    "active_scenario": "LIFT_OBJECT",
+    "active_state": "ERR_19",
+    "observed": {
+      "task_started": 1,
+      "object_available": 1,
+      "gripper_width_cm": 0,
+      "distance_ee_object_cm": 11,
+      "grasp_completed": 1,
+      "finger_contacts": 0,
+      "grasp_attempts": 1,
+      "object_lift_height_cm": 0,
+      "distance_object_goal_cm": 39,
+      "task_aborted": 0,
+      "current_subtask": "TRANSPORT_OBJECT",
+      "lateral_friction": 0.13,
+      "fingers_width": 4.969199949300673e-07,
+      "dist_cube_to_target": 0.3939981460571289,
+      "is_success": false,
+      "cube_x": -0.23870131373405457,
+      "cube_y": 0.0643879622220993,
+      "cube_z": 0.019936703145503998,
+      "cube_roll": -3.139836311340332,
+      "cube_pitch": -4.185430589132011e-05,
+      "cube_yaw": -0.4123082160949707,
+      "ee_x": -0.2426338493824005,
+      "ee_y": 8.215914931497537e-06,
+      "ee_z": 0.1394706666469574
+    }
+  },
+  "diagnosis": {
+    "time": "2026-11-07T01:38:27.074",
+    "event": "diagnosis",
+    "episode": 1,
+    "step": 23,
+    "active_scenario": "LIFT_OBJECT",
+    "active_state": "ERR_19",
+    "given": "(object_lift_height_cm < 10) AND (finger_contacts < 2) AND lateral_friction <= 0.315",
+    "when": "grasp_completed == 1",
+    "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2",
+    "diagnostic_conditions": "lateral_friction <= 0.315"
+  },
+  "ranking": {
+    "time": "2026-11-07T01:38:27.282",
+    "event": "ranking",
+    "episode": 1,
+    "step": 23,
+    "active_scenario": "LIFT_OBJECT",
+    "active_state": "ERR_19",
+    "when_filter": {
+      "when": "grasp_completed == 1",
+      "total": 8,
+      "applicable": [
+        "Suction-Assisted Lift Recovery",
+        "Tactile Grip-Force Recovery",
+        "Shape-Adaptive Grasp Recovery",
+        "Conformal Grasp Stabilisation",
+        "Dynamic-Load Lift Stabilisation"
+      ],
+      "excluded": [
+        "Transport Slip Recovery",
+        "Transport Grip Pressure Recovery",
+        "Motor Overload Transport Recovery"
+      ]
+    },
+    "ranking": [
+      {
+        "candidate": "Suction-Assisted Lift Recovery",
+        "do": "apply_vacuum_assist()",
+        "score": 0.9605158730158729
+      },
+      {
+        "candidate": "Tactile Grip-Force Recovery",
+        "do": "adjust_grip_force()",
+        "score": 0.896551724137931
+      },
+      {
+        "candidate": "Shape-Adaptive Grasp Recovery",
+        "do": "adapt_grasp_to_object_shape()",
+        "score": 0.8318407475678443
+      },
+      {
+        "candidate": "Conformal Grasp Stabilisation",
+        "do": "engage_conformal_grip()",
+        "score": 0.7076470967741936
+      },
+      {
+        "candidate": "Dynamic-Load Lift Stabilisation",
+        "do": "reduce_lift_acceleration()",
+        "score": 0.5902970967741935
+      }
+    ]
+  },
+  "adaptation_selected": {
+    "candidate_name": "Suction-Assisted Lift Recovery",
+    "do": "apply_vacuum_assist()",
+    "then": "object_lift_height_cm >= 10 AND finger_contacts >= 2 AND object_secured == 1",
+    "score": 0.9605158730158729
+  },
+  "adaptation_result": {
+    "status": "success",
+    "reason": "then_satisfied",
+    "ticks": 1,
+    "run_ticks": 11,
+    "then_clauses": [
+      {
+        "clause": "object_lift_height_cm >= 10",
+        "state": "satisfied",
+        "value": 16
+      },
+      {
+        "clause": "finger_contacts >= 2",
+        "state": "satisfied",
+        "value": 2
+      }
+    ],
+    "candidate_then": [
+      {
+        "clause": "object_lift_height_cm >= 10",
+        "state": "satisfied",
+        "value": 16
+      },
+      {
+        "clause": "finger_contacts >= 2",
+        "state": "satisfied",
+        "value": 2
+      },
+      {
+        "clause": "object_secured == 1",
+        "state": "not_observed",
+        "value": null
+      }
+    ]
+  },
+  "asm_evolved": true,
+  "physical": {
+    "object_within_threshold": true,
+    "gripper_open": true,
+    "global_goal_achieved": true,
+    "dist_cube_to_target_m": 0.015018165111541748,
+    "fingers_width_m": 0.07999888807535172,
+    "finger_contacts": 0,
+    "cube_position": [
+      0.15430620312690735,
+      -0.014387558214366436,
+      0.019989948719739914
+    ],
+    "cube_rotation": [
+      -3.14159248134196,
+      -1.7365089808228715e-06,
+      0.002624791378947503
+    ]
+  }
+}

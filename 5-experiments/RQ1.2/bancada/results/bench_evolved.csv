@@ -1,0 +1,17 @@
+mu,tova,lova,activations,violation,violation_step,end_step,dist_cm,goal
+0.17,False,False,[],TRANSPORT,41,69,27.1,False
+0.16,True,False,"[('TOVA', 21)]",,,64,1.5,True
+0.155,True,False,"[('TOVA', 21)]",,,64,1.7,True
+0.15,True,False,"[('TOVA', 21)]",,,64,1.7,True
+0.145,True,False,"[('TOVA', 21)]",,,64,1.6,True
+0.14,True,False,[],LIFT,23,68,41.4,False
+0.135,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,1.7,True
+0.13,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,1.7,True
+0.12,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,1.6,True
+0.11,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,0.4,True
+0.1,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,0.9,True
+0.08,True,True,"[('LOVA', 15), ('TOVA', 19)]",,,62,1.5,True
+0.06,True,True,"[('LOVA', 15), ('TOVA', 20)]",,,62,2.6,True
+0.04,True,True,"[('LOVA', 15)]",LIFT,21,64,41.5,False
+0.02,True,True,"[('LOVA', 15)]",LIFT,21,64,46.8,False
+0.01,True,True,"[('LOVA', 15)]",LIFT,21,64,47.8,False

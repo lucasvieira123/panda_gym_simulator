@@ -1,0 +1,11 @@
+{
+  "name": "11_0_16",
+  "description": "lateral_friction=0.16 — região crítica",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.16
+      }
+    }
+  }
+}

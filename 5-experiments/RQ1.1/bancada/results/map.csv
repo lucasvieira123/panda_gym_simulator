@@ -1,0 +1,26 @@
+cube_final,dist_cm,end_step,first,first_done,first_ok,first_start,force_mean,goal,held_ticks,ineligible,lift_max_cm,mu,second_done,second_start,status,transport_slide_mm,violation,violation_step,width_cm
+"[0.119, -0.013, 0.02]",3.4,64,vacuum,,,,170.0,True,35,,15.0,0.19,,,ok,6.1,,,8.0
+"[-0.16, 0.059, 0.02]",31.5,103,vacuum,57,False,38,144.1,False,7,,14.1,0.175,,,ok,,TRANSPORT_OBJECT,38,8.0
+"[0.163, 0.016, 0.02]",2.1,101,vacuum,57,True,38,165.8,True,42,,15.9,0.165,,,ok,-4.9,TRANSPORT_OBJECT,38,8.0
+"[-0.107, -0.056, 0.02]",26.3,92,vacuum,54,False,38,156.8,False,7,,14.1,0.1575,,,ok,,TRANSPORT_OBJECT,38,8.0
+"[0.173, -0.008, 0.02]",2.5,79,vacuum,33,True,23,167.2,True,40,,15.8,0.1525,,,ok,1.4,LIFT_OBJECT,23,8.0
+"[0.144, 0.015, 0.02]",1.6,73,vacuum,34,True,23,166.4,True,38,,15.7,0.1475,,,ok,-0.1,LIFT_OBJECT,23,8.0
+"[0.158, 0.015, 0.02]",1.7,75,vacuum,33,True,23,167.4,True,38,,16.2,0.1425,,,ok,0.2,LIFT_OBJECT,23,8.0
+"[-0.15, 0.033, 0.02]",30.2,103,vacuum,58,False,38,135.0,False,6,,13.3,0.1375,,,ok,,TRANSPORT_OBJECT,38,8.0
+"[-0.251, 0.037, 0.02]",40.3,75,vacuum,32,False,23,136.9,False,1,,4.7,0.1325,,,ok,,LIFT_OBJECT,23,8.0
+"[0.152, 0.013, 0.02]",1.4,75,vacuum,34,True,23,166.5,True,39,,17.5,0.125,,,ok,-0.1,LIFT_OBJECT,23,8.0
+"[-0.268, -0.047, 0.02]",42.1,73,vacuum,32,False,23,173.6,False,2,,5.0,0.115,,,ok,,LIFT_OBJECT,23,8.0
+"[0.164, -0.012, 0.02]",1.8,75,vacuum,34,True,22,167.0,True,34,,14.6,0.105,,,ok,0.6,LIFT_OBJECT,22,8.0
+"[0.163, -0.013, 0.02]",1.8,74,vacuum,34,True,22,166.9,True,33,,14.3,0.095,,,ok,0.2,LIFT_OBJECT,22,8.0
+"[0.16, 0.012, 0.02]",1.6,75,vacuum,34,True,22,166.5,True,33,,14.1,0.09,,,ok,1.3,LIFT_OBJECT,22,8.0
+"[-0.045, 0.062, 0.02]",20.5,76,vacuum,34,False,22,119.0,False,0,,0.0,0.085,,,ok,,LIFT_OBJECT,22,8.0
+"[0.166, -0.001, 0.02]",1.6,73,vacuum,34,True,22,166.3,True,33,,14.1,0.075,,,ok,0.8,LIFT_OBJECT,22,8.0
+"[0.161, 0.002, 0.02]",1.2,73,vacuum,34,True,22,166.8,True,32,,13.8,0.07,,,ok,2.1,LIFT_OBJECT,22,8.0
+"[-0.232, 0.028, 0.02]",38.3,72,vacuum,32,False,23,143.8,False,1,,5.0,0.065,,,ok,,LIFT_OBJECT,23,8.0
+"[-0.042, 0.047, 0.02]",19.8,77,vacuum,34,False,23,172.1,False,0,,0.0,0.055,,,ok,,LIFT_OBJECT,23,8.0
+"[-0.224, -0.08, 0.02]",38.3,77,vacuum,33,False,23,139.1,False,0,,0.0,0.05,,,ok,,LIFT_OBJECT,23,8.0
+"[-0.273, -0.038, 0.02]",42.4,80,vacuum,33,False,23,166.3,False,0,,0.0,0.045,,,ok,,LIFT_OBJECT,23,8.0
+"[0.104, -0.006, 0.02]",4.7,73,vacuum,41,False,23,112.3,True,0,,0.0,0.035,,,ok,,LIFT_OBJECT,23,8.0
+"[-0.251, 0.124, 0.02]",42.0,79,vacuum,34,False,23,173.5,False,0,,0.0,0.03,,,ok,,LIFT_OBJECT,23,8.0
+"[-0.248, -0.114, 0.02]",41.4,78,vacuum,34,False,23,165.4,False,0,,0.0,0.025,,,ok,,LIFT_OBJECT,23,8.0
+"[0.161, 0.236, 0.02]",23.7,76,vacuum,33,False,23,126.5,False,0,,0.0,0.015,,,ok,,LIFT_OBJECT,23,8.0

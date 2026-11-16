@@ -1,0 +1,11 @@
+{
+  "name": "q5_0_135",
+  "description": "lateral_friction=0.135",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.135
+      }
+    }
+  }
+}

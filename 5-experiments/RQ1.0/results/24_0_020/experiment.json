@@ -1,0 +1,11 @@
+{
+  "name": "24_0_020",
+  "description": "lateral_friction=0.020 — teste limite vacuum",
+  "patches": {
+    "managing": {
+      "environment.yaml": {
+        "objects.0.lateral_friction": 0.02
+      }
+    }
+  }
+}

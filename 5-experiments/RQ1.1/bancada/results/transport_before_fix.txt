@@ -1,0 +1,398 @@
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+pybullet build time: Jun  9 2026 22:59:18
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+argv[0]=--background_color_red=0.8745098114013672
+argv[1]=--background_color_green=0.21176470816135406
+argv[2]=--background_color_blue=0.1764705926179886
+Trechos de TRANSPORT_OBJECT: duração em ticks e passagens pelo alvo
+     mu            pos cat  fim   trechos (início:ticks/passagens, * = após adaptação, h = segurando no fim)
+   0.19           None A      64  23:16/3h
+   0.19     (0.002, 0) A      64  23:16/4h
+   0.19    (-0.002, 0) A      64  23:16/4h
+   0.19     (0, 0.002) A      64  23:16/4h
+   0.19    (0, -0.002) B      93  23:16/3 65:5/3*h
+  0.175           None B     109  23:15/2 72:14/3*h
+  0.175     (0.002, 0) B     103  23:15/2 68:11/3*h
+  0.175    (-0.002, 0) B     107  23:15/3 70:17/8*h
+  0.175     (0, 0.002) B     102  23:15/3 68:10/0*h
+  0.175    (0, -0.002) B     105  23:15/0 69:12/3*h
+  0.165           None B     113  23:15/3 74:18/9*h
+  0.165     (0.002, 0) B     105  23:15/2 68:17/7*h
+  0.165    (-0.002, 0) B     112  23:15/3 70:20/7*h
+  0.165     (0, 0.002) B     100  23:15/3 66:10/3*h
+  0.165    (0, -0.002) B     110  23:15/0 69:18/7*h
+ 0.1575           None B     106  23:15/2 70:12/1*h
+ 0.1575     (0.002, 0) B      93  23:1/0 52:20/9*h
+ 0.1575    (-0.002, 0) B     106  23:15/2 69:14/6*h
+ 0.1575     (0, 0.002) B     113  23:15/3 72:19/7*h
+ 0.1575    (0, -0.002) B      87  23:1/0 49:15/1*h
+ 0.1525           None B      89  23:1/0 49:18/7*h
+ 0.1525     (0.002, 0) B     112  23:15/2 72:18/9*h
+ 0.1525    (-0.002, 0) B     113  23:15/2 72:17/8*h
+ 0.1525     (0, 0.002) B     115  23:15/3 76:15/2*h
+ 0.1525    (0, -0.002) B      91  23:1/0 51:16/4*h
+ 0.1475           None B      91  23:1/0 51:19/8*h
+ 0.1475     (0.002, 0) B     108  23:15/5 71:13/3*h
+ 0.1475    (-0.002, 0) B      91  23:1/0 50:21/9*h
+ 0.1475     (0, 0.002) B     112  23:15/3 72:17/6*h
+ 0.1475    (0, -0.002) B     115  23:15/0 76:15/2*h
+ 0.1425           None B      93  23:1/0 50:21/7*h
+ 0.1425     (0.002, 0) B      95  23:1/0 55:16/0*h
+ 0.1425    (-0.002, 0) B      90  23:1/0 51:15/3*h
+ 0.1425     (0, 0.002) B      95  23:1/0 50:24/14*h
+ 0.1425    (0, -0.002) B      91  23:1/0 51:16/3*h
+ 0.1375           None B     115  23:15/3 76:15/0*h
+ 0.1375     (0.002, 0) B     127  23:15/3 86:17/2*h
+ 0.1375    (-0.002, 0) B      90  23:1/0 50:16/3*h
+ 0.1375     (0, 0.002) B      88  23:1/0 49:15/0*h
+ 0.1375    (0, -0.002) B     113  23:15/2 74:17/6*h
+ 0.1325           None B      92  23:1/0 49:19/6*h
+ 0.1325     (0.002, 0) B      91  22:1/0 52:16/3*h
+ 0.1325    (-0.002, 0) B      89  23:1/0 50:16/3*h
+ 0.1325     (0, 0.002) B      92  23:1/0 52:16/1*h
+ 0.1325    (0, -0.002) B      87  23:1/0 48:15/3*h
+  0.125           None B      94  23:1/0 50:22/8*h
+  0.125     (0.002, 0) B      91  23:1/0 51:16/3*h
+  0.125    (-0.002, 0) B     110  23:15/3 72:14/2*h
+  0.125     (0, 0.002) B      94  23:1/0 54:16/1*h
+  0.125    (0, -0.002) B      95  23:1/0 52:23/6*h
+  0.115           None B      92  23:1/0 52:16/2*h
+  0.115     (0.002, 0) B      94  22:1/0 54:16/0*h
+  0.115    (-0.002, 0) B      92  23:1/0 50:20/9*h
+  0.115     (0, 0.002) B      92  23:1/0 49:19/8*h
+  0.115    (0, -0.002) B      94  22:1/0 52:19/6*h
+  0.105           None B      93  22:1/0 53:16/0*h
+  0.105     (0.002, 0) B      91  22:1/0 51:21/8*h
+  0.105    (-0.002, 0) B      93  22:1/0 53:16/0*h
+  0.105     (0, 0.002) B      89  23:1/0 49:20/6*h
+  0.105    (0, -0.002) B      88  23:1/0 49:15/1*h
+  0.095           None B      92  22:1/0 52:16/3*h
+  0.095     (0.002, 0) B      92  22:1/0 52:16/1*h
+  0.095    (-0.002, 0) B      91  22:1/0 52:16/3*h
+  0.095     (0, 0.002) B      92  23:1/0 52:16/2*h
+  0.095    (0, -0.002) B      91  22:1/0 51:16/3*h
+   0.09           None B     101  22:1/0 55:24/4*h
+   0.09     (0.002, 0) B      92  22:1/0 52:16/3*h
+   0.09    (-0.002, 0) B      91  22:1/0 51:20/9*h
+   0.09     (0, 0.002) B      92  23:1/0 52:16/2*h
+   0.09    (0, -0.002) B      92  22:1/0 52:16/4*h
+  0.085           None C     119  22:1/0 83:14/8*h
+  0.085     (0.002, 0) B      92  22:1/0 52:16/3*h
+  0.085    (-0.002, 0) B      89  23:1/0 50:16/1*h
+  0.085     (0, 0.002) B      93  22:1/0 53:16/1*h
+  0.085    (0, -0.002) B      94  22:1/0 51:19/8*h
+  0.075           None B      92  22:1/0 52:16/4*h
+  0.075     (0.002, 0) B      92  22:1/0 50:20/6*h
+  0.075    (-0.002, 0) B      92  22:1/0 52:19/8*h
+  0.075     (0, 0.002) B      92  22:1/0 52:16/3*h
+  0.075    (0, -0.002) B      92  22:1/0 52:16/3*h
+   0.07           None B      92  22:1/0 52:16/0*h
+   0.07     (0.002, 0) B      94  22:1/0 54:16/2*h
+   0.07    (-0.002, 0) C     113  22:1/0 84:6/4*h
+   0.07     (0, 0.002) B      91  22:1/0 52:16/3*h
+   0.07    (0, -0.002) B      91  22:1/0 51:19/8*h
+  0.065           None B      87  23:1/0 49:15/4*h
+  0.065     (0.002, 0) B      94  22:1/0 51:19/8*h
+  0.065    (-0.002, 0) C     117  23:1/0 80:14/8*h
+  0.065     (0, 0.002) C     116  23:1/0 77:15/1*h
+  0.065    (0, -0.002) C     117  22:1/0 80:17/7*h
+  0.055           None C     111  23:1/0 77:10/2*h
+  0.055     (0.002, 0) E1     95  22:1/0 52:16/2*
+  0.055    (-0.002, 0) B      90  23:1/0 50:16/4*h
+  0.055     (0, 0.002) B      93  23:1/0 53:16/3*h
+  0.055    (0, -0.002) E1     94  23:1/0 51:19/6*
+   0.05           None C     122  23:1/0 82:16/0*h
+   0.05     (0.002, 0) E1     93  22:1/0 50:17/7*
+   0.05    (-0.002, 0) C     122  23:1/0 77:23/6*h
+   0.05     (0, 0.002) D     117  23:1/0 77:14/1*
+   0.05    (0, -0.002) C     126  23:1/0 84:19/5*h
+  0.045           None D     123  23:1/0 81:15/3*
+  0.045     (0.002, 0) C     113  22:1/0 74:15/1*h
+  0.045    (-0.002, 0) C     121  23:1/0 76:22/7*h
+  0.045     (0, 0.002) B      84  23:1/0 53:8/3*h
+  0.045    (0, -0.002) E1     89  23:1/0 49:15/3*
+  0.035           None C     429  23:1/0 81:325/322*h
+  0.035     (0.002, 0) C     121  22:1/0 81:20/8*h
+  0.035    (-0.002, 0) C     119  23:1/0 76:19/8*h
+  0.035     (0, 0.002) C     118  23:1/0 78:16/0*h
+  0.035    (0, -0.002) C     119  23:1/0 75:24/14*h
+   0.03           None C     113  23:1/0 74:15/3*h
+   0.03     (0.002, 0) watchdog  249  23:1/0
+   0.03    (-0.002, 0) C     122  23:1/0 82:16/1*h
+   0.03     (0, 0.002) C     114  23:1/0 75:16/3*h
+   0.03    (0, -0.002) C     114  23:1/0 75:15/1*h
+  0.025           None C     127  23:1/0 79:24/8*h
+  0.025     (0.002, 0) watchdog  256  22:1/0
+  0.025    (-0.002, 0) C     112  23:1/0 73:15/3*h
+  0.025     (0, 0.002) D     115  23:1/0 73:16/7*
+  0.025    (0, -0.002) E2    132  23:1/0 85:21/7*
+  0.015           None D     121  23:1/0 76:17/7*
+  0.015     (0.002, 0) D     126  22:1/0 80:21/10*
+  0.015    (-0.002, 0) D     125  23:1/0 76:23/10*
+  0.015     (0, 0.002) D     113  23:1/0 71:16/7*
+  0.015    (0, -0.002) D     118  23:1/0 75:16/7*
+
+Transporte sem adaptação, segurando: n=4 mediana=16 máx=16 >30 ticks=0 >100 ticks=0
+Transporte sem adaptação, cubo perdido: n=121 mediana=1 máx=16 >30 ticks=0 >100 ticks=0
+Transporte após adaptação, segurando: n=106 mediana=16 máx=325 >30 ticks=1 >100 ticks=1
+Transporte após adaptação, cubo perdido: n=13 mediana=16 máx=23 >30 ticks=0 >100 ticks=0
+Fim do episódio: mediana=94 máx=429 >300=1 >500=0 watchdog=2

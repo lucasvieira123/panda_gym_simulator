@@ -1,0 +1,209 @@
+cube_final,dist_cm,end_step,first,first_done,first_ok,first_start,force_mean,forces_before_second,goal,held_ticks,ineligible,lift_max_cm,mu,second,second_done,second_ok,second_start,status,strategy,transport_slide_mm,violation,violation_step,width_cm
+"[0.142, -0.011, 0.02]",1.4,123,vacuum,57,False,38,170.2,0.0,True,33,,15.2,0.175,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",85,True,57,ok,tolerância 2 mm,-21.7,TRANSPORT_OBJECT,38,8.0
+"[0.152, 0.011, 0.02]",1.1,117,vacuum,54,False,38,169.9,0.0,True,32,,15.4,0.1575,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",80,True,54,ok,tolerância 2 mm,-21.6,TRANSPORT_OBJECT,38,8.0
+"[0.15, -0.016, 0.02]",1.6,125,vacuum,58,False,38,169.8,13.295479638779856,True,33,,15.3,0.1375,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",87,True,58,ok,tolerância 2 mm,-0.4,TRANSPORT_OBJECT,38,8.0
+"[0.17, 0.015, 0.02]",2.5,109,vacuum,32,False,23,169.4,4.540324448093475,True,44,,15.5,0.1325,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",60,True,32,ok,tolerância 2 mm,0.4,LIFT_OBJECT,23,8.0
+"[0.149, 0.017, 0.02]",1.7,103,vacuum,32,False,23,170.0,171.2905934316869,True,37,,15.2,0.115,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",62,True,32,ok,tolerância 2 mm,-0.1,LIFT_OBJECT,23,8.0
+"[0.151, 0.014, 0.02]",1.4,98,vacuum,34,False,22,169.6,10.025313193929081,True,31,,15.5,0.085,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",63,True,34,ok,tolerância 2 mm,-0.2,LIFT_OBJECT,22,8.0
+"[0.144, 0.005, 0.02]",0.8,100,vacuum,32,False,23,169.9,6.398364581192178,True,33,,13.8,0.065,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",61,True,32,ok,tolerância 2 mm,5.3,LIFT_OBJECT,23,8.0
+"[0.141, -0.009, 0.02]",1.3,98,vacuum,34,False,23,170.1,169.6889071932976,True,28,,13.7,0.055,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",63,True,34,ok,tolerância 2 mm,8.1,LIFT_OBJECT,23,8.0
+"[0.113, -0.098, 0.02]",10.5,107,vacuum,33,False,23,168.8,0.0,False,19,,13.1,0.05,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",64,True,33,ok,tolerância 2 mm,8.1,LIFT_OBJECT,23,8.0
+"[-0.269, -0.04, 0.02]",42.1,107,vacuum,33,False,23,150.2,169.95416049397403,False,4,,9.8,0.045,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",65,False,33,ok,tolerância 2 mm,,LIFT_OBJECT,23,8.0
+"[-0.278, 0.101, 0.02]",44.0,120,vacuum,34,False,23,150.3,183.27700390680712,False,1,,3.4,0.03,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",78,False,34,ok,tolerância 2 mm,,LIFT_OBJECT,23,8.0
+"[-0.274, -0.022, 0.02]",42.4,109,vacuum,34,False,23,136.8,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",64,False,34,ok,tolerância 2 mm,,LIFT_OBJECT,23,8.0
+"[0.136, 0.718, -0.38]",82.2,176,vacuum,33,False,23,132.0,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""tolerance"": 0.002}",137,False,33,ok,tolerância 2 mm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.002, 0.02]",0.8,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",82,True,57,ok,tolerância 5 mm,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.016, 0.02]",2.4,115,vacuum,54,False,38,169.8,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",78,True,54,ok,tolerância 5 mm,-20.3,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.016, 0.02]",1.6,122,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",84,True,58,ok,tolerância 5 mm,-0.2,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.018, 0.02]",2.5,98,vacuum,32,False,23,169.8,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",57,True,32,ok,tolerância 5 mm,-0.6,LIFT_OBJECT,23,8.0
+"[0.149, 0.016, 0.02]",1.6,100,vacuum,32,False,23,169.6,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",59,True,32,ok,tolerância 5 mm,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, -0.016, 0.02]",1.7,96,vacuum,34,False,22,169.9,10.025313193929081,True,31,,15.5,0.085,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",61,True,34,ok,tolerância 5 mm,-0.3,LIFT_OBJECT,22,8.0
+"[0.144, -0.016, 0.02]",1.7,98,vacuum,32,False,23,170.1,6.398364581192178,True,33,,13.7,0.065,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",58,True,32,ok,tolerância 5 mm,5.3,LIFT_OBJECT,23,8.0
+"[0.142, -0.005, 0.02]",1.0,96,vacuum,34,False,23,169.6,169.6889071932976,True,28,,13.7,0.055,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",61,True,34,ok,tolerância 5 mm,7.9,LIFT_OBJECT,23,8.0
+"[0.775, 0.256, -0.38]",78.5,105,vacuum,33,False,23,160.3,0.0,False,12,,12.5,0.05,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",61,True,33,ok,tolerância 5 mm,5.4,LIFT_OBJECT,23,8.0
+"[-0.26, -0.045, 0.02]",41.2,105,vacuum,33,False,23,147.2,169.95416049397403,False,3,,7.4,0.045,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",62,False,33,ok,tolerância 5 mm,,LIFT_OBJECT,23,8.0
+"[-0.327, 0.151, 0.02]",50.0,113,vacuum,34,False,23,143.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",71,False,34,ok,tolerância 5 mm,,LIFT_OBJECT,23,8.0
+"[-0.258, -0.112, 0.02]",42.3,106,vacuum,34,False,23,137.3,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",61,False,34,ok,tolerância 5 mm,,LIFT_OBJECT,23,8.0
+"[1.171, 0.153, -0.38]",110.7,141,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""tolerance"": 0.005}",100,False,33,ok,tolerância 5 mm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.011, 0.02]",1.3,118,vacuum,57,False,38,170.1,0.0,True,33,,14.7,0.175,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",80,True,57,ok,tolerância 10 mm,-16.8,TRANSPORT_OBJECT,38,8.0
+"[0.168, 0.015, 0.02]",2.3,113,vacuum,54,False,38,169.9,0.0,True,32,,15.2,0.1575,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",76,True,54,ok,tolerância 10 mm,-18.7,TRANSPORT_OBJECT,38,8.0
+"[0.15, -0.015, 0.02]",1.5,120,vacuum,58,False,38,170.0,13.295479638779856,True,33,,14.8,0.1375,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",82,True,58,ok,tolerância 10 mm,-0.4,TRANSPORT_OBJECT,38,8.0
+"[0.166, 0.013, 0.02]",2.1,99,vacuum,32,False,23,169.6,4.540324448093475,True,40,,15.0,0.1325,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",54,True,32,ok,tolerância 10 mm,0.1,LIFT_OBJECT,23,8.0
+"[0.15, 0.016, 0.02]",1.6,98,vacuum,32,False,23,169.7,171.2905934316869,True,37,,14.8,0.115,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",57,True,32,ok,tolerância 10 mm,-0.1,LIFT_OBJECT,23,8.0
+"[0.151, -0.015, 0.02]",1.5,94,vacuum,34,False,22,169.7,10.025313193929081,True,30,,15.1,0.085,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",59,True,34,ok,tolerância 10 mm,-0.3,LIFT_OBJECT,22,8.0
+"[0.145, -0.015, 0.02]",1.6,95,vacuum,32,False,23,170.1,6.398364581192178,True,33,,13.4,0.065,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",55,True,32,ok,tolerância 10 mm,2.4,LIFT_OBJECT,23,8.0
+"[0.143, -0.013, 0.02]",1.5,93,vacuum,34,False,23,169.5,169.6889071932976,True,28,,13.3,0.055,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",58,True,34,ok,tolerância 10 mm,4.2,LIFT_OBJECT,23,8.0
+"[0.216, -0.092, 0.02]",11.4,107,vacuum,33,False,23,162.7,0.0,False,16,,12.9,0.05,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",59,True,33,ok,tolerância 10 mm,9.1,LIFT_OBJECT,23,8.0
+"[-0.285, -0.02, 0.02]",43.6,103,vacuum,33,False,23,140.3,169.95416049397403,False,0,,0.0,0.045,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",60,False,33,ok,tolerância 10 mm,,LIFT_OBJECT,23,8.0
+"[-0.275, 0.05, 0.02]",42.8,110,vacuum,34,False,23,141.8,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",68,False,34,ok,tolerância 10 mm,,LIFT_OBJECT,23,8.0
+"[-0.283, -0.112, 0.02]",44.8,104,vacuum,34,False,23,168.2,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",59,False,34,ok,tolerância 10 mm,,LIFT_OBJECT,23,8.0
+"[3.294, 0.179, -1.637]",355.9,181,vacuum,33,False,23,0.0,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""tolerance"": 0.01}",86,False,33,ok,tolerância 10 mm,,LIFT_OBJECT,23,8.0
+"[0.15, 0.011, 0.02]",1.1,123,vacuum,57,False,38,170.0,0.0,True,40,,14.3,0.175,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",78,True,57,ok,tolerância 20 mm,-12.0,TRANSPORT_OBJECT,38,8.0
+"[0.171, 0.016, 0.02]",2.6,110,vacuum,54,False,38,169.7,0.0,True,31,,14.7,0.1575,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",73,True,54,ok,tolerância 20 mm,-12.7,TRANSPORT_OBJECT,38,8.0
+"[0.151, -0.016, 0.02]",1.6,118,vacuum,58,False,38,169.9,13.295479638779856,True,32,,14.5,0.1375,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",80,True,58,ok,tolerância 20 mm,-0.4,TRANSPORT_OBJECT,38,8.0
+"[0.173, -0.007, 0.02]",2.4,95,vacuum,32,False,23,169.7,4.540324448093475,True,38,,14.1,0.1325,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",52,True,32,ok,tolerância 20 mm,-0.3,LIFT_OBJECT,23,8.0
+"[0.15, 0.015, 0.02]",1.5,94,vacuum,32,False,23,169.7,171.2905934316869,True,34,,13.9,0.115,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",54,True,32,ok,tolerância 20 mm,0.1,LIFT_OBJECT,23,8.0
+"[0.152, 0.017, 0.02]",1.8,92,vacuum,34,False,22,169.5,10.025313193929081,True,30,,14.8,0.085,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",57,True,34,ok,tolerância 20 mm,-0.3,LIFT_OBJECT,22,8.0
+"[0.143, -0.015, 0.02]",1.6,93,vacuum,32,False,23,169.7,6.398364581192178,True,33,,13.3,0.065,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",53,True,32,ok,tolerância 20 mm,2.0,LIFT_OBJECT,23,8.0
+"[0.147, 0.012, 0.02]",1.2,91,vacuum,34,False,23,169.9,169.6889071932976,True,28,,13.8,0.055,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",56,True,34,ok,tolerância 20 mm,5.1,LIFT_OBJECT,23,8.0
+"[0.046, -0.095, 0.02]",14.1,98,vacuum,33,False,23,157.9,0.0,False,10,,12.6,0.05,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",57,True,33,ok,tolerância 20 mm,4.2,LIFT_OBJECT,23,8.0
+"[-0.299, -0.11, 0.02]",46.3,97,vacuum,33,False,23,169.8,169.95416049397403,False,1,,3.9,0.045,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",55,False,33,ok,tolerância 20 mm,,LIFT_OBJECT,23,8.0
+"[-0.292, 0.069, 0.02]",44.7,108,vacuum,34,False,23,114.1,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",63,False,34,ok,tolerância 20 mm,,LIFT_OBJECT,23,8.0
+"[-0.305, -0.283, 0.02]",53.6,101,vacuum,34,False,23,166.2,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",56,False,34,ok,tolerância 20 mm,,LIFT_OBJECT,23,8.0
+"[2.615, -0.85, -0.38]",263.8,174,vacuum,33,False,23,0.0,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""tolerance"": 0.02}",75,False,33,ok,tolerância 20 mm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.002, 0.02]",0.8,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",82,True,57,ok,altura +0 mm,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.016, 0.02]",2.4,115,vacuum,54,False,38,169.8,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",78,True,54,ok,altura +0 mm,-20.3,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.016, 0.02]",1.6,122,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",84,True,58,ok,altura +0 mm,-0.2,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.018, 0.02]",2.5,98,vacuum,32,False,23,169.8,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",57,True,32,ok,altura +0 mm,-0.6,LIFT_OBJECT,23,8.0
+"[0.149, 0.016, 0.02]",1.6,100,vacuum,32,False,23,169.6,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",59,True,32,ok,altura +0 mm,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, -0.016, 0.02]",1.7,96,vacuum,34,False,22,169.9,10.025313193929081,True,31,,15.5,0.085,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",61,True,34,ok,altura +0 mm,-0.3,LIFT_OBJECT,22,8.0
+"[0.144, -0.016, 0.02]",1.7,98,vacuum,32,False,23,170.1,6.398364581192178,True,33,,13.7,0.065,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",58,True,32,ok,altura +0 mm,5.3,LIFT_OBJECT,23,8.0
+"[0.142, -0.005, 0.02]",1.0,96,vacuum,34,False,23,169.6,169.6889071932976,True,28,,13.7,0.055,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",61,True,34,ok,altura +0 mm,7.9,LIFT_OBJECT,23,8.0
+"[0.775, 0.256, -0.38]",78.5,105,vacuum,33,False,23,160.3,0.0,False,12,,12.5,0.05,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",61,True,33,ok,altura +0 mm,5.4,LIFT_OBJECT,23,8.0
+"[-0.26, -0.045, 0.02]",41.2,105,vacuum,33,False,23,147.2,169.95416049397403,False,3,,7.4,0.045,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",62,False,33,ok,altura +0 mm,,LIFT_OBJECT,23,8.0
+"[-0.327, 0.151, 0.02]",50.0,113,vacuum,34,False,23,143.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",71,False,34,ok,altura +0 mm,,LIFT_OBJECT,23,8.0
+"[-0.258, -0.112, 0.02]",42.3,106,vacuum,34,False,23,137.3,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",61,False,34,ok,altura +0 mm,,LIFT_OBJECT,23,8.0
+"[1.171, 0.153, -0.38]",110.7,141,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""grasp_dz"": 0.0}",100,False,33,ok,altura +0 mm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.009, 0.02]",1.1,119,vacuum,57,False,38,170.1,0.0,True,32,,14.1,0.175,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",81,True,57,ok,altura +10 mm,-9.9,TRANSPORT_OBJECT,38,8.0
+"[0.153, 0.005, 0.02]",0.6,115,vacuum,54,False,38,169.8,0.0,True,31,,14.3,0.1575,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",78,True,54,ok,altura +10 mm,-10.6,TRANSPORT_OBJECT,38,8.0
+"[0.151, -0.016, 0.02]",1.6,121,vacuum,58,False,38,170.1,13.295479638779856,True,32,,14.2,0.1375,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",83,True,58,ok,altura +10 mm,-0.3,TRANSPORT_OBJECT,38,8.0
+"[0.171, -0.009, 0.02]",2.3,99,vacuum,32,False,23,169.9,4.540324448093475,True,37,,13.7,0.1325,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",56,True,32,ok,altura +10 mm,0.2,LIFT_OBJECT,23,8.0
+"[0.15, 0.017, 0.02]",1.7,98,vacuum,32,False,23,169.7,171.2905934316869,True,34,,13.8,0.115,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",57,True,32,ok,altura +10 mm,0.1,LIFT_OBJECT,23,8.0
+"[0.151, -0.001, 0.02]",0.2,95,vacuum,34,False,22,170.0,10.025313193929081,True,29,,14.3,0.085,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",60,True,34,ok,altura +10 mm,-0.3,LIFT_OBJECT,22,8.0
+"[0.142, -0.015, 0.02]",1.7,97,vacuum,32,False,23,169.6,6.398364581192178,True,33,,13.3,0.065,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",57,True,32,ok,altura +10 mm,1.6,LIFT_OBJECT,23,8.0
+"[0.14, 0.011, 0.02]",1.5,95,vacuum,34,False,23,169.8,169.6889071932976,True,27,,13.2,0.055,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",60,True,34,ok,altura +10 mm,4.1,LIFT_OBJECT,23,8.0
+"[-0.207, -0.154, 0.02]",38.9,102,vacuum,33,False,23,149.2,0.0,False,2,,6.3,0.05,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",61,False,33,ok,altura +10 mm,,LIFT_OBJECT,23,8.0
+"[-0.302, -0.01, 0.02]",45.2,102,vacuum,33,False,23,143.0,169.95416049397403,False,1,,3.3,0.045,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",60,False,33,ok,altura +10 mm,,LIFT_OBJECT,23,8.0
+"[-0.281, 0.196, 0.02]",47.4,115,vacuum,34,False,23,179.6,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",70,False,34,ok,altura +10 mm,,LIFT_OBJECT,23,8.0
+"[-0.285, -0.224, 0.02]",48.9,105,vacuum,34,False,23,144.4,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",60,False,34,ok,altura +10 mm,,LIFT_OBJECT,23,8.0
+"[1.53, 0.078, -0.38]",143.9,139,vacuum,33,False,23,181.3,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""grasp_dz"": 0.01}",97,False,33,ok,altura +10 mm,,LIFT_OBJECT,23,8.0
+"[-0.16, 0.085, 0.02]",32.2,120,vacuum,57,False,38,24.0,0.0,False,0,,0.0,0.175,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",80,False,57,ok,altura +25 mm,,TRANSPORT_OBJECT,38,8.0
+"[-0.107, -0.056, 0.02]",26.3,114,vacuum,54,False,38,30.1,0.0,False,0,,0.0,0.1575,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",76,False,54,ok,altura +25 mm,,TRANSPORT_OBJECT,38,8.0
+"[-0.15, 0.033, 0.02]",30.2,121,vacuum,58,False,38,40.6,13.295479638779856,False,0,,0.0,0.1375,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",82,False,58,ok,altura +25 mm,,TRANSPORT_OBJECT,38,8.0
+"[-0.251, 0.037, 0.02]",40.3,102,vacuum,32,False,23,1.0,4.540324448093475,False,0,,0.0,0.1325,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",54,False,32,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.268, -0.047, 0.02]",42.1,97,vacuum,32,False,23,0.0,171.2905934316869,False,0,,0.0,0.115,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",55,False,32,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.045, 0.062, 0.02]",20.5,95,vacuum,34,False,22,15.3,10.025313193929081,False,0,,0.0,0.085,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",58,False,34,ok,altura +25 mm,,LIFT_OBJECT,22,8.0
+"[-0.232, 0.016, 0.02]",38.2,96,vacuum,32,False,23,0.0,6.398364581192178,False,0,,0.0,0.065,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",55,False,32,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.043, 0.04, 0.02]",19.7,95,vacuum,34,False,23,15.9,169.6889071932976,False,0,,0.0,0.055,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",58,False,34,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.225, -0.076, 0.02]",38.3,100,vacuum,33,False,23,12.3,0.0,False,0,,0.0,0.05,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",59,False,33,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.275, -0.028, 0.02]",42.6,100,vacuum,33,False,23,0.1,169.95416049397403,False,0,,0.0,0.045,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",58,False,33,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.251, 0.124, 0.02]",42.0,114,vacuum,34,False,23,0.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",69,False,34,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[-0.248, -0.112, 0.02]",41.4,103,vacuum,34,False,23,0.0,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",58,False,34,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[2.099, -0.414, -0.38]",203.2,130,vacuum,33,False,23,0.0,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""grasp_dz"": 0.025}",92,False,33,ok,altura +25 mm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.005, 0.02]",0.9,118,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""close_ticks"": 1}",80,True,57,ok,fechar 1 tick,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.169, 0.013, 0.02]",2.3,113,vacuum,54,False,38,170.5,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""close_ticks"": 1}",76,True,54,ok,fechar 1 tick,-20.1,TRANSPORT_OBJECT,38,8.0
+"[0.15, -0.015, 0.02]",1.5,120,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""close_ticks"": 1}",82,True,58,ok,fechar 1 tick,-0.4,TRANSPORT_OBJECT,38,8.0
+"[0.167, -0.01, 0.02]",2.0,96,vacuum,32,False,23,169.9,4.540324448093475,True,37,,14.3,0.1325,"{""finger_friction"": 3.0, ""close_ticks"": 1}",55,True,32,ok,fechar 1 tick,-0.2,LIFT_OBJECT,23,8.0
+"[0.148, 0.016, 0.02]",1.6,98,vacuum,32,False,23,169.9,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""close_ticks"": 1}",57,True,32,ok,fechar 1 tick,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, 0.017, 0.02]",1.7,94,vacuum,34,False,22,169.7,10.025313193929081,True,30,,15.4,0.085,"{""finger_friction"": 3.0, ""close_ticks"": 1}",59,True,34,ok,fechar 1 tick,-0.4,LIFT_OBJECT,22,8.0
+"[0.141, -0.015, 0.02]",1.8,96,vacuum,32,False,23,170.0,6.398364581192178,True,33,,13.7,0.065,"{""finger_friction"": 3.0, ""close_ticks"": 1}",56,True,32,ok,fechar 1 tick,7.0,LIFT_OBJECT,23,8.0
+"[0.143, 0.011, 0.02]",1.3,94,vacuum,34,False,23,169.6,169.6889071932976,True,28,,13.9,0.055,"{""finger_friction"": 3.0, ""close_ticks"": 1}",59,True,34,ok,fechar 1 tick,6.4,LIFT_OBJECT,23,8.0
+"[0.203, 0.154, 0.02]",16.3,100,vacuum,33,False,23,157.8,0.0,False,12,,12.7,0.05,"{""finger_friction"": 3.0, ""close_ticks"": 1}",59,True,33,ok,fechar 1 tick,4.6,LIFT_OBJECT,23,8.0
+"[-0.235, 0.021, 0.02]",38.6,103,vacuum,33,False,23,128.3,169.95416049397403,False,2,,5.0,0.045,"{""finger_friction"": 3.0, ""close_ticks"": 1}",60,False,33,ok,fechar 1 tick,,LIFT_OBJECT,23,8.0
+"[-0.303, 0.248, 0.02]",51.6,111,vacuum,34,False,23,123.2,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""close_ticks"": 1}",69,False,34,ok,fechar 1 tick,,LIFT_OBJECT,23,8.0
+"[-0.295, -0.165, 0.02]",47.4,104,vacuum,34,False,23,169.7,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""close_ticks"": 1}",59,False,34,ok,fechar 1 tick,,LIFT_OBJECT,23,8.0
+"[1.214, -0.265, -0.38]",116.8,139,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""close_ticks"": 1}",98,False,33,ok,fechar 1 tick,,LIFT_OBJECT,23,8.0
+"[0.143, -0.002, 0.02]",0.8,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""close_ticks"": 3}",82,True,57,ok,fechar 3 ticks,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.016, 0.02]",2.4,115,vacuum,54,False,38,169.8,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""close_ticks"": 3}",78,True,54,ok,fechar 3 ticks,-20.3,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.016, 0.02]",1.6,122,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""close_ticks"": 3}",84,True,58,ok,fechar 3 ticks,-0.2,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.018, 0.02]",2.5,98,vacuum,32,False,23,169.8,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 3.0, ""close_ticks"": 3}",57,True,32,ok,fechar 3 ticks,-0.6,LIFT_OBJECT,23,8.0
+"[0.149, 0.016, 0.02]",1.6,100,vacuum,32,False,23,169.6,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""close_ticks"": 3}",59,True,32,ok,fechar 3 ticks,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, -0.016, 0.02]",1.7,96,vacuum,34,False,22,169.9,10.025313193929081,True,31,,15.5,0.085,"{""finger_friction"": 3.0, ""close_ticks"": 3}",61,True,34,ok,fechar 3 ticks,-0.3,LIFT_OBJECT,22,8.0
+"[0.144, -0.016, 0.02]",1.7,98,vacuum,32,False,23,170.1,6.398364581192178,True,33,,13.7,0.065,"{""finger_friction"": 3.0, ""close_ticks"": 3}",58,True,32,ok,fechar 3 ticks,5.3,LIFT_OBJECT,23,8.0
+"[0.142, -0.005, 0.02]",1.0,96,vacuum,34,False,23,169.6,169.6889071932976,True,28,,13.7,0.055,"{""finger_friction"": 3.0, ""close_ticks"": 3}",61,True,34,ok,fechar 3 ticks,7.9,LIFT_OBJECT,23,8.0
+"[0.775, 0.256, -0.38]",78.5,105,vacuum,33,False,23,160.3,0.0,False,12,,12.5,0.05,"{""finger_friction"": 3.0, ""close_ticks"": 3}",61,True,33,ok,fechar 3 ticks,5.4,LIFT_OBJECT,23,8.0
+"[-0.26, -0.045, 0.02]",41.2,105,vacuum,33,False,23,147.2,169.95416049397403,False,3,,7.4,0.045,"{""finger_friction"": 3.0, ""close_ticks"": 3}",62,False,33,ok,fechar 3 ticks,,LIFT_OBJECT,23,8.0
+"[-0.327, 0.151, 0.02]",50.0,113,vacuum,34,False,23,143.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""close_ticks"": 3}",71,False,34,ok,fechar 3 ticks,,LIFT_OBJECT,23,8.0
+"[-0.258, -0.112, 0.02]",42.3,106,vacuum,34,False,23,137.3,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""close_ticks"": 3}",61,False,34,ok,fechar 3 ticks,,LIFT_OBJECT,23,8.0
+"[1.171, 0.153, -0.38]",110.7,141,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""close_ticks"": 3}",100,False,33,ok,fechar 3 ticks,,LIFT_OBJECT,23,8.0
+"[0.142, -0.011, 0.02]",1.4,123,vacuum,57,False,38,170.8,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""close_ticks"": 6}",85,True,57,ok,fechar 6 ticks,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.168, 0.016, 0.02]",2.4,118,vacuum,54,False,38,169.9,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""close_ticks"": 6}",81,True,54,ok,fechar 6 ticks,-20.3,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.015, 0.02]",1.5,125,vacuum,58,False,38,170.1,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""close_ticks"": 6}",87,True,58,ok,fechar 6 ticks,-0.3,TRANSPORT_OBJECT,38,8.0
+"[0.166, 0.017, 0.02]",2.3,105,vacuum,32,False,23,169.7,4.540324448093475,True,40,,15.3,0.1325,"{""finger_friction"": 3.0, ""close_ticks"": 6}",60,True,32,ok,fechar 6 ticks,-0.0,LIFT_OBJECT,23,8.0
+"[0.149, 0.014, 0.02]",1.4,103,vacuum,32,False,23,169.7,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""close_ticks"": 6}",62,True,32,ok,fechar 6 ticks,-0.1,LIFT_OBJECT,23,8.0
+"[0.151, 0.015, 0.02]",1.5,99,vacuum,34,False,22,169.7,10.025313193929081,True,30,,15.5,0.085,"{""finger_friction"": 3.0, ""close_ticks"": 6}",64,True,34,ok,fechar 6 ticks,-0.3,LIFT_OBJECT,22,8.0
+"[0.142, -0.015, 0.02]",1.7,101,vacuum,32,False,23,169.7,6.398364581192178,True,33,,13.4,0.065,"{""finger_friction"": 3.0, ""close_ticks"": 6}",61,True,32,ok,fechar 6 ticks,4.0,LIFT_OBJECT,23,8.0
+"[0.137, 0.012, 0.02]",1.8,93,vacuum,34,False,23,168.2,169.6889071932976,True,22,,14.1,0.055,"{""finger_friction"": 3.0, ""close_ticks"": 6}",64,True,34,ok,fechar 6 ticks,9.7,LIFT_OBJECT,23,8.0
+"[0.887, 0.3, -0.38]",89.0,105,vacuum,33,False,23,170.3,0.0,False,9,,12.6,0.05,"{""finger_friction"": 3.0, ""close_ticks"": 6}",64,True,33,ok,fechar 6 ticks,1.3,LIFT_OBJECT,23,8.0
+"[-0.281, 0.041, 0.02]",43.3,108,vacuum,33,False,23,152.5,169.95416049397403,False,3,,7.3,0.045,"{""finger_friction"": 3.0, ""close_ticks"": 6}",65,False,33,ok,fechar 6 ticks,,LIFT_OBJECT,23,8.0
+"[-0.329, 0.157, 0.02]",50.4,116,vacuum,34,False,23,153.1,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""close_ticks"": 6}",74,False,34,ok,fechar 6 ticks,,LIFT_OBJECT,23,8.0
+"[-0.277, -0.215, 0.02]",47.8,109,vacuum,34,False,23,143.2,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""close_ticks"": 6}",64,False,34,ok,fechar 6 ticks,,LIFT_OBJECT,23,8.0
+"[1.203, 0.151, -0.38]",113.7,143,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""close_ticks"": 6}",103,False,33,ok,fechar 6 ticks,,LIFT_OBJECT,23,8.0
+"[0.143, -0.002, 0.02]",0.8,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""hover"": 0.12}",82,True,57,ok,subida a 12 cm,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.016, 0.02]",2.4,115,vacuum,54,False,38,169.8,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""hover"": 0.12}",78,True,54,ok,subida a 12 cm,-20.3,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.016, 0.02]",1.6,122,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""hover"": 0.12}",84,True,58,ok,subida a 12 cm,-0.2,TRANSPORT_OBJECT,38,8.0
+"[0.167, 0.018, 0.02]",2.5,98,vacuum,32,False,23,169.8,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 3.0, ""hover"": 0.12}",57,True,32,ok,subida a 12 cm,-0.6,LIFT_OBJECT,23,8.0
+"[0.149, 0.016, 0.02]",1.6,100,vacuum,32,False,23,169.6,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""hover"": 0.12}",59,True,32,ok,subida a 12 cm,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, -0.016, 0.02]",1.7,96,vacuum,34,False,22,169.9,10.025313193929081,True,31,,15.5,0.085,"{""finger_friction"": 3.0, ""hover"": 0.12}",61,True,34,ok,subida a 12 cm,-0.3,LIFT_OBJECT,22,8.0
+"[0.144, -0.016, 0.02]",1.7,98,vacuum,32,False,23,170.1,6.398364581192178,True,33,,13.7,0.065,"{""finger_friction"": 3.0, ""hover"": 0.12}",58,True,32,ok,subida a 12 cm,5.3,LIFT_OBJECT,23,8.0
+"[0.142, -0.005, 0.02]",1.0,96,vacuum,34,False,23,169.6,169.6889071932976,True,28,,13.7,0.055,"{""finger_friction"": 3.0, ""hover"": 0.12}",61,True,34,ok,subida a 12 cm,7.9,LIFT_OBJECT,23,8.0
+"[0.775, 0.256, -0.38]",78.5,105,vacuum,33,False,23,160.3,0.0,False,12,,12.5,0.05,"{""finger_friction"": 3.0, ""hover"": 0.12}",61,True,33,ok,subida a 12 cm,5.4,LIFT_OBJECT,23,8.0
+"[-0.26, -0.045, 0.02]",41.2,105,vacuum,33,False,23,147.2,169.95416049397403,False,3,,7.4,0.045,"{""finger_friction"": 3.0, ""hover"": 0.12}",62,False,33,ok,subida a 12 cm,,LIFT_OBJECT,23,8.0
+"[-0.327, 0.151, 0.02]",50.0,113,vacuum,34,False,23,143.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""hover"": 0.12}",71,False,34,ok,subida a 12 cm,,LIFT_OBJECT,23,8.0
+"[-0.258, -0.112, 0.02]",42.3,106,vacuum,34,False,23,137.3,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""hover"": 0.12}",61,False,34,ok,subida a 12 cm,,LIFT_OBJECT,23,8.0
+"[1.171, 0.153, -0.38]",110.7,141,vacuum,33,False,23,172.7,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""hover"": 0.12}",100,False,33,ok,subida a 12 cm,,LIFT_OBJECT,23,8.0
+"[0.143, -0.003, 0.02]",0.8,119,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 3.0, ""hover"": 0.08}",81,True,57,ok,subida a 8 cm,-20.4,TRANSPORT_OBJECT,38,8.0
+"[0.169, 0.013, 0.02]",2.3,113,vacuum,54,False,38,170.6,0.0,True,32,,15.3,0.1575,"{""finger_friction"": 3.0, ""hover"": 0.08}",76,True,54,ok,subida a 8 cm,-19.8,TRANSPORT_OBJECT,38,8.0
+"[0.149, -0.015, 0.02]",1.5,122,vacuum,58,False,38,170.0,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 3.0, ""hover"": 0.08}",84,True,58,ok,subida a 8 cm,-0.3,TRANSPORT_OBJECT,38,8.0
+"[0.165, -0.014, 0.02]",2.0,96,vacuum,32,False,23,169.6,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 3.0, ""hover"": 0.08}",55,True,32,ok,subida a 8 cm,-0.1,LIFT_OBJECT,23,8.0
+"[0.148, 0.012, 0.02]",1.2,98,vacuum,32,False,23,169.5,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 3.0, ""hover"": 0.08}",57,True,32,ok,subida a 8 cm,-0.0,LIFT_OBJECT,23,8.0
+"[0.152, -0.013, 0.02]",1.3,96,vacuum,34,False,22,169.7,10.025313193929081,True,30,,15.4,0.085,"{""finger_friction"": 3.0, ""hover"": 0.08}",61,True,34,ok,subida a 8 cm,-0.4,LIFT_OBJECT,22,8.0
+"[0.14, -0.016, 0.02]",1.8,95,vacuum,32,False,23,169.9,6.398364581192178,True,33,,13.4,0.065,"{""finger_friction"": 3.0, ""hover"": 0.08}",55,True,32,ok,subida a 8 cm,3.2,LIFT_OBJECT,23,8.0
+"[0.144, 0.012, 0.02]",1.3,102,vacuum,34,False,23,169.2,169.6889071932976,True,32,,13.6,0.055,"{""finger_friction"": 3.0, ""hover"": 0.08}",62,True,34,ok,subida a 8 cm,7.3,LIFT_OBJECT,23,8.0
+"[-0.183, -0.13, 0.02]",35.8,101,vacuum,33,False,23,172.4,0.0,False,4,,11.7,0.05,"{""finger_friction"": 3.0, ""hover"": 0.08}",60,False,33,ok,subida a 8 cm,,LIFT_OBJECT,23,8.0
+"[-0.253, -0.002, 0.02]",40.3,103,vacuum,33,False,23,153.7,169.95416049397403,False,4,,9.7,0.045,"{""finger_friction"": 3.0, ""hover"": 0.08}",60,False,33,ok,subida a 8 cm,,LIFT_OBJECT,23,8.0
+"[-0.286, 0.14, 0.02]",45.8,110,vacuum,34,False,23,141.1,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 3.0, ""hover"": 0.08}",68,False,34,ok,subida a 8 cm,,LIFT_OBJECT,23,8.0
+"[-0.253, -0.14, 0.02]",42.7,104,vacuum,34,False,23,134.7,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 3.0, ""hover"": 0.08}",59,False,34,ok,subida a 8 cm,,LIFT_OBJECT,23,8.0
+"[1.284, 0.641, -0.38]",136.2,140,vacuum,33,False,23,172.8,0.0,False,0,,0.0,0.015,"{""finger_friction"": 3.0, ""hover"": 0.08}",99,False,33,ok,subida a 8 cm,,LIFT_OBJECT,23,8.0
+"[-0.025, -0.052, 0.02]",18.2,120,vacuum,57,False,38,143.4,0.0,False,2,,7.1,0.175,"{""finger_friction"": 1.5}",82,False,57,ok,"atrito 1,5",,TRANSPORT_OBJECT,38,8.0
+"[-0.012, -0.093, 0.02]",18.7,116,vacuum,54,False,38,169.8,0.0,False,2,,7.8,0.1575,"{""finger_friction"": 1.5}",78,False,54,ok,"atrito 1,5",,TRANSPORT_OBJECT,38,8.0
+"[0.146, -0.016, 0.02]",1.7,122,vacuum,58,False,38,169.6,13.295479638779856,True,31,,13.9,0.1375,"{""finger_friction"": 1.5}",84,True,58,ok,"atrito 1,5",1.3,TRANSPORT_OBJECT,38,8.0
+"[0.137, 0.013, 0.02]",1.9,103,vacuum,32,False,23,170.3,4.540324448093475,True,39,,14.0,0.1325,"{""finger_friction"": 1.5}",57,True,32,ok,"atrito 1,5",5.6,LIFT_OBJECT,23,8.0
+"[0.125, -0.012, 0.02]",2.8,100,vacuum,32,False,23,170.0,171.2905934316869,True,35,,13.3,0.115,"{""finger_friction"": 1.5}",59,True,32,ok,"atrito 1,5",3.3,LIFT_OBJECT,23,8.0
+"[0.057, 0.212, 0.02]",23.1,103,vacuum,34,False,22,158.9,10.025313193929081,False,10,,13.1,0.085,"{""finger_friction"": 1.5}",61,True,34,ok,"atrito 1,5",6.2,LIFT_OBJECT,22,8.0
+"[-0.236, 0.065, 0.02]",39.2,99,vacuum,32,False,23,139.0,6.398364581192178,False,0,,0.0,0.065,"{""finger_friction"": 1.5}",58,False,32,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[-0.063, 0.114, 0.02]",24.2,98,vacuum,34,False,23,135.0,169.6889071932976,False,0,,0.0,0.055,"{""finger_friction"": 1.5}",61,False,34,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[-0.261, -0.172, 0.02]",44.6,102,vacuum,33,False,23,169.0,0.0,False,0,,0.0,0.05,"{""finger_friction"": 1.5}",61,False,33,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[-0.286, -0.066, 0.02]",44.1,105,vacuum,33,False,23,185.5,169.95416049397403,False,0,,0.0,0.045,"{""finger_friction"": 1.5}",62,False,33,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[-0.58, 0.11, 0.02]",73.8,113,vacuum,34,False,23,60.1,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 1.5}",71,False,34,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[-0.311, -0.269, 0.02]",53.3,106,vacuum,34,False,23,176.2,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 1.5}",61,False,34,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[1.997, 0.437, -0.38]",194.0,141,vacuum,33,False,23,140.4,0.0,False,0,,0.0,0.015,"{""finger_friction"": 1.5}",100,False,33,ok,"atrito 1,5",,LIFT_OBJECT,23,8.0
+"[0.011, -0.064, 0.02]",15.3,129,vacuum,57,False,38,146.0,0.0,False,3,,11.6,0.175,"{""finger_friction"": 2.0}",82,False,57,ok,atrito 2,,TRANSPORT_OBJECT,38,8.0
+"[0.168, 0.016, 0.02]",2.4,115,vacuum,54,False,38,169.9,0.0,True,32,,15.1,0.1575,"{""finger_friction"": 2.0}",78,True,54,ok,atrito 2,-17.6,TRANSPORT_OBJECT,38,8.0
+"[0.152, -0.016, 0.02]",1.7,122,vacuum,58,False,38,169.9,13.295479638779856,True,33,,15.2,0.1375,"{""finger_friction"": 2.0}",84,True,58,ok,atrito 2,-0.4,TRANSPORT_OBJECT,38,8.0
+"[0.588, 0.449, -0.38]",74.4,102,vacuum,32,False,23,170.0,4.540324448093475,False,23,,14.2,0.1325,"{""finger_friction"": 2.0}",57,True,32,ok,atrito 2,-0.5,LIFT_OBJECT,23,8.0
+"[0.148, -0.018, 0.02]",1.9,100,vacuum,32,False,23,169.6,171.2905934316869,True,36,,14.6,0.115,"{""finger_friction"": 2.0}",59,True,32,ok,atrito 2,0.4,LIFT_OBJECT,23,8.0
+"[0.148, 0.015, 0.02]",1.5,97,vacuum,34,False,22,169.1,10.025313193929081,True,28,,14.2,0.085,"{""finger_friction"": 2.0}",61,True,34,ok,atrito 2,10.5,LIFT_OBJECT,22,8.0
+"[-0.211, -0.116, 0.02]",37.9,99,vacuum,32,False,23,149.4,6.398364581192178,False,4,,10.8,0.065,"{""finger_friction"": 2.0}",58,False,32,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[-0.078, 0.071, 0.02]",23.9,98,vacuum,34,False,23,169.1,169.6889071932976,False,0,,0.0,0.055,"{""finger_friction"": 2.0}",61,False,34,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[-0.246, -0.104, 0.02]",40.9,102,vacuum,33,False,23,164.4,0.0,False,0,,0.0,0.05,"{""finger_friction"": 2.0}",61,False,33,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[-0.27, 0.005, 0.02]",42.0,105,vacuum,33,False,23,138.1,169.95416049397403,False,0,,0.0,0.045,"{""finger_friction"": 2.0}",62,False,33,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[-0.328, 0.21, 0.02]",52.2,113,vacuum,34,False,23,177.0,183.27700390680712,False,0,,0.0,0.03,"{""finger_friction"": 2.0}",71,False,34,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[-0.242, -0.12, 0.02]",41.0,106,vacuum,34,False,23,162.4,169.20115244544738,False,0,,0.0,0.025,"{""finger_friction"": 2.0}",61,False,34,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[1.906, 0.437, -0.38]",185.3,141,vacuum,33,False,23,140.9,0.0,False,0,,0.0,0.015,"{""finger_friction"": 2.0}",100,False,33,ok,atrito 2,,LIFT_OBJECT,23,8.0
+"[0.141, -0.011, 0.02]",1.4,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 5.0}",82,True,57,ok,atrito 5,-19.9,TRANSPORT_OBJECT,38,8.0
+"[0.15, -0.004, 0.02]",0.4,115,vacuum,54,False,38,170.0,0.0,True,32,,15.2,0.1575,"{""finger_friction"": 5.0}",78,True,54,ok,atrito 5,-19.8,TRANSPORT_OBJECT,38,8.0
+"[0.15, -0.012, 0.02]",1.2,122,vacuum,58,False,38,168.4,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 5.0}",84,True,58,ok,atrito 5,-0.2,TRANSPORT_OBJECT,38,8.0
+"[0.16, -0.002, 0.02]",1.0,98,vacuum,32,False,23,168.1,4.540324448093475,True,36,,14.3,0.1325,"{""finger_friction"": 5.0}",57,True,32,ok,atrito 5,-0.2,LIFT_OBJECT,23,8.0
+"[0.147, 0.016, 0.02]",1.6,100,vacuum,32,False,23,169.1,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 5.0}",59,True,32,ok,atrito 5,0.0,LIFT_OBJECT,23,8.0
+"[0.149, -0.016, 0.02]",1.6,96,vacuum,34,False,22,169.8,10.025313193929081,True,30,,15.5,0.085,"{""finger_friction"": 5.0}",61,True,34,ok,atrito 5,-0.4,LIFT_OBJECT,22,8.0
+"[0.147, -0.016, 0.02]",1.6,98,vacuum,32,False,23,169.9,6.398364581192178,True,35,,14.8,0.065,"{""finger_friction"": 5.0}",58,True,32,ok,atrito 5,-0.1,LIFT_OBJECT,23,8.0
+"[0.153, 0.017, 0.02]",1.7,96,vacuum,34,False,23,169.9,169.6889071932976,True,30,,15.3,0.055,"{""finger_friction"": 5.0}",61,True,34,ok,atrito 5,-0.4,LIFT_OBJECT,23,8.0
+"[0.148, -0.016, 0.02]",1.6,101,vacuum,33,False,23,169.8,0.0,True,34,,14.7,0.05,"{""finger_friction"": 5.0}",61,True,33,ok,atrito 5,-0.1,LIFT_OBJECT,23,8.0
+"[0.147, 0.016, 0.02]",1.6,103,vacuum,33,False,23,169.8,169.95416049397403,True,37,,14.8,0.045,"{""finger_friction"": 5.0}",62,True,33,ok,atrito 5,0.8,LIFT_OBJECT,23,8.0
+"[-0.281, 0.094, 0.02]",44.1,113,vacuum,34,False,23,150.4,183.27700390680712,False,4,,9.7,0.03,"{""finger_friction"": 5.0}",71,False,34,ok,atrito 5,,LIFT_OBJECT,23,8.0
+"[-0.266, -0.082, 0.02]",42.4,106,vacuum,34,False,23,147.8,169.20115244544738,False,3,,7.7,0.025,"{""finger_friction"": 5.0}",61,False,34,ok,atrito 5,,LIFT_OBJECT,23,8.0
+"[1.433, 0.384, -0.38]",139.7,141,vacuum,33,False,23,186.8,0.0,False,0,,0.0,0.015,"{""finger_friction"": 5.0}",100,False,33,ok,atrito 5,,LIFT_OBJECT,23,8.0
+"[0.141, -0.011, 0.024]",1.5,120,vacuum,57,False,38,170.0,0.0,True,33,,15.1,0.175,"{""finger_friction"": 10.0}",82,True,57,ok,atrito 10,-19.9,TRANSPORT_OBJECT,38,8.0
+"[0.138, 0.012, 0.02]",1.7,109,vacuum,54,False,38,170.2,0.0,True,26,,15.2,0.1575,"{""finger_friction"": 10.0}",78,True,54,ok,atrito 10,-18.7,TRANSPORT_OBJECT,38,8.0
+"[0.147, -0.014, 0.02]",1.4,122,vacuum,58,False,38,155.1,13.295479638779856,True,33,,15.1,0.1375,"{""finger_friction"": 10.0}",84,True,58,ok,atrito 10,-0.3,TRANSPORT_OBJECT,38,8.0
+"[0.145, 0.013, 0.02]",1.3,98,vacuum,32,False,23,170.2,4.540324448093475,True,36,,14.2,0.1325,"{""finger_friction"": 10.0}",57,True,32,ok,atrito 10,0.0,LIFT_OBJECT,23,8.0
+"[0.146, 0.012, 0.02]",1.2,100,vacuum,32,False,23,158.5,171.2905934316869,True,37,,15.1,0.115,"{""finger_friction"": 10.0}",59,True,32,ok,atrito 10,0.0,LIFT_OBJECT,23,8.0
+"[0.149, -0.011, 0.02]",1.1,96,vacuum,34,False,22,164.2,10.025313193929081,True,30,,15.4,0.085,"{""finger_friction"": 10.0}",61,True,34,ok,atrito 10,-0.4,LIFT_OBJECT,22,8.0
+"[0.144, -0.016, 0.02]",1.7,98,vacuum,32,False,23,169.8,6.398364581192178,True,35,,14.8,0.065,"{""finger_friction"": 10.0}",58,True,32,ok,atrito 10,-0.1,LIFT_OBJECT,23,8.0
+"[0.15, -0.014, 0.02]",1.4,96,vacuum,34,False,23,170.0,169.6889071932976,True,30,,15.2,0.055,"{""finger_friction"": 10.0}",61,True,34,ok,atrito 10,-0.4,LIFT_OBJECT,23,8.0
+"[0.144, 0.015, 0.02]",1.6,101,vacuum,33,False,23,169.6,0.0,True,35,,14.9,0.05,"{""finger_friction"": 10.0}",61,True,33,ok,atrito 10,-0.0,LIFT_OBJECT,23,8.0
+"[0.145, 0.015, 0.02]",1.6,103,vacuum,33,False,23,169.7,169.95416049397403,True,37,,15.1,0.045,"{""finger_friction"": 10.0}",62,True,33,ok,atrito 10,-0.1,LIFT_OBJECT,23,8.0
+"[0.135, 0.003, 0.02]",1.5,105,vacuum,34,False,23,169.2,183.27700390680712,True,30,,14.9,0.03,"{""finger_friction"": 10.0}",71,True,34,ok,atrito 10,0.9,LIFT_OBJECT,23,8.0
+"[0.158, -0.017, 0.02]",1.9,103,vacuum,34,False,23,169.8,169.20115244544738,True,38,,14.8,0.025,"{""finger_friction"": 10.0}",61,True,34,ok,atrito 10,0.1,LIFT_OBJECT,23,8.0
+"[1.566, 0.393, -0.38]",152.3,141,vacuum,33,False,23,169.9,0.0,False,0,,0.0,0.015,"{""finger_friction"": 10.0}",100,False,33,ok,atrito 10,,LIFT_OBJECT,23,8.0

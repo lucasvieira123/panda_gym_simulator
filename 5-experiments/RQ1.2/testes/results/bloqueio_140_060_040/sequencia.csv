@@ -1,0 +1,4 @@
+run,mu,carried_from,evolved_in,activated,violation,diagnosis,attempts,path,goal,dist_cm,fail_safe,incorporated,rejected
+15_0_140,0.14,,[],[],"('LIFT_OBJECT', 23)",['lateral_friction <= 0.32'],"[(1, 'Suction-Assisted Lift Recovery', 'success', 'then_satisfied')]",B,True,1.6,,"[('lift_object_vacuum_assist', 'finger_contacts >= 2 AND lateral_friction <= 0.32')]",[]
+22_0_060,0.06,15_0_140,['lift_object_vacuum_assist'],"[('lift_object_vacuum_assist', 15)]",,[],[],A,True,1.9,,[],[]
+23_0_040,0.04,22_0_060,['lift_object_vacuum_assist'],"[('lift_object_vacuum_assist', 15)]","('LIFT_OBJECT_VACUUM_ASSIST', 23)",['lateral_friction <= 0.05'],"[(1, 'Tactile Grip-Force Recovery', 'success', 'then_satisfied')]",B,True,1.8,,"[('lift_object_vacuum_assist_adjust_grip_force', 'finger_contacts >= 2 AND lateral_friction <= 0.32 AND lateral_friction <= 0.05')]",[]
