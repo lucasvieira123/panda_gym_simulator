@@ -1,0 +1,2564 @@
+﻿[Trace] Gravando em: C:\Users\lucas_alves\Workspace\self-adaptive-arm-simulator\3-dejavu\output\arm\traces\trace_20261107_104556.log
+[DejaVu] Aguardando new_perception do Manager...
+
+[step=   1 10:46:26.191][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   1 10:46:26.191][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0703 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.3106 m                distance_ee_object_cm = 28 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 1                      x
+  ee_position            = [0.0095, 0.0000, 0.1906]  x
+  ee_velocity            = [-0.4160, 0.0005, -0.0497]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2500006382154648, 3.736820161819107e-07, 0.01998952846842175]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9839, 0.0000, -0.1787, 1.0000]  x
+  joint_angles           = [-0.0006, 0.3402, 0.0006, -1.9788, -0.0003, 2.3185, 0.7862]  x
+  joint_velocities       = [-0.0043, -0.9484, 0.0052, -1.5662, -0.0026, 0.4502, -0.0295]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   1 10:46:26.191][SM] INIT ──[task_started == 1]──► PHI_1   ✓
+[step=   1 10:46:26.191][SM] PHI_1 ──[object_available >= 1 and gripper_width_cm >= 6]──► S2   ✓
+[step=   1 10:46:26.191][SM] estado=S2   SAT=None
+
+[step=   5 10:46:26.238][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   5 10:46:26.238][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1900 m                distance_ee_object_cm = 16 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 5                      x
+  ee_position            = [-0.1251, 0.0001, 0.1632]  x
+  ee_velocity            = [-0.3810, 0.0007, -0.0494]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25000082410733043, 2.1765994240189325e-06, 0.019989411556199578]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9875, -0.0003, -0.1576, 1.0000]  x
+  joint_angles           = [-0.0007, 0.0555, 0.0008, -2.4806, -0.0001, 2.5352, 0.7855]  x
+  joint_velocities       = [-0.0001, -0.8110, 0.0017, -1.2507, 0.0006, 0.3895, -0.0002]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   5 10:46:26.238][SM] (sem transições neste tick)
+[step=   5 10:46:26.238][SM] estado=S2   SAT=None
+
+[step=   6 10:46:27.262][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   6 10:46:27.262][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1629 m                distance_ee_object_cm = 13 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 6                      x
+  ee_position            = [-0.1607, 0.0001, 0.1562]  x
+  ee_velocity            = [-0.4082, 0.0008, -0.0668]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25000084148704027, 2.627324180841425e-06, 0.01998941143610688]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9895, -0.0005, -0.1444, 1.0000]  x
+  joint_angles           = [-0.0007, -0.0164, 0.0009, -2.6004, 0.0000, 2.5839, 0.7855]  x
+  joint_velocities       = [-0.0001, -0.8300, 0.0023, -1.2837, 0.0008, 0.3742, -0.0004]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   6 10:46:27.262][SM] (sem transições neste tick)
+[step=   6 10:46:27.262][SM] estado=S2   SAT=None
+
+[step=   7 10:46:28.780][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   7 10:46:28.780][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1396 m                distance_ee_object_cm = 11 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 7                      x
+  ee_position            = [-0.1970, 0.0001, 0.1492]  x
+  ee_velocity            = [-0.4312, 0.0003, -0.0816]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25000085876834904, 3.0780479764908263e-06, 0.019989411413349322]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9922, -0.0007, -0.1249, 1.0000]  x
+  joint_angles           = [-0.0007, -0.0897, 0.0009, -2.7181, 0.0001, 2.6278, 0.7854]  x
+  joint_velocities       = [-0.0000, -0.8522, 0.0015, -1.3031, 0.0010, 0.3374, -0.0007]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   7 10:46:28.780][SM] (sem transições neste tick)
+[step=   7 10:46:28.780][SM] estado=S2   SAT=None
+
+[step=   8 10:46:30.199][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   8 10:46:30.199][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1238 m                distance_ee_object_cm = 9 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 8                      x
+  ee_position            = [-0.2336, 0.0000, 0.1427]  x
+  ee_velocity            = [-0.4297, -0.0001, -0.0722]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2500008760301956, 3.528770818098008e-06, 0.019989411408939943]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9969, -0.0010, -0.0788, 1.0000]  x
+  joint_angles           = [-0.0007, -0.1676, 0.0008, -2.8337, 0.0003, 2.6648, 0.7852]  x
+  joint_velocities       = [0.0001, -0.9251, 0.0004, -1.2920, 0.0011, 0.2850, -0.0012]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   8 10:46:30.199][SM] (sem transições neste tick)
+[step=   8 10:46:30.199][SM] estado=S2   SAT=None
+
+[step=   9 10:46:31.703][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=   9 10:46:31.703][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1214 m                distance_ee_object_cm = 9 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 9                      x
+  ee_position            = [-0.2714, -0.0000, 0.1395]  x
+  ee_velocity            = [-0.3739, -0.0003, 0.0261]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25000089328746017, 3.979492706986637e-06, 0.019989411407989287]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [-0.9907, -0.0012, 0.1364, 1.0000]  x
+  joint_angles           = [-0.0007, -0.2644, 0.0007, -2.9453, 0.0004, 2.6725, 0.7850]  x
+  joint_velocities       = [0.0002, -1.3025, -0.0006, -1.2276, 0.0009, 0.0589, -0.0015]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=   9 10:46:31.703][SM] (sem transições neste tick)
+[step=   9 10:46:31.703][SM] estado=S2   SAT=None
+
+[step=  10 10:46:33.084][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=  10 10:46:33.084][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.1080 m                distance_ee_object_cm = 8 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 10                     x
+  ee_position            = [-0.2591, -0.0000, 0.1276]  x
+  ee_velocity            = [-0.4097, 0.0005, -1.0626]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.250000910542948, 4.430213643272149e-06, 0.019989411407690616]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [0.2206, 0.0003, -0.9754, 1.0000]  x
+  joint_angles           = [-0.0007, -0.1840, 0.0008, -2.9402, 0.0003, 2.7943, 0.7851]  x
+  joint_velocities       = [-0.0002, 3.6343, 0.0001, 0.2702, -0.0005, 0.9369, 0.0005]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [-0.0000, 0.0000, -0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  10 10:46:33.084][SM] (sem transições neste tick)
+[step=  10 10:46:33.084][SM] estado=S2   SAT=None
+
+[step=  11 10:46:34.542][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=  11 10:46:34.542][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0700 m                distance_ee_object_cm = 4 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 11                     x
+  ee_position            = [-0.2648, -0.0000, 0.0884]  x
+  ee_velocity            = [-0.2715, 0.0004, -0.6197]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25000070043087186, 4.903380098338324e-06, 0.01998948963338307]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [0.1090, 0.0003, -0.9940, 1.0000]  x
+  joint_angles           = [-0.0008, -0.0286, 0.0008, -2.9115, 0.0002, 2.8606, 0.7852]  x
+  joint_velocities       = [-0.0004, 2.1932, 0.0002, 0.2782, -0.0010, 0.5096, 0.0006]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [0.0000, 0.0000, 0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  11 10:46:34.542][SM] (sem transições neste tick)
+[step=  11 10:46:34.542][SM] estado=S2   SAT=None
+
+[step=  12 10:46:36.028][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=  12 10:46:36.028][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0391 m                distance_ee_object_cm = 1 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 12                     x
+  ee_position            = [-0.2567, -0.0000, 0.0585]  x
+  ee_velocity            = [-0.1778, 0.0003, -0.5876]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2500002862534305, 4.903496398524369e-06, 0.01998990368716314]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [0.3224, 0.0003, -0.9466, 1.0000]  x
+  joint_angles           = [-0.0008, 0.1141, 0.0006, -2.8742, -0.0001, 2.9734, 0.7853]  x
+  joint_velocities       = [0.0001, 2.2020, -0.0008, 0.4190, -0.0021, 0.8672, 0.0012]  x
+  cube_rotation          = [0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [0.0000, -0.0000, 0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  12 10:46:36.028][SM] (sem transições neste tick)
+[step=  12 10:46:36.028][SM] estado=S2   SAT=None
+
+[step=  13 10:46:37.485][DejaVu] ep=1  subtask=APPROACH_OBJECT  reward=-0.4000
+[step=  13 10:46:37.485][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0092 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4000 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.250, 0.000]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 0
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 13                     x
+  ee_position            = [-0.2448, 0.0000, 0.0275]  x
+  ee_velocity            = [-0.1041, 0.0003, -0.6151]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4000                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2500002081102265, 4.903495591203585e-06, 0.01998998182561259]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = APPROACH_OBJECT        x
+  active_target_name     = target                 x
+  action                 = [0.4439, 0.0015, -0.8961, 1.0000]  x
+  joint_angles           = [-0.0005, 0.2612, 0.0004, -2.8099, -0.0003, 3.0542, 0.7856]  x
+  joint_velocities       = [0.0022, 2.3164, -0.0022, 0.8002, -0.0016, 0.6211, 0.0017]  x
+  cube_rotation          = [-0.0000, -0.0000, -0.0000]  x
+  cube_linear_velocity   = [0.0000, -0.0000, 0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  13 10:46:37.485][SM] (sem transições neste tick)
+[step=  13 10:46:37.485][SM] estado=S2   SAT=None
+
+[step=  14 10:46:38.878][DejaVu] ep=1  subtask=GRASP_OBJECT  reward=-0.3976
+[step=  14 10:46:38.878][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0394 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0017 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.3976 m  (3D)          distance_obj_goal_cm  = 39 cm  (XY)
+  cube_position (z)     = 0.0235 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.248, -0.000]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 14                     x
+  ee_position            = [-0.2489, 0.0000, 0.0224]  x
+  ee_velocity            = [0.2270, -0.0002, 0.2754]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.3976                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.24760571084502306, -9.796113222529165e-05, 0.02349058896391353]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = GRASP_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, -1.0000]  x
+  joint_angles           = [-0.0003, 0.2710, 0.0002, -2.8174, -0.0003, 3.0728, 0.7856]  x
+  joint_velocities       = [0.0011, -0.7957, -0.0012, -0.0855, -0.0006, 0.1428, 0.0002]  x
+  cube_rotation          = [-0.0023, -0.0124, 0.0059]  x
+  cube_linear_velocity   = [0.2305, -0.0078, 0.2789]  x
+  obstacle_positions     = {}                     x
+[step=  14 10:46:38.878][SM] ação→ approach_object() (APPROACH_OBJECT)  [nova neste tick]
+[step=  14 10:46:38.878][SM] S2 ──[approach_object() (APPROACH_OBJECT)]──► PHI_3   ✓
+[step=  14 10:46:38.878][SM] PHI_3 ──[distance_ee_object_cm <= 2]──► S4   ✓
+[step=  14 10:46:38.878][SM] S4 ──[gripper_width_cm >= 6 and distance_ee_object_cm <= 2]──► PHI_5   ✓
+[step=  14 10:46:38.878][SM] PHI_5 ──[gripper_width_cm >= 6]──► S6   ✓
+[step=  14 10:46:38.878][SM] estado=S6   SAT=True
+
+[step=  15 10:46:40.333][DejaVu] ep=1  subtask=GRASP_OBJECT  reward=-0.3975
+[step=  15 10:46:40.333][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0393 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0011 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.3975 m  (3D)          distance_obj_goal_cm  = 39 cm  (XY)
+  cube_position (z)     = 0.0240 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [-0.247, -0.000]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 15                     x
+  ee_position            = [-0.2483, 0.0000, 0.0235]  x
+  ee_velocity            = [-0.0111, 0.0000, -0.0090]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.3975                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.24747426821831048, -0.00038736852833333565, 0.023997101886095912]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = GRASP_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, -1.0000]  x
+  joint_angles           = [-0.0002, 0.2709, 0.0001, -2.8250, -0.0004, 3.0942, 0.7856]  x
+  joint_velocities       = [0.0006, 0.0347, -0.0005, -0.0598, -0.0002, 0.1651, 0.0002]  x
+  cube_rotation          = [-0.0014, -0.0266, 0.0043]  x
+  cube_linear_velocity   = [-0.0111, -0.0069, -0.0089]  x
+  obstacle_positions     = {}                     x
+[step=  15 10:46:40.333][SM] (sem transições neste tick)
+[step=  15 10:46:40.333][SM] estado=S6   SAT=True
+
+[step=  16 10:46:41.903][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4121
+[step=  16 10:46:41.903][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0354 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0037 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4121 m  (3D)          distance_obj_goal_cm  = 41 cm  (XY)
+  cube_position (z)     = 0.0359 m                object_lift_height_cm = 1 cm
+  cube_position (xy)    = [-0.262, -0.000]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 16                     x
+  ee_position            = [-0.2650, 0.0000, 0.0341]  x
+  ee_velocity            = [0.3273, 0.0002, 0.6884]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4121                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2617601713441629, -0.000470028049088307, 0.0358779284650046]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0002, 0.1958, 0.0002, -2.8531, -0.0003, 2.9910, 0.7857]  x
+  joint_velocities       = [-0.0001, -2.4602, 0.0013, -0.3963, 0.0006, -0.7941, 0.0001]  x
+  cube_rotation          = [0.0007, 0.0553, -0.0025]  x
+  cube_linear_velocity   = [0.3270, -0.0038, 0.6918]  x
+  obstacle_positions     = {}                     x
+[step=  16 10:46:41.903][SM] ação→ close_gripper() (GRASP_OBJECT)  [nova neste tick]
+[step=  16 10:46:41.903][SM] S6 ──[close_gripper() (GRASP_OBJECT)]──► PHI_7   ✓
+[step=  16 10:46:41.903][SM] PHI_7 ──[grasp_completed == 1]──► S8   ✓
+[step=  16 10:46:41.903][SM] S8 ──[finger_contacts >= 2 and grasp_completed == 1]──► PHI_17   ✓
+[step=  16 10:46:41.903][SM] PHI_17 ──[finger_contacts >= 2]──► S18   ✓
+[step=  16 10:46:41.903][SM] estado=S18   SAT=True
+
+[step=  17 10:46:43.394][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4121
+[step=  17 10:46:43.394][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0362 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0032 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4121 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0673 m                object_lift_height_cm = 4 cm
+  cube_position (xy)    = [-0.259, -0.001]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 17                     x
+  ee_position            = [-0.2621, 0.0000, 0.0659]  x
+  ee_velocity            = [0.1101, -0.0001, 0.4118]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4121                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2593796519422287, -0.0008270357477689592, 0.06725633762409586]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0003, 0.0657, 0.0003, -2.8986, -0.0002, 2.9553, 0.7856]  x
+  joint_velocities       = [-0.0000, -1.6003, 0.0002, -0.4485, 0.0007, -0.2746, -0.0002]  x
+  cube_rotation          = [0.0002, 0.0062, -0.0040]  x
+  cube_linear_velocity   = [0.1091, -0.0080, 0.4140]  x
+  obstacle_positions     = {}                     x
+[step=  17 10:46:43.394][SM] (sem transições neste tick)
+[step=  17 10:46:43.394][SM] estado=S18   SAT=True
+
+[step=  18 10:46:44.879][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4140
+[step=  18 10:46:44.879][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0359 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0050 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4140 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.0938 m                object_lift_height_cm = 7 cm
+  cube_position (xy)    = [-0.257, -0.001]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 18                     x
+  ee_position            = [-0.2619, 0.0000, 0.0919]  x
+  ee_velocity            = [0.2671, -0.0001, 0.5715]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4140                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.25741400271601195, -0.0011302375280110603, 0.09376194947601584]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0002, -0.0460, 0.0003, -2.9083, -0.0000, 2.8508, 0.7855]  x
+  joint_velocities       = [0.0003, -1.9297, -0.0001, -0.0465, 0.0014, -0.8031, -0.0008]  x
+  cube_rotation          = [0.0018, 0.0096, 0.0226]  x
+  cube_linear_velocity   = [0.2653, -0.0060, 0.5763]  x
+  obstacle_positions     = {}                     x
+[step=  18 10:46:44.879][SM] (sem transições neste tick)
+[step=  18 10:46:44.879][SM] estado=S18   SAT=True
+
+[step=  19 10:46:46.328][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4158
+[step=  19 10:46:46.328][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0350 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0062 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4158 m  (3D)          distance_obj_goal_cm  = 40 cm  (XY)
+  cube_position (z)     = 0.1231 m                object_lift_height_cm = 10 cm
+  cube_position (xy)    = [-0.253, -0.001]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 19                     x
+  ee_position            = [-0.2586, 0.0000, 0.1213]  x
+  ee_velocity            = [0.1515, 0.0000, 0.4546]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4158                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2528046919144163, -0.0012121102734707395, 0.12309607778717546]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0002, -0.1573, 0.0003, -2.9070, 0.0001, 2.7441, 0.7855]  x
+  joint_velocities       = [0.0004, -1.5375, -0.0001, 0.0021, 0.0011, -0.8208, -0.0004]  x
+  cube_rotation          = [-0.0011, -0.0011, -0.0194]  x
+  cube_linear_velocity   = [0.1504, -0.0034, 0.4585]  x
+  obstacle_positions     = {}                     x
+[step=  19 10:46:46.328][SM] (sem transições neste tick)
+[step=  19 10:46:46.328][SM] estado=S18   SAT=True
+
+[step=  20 10:46:47.892][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4199
+[step=  20 10:46:47.892][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0377 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0072 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4199 m  (3D)          distance_obj_goal_cm  = 39 cm  (XY)
+  cube_position (z)     = 0.1523 m                object_lift_height_cm = 13 cm
+  cube_position (xy)    = [-0.249, -0.002]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 20                     x
+  ee_position            = [-0.2553, 0.0000, 0.1504]  x
+  ee_velocity            = [0.1757, 0.0001, 0.5370]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4199                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.24851644994276137, -0.0015902485952514606, 0.15228633115703802]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0001, -0.2554, 0.0003, -2.8890, 0.0001, 2.6251, 0.7854]  x
+  joint_velocities       = [0.0002, -1.6471, -0.0003, 0.1385, 0.0043, -0.9148, -0.0006]  x
+  cube_rotation          = [0.0030, 0.0084, 0.0037]  x
+  cube_linear_velocity   = [0.1750, -0.0080, 0.5425]  x
+  obstacle_positions     = {}                     x
+[step=  20 10:46:47.892][SM] (sem transições neste tick)
+[step=  20 10:46:47.892][SM] estado=S18   SAT=True
+
+[step=  21 10:46:49.261][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4268
+[step=  21 10:46:49.261][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0358 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0076 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4268 m  (3D)          distance_obj_goal_cm  = 39 cm  (XY)
+  cube_position (z)     = 0.1842 m                object_lift_height_cm = 16 cm
+  cube_position (xy)    = [-0.244, -0.002]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 21                     x
+  ee_position            = [-0.2512, 0.0000, 0.1825]  x
+  ee_velocity            = [0.1257, 0.0004, 0.4984]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4268                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2439784282255113, -0.0016541182489870582, 0.1842139386703489]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 1.0000, -1.0000]  x
+  joint_angles           = [-0.0001, -0.3474, 0.0003, -2.8607, 0.0000, 2.5069, 0.7854]  x
+  joint_velocities       = [0.0002, -1.4069, -0.0003, 0.2277, 0.0074, -0.9101, 0.0012]  x
+  cube_rotation          = [-0.0026, 0.0163, 0.0003]  x
+  cube_linear_velocity   = [0.1256, -0.0032, 0.5038]  x
+  obstacle_positions     = {}                     x
+[step=  21 10:46:49.261][SM] (sem transições neste tick)
+[step=  21 10:46:49.261][SM] estado=S18   SAT=True
+
+[step=  22 10:46:50.867][DejaVu] ep=1  subtask=LIFT_OBJECT  reward=-0.4184
+[step=  22 10:46:50.867][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0342 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0049 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4184 m  (3D)          distance_obj_goal_cm  = 38 cm  (XY)
+  cube_position (z)     = 0.1758 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [-0.238, -0.002]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 22                     x
+  ee_position            = [-0.2426, 0.0000, 0.1766]  x
+  ee_velocity            = [-0.3163, -0.0005, -0.8828]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4184                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.23833568839963767, -0.002174022585222417, 0.17584541327689937]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = LIFT_OBJECT            x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -1.0000, -1.0000]  x
+  joint_angles           = [-0.0001, -0.3251, 0.0002, -2.8964, 0.0004, 2.6419, 0.7854]  x
+  joint_velocities       = [0.0001, 2.4532, -0.0002, -0.2985, -0.0175, 1.0384, 0.0000]  x
+  cube_rotation          = [-0.0011, -0.0646, -0.0068]  x
+  cube_linear_velocity   = [-0.3146, -0.0096, -0.8909]  x
+  obstacle_positions     = {}                     x
+[step=  22 10:46:50.867][SM] (sem transições neste tick)
+[step=  22 10:46:50.867][SM] estado=S18   SAT=True
+
+[step=  23 10:46:52.303][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.4056
+[step=  23 10:46:52.303][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0365 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0075 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.4056 m  (3D)          distance_obj_goal_cm  = 38 cm  (XY)
+  cube_position (z)     = 0.1440 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.236, -0.002]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 23                     x
+  ee_position            = [-0.2433, 0.0000, 0.1444]  x
+  ee_velocity            = [0.7505, 0.0012, -0.3344]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.4056                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.2361989327494785, -0.0023830160909843745, 0.14404684789638336]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [1.0000, -0.0001, 0.0000, -1.0000]  x
+  joint_angles           = [-0.0002, -0.1629, 0.0003, -2.7977, -0.0002, 2.5492, 0.7854]  x
+  joint_velocities       = [-0.0007, 3.6380, 0.0009, 3.0986, 0.0186, -0.7132, -0.0000]  x
+  cube_rotation          = [0.0005, 0.0915, 0.0016]  x
+  cube_linear_velocity   = [0.7499, -0.0025, -0.3387]  x
+  obstacle_positions     = {}                     x
+[step=  23 10:46:52.303][SM] ação→ lift_object() (LIFT_OBJECT)  [nova neste tick]
+[step=  23 10:46:52.303][SM] S18 ──[lift_object() (LIFT_OBJECT)]──► PHI_19   ✓
+[step=  23 10:46:52.303][SM] PHI_19 ──[object_lift_height_cm >= 10 and finger_contacts >= 2]──► S20   ✓
+[step=  23 10:46:52.303][SM] S20 ──[finger_contacts >= 2 and object_lift_height_cm >= 10]──► PHI_21   ✓
+[step=  23 10:46:52.303][SM] PHI_21 ──[finger_contacts >= 2]──► S22   ✓
+[step=  23 10:46:52.303][SM] estado=S22   SAT=True
+
+[step=  24 10:46:53.771][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.3730
+[step=  24 10:46:53.771][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0376 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0067 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.3730 m  (3D)          distance_obj_goal_cm  = 35 cm  (XY)
+  cube_position (z)     = 0.1437 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.202, -0.002]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 24                     x
+  ee_position            = [-0.2080, 0.0000, 0.1427]  x
+  ee_velocity            = [0.4068, 0.0001, 0.2160]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.3730                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.201856303433414, -0.002477836368891437, 0.14367955194277993]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9967, -0.0001, 0.0815, -1.0000]  x
+  joint_angles           = [-0.0002, -0.0870, 0.0002, -2.7272, 0.0000, 2.6082, 0.7854]  x
+  joint_velocities       = [0.0001, 0.0901, 0.0000, 0.6369, 0.0019, 0.4542, -0.0000]  x
+  cube_rotation          = [0.0002, 0.0355, 0.0076]  x
+  cube_linear_velocity   = [0.4053, -0.0027, 0.2216]  x
+  obstacle_positions     = {}                     x
+[step=  24 10:46:53.771][SM] (sem transições neste tick)
+[step=  24 10:46:53.771][SM] estado=S22   SAT=True
+
+[step=  25 10:46:55.318][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.3423
+[step=  25 10:46:55.318][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0381 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0070 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.3423 m  (3D)          distance_obj_goal_cm  = 31 cm  (XY)
+  cube_position (z)     = 0.1471 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.168, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 25                     x
+  ee_position            = [-0.1743, 0.0000, 0.1461]  x
+  ee_velocity            = [0.5629, -0.0007, 0.1786]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.3423                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.16786407404787967, -0.0025836411991573046, 0.14706839738628918]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9956, -0.0000, 0.0941, -1.0000]  x
+  joint_angles           = [-0.0002, -0.0165, 0.0002, -2.6331, 0.0000, 2.6056, 0.7854]  x
+  joint_velocities       = [-0.0001, 0.7138, -0.0016, 1.3898, -0.0000, -0.0207, 0.0001]  x
+  cube_rotation          = [-0.0000, 0.0141, 0.0070]  x
+  cube_linear_velocity   = [0.5620, -0.0026, 0.1821]  x
+  obstacle_positions     = {}                     x
+[step=  25 10:46:55.318][SM] (sem transições neste tick)
+[step=  25 10:46:55.318][SM] estado=S22   SAT=True
+
+[step=  26 10:46:56.759][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.3118
+[step=  26 10:46:56.759][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0383 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.3118 m  (3D)          distance_obj_goal_cm  = 28 cm  (XY)
+  cube_position (z)     = 0.1493 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.134, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 26                     x
+  ee_position            = [-0.1400, -0.0000, 0.1483]  x
+  ee_velocity            = [0.4879, -0.0005, 0.1525]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.3118                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.13372138028523442, -0.002685872111788264, 0.14928270358752244]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9956, -0.0000, 0.0936, -1.0000]  x
+  joint_angles           = [-0.0002, 0.0602, 0.0002, -2.5237, -0.0000, 2.5761, 0.7854]  x
+  joint_velocities       = [-0.0000, 0.6637, -0.0010, 1.3304, -0.0001, -0.2269, -0.0000]  x
+  cube_rotation          = [-0.0001, 0.0108, 0.0069]  x
+  cube_linear_velocity   = [0.4870, -0.0025, 0.1546]  x
+  obstacle_positions     = {}                     x
+[step=  26 10:46:56.759][SM] (sem transições neste tick)
+[step=  26 10:46:56.759][SM] estado=S22   SAT=True
+
+[step=  27 10:46:58.263][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.2823
+[step=  27 10:46:58.263][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0383 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.2823 m  (3D)          distance_obj_goal_cm  = 25 cm  (XY)
+  cube_position (z)     = 0.1504 m                object_lift_height_cm = 13 cm
+  cube_position (xy)    = [-0.100, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 27                     x
+  ee_position            = [-0.1067, -0.0000, 0.1495]  x
+  ee_velocity            = [0.4764, -0.0005, 0.1102]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.2823                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.10037396651549407, -0.0027872032738053064, 0.1503537428714785]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9953, 0.0000, 0.0970, -1.0000]  x
+  joint_angles           = [-0.0002, 0.1375, 0.0002, -2.4107, -0.0000, 2.5394, 0.7854]  x
+  joint_velocities       = [0.0000, 0.7710, -0.0011, 1.3972, -0.0001, -0.2818, -0.0002]  x
+  cube_rotation          = [0.0002, 0.0117, 0.0061]  x
+  cube_linear_velocity   = [0.4757, -0.0025, 0.1120]  x
+  obstacle_positions     = {}                     x
+[step=  27 10:46:58.263][SM] (sem transições neste tick)
+[step=  27 10:46:58.263][SM] estado=S22   SAT=True
+
+[step=  28 10:46:59.810][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.2536
+[step=  28 10:46:59.810][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.2536 m  (3D)          distance_obj_goal_cm  = 21 cm  (XY)
+  cube_position (z)     = 0.1494 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.068, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 28                     x
+  ee_position            = [-0.0743, -0.0000, 0.1487]  x
+  ee_velocity            = [0.4312, -0.0004, 0.0427]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.2536                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.06803440219896897, -0.002886798089682324, 0.14939061931284353]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9945, 0.0001, 0.1050, -1.0000]  x
+  joint_angles           = [-0.0002, 0.2170, 0.0001, -2.2956, -0.0001, 2.5004, 0.7854]  x
+  joint_velocities       = [0.0001, 0.8563, -0.0007, 1.3744, -0.0000, -0.3005, -0.0002]  x
+  cube_rotation          = [0.0003, 0.0152, 0.0060]  x
+  cube_linear_velocity   = [0.4304, -0.0025, 0.0437]  x
+  obstacle_positions     = {}                     x
+[step=  28 10:46:59.810][SM] (sem transições neste tick)
+[step=  28 10:46:59.810][SM] estado=S22   SAT=True
+
+[step=  29 10:47:01.143][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.2262
+[step=  29 10:47:01.143][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.2262 m  (3D)          distance_obj_goal_cm  = 18 cm  (XY)
+  cube_position (z)     = 0.1475 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.037, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 29                     x
+  ee_position            = [-0.0429, -0.0000, 0.1469]  x
+  ee_velocity            = [0.4138, -0.0002, 0.0312]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.2262                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.03673733571754922, -0.002985011529680488, 0.1475420629486086]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9923, 0.0001, 0.1235, -1.0000]  x
+  joint_angles           = [-0.0002, 0.2957, 0.0001, -2.1801, -0.0001, 2.4609, 0.7854]  x
+  joint_velocities       = [0.0001, 0.8480, -0.0004, 1.3704, -0.0000, -0.3035, -0.0000]  x
+  cube_rotation          = [0.0001, 0.0178, 0.0065]  x
+  cube_linear_velocity   = [0.4129, -0.0025, 0.0322]  x
+  obstacle_positions     = {}                     x
+[step=  29 10:47:01.143][SM] (sem transições neste tick)
+[step=  29 10:47:01.143][SM] estado=S22   SAT=True
+
+[step=  30 10:47:02.637][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.2005
+[step=  30 10:47:02.637][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.2005 m  (3D)          distance_obj_goal_cm  = 15 cm  (XY)
+  cube_position (z)     = 0.1452 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [-0.007, -0.003]        grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 30                     x
+  ee_position            = [-0.0127, -0.0000, 0.1446]  x
+  ee_velocity            = [0.3793, -0.0001, 0.0068]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.2005                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [-0.006586336297612769, -0.003083585941581859, 0.1452179764232256]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9883, 0.0001, 0.1523, -1.0000]  x
+  joint_angles           = [-0.0002, 0.3732, 0.0001, -2.0637, -0.0001, 2.4200, 0.7854]  x
+  joint_velocities       = [0.0001, 0.8441, -0.0003, 1.3380, 0.0000, -0.3148, -0.0001]  x
+  cube_rotation          = [0.0003, 0.0198, 0.0061]  x
+  cube_linear_velocity   = [0.3787, -0.0025, 0.0076]  x
+  obstacle_positions     = {}                     x
+[step=  30 10:47:02.637][SM] (sem transições neste tick)
+[step=  30 10:47:02.637][SM] estado=S22   SAT=True
+
+[step=  31 10:47:04.139][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1778
+[step=  31 10:47:04.139][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1778 m  (3D)          distance_obj_goal_cm  = 12 cm  (XY)
+  cube_position (z)     = 0.1436 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [0.022, -0.003]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 31                     x
+  ee_position            = [0.0161, -0.0000, 0.1430]  x
+  ee_velocity            = [0.3623, -0.0001, 0.0297]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1778                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.02217106121296558, -0.003180967546819853, 0.1436009432345587]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9812, 0.0001, 0.1929, -1.0000]  x
+  joint_angles           = [-0.0001, 0.4475, 0.0001, -1.9469, -0.0001, 2.3767, 0.7854]  x
+  joint_velocities       = [0.0001, 0.7760, -0.0002, 1.3225, -0.0000, -0.3330, 0.0001]  x
+  cube_rotation          = [0.0002, 0.0207, 0.0065]  x
+  cube_linear_velocity   = [0.3618, -0.0025, 0.0308]  x
+  obstacle_positions     = {}                     x
+[step=  31 10:47:04.139][SM] (sem transições neste tick)
+[step=  31 10:47:04.139][SM] estado=S22   SAT=True
+
+[step=  32 10:47:05.574][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1592
+[step=  32 10:47:05.574][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1592 m  (3D)          distance_obj_goal_cm  = 10 cm  (XY)
+  cube_position (z)     = 0.1432 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [0.049, -0.003]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 32                     x
+  ee_position            = [0.0433, -0.0000, 0.1425]  x
+  ee_velocity            = [0.3316, -0.0000, 0.0511]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1592                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.049321201911784254, -0.003278136411252166, 0.14323540486109518]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9699, 0.0001, 0.2437, -1.0000]  x
+  joint_angles           = [-0.0001, 0.5181, 0.0001, -1.8299, -0.0001, 2.3302, 0.7854]  x
+  joint_velocities       = [0.0001, 0.6971, -0.0001, 1.2754, -0.0000, -0.3581, 0.0001]  x
+  cube_rotation          = [0.0001, 0.0209, 0.0068]  x
+  cube_linear_velocity   = [0.3312, -0.0024, 0.0523]  x
+  obstacle_positions     = {}                     x
+[step=  32 10:47:05.574][SM] (sem transições neste tick)
+[step=  32 10:47:05.574][SM] estado=S22   SAT=True
+
+[step=  33 10:47:07.057][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1462
+[step=  33 10:47:07.057][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1462 m  (3D)          distance_obj_goal_cm  = 7 cm  (XY)
+  cube_position (z)     = 0.1452 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [0.075, -0.003]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 33                     x
+  ee_position            = [0.0686, -0.0000, 0.1444]  x
+  ee_velocity            = [0.3118, -0.0000, 0.1093]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1462                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.07455083820627062, -0.003375267098156942, 0.14520041080239485]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9527, 0.0000, 0.3040, -1.0000]  x
+  joint_angles           = [-0.0001, 0.5832, 0.0001, -1.7137, -0.0001, 2.2800, 0.7854]  x
+  joint_velocities       = [0.0001, 0.5744, -0.0001, 1.2349, 0.0000, -0.3858, 0.0000]  x
+  cube_rotation          = [0.0000, 0.0200, 0.0070]  x
+  cube_linear_velocity   = [0.3112, -0.0024, 0.1108]  x
+  obstacle_positions     = {}                     x
+[step=  33 10:47:07.057][SM] (sem transições neste tick)
+[step=  33 10:47:07.057][SM] estado=S22   SAT=True
+
+[step=  34 10:47:08.580][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1405
+[step=  34 10:47:08.580][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1405 m  (3D)          distance_obj_goal_cm  = 5 cm  (XY)
+  cube_position (z)     = 0.1504 m                object_lift_height_cm = 13 cm
+  cube_position (xy)    = [0.098, -0.003]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 34                     x
+  ee_position            = [0.0918, 0.0000, 0.1494]  x
+  ee_velocity            = [0.2876, -0.0000, 0.1829]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1405                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.09769450100508104, -0.0034726204428872534, 0.150370611271658]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9299, 0.0000, 0.3678, -1.0000]  x
+  joint_angles           = [-0.0001, 0.6415, 0.0001, -1.5992, -0.0001, 2.2262, 0.7854]  x
+  joint_velocities       = [0.0001, 0.4247, -0.0001, 1.1719, 0.0001, -0.4136, 0.0000]  x
+  cube_rotation          = [0.0001, 0.0175, 0.0065]  x
+  cube_linear_velocity   = [0.2872, -0.0024, 0.1848]  x
+  obstacle_positions     = {}                     x
+[step=  34 10:47:08.580][SM] (sem transições neste tick)
+[step=  34 10:47:08.580][SM] estado=S22   SAT=True
+
+[step=  35 10:47:10.026][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1432
+[step=  35 10:47:10.026][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0070 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1432 m  (3D)          distance_obj_goal_cm  = 3 cm  (XY)
+  cube_position (z)     = 0.1597 m                object_lift_height_cm = 13 cm
+  cube_position (xy)    = [0.119, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 35                     x
+  ee_position            = [0.1128, 0.0000, 0.1585]  x
+  ee_velocity            = [0.2681, -0.0000, 0.2814]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1432                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.11866593760693725, -0.0035695496270038646, 0.15965273584784184]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.9061, -0.0000, 0.4231, -1.0000]  x
+  joint_angles           = [-0.0001, 0.6922, 0.0001, -1.4869, -0.0001, 2.1689, 0.7854]  x
+  joint_velocities       = [0.0001, 0.2505, -0.0000, 1.1116, -0.0000, -0.4408, -0.0000]  x
+  cube_rotation          = [0.0001, 0.0131, 0.0062]  x
+  cube_linear_velocity   = [0.2676, -0.0024, 0.2837]  x
+  obstacle_positions     = {}                     x
+[step=  35 10:47:10.026][SM] (sem transições neste tick)
+[step=  35 10:47:10.026][SM] estado=S22   SAT=True
+
+[step=  36 10:47:11.497][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1528
+[step=  36 10:47:11.497][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1528 m  (3D)          distance_obj_goal_cm  = 1 cm  (XY)
+  cube_position (z)     = 0.1720 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [0.135, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 36                     x
+  ee_position            = [0.1296, 0.0000, 0.1709]  x
+  ee_velocity            = [0.1792, 0.0002, 0.2239]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1528                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1353076856336251, -0.0036653904448676737, 0.17200055795925198]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.7445, -0.0001, 0.3626, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7275, 0.0001, -1.3942, -0.0001, 2.1210, 0.7854]  x
+  joint_velocities       = [-0.0000, 0.1699, 0.0004, 0.8301, -0.0001, -0.3680, -0.0001]  x
+  cube_rotation          = [-0.0001, 0.0037, 0.0069]  x
+  cube_linear_velocity   = [0.1787, -0.0024, 0.2256]  x
+  obstacle_positions     = {}                     x
+[step=  36 10:47:11.497][SM] (sem transições neste tick)
+[step=  36 10:47:11.497][SM] estado=S22   SAT=True
+
+[step=  37 10:47:12.976][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1561
+[step=  37 10:47:12.976][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0067 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1561 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1760 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [0.144, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 37                     x
+  ee_position            = [0.1382, 0.0000, 0.1752]  x
+  ee_velocity            = [0.0658, -0.0001, 0.0296]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1561                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14362959669296632, -0.0037613952695015208, 0.17596870332681597]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.4076, -0.0001, 0.1143, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7514, 0.0001, -1.3428, -0.0001, 2.0965, 0.7854]  x
+  joint_velocities       = [0.0001, 0.1943, -0.0002, 0.4106, 0.0001, -0.1889, 0.0001]  x
+  cube_rotation          = [-0.0002, 0.0008, 0.0075]  x
+  cube_linear_velocity   = [0.0657, -0.0024, 0.0298]  x
+  obstacle_positions     = {}                     x
+[step=  37 10:47:12.976][SM] (sem transições neste tick)
+[step=  37 10:47:12.976][SM] estado=S22   SAT=True
+
+[step=  38 10:47:14.468][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1567
+[step=  38 10:47:14.468][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0067 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1567 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1767 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [0.148, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 38                     x
+  ee_position            = [0.1426, 0.0000, 0.1760]  x
+  ee_velocity            = [0.0337, -0.0000, 0.0053]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1567                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14797030501151284, -0.003857748011643691, 0.17667357727456745]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.2363, -0.0001, 0.0275, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7677, 0.0001, -1.3126, -0.0001, 2.0820, 0.7854]  x
+  joint_velocities       = [0.0000, 0.1270, -0.0001, 0.2361, 0.0000, -0.1116, 0.0000]  x
+  cube_rotation          = [-0.0002, 0.0012, 0.0075]  x
+  cube_linear_velocity   = [0.0336, -0.0024, 0.0053]  x
+  obstacle_positions     = {}                     x
+[step=  38 10:47:14.468][SM] (sem transições neste tick)
+[step=  38 10:47:14.468][SM] estado=S22   SAT=True
+
+[step=  39 10:47:15.869][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1570
+[step=  39 10:47:15.869][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0067 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1570 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1769 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [0.151, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 39                     x
+  ee_position            = [0.1452, 0.0000, 0.1762]  x
+  ee_velocity            = [0.0196, -0.0000, 0.0017]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1570                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15056179984148244, -0.003954031433415986, 0.17690545041311512]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.1482, -0.0001, 0.0123, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7780, 0.0001, -1.2937, -0.0001, 2.0729, 0.7854]  x
+  joint_velocities       = [0.0000, 0.0798, -0.0000, 0.1450, 0.0000, -0.0699, 0.0000]  x
+  cube_rotation          = [-0.0002, 0.0018, 0.0075]  x
+  cube_linear_velocity   = [0.0196, -0.0024, 0.0017]  x
+  obstacle_positions     = {}                     x
+[step=  39 10:47:15.869][SM] (sem transições neste tick)
+[step=  39 10:47:15.869][SM] estado=S22   SAT=True
+
+[step=  40 10:47:17.287][DejaVu] ep=1  subtask=TRANSPORT_OBJECT  reward=-0.1567
+[step=  40 10:47:17.287][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0067 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1567 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1766 m                object_lift_height_cm = 15 cm
+  cube_position (xy)    = [0.150, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 40                     x
+  ee_position            = [0.1451, 0.0000, 0.1760]  x
+  ee_velocity            = [-0.0015, 0.0000, -0.0020]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1567                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15036555354554118, -0.0040502432698220235, 0.1766468211613328]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = TRANSPORT_OBJECT       x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7782, 0.0001, -1.2940, -0.0001, 2.0725, 0.7854]  x
+  joint_velocities       = [0.0000, 0.0010, -0.0000, -0.0020, 0.0000, -0.0034, -0.0000]  x
+  cube_rotation          = [-0.0002, 0.0026, 0.0075]  x
+  cube_linear_velocity   = [-0.0015, -0.0024, -0.0020]  x
+  obstacle_positions     = {}                     x
+[step=  40 10:47:17.287][SM] (sem transições neste tick)
+[step=  40 10:47:17.287][SM] estado=S22   SAT=True
+
+[step=  41 10:47:18.802][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1494
+[step=  41 10:47:18.802][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0068 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1494 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1693 m                object_lift_height_cm = 14 cm
+  cube_position (xy)    = [0.150, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 41                     x
+  ee_position            = [0.1451, 0.0000, 0.1688]  x
+  ee_velocity            = [-0.0052, -0.0000, -0.0799]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1494                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1504126136404537, -0.004146366515398667, 0.1693474018624723]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7882, 0.0001, -1.2956, -0.0001, 2.0827, 0.7854]  x
+  joint_velocities       = [0.0000, 0.1090, -0.0001, -0.0121, -0.0000, 0.0787, 0.0000]  x
+  cube_rotation          = [-0.0002, 0.0040, 0.0075]  x
+  cube_linear_velocity   = [-0.0052, -0.0024, -0.0802]  x
+  obstacle_positions     = {}                     x
+[step=  41 10:47:18.802][SM] ação→ transport_to_goal() (TRANSPORT_OBJECT)  [nova neste tick]
+[step=  41 10:47:18.802][SM] S22 ──[transport_to_goal() (TRANSPORT_OBJECT)]──► PHI_23   ✓
+[step=  41 10:47:18.802][SM] PHI_23 ──[distance_object_goal_cm <= 5 and object_lift_height_cm >= 10 and finger_contacts >= 2]──► S24   ✓
+[step=  41 10:47:18.802][SM] S24 ──[object_lift_height_cm >= 10 and finger_contacts >= 2 and distance_object_goal_cm <= 5]──► PHI_25   ✓
+[step=  41 10:47:18.802][SM] PHI_25 ──[object_lift_height_cm >= 10 and finger_contacts >= 2]──► S26   ✓
+[step=  41 10:47:18.802][SM] estado=S26   SAT=True
+
+[step=  42 10:47:20.226][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1418
+[step=  42 10:47:20.226][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0068 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1418 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1617 m                object_lift_height_cm = 14 cm
+  cube_position (xy)    = [0.150, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 42                     x
+  ee_position            = [0.1452, 0.0000, 0.1612]  x
+  ee_velocity            = [-0.0029, -0.0000, -0.0718]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1418                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15047848921557277, -0.004242408411537965, 0.1617237206205939]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.7986, 0.0001, -1.2974, -0.0001, 2.0942, 0.7855]  x
+  joint_velocities       = [0.0000, 0.0979, -0.0001, -0.0142, -0.0000, 0.0880, 0.0001]  x
+  cube_rotation          = [-0.0002, 0.0048, 0.0075]  x
+  cube_linear_velocity   = [-0.0029, -0.0024, -0.0720]  x
+  obstacle_positions     = {}                     x
+[step=  42 10:47:20.226][SM] (sem transições neste tick)
+[step=  42 10:47:20.226][SM] estado=S26   SAT=True
+
+[step=  43 10:47:21.842][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1341
+[step=  43 10:47:21.842][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1341 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1540 m                object_lift_height_cm = 13 cm
+  cube_position (xy)    = [0.151, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 43                     x
+  ee_position            = [0.1453, 0.0000, 0.1535]  x
+  ee_velocity            = [-0.0038, -0.0000, -0.0765]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1341                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15057892021378266, -0.004338382283733056, 0.15402305853369022]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8092, 0.0001, -1.2993, -0.0001, 2.1065, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1044, -0.0001, -0.0151, -0.0000, 0.0947, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0051, 0.0075]  x
+  cube_linear_velocity   = [-0.0038, -0.0024, -0.0766]  x
+  obstacle_positions     = {}                     x
+[step=  43 10:47:21.842][SM] (sem transições neste tick)
+[step=  43 10:47:21.842][SM] estado=S26   SAT=True
+
+[step=  44 10:47:23.245][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1264
+[step=  44 10:47:23.245][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0069 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1264 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1463 m                object_lift_height_cm = 12 cm
+  cube_position (xy)    = [0.151, -0.004]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 44                     x
+  ee_position            = [0.1453, 0.0000, 0.1458]  x
+  ee_velocity            = [-0.0042, -0.0000, -0.0766]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1264                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1506464925260061, -0.0044342919961863495, 0.14631504586199143]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8199, 0.0001, -1.3011, -0.0001, 2.1190, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1055, -0.0001, -0.0140, -0.0000, 0.0958, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0051, 0.0075]  x
+  cube_linear_velocity   = [-0.0042, -0.0024, -0.0768]  x
+  obstacle_positions     = {}                     x
+[step=  44 10:47:23.245][SM] (sem transições neste tick)
+[step=  44 10:47:23.245][SM] estado=S26   SAT=True
+
+[step=  45 10:47:24.764][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1187
+[step=  45 10:47:24.764][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0070 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1187 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1386 m                object_lift_height_cm = 11 cm
+  cube_position (xy)    = [0.151, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 45                     x
+  ee_position            = [0.1453, 0.0000, 0.1381]  x
+  ee_velocity            = [-0.0052, -0.0000, -0.0783]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1187                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15065449535595918, -0.00453014070275356, 0.13857345494566514]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8307, 0.0001, -1.3028, -0.0001, 2.1314, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1087, -0.0001, -0.0124, -0.0000, 0.0956, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0051, 0.0075]  x
+  cube_linear_velocity   = [-0.0052, -0.0024, -0.0784]  x
+  obstacle_positions     = {}                     x
+[step=  45 10:47:24.764][SM] (sem transições neste tick)
+[step=  45 10:47:24.764][SM] estado=S26   SAT=True
+
+[step=  46 10:47:26.335][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1109
+[step=  46 10:47:26.335][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0071 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1109 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1308 m                object_lift_height_cm = 11 cm
+  cube_position (xy)    = [0.151, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 46                     x
+  ee_position            = [0.1453, 0.0000, 0.1303]  x
+  ee_velocity            = [-0.0061, -0.0000, -0.0794]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1109                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15060416579483007, -0.004625931277527386, 0.13080924759337761]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8418, 0.0002, -1.3041, -0.0001, 2.1438, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1111, -0.0001, -0.0108, -0.0000, 0.0952, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0051, 0.0075]  x
+  cube_linear_velocity   = [-0.0061, -0.0024, -0.0795]  x
+  obstacle_positions     = {}                     x
+[step=  46 10:47:26.335][SM] (sem transições neste tick)
+[step=  46 10:47:26.335][SM] estado=S26   SAT=True
+
+[step=  47 10:47:27.735][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.1031
+[step=  47 10:47:27.735][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0071 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.1031 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1230 m                object_lift_height_cm = 10 cm
+  cube_position (xy)    = [0.150, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 47                     x
+  ee_position            = [0.1452, 0.0000, 0.1225]  x
+  ee_velocity            = [-0.0071, 0.0000, -0.0806]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.1031                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1504932438931182, -0.004721666375453722, 0.1230210990675612]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8530, 0.0002, -1.3053, -0.0001, 2.1561, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1138, -0.0000, -0.0091, -0.0000, 0.0948, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0071, -0.0024, -0.0808]  x
+  obstacle_positions     = {}                     x
+[step=  47 10:47:27.735][SM] (sem transições neste tick)
+[step=  47 10:47:27.735][SM] estado=S26   SAT=True
+
+[step=  48 10:47:29.266][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0953
+[step=  48 10:47:29.266][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0072 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0953 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1152 m                object_lift_height_cm = 9 cm
+  cube_position (xy)    = [0.150, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 48                     x
+  ee_position            = [0.1450, 0.0000, 0.1147]  x
+  ee_velocity            = [-0.0081, 0.0000, -0.0817]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0953                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.15032173878749652, -0.004817348377700041, 0.1152120430280814]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8643, 0.0002, -1.3063, -0.0001, 2.1684, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1163, -0.0000, -0.0075, -0.0000, 0.0944, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0081, -0.0024, -0.0819]  x
+  obstacle_positions     = {}                     x
+[step=  48 10:47:29.266][SM] (sem transições neste tick)
+[step=  48 10:47:29.266][SM] estado=S26   SAT=True
+
+[step=  49 10:47:30.685][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0875
+[step=  49 10:47:30.685][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0073 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0875 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.1074 m                object_lift_height_cm = 8 cm
+  cube_position (xy)    = [0.150, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 49                     x
+  ee_position            = [0.1448, 0.0000, 0.1069]  x
+  ee_velocity            = [-0.0090, 0.0000, -0.0828]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0875                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1500890640788903, -0.004912979411857035, 0.10738368572016425]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0001, 0.8758, 0.0002, -1.3070, -0.0001, 2.1806, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1187, -0.0000, -0.0058, -0.0000, 0.0939, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0090, -0.0024, -0.0830]  x
+  obstacle_positions     = {}                     x
+[step=  49 10:47:30.685][SM] (sem transições neste tick)
+[step=  49 10:47:30.685][SM] estado=S26   SAT=True
+
+[step=  50 10:47:32.251][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0797
+[step=  50 10:47:32.251][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0073 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0797 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0995 m                object_lift_height_cm = 7 cm
+  cube_position (xy)    = [0.150, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 50                     x
+  ee_position            = [0.1445, 0.0001, 0.0990]  x
+  ee_velocity            = [-0.0100, 0.0000, -0.0838]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0797                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14979491536848122, -0.005008561347492173, 0.09953818286293825]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.8874, 0.0002, -1.3075, -0.0001, 2.1928, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1211, -0.0000, -0.0041, -0.0000, 0.0934, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0100, -0.0024, -0.0840]  x
+  obstacle_positions     = {}                     x
+[step=  50 10:47:32.251][SM] (sem transições neste tick)
+[step=  50 10:47:32.251][SM] estado=S26   SAT=True
+
+[step=  51 10:47:33.661][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0719
+[step=  51 10:47:33.661][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0074 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0719 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0917 m                object_lift_height_cm = 7 cm
+  cube_position (xy)    = [0.149, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 51                     x
+  ee_position            = [0.1441, 0.0001, 0.0912]  x
+  ee_velocity            = [-0.0110, 0.0000, -0.0848]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0719                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1494389451217228, -0.005104095803613237, 0.09167756104313647]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.8993, 0.0002, -1.3078, -0.0001, 2.2049, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1234, -0.0000, -0.0024, -0.0000, 0.0929, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0110, -0.0024, -0.0849]  x
+  obstacle_positions     = {}                     x
+[step=  51 10:47:33.661][SM] (sem transições neste tick)
+[step=  51 10:47:33.661][SM] estado=S26   SAT=True
+
+[step=  52 10:47:35.052][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0641
+[step=  52 10:47:35.052][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0075 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0641 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0839 m                object_lift_height_cm = 6 cm
+  cube_position (xy)    = [0.149, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 52                     x
+  ee_position            = [0.1437, 0.0001, 0.0834]  x
+  ee_velocity            = [-0.0115, 0.0000, -0.0840]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0641                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1490330590546308, -0.005199584321620224, 0.08386087420321507]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9111, 0.0002, -1.3079, -0.0002, 2.2168, 0.7855]  x
+  joint_velocities       = [0.0000, 0.1235, -0.0000, -0.0004, -0.0000, 0.0917, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0115, -0.0024, -0.0841]  x
+  obstacle_positions     = {}                     x
+[step=  52 10:47:35.052][SM] (sem transições neste tick)
+[step=  52 10:47:35.052][SM] estado=S26   SAT=True
+
+[step=  53 10:47:36.579][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0563
+[step=  53 10:47:36.579][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0076 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0563 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0761 m                object_lift_height_cm = 5 cm
+  cube_position (xy)    = [0.149, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 53                     x
+  ee_position            = [0.1433, 0.0001, 0.0756]  x
+  ee_velocity            = [-0.0124, 0.0000, -0.0843]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0563                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1485606289443994, -0.005295028183723087, 0.07605643136357611]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9231, 0.0002, -1.3077, -0.0002, 2.2286, 0.7856]  x
+  joint_velocities       = [0.0001, 0.1248, -0.0000, 0.0011, -0.0000, 0.0909, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0124, -0.0024, -0.0845]  x
+  obstacle_positions     = {}                     x
+[step=  53 10:47:36.579][SM] (sem transições neste tick)
+[step=  53 10:47:36.579][SM] estado=S26   SAT=True
+
+[step=  54 10:47:38.050][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0486
+[step=  54 10:47:38.050][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0076 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0486 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0682 m                object_lift_height_cm = 4 cm
+  cube_position (xy)    = [0.148, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 54                     x
+  ee_position            = [0.1427, 0.0001, 0.0677]  x
+  ee_velocity            = [-0.0138, 0.0000, -0.0860]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0486                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14801632041288385, -0.005390428376019207, 0.0682132248355231]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9353, 0.0002, -1.3074, -0.0002, 2.2404, 0.7856]  x
+  joint_velocities       = [0.0001, 0.1280, -0.0000, 0.0026, -0.0000, 0.0906, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0052, 0.0075]  x
+  cube_linear_velocity   = [-0.0138, -0.0024, -0.0862]  x
+  obstacle_positions     = {}                     x
+[step=  54 10:47:38.050][SM] (sem transições neste tick)
+[step=  54 10:47:38.050][SM] estado=S26   SAT=True
+
+[step=  55 10:47:39.446][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0408
+[step=  55 10:47:39.446][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0077 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0408 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0603 m                object_lift_height_cm = 4 cm
+  cube_position (xy)    = [0.147, -0.005]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 55                     x
+  ee_position            = [0.1421, 0.0001, 0.0598]  x
+  ee_velocity            = [-0.0152, 0.0000, -0.0883]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0408                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14740761792036505, -0.005485785122291826, 0.060307434278773754]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9477, 0.0002, -1.3068, -0.0002, 2.2522, 0.7856]  x
+  joint_velocities       = [0.0001, 0.1323, -0.0000, 0.0046, -0.0000, 0.0903, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0053, 0.0075]  x
+  cube_linear_velocity   = [-0.0152, -0.0024, -0.0885]  x
+  obstacle_positions     = {}                     x
+[step=  55 10:47:39.446][SM] (sem transições neste tick)
+[step=  55 10:47:39.446][SM] estado=S26   SAT=True
+
+[step=  56 10:47:41.029][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0330
+[step=  56 10:47:41.029][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0078 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0330 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0524 m                object_lift_height_cm = 3 cm
+  cube_position (xy)    = [0.147, -0.006]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 56                     x
+  ee_position            = [0.1415, 0.0001, 0.0519]  x
+  ee_velocity            = [-0.0160, 0.0000, -0.0884]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0330                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1467416463186131, -0.005581098455738138, 0.05240602800021437]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9602, 0.0002, -1.3059, -0.0002, 2.2638, 0.7856]  x
+  joint_velocities       = [0.0001, 0.1335, -0.0000, 0.0063, -0.0000, 0.0898, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0053, 0.0075]  x
+  cube_linear_velocity   = [-0.0160, -0.0024, -0.0886]  x
+  obstacle_positions     = {}                     x
+[step=  56 10:47:41.029][SM] (sem transições neste tick)
+[step=  56 10:47:41.029][SM] estado=S26   SAT=True
+
+[step=  57 10:47:42.387][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0255
+[step=  57 10:47:42.387][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0078 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0255 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0445 m                object_lift_height_cm = 2 cm
+  cube_position (xy)    = [0.146, -0.006]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 57                     x
+  ee_position            = [0.1407, 0.0001, 0.0440]  x
+  ee_velocity            = [-0.0171, 0.0000, -0.0891]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0255                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14601129971397242, -0.005676368581194302, 0.0444997787766755]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1500, -1.0000]  x
+  joint_angles           = [-0.0000, 0.9728, 0.0002, -1.3049, -0.0002, 2.2754, 0.7856]  x
+  joint_velocities       = [0.0001, 0.1356, -0.0000, 0.0081, -0.0000, 0.0891, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0053, 0.0075]  x
+  cube_linear_velocity   = [-0.0171, -0.0024, -0.0893]  x
+  obstacle_positions     = {}                     x
+[step=  57 10:47:42.387][SM] (sem transições neste tick)
+[step=  57 10:47:42.387][SM] estado=S26   SAT=True
+
+[step=  58 10:47:43.926][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0201
+[step=  58 10:47:43.926][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0080 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0201 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0387 m                object_lift_height_cm = 1 cm
+  cube_position (xy)    = [0.146, -0.006]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 58                     x
+  ee_position            = [0.1403, 0.0001, 0.0381]  x
+  ee_velocity            = [0.0046, 0.0000, -0.0253]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0201                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14565796885808568, -0.005771586233692628, 0.03874748562742678]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.1201, -1.0000]  x
+  joint_angles           = [0.0000, 0.9823, 0.0002, -1.3040, -0.0002, 2.2851, 0.7856]  x
+  joint_velocities       = [0.0001, 0.0469, -0.0000, 0.0066, -0.0000, 0.0744, 0.0001]  x
+  cube_rotation          = [-0.0001, 0.0042, 0.0075]  x
+  cube_linear_velocity   = [0.0046, -0.0024, -0.0252]  x
+  obstacle_positions     = {}                     x
+[step=  58 10:47:43.926][SM] (sem transições neste tick)
+[step=  58 10:47:43.926][SM] estado=S26   SAT=True
+
+[step=  59 10:47:45.528][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0166
+[step=  59 10:47:45.528][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0384 m                gripper_width_cm      = 3 cm
+  dist_ee_to_cube       = 0.0080 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0166 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0348 m                object_lift_height_cm = 1 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 1
+  finger_contacts (raw) = 2                       finger_contacts       = 2
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 59                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [-0.0018, 0.0000, -0.0301]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0166                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14547305710238867, -0.0058667997278937685, 0.03483053779738852]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, -0.0906, -1.0000]  x
+  joint_angles           = [0.0000, 0.9889, 0.0002, -1.3032, -0.0002, 2.2919, 0.7856]  x
+  joint_velocities       = [0.0001, 0.0500, -0.0001, 0.0056, 0.0002, 0.0516, 0.0002]  x
+  cube_rotation          = [-0.0002, 0.0031, 0.0075]  x
+  cube_linear_velocity   = [-0.0018, -0.0024, -0.0300]  x
+  obstacle_positions     = {}                     x
+[step=  59 10:47:45.528][SM] (sem transições neste tick)
+[step=  59 10:47:45.528][SM] estado=S26   SAT=True
+
+[step=  60 10:47:47.111][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0093
+[step=  60 10:47:47.111][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0749 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0119 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0093 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0254 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 1
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 60                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [0.0003, -0.0000, 0.0005]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0093                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1454019769884806, -0.005961916563774774, 0.025394765099849965]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 1.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0002, -1.3031, -0.0002, 2.2919, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0006, -0.0001, 0.0001, 0.0000, 0.0003, 0.0000]  x
+  cube_rotation          = [-0.0002, 0.0028, 0.0075]  x
+  cube_linear_velocity   = [-0.0018, -0.0024, -0.4220]  x
+  obstacle_positions     = {}                     x
+[step=  60 10:47:47.111][SM] (sem transições neste tick)
+[step=  60 10:47:47.111][SM] estado=S26   SAT=True
+
+[step=  61 10:47:48.559][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0076
+[step=  61 10:47:48.559][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0794 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0164 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0076 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0198 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 61                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [0.0000, -0.0000, 0.0000]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0076                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1453437266682853, -0.005993359205517504, 0.019840317526412743]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 1.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0002, -1.3031, -0.0002, 2.2919, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0000, -0.0000, -0.0000, 0.0000, 0.0002, -0.0000]  x
+  cube_rotation          = [-0.0001, 0.0008, 0.0075]  x
+  cube_linear_velocity   = [-0.0007, -0.0001, 0.0065]  x
+  obstacle_positions     = {}                     x
+[step=  61 10:47:48.559][SM] (sem transições neste tick)
+[step=  61 10:47:48.559][SM] estado=S26   SAT=True
+
+[step=  62 10:47:49.992][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0076
+[step=  62 10:47:49.992][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0799 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0163 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0076 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 62                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [0.0000, -0.0000, 0.0000]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0076                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14533019998689206, -0.005994433454248537, 0.019961757077918252]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 1.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0002, -1.3031, -0.0002, 2.2919, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0000, -0.0000, -0.0000, 0.0000, 0.0001, -0.0000]  x
+  cube_rotation          = [-0.0000, 0.0002, 0.0075]  x
+  cube_linear_velocity   = [-0.0001, -0.0000, 0.0012]  x
+  obstacle_positions     = {}                     x
+[step=  62 10:47:49.992][SM] (sem transições neste tick)
+[step=  62 10:47:49.992][SM] estado=S26   SAT=True
+
+[step=  63 10:47:51.525][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0076
+[step=  63 10:47:51.525][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0163 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0076 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 63                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [-0.0000, -0.0000, -0.0000]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0076                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1453276487389303, -0.005994635797674424, 0.01998467079039236]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 1.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0002, -1.3032, -0.0002, 2.2919, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0000, -0.0000, -0.0001, 0.0000, 0.0001, -0.0000]  x
+  cube_rotation          = [-0.0000, 0.0000, 0.0075]  x
+  cube_linear_velocity   = [-0.0000, -0.0000, 0.0002]  x
+  obstacle_positions     = {}                     x
+[step=  63 10:47:51.525][SM] (sem transições neste tick)
+[step=  63 10:47:51.525][SM] estado=S26   SAT=True
+
+[step=  64 10:47:53.084][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0076
+[step=  64 10:47:53.084][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0163 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0076 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 64                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [-0.0000, -0.0000, -0.0000]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0076                x
+  is_success             = False                  x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.14532716737635376, -0.005994673965685141, 0.019988994415170894]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 1.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0002, -1.3032, -0.0002, 2.2920, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0000, -0.0000, -0.0001, 0.0000, 0.0000, -0.0000]  x
+  cube_rotation          = [-0.0000, 0.0000, 0.0075]  x
+  cube_linear_velocity   = [-0.0000, -0.0000, 0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  64 10:47:53.084][SM] (sem transições neste tick)
+[step=  64 10:47:53.084][SM] estado=S26   SAT=True
+
+[step=  65 10:47:54.540][DejaVu] ep=1  subtask=PLACE_OBJECT  reward=-0.0076
+[step=  65 10:47:54.540][Perception]
+  CONTEXTO                                        PARÂMETROS SM
+  ----------------------------------------------  --------------------------------------
+  fingers_width         = 0.0800 m                gripper_width_cm      = 7 cm
+  dist_ee_to_cube       = 0.0163 m                distance_ee_object_cm = 0 cm
+  dist_cube_to_target   = 0.0076 m  (3D)          distance_obj_goal_cm  = 0 cm  (XY)
+  cube_position (z)     = 0.0200 m                object_lift_height_cm = 0 cm
+  cube_position (xy)    = [0.145, -0.006]         grasp_completed       = 0
+  finger_contacts (raw) = 0                       finger_contacts       = 0
+  x                                               grasp_attempts        = 1
+  x                                               task_started          = 1
+  x                                               object_available      = 1
+  x                                               task_aborted          = 0
+  episode                = 1                      x
+  step                   = 65                     x
+  ee_position            = [0.1402, 0.0001, 0.0342]  x
+  ee_velocity            = [-0.0000, -0.0000, -0.0000]  x
+  target_position        = [0.1500, 0.0000, 0.0200]  x
+  reward                 = -0.0076                x
+  is_success             = True                   x
+  obstacle_in_path       = False                  x
+  obstacle_count_in_path = 0                      x
+  obstacles              = {}                     x
+  objects                = {'object_1': {'type': 'box', 'size': [0.04, 0.04, 0.04], 'mass': 1.0, 'color': [0.1, 0.2, 0.9, 1.0], 'initial_position': [-0.25, 0.0, 0.02], 'spinning_friction': 0.001, 'current_position': [0.1453270765479032, -0.005994681167276695, 0.019989810252903306]}}  x
+  scripts                = {'script_1': True, 'reach_only': True, 'left_right': True}  x
+  target_goal            = {'type': 'goal_sequence', 'targets': [{'name': 'target', 'position': [0.15000000596046448, 0.0, 0.019999999552965164]}], 'mode': 'goal_sequence'}  x
+  scene                  = {'table': {'length': 1.1, 'width': 0.7, 'height': 0.4, 'x_offset': -0.3, 'lateral_friction': 3.0, 'spinning_friction': 0.001}}  x
+  robot_config           = {'control_type': 'ee', 'block_gripper': False, 'base_position': [-0.6, 0.0, 0.05]}  x
+  current_task           = OBJECT_DELIVERY_SEQUENCE  x
+  current_subtask        = PLACE_OBJECT           x
+  active_target_name     = target                 x
+  action                 = [0.0000, 0.0000, 0.0000, 0.0000]  x
+  joint_angles           = [0.0000, 0.9888, 0.0001, -1.3032, -0.0002, 2.2920, 0.7856]  x
+  joint_velocities       = [0.0000, -0.0000, -0.0000, -0.0001, 0.0000, 0.0000, -0.0000]  x
+  cube_rotation          = [-0.0000, 0.0000, 0.0075]  x
+  cube_linear_velocity   = [-0.0000, -0.0000, 0.0000]  x
+  obstacle_positions     = {}                     x
+[step=  65 10:47:54.540][SM] ação→ place_object() (PLACE_OBJECT)  [nova neste tick]
+[step=  65 10:47:54.540][SM] S26 ──[place_object() (PLACE_OBJECT)]──► PHI_27   ✓
+[step=  65 10:47:54.540][SM] PHI_27 ──[distance_object_goal_cm <= 5 and gripper_width_cm >= 6]──► S28   ✓
+[step=  65 10:47:54.540][SM] S28 ──[True]──► FINAL   ✓
+[step=  65 10:47:54.540][SM] estado=—   SAT=True

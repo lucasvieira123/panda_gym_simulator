@@ -1,0 +1,5 @@
+mu,rq1_1_violacao,rq1_1_tratado_por,rq1_1_caminho,rq1_1_objetivo,rq1_2_ativados,rq1_2_violacao,rq1_2_tratado_por,rq1_2_caminho,rq1_2_objetivo,rq1_2_distancia_cm,rq1_2_incorporado,rq1_2_recusado
+0.17,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,—,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,1.6,transport_object_vacuum_assist: finger_contacts >= 2 AND lateral_friction <= 0.335,—
+0.16,TRANSPORT_OBJECT,DejaVú: Transport Slip Recovery (success),B,True,transporte (C6),—,conhecimento incorporado,A,True,1.5,—,—
+0.14,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,—,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,1.6,lift_object_vacuum_assist: finger_contacts >= 2 AND lateral_friction <= 0.15,—
+0.13,LIFT_OBJECT,DejaVú: Suction-Assisted Lift Recovery (success),B,True,"lift (C1), transporte (C6)",—,conhecimento incorporado,A,True,1.4,—,—

@@ -1,0 +1,5 @@
+run,mu,carried_from,evolved_in,activated,violation,diagnosis,attempts,path,goal,dist_cm,fail_safe,incorporated,rejected
+10_0_17,0.17,,[],[],"('TRANSPORT_OBJECT', 41)",['lateral_friction <= 0.335'],"[(1, 'Transport Slip Recovery', 'success', 'then_satisfied')]",B,True,1.6,,"[('transport_object_vacuum_assist', 'finger_contacts >= 2 AND lateral_friction <= 0.335')]",[]
+11_0_16,0.16,10_0_17,['transport_object_vacuum_assist'],"[('transport_object_vacuum_assist', 20)]",,[],[],A,True,1.5,,[],[]
+15_0_140,0.14,11_0_16,['transport_object_vacuum_assist'],[],"('LIFT_OBJECT', 23)",['lateral_friction <= 0.15'],"[(1, 'Suction-Assisted Lift Recovery', 'success', 'then_satisfied')]",B,True,1.6,,"[('lift_object_vacuum_assist', 'finger_contacts >= 2 AND lateral_friction <= 0.15')]",[]
+17_0_130,0.13,15_0_140,"['transport_object_vacuum_assist', 'lift_object_vacuum_assist']","[('lift_object_vacuum_assist', 15), ('transport_object_vacuum_assist', 19)]",,[],[],A,True,1.4,,[],[]
